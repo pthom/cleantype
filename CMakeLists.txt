@@ -10,6 +10,7 @@ include("${CMAKE_SOURCE_DIR}/cmake/cmake_registertest/src/crt_registertest_docte
 enable_testing()
 
 include_directories(${CMAKE_SOURCE_DIR}/third_party/FunctionalPlus/include)
+include_directories(${CMAKE_SOURCE_DIR}/src/libs)
 
 add_subdirectory(src/libs/sample_lib)
 add_subdirectory(src/main)
