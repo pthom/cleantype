@@ -3,9 +3,13 @@ cmake_minimum_required (VERSION 3.8.1)
 project(snake_cpp)
 
 add_definitions("-std=c++14")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
-set(CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR} ${CMAKE_MODULE_PATH})
-find_package(opencv REQUIRED)
+set (crt_test_lib_location ${CMAKE_SOURCE_DIR}/third_party/doctest/doctest)
+include("${CMAKE_SOURCE_DIR}/cmake/cmake_registertest/src/crt_registertest_doctest.cmake")
+enable_testing()
 
-add_executable(abtsract_class_interface abtsract_class_interface.cpp)
-target_link_libraries(abtsract_class_interface opencv::opencv)
+include_directories(${CMAKE_SOURCE_DIR}/third_party/FunctionalPlus/include)
+
+add_subdirectory(src/libs/sample_lib)
+add_subdirectory(src/main)
