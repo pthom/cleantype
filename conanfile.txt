@@ -1,0 +1,9 @@
+[requires]
+opencv/3.4.3@camposs/stable
+
+[generators]
+cmake_find_package
+cmake_paths
+
+[options]
+opencv:shared=True
