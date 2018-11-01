@@ -1,8 +1,6 @@
 [requires]
-opencv/3.4.3@camposs/stable
 
 [generators]
 cmake
 
 [options]
-opencv:shared=True
