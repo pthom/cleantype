@@ -1,11 +1,5 @@
 version: '{build}'
 
-install:
-  - cmmd: echo "Downloading conan..."
-  - cmmd: set PATH=%PATH%;%PYTHON%/Scripts/
-  - cmmd: pip.exe install conan
-  - cmmd: conan user # Create the conan data directory
-  - cmmd: conan --version
 
 branches:
   only:
@@ -38,8 +32,14 @@ init:
 
 before_build:
 - cmd: |-
+    echo "Downloading conan..."
+    set PATH=%PATH%;%PYTHON%/Scripts/
+    pip.exe install conan
+    conan user
+    conan --version
     mkdir build
     cd build
+    conan remote add camposs "https://conan.campar.in.tum.de/api/conan/conan-camposs"
     conan install .. --build=missing
     cmake --version
     cmake .. -G %generator%

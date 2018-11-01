@@ -87,6 +87,7 @@ before_install:
 
 install:
   - mkdir -p build && cd build
+  - conan remote add camposs "https://conan.campar.in.tum.de/api/conan/conan-camposs"
   - conan install .. --build=missing
   - cmake ..
 
