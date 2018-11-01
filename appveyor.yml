@@ -4,7 +4,7 @@ version: '{build}'
 branches:
   only:
   - master
-clone_folder: c:\projects\cpp_skeleton
+clone_folder: c:\projects\type_name
 image:
 - Visual Studio 2015
 - Visual Studio 2017
@@ -46,12 +46,12 @@ before_build:
     cmake .. -G %generator%
 
 build:
-  project: c:\projects\cpp_skeleton\build\cpp_skeleton.sln
+  project: c:\projects\type_name\build\type_name.sln
   verbosity: minimal
   parallel: true
 
 test_script:
-  - ps: cd c:\projects\cpp_skeleton\build
+  - ps: cd c:\projects\type_name\build
   - ctest -C Release --output-on-failure
 
 only_commits:

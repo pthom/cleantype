@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.8.1)
 
-project(cpp_skeleton)
+project(type_name)
 
 option(BUILD_TESTS "Build tests." ON)
 option(BUILD_SHARED_LIBS "Build shared instead of static libraries." ON)
