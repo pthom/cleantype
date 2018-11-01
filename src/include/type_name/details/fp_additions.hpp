@@ -6,6 +6,7 @@
 #include <deque>
 #include <vector>
 #include <algorithm>
+#include <functional>
 
 #include "type_name/details/fp_polyfill.hpp"
 #include "type_name/details/fp_incompat.hpp"
