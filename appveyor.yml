@@ -46,7 +46,7 @@ before_build:
     cmake .. -G %generator%
 
 build:
-  project: c:\projects\cpp_skeleton\build\FunctionalPlus.sln
+  project: c:\projects\cpp_skeleton\build\cpp_skeleton.sln
   verbosity: minimal
   parallel: true
 

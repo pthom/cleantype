@@ -1,5 +1,4 @@
-language: python
-python: 3.6
+language: cpp
 
 dist: trusty
 sudo: required
@@ -24,7 +23,6 @@ matrix:
         apt:
           sources: ['ubuntu-toolchain-r-test']
           packages: ['g++-7']
-
     - os: linux
       compiler: gcc
       env: GCC_VERSION=6
@@ -34,7 +32,6 @@ matrix:
         apt:
           sources: ['ubuntu-toolchain-r-test']
           packages: ['g++-6']
-
     - os: linux
       compiler: gcc
       env: GCC_VERSION=5
@@ -54,7 +51,6 @@ matrix:
         apt:
           sources: ['llvm-toolchain-trusty', 'llvm-toolchain-trusty-7', 'ubuntu-toolchain-r-test']
           packages: ['clang-7', 'libc++-7-dev', 'libc++abi-7-dev']
-
     - os: linux
       compiler: clang
       env: CLANG_VERSION=6.0
@@ -65,9 +61,15 @@ matrix:
           sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-6.0']
           packages: ['clang-6.0', 'g++-6']
 
-    # - os: osx
-    #   osx_image: xcode9.1
-    #   env: NO_ENV_VAR=1
+    - os: osx
+      osx_image: xcode10
+      env: NO_ENV_VAR=1
+    - os: osx
+      osx_image: xcode9.4
+      env: NO_ENV_VAR=1
+    - os: osx
+      osx_image: xcode8.3
+      env: NO_ENV_VAR=1
 
 before_install:
   - git submodule init
@@ -95,4 +97,5 @@ script:
   - which $CXX
   - $CXX --version
   - cmake --version
-  - cmake --build . --target unittest --config Release -- -j4
+  - cmake --build . --config Release -- -j4
+  - ctest -C Release --output-on-failure
