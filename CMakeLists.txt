@@ -18,6 +18,11 @@ add_definitions("-std=c++14")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR} ${CMAKE_MODULE_PATH})
 
+# add cmake-init utilities (unused for the moment)
+# set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/cmake_init)
+# include(Findclang_tidy)
+# include(ClangTidy)
+
 # Enable tests via cmake_register_test and doctest
 set(doctest_INCLUDES ${CMAKE_SOURCE_DIR}/third_party/doctest/doctest)
 enable_testing()
