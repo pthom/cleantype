@@ -4,5 +4,5 @@ crt_registertest(
   LIBRARY sample_lib
   OUTPUT_LIBRARY_NAME sample_lib
   OUTPUT_TEST_TARGET sample_lib_test
-  TEST_SOURCES sample_lib_test.cpp
+  TEST_SOURCES tests/sample_lib_test.cpp
 )
