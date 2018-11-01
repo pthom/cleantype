@@ -1,4 +1,6 @@
-language: cpp
+# We don't care about the language here, except that setting
+# language: cpp will override our CC and CXX env variables below
+language: Ruby
 
 dist: trusty
 sudo: required
@@ -63,17 +65,15 @@ matrix:
 
     - os: osx
       osx_image: xcode10
-      env: NO_ENV_VAR=1
+      env: OSX=1
     - os: osx
       osx_image: xcode9.4
-      env: NO_ENV_VAR=1
-    - os: osx
-      osx_image: xcode8.3
-      env: NO_ENV_VAR=1
+      env: OSX=1
 
 before_install:
-  - git submodule init
-  - git submodule update
+  - |
+    git submodule init
+    git submodule update
   - |
     # if [ "$LIBCXX" == "On" ]; then
     #   ./cmake/install_libcxx.sh
@@ -83,8 +83,8 @@ before_install:
       export CXXFLAGS="-stdlib=libc++"
     fi
   - |
-    pip install conan --upgrade
-    pip install conan_package_tools
+    sudo pip install conan --upgrade
+    sudo pip install conan_package_tools
     conan user
 
 
@@ -94,8 +94,9 @@ install:
   - cmake ..
 
 script:
-  - which $CXX
-  - $CXX --version
-  - cmake --version
-  - cmake --build . --config Release -- -j4
-  - ctest -C Release --output-on-failure
+  - |
+    which $CXX
+    $CXX --version
+    cmake --version
+    cmake --build . --config Release -- -j4
+    ctest -C Release --output-on-failure

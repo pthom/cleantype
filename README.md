@@ -1,5 +1,7 @@
-Linux & OSX : [![Build Status Travis](https://travis-ci.org/pthom/cpp_skeleton.svg?branch=master)][travis]
-MSVC : [![Build Status AppVeyor](https://ci.appveyor.com/api/projects/status/github/pthom/cpp_skeleton)][appveyor]
+Linux & OSX :
+[![Travis](https://travis-ci.org/pthom/cpp_skeleton.svg?branch=master)](https://travis-ci.org/pthom/cpp_skeleton)
+MSVC :
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/github/pthom/cpp_skeleton)](https://ci.appveyor.com/project/pthom/cpp-skeleton)
 
 
 # cpp_skeleton
