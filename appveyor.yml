@@ -1,0 +1,61 @@
+version: '{build}'
+
+install:
+  - cmmd: echo "Downloading conan..."
+  - cmmd: set PATH=%PATH%;%PYTHON%/Scripts/
+  - cmmd: pip.exe install conan
+  - cmmd: conan user # Create the conan data directory
+  - cmmd: conan --version
+
+branches:
+  only:
+  - master
+clone_folder: c:\projects\cpp_skeleton
+image:
+- Visual Studio 2015
+- Visual Studio 2017
+configuration:
+- Release
+# - Debug
+platform:
+- x64
+environment:
+  matrix:
+  - arch: Win64
+  # - arch: #does not work, Release|x64 not a valid target
+matrix:
+  fast_finish: true
+
+# skip unsupported combinations
+init:
+- set arch=
+- if "%arch%"=="Win64" ( set arch= Win64)
+- echo %arch%
+- echo %APPVEYOR_BUILD_WORKER_IMAGE%
+- if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" ( set generator="Visual Studio 15 2017%arch%" )
+- if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" ( set generator="Visual Studio 14 2015%arch%" )
+- echo %generator%
+
+before_build:
+- cmd: |-
+    mkdir build
+    cd build
+    conan install .. --build=missing
+    cmake --version
+    cmake .. -G %generator%
+
+build:
+  project: c:\projects\cpp_skeleton\build\FunctionalPlus.sln
+  verbosity: minimal
+  parallel: true
+
+test_script:
+  - ps: cd c:\projects\cpp_skeleton\build
+  - ctest -C Release --output-on-failure
+
+only_commits:
+  files:
+    - CMakeLists.txt
+    - appveyor.yml
+    - src/
+    - cmake/

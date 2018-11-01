@@ -1,0 +1,97 @@
+language: python
+python: 3.6
+
+dist: trusty
+sudo: required
+
+matrix:
+    include:
+    - os: linux
+      compiler: gcc
+      env: GCC_VERSION=8
+        - CC=gcc-8
+        - CXX=g++-8
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-8']
+    - os: linux
+      compiler: gcc
+      env: GCC_VERSION=7
+        - CC=gcc-7
+        - CXX=g++-7
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-7']
+
+    - os: linux
+      compiler: gcc
+      env: GCC_VERSION=6
+        - CC=gcc-6
+        - CXX=g++-6
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-6']
+
+    - os: linux
+      compiler: gcc
+      env: GCC_VERSION=5
+        - CC=gcc-5
+        - CXX=g++-5
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-5']
+
+    - os: linux
+      compiler: clang
+      env: CLANG_VERSION=7
+        - CC=clang-7
+        - CXX=clang++-7
+      addons:
+        apt:
+          sources: ['llvm-toolchain-trusty', 'llvm-toolchain-trusty-7', 'ubuntu-toolchain-r-test']
+          packages: ['clang-7', 'libc++-7-dev', 'libc++abi-7-dev']
+
+    - os: linux
+      compiler: clang
+      env: CLANG_VERSION=6.0
+        - CC=clang-6.0
+        - CXX=clang++-6.0
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-6.0']
+          packages: ['clang-6.0', 'g++-6']
+
+    # - os: osx
+    #   osx_image: xcode9.1
+    #   env: NO_ENV_VAR=1
+
+before_install:
+  - git submodule init
+  - |
+    # if [ "$LIBCXX" == "On" ]; then
+    #   ./cmake/install_libcxx.sh
+    #   export CXXFLAGS="-stdlib=libc++"
+    # fi
+    if [ "${CLANG_VERSION}" == "7" ]; then
+      export CXXFLAGS="-stdlib=libc++"
+    fi
+  - |
+    pip install conan --upgrade
+    pip install conan_package_tools
+    conan user
+
+
+install:
+  - mkdir -p build && cd build
+  - conan install .. --build=missing
+  - cmake ..
+
+script:
+  - which $CXX
+  - $CXX --version
+  - cmake --version
+  - cmake --build . --target unittest --config Release -- -j4
