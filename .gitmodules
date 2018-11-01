@@ -1,9 +1,9 @@
 [submodule "FunctionalPlus"]
 	path = third_party/FunctionalPlus
-	url = git@github.com:Dobiasd/FunctionalPlus.git
+	url = https://github.com/Dobiasd/FunctionalPlus.git
 [submodule "cmake/cmake_registertest"]
 	path = cmake/cmake_registertest
-	url = git@github.com:pthom/cmake_registertest.git
+	url = https://github.com/pthom/cmake_registertest.git
 [submodule "third_party/doctest"]
 	path = third_party/doctest
-	url = git@github.com:onqtam/doctest.git
+	url = https://github.com/onqtam/doctest.git
