@@ -28,10 +28,8 @@ conan_basic_setup(TARGETS)
 # include(ClangTidy)
 
 # Enable tests via cmake_register_test and doctest
-set (crt_test_lib_location ${CMAKE_SOURCE_DIR}/third_party/doctest/doctest)
-include("${CMAKE_SOURCE_DIR}/cmake/cmake_registertest/src/crt_registertest_doctest.cmake")
+set(doctest_INCLUDES ${CMAKE_SOURCE_DIR}/third_party/doctest/doctest)
 enable_testing()
-
 
 include_directories(${CMAKE_SOURCE_DIR}/third_party/FunctionalPlus/include)
 include_directories(${CMAKE_SOURCE_DIR}/src/libs)
