@@ -38,6 +38,7 @@ before_build:
     conan user
     conan --version
     git submodule init
+    git submodule update
     mkdir build
     cd build
     conan remote add camposs "https://conan.campar.in.tum.de/api/conan/conan-camposs"

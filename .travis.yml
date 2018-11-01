@@ -71,6 +71,7 @@ matrix:
 
 before_install:
   - git submodule init
+  - git submodule update
   - |
     # if [ "$LIBCXX" == "On" ]; then
     #   ./cmake/install_libcxx.sh
