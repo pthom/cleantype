@@ -1,3 +1,7 @@
+Linux & OSX : [![Build Status Travis](https://travis-ci.org/pthom/cpp_skeleton.svg?branch=master)][travis]
+MSVC : [![Build Status AppVeyor](https://ci.appveyor.com/api/projects/status/github/pthom/cpp_skeleton)][appveyor]
+
+
 # cpp_skeleton
 
 A C++ project skeleton, that includes :
