@@ -10,7 +10,7 @@ A C++ project skeleton, that includes :
 
 - conanfile  and tools
 - travis and appveyor support (with conan)
-- unit tests using doctests and cmake_register_test
+- unit tests using doctests
 - ccache auto-detection
 - pre-populated folder structure
 
@@ -26,8 +26,7 @@ A C++ project skeleton, that includes :
 ├── appveyor.yml              Appveyor configured for MSVC 2015 & 2017 64 bits
 ├── build/
 ├── cmake/
-│   ├── cmake_init/
-│   └── cmake_registertest/   Utility to register tests (submodule)
+│   ├── cmake_init/          cmake tools (tidy, coverage, etc.)
 ├── docs/
 ├── scripts/
 │   └── build/                Some scripts to all build & install third parties
