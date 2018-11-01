@@ -2,8 +2,7 @@
 opencv/3.4.3@camposs/stable
 
 [generators]
-cmake_find_package
-cmake_paths
+cmake
 
 [options]
 opencv:shared=True
