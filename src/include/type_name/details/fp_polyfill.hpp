@@ -53,22 +53,36 @@ std::string join(const std::string & separator, const std::vector<std::string> &
 template<typename T>
 std::vector<T> trim(const T & trim_what, const std::vector<T> & xs)
 {
+    bool stop = false;
     std::vector<T> out;
     for (const auto & v : xs)
     {
-        if (v != trim_what)
+        if (stop)
             out.push_back(v);
+        else if (v != trim_what) {
+            out.push_back(v);
+            stop = true;
+        }
     }
+    while( (!out.empty()) && (out.back() == trim_what))
+        out.pop_back();
     return out;
 }
 std::string trim(const char & trim_what, const std::string & xs)
 {
+    bool stop = false;
     std::string out;
     for (const auto & v : xs)
     {
-        if (v != trim_what)
+        if (stop)
             out.push_back(v);
+        else if (v != trim_what) {
+            out.push_back(v);
+            stop = true;
+        }
     }
+    while( (!out.empty()) && (out.back() == trim_what))
+        out.pop_back();
     return out;
 }
 
