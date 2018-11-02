@@ -11,17 +11,58 @@ namespace type_name
 // std::cout << "Full type: " << var_type_name_full(xs); \
 // std::cout << "Clean type: " << type_name::demangle_typename(xs);
 
+# define COMMA ,
+
+template<typename T> void TestDefaultConstructibleType(const std::string & expectedTypeClean)
+{
+    const T v;
+    std::string type_full = var_type_name_full(v);
+    std::string type_clean = type_name::demangle_typename(type_full);
+    std::cout << "type_full : " << type_full << "\n";
+    std::cout << "type_clean: " << type_clean << '\n';
+    std::cout << "expected  : " << expectedTypeClean << '\n';
+    CHECK(type_clean == expectedTypeClean);
+}
+
 
 TEST_CASE("testing sample_lib")
 {
-    {
-        std::cout << "\n";
-        const std::vector<std::pair<std::string, int>> v;
-        const auto &&vv = std::move(v);
-        auto s = var_type_name_full(vv);
-        std::cout << "Full type:" << s << "\n";
-        std::cout << "Clean Type:" << type_name::demangle_typename(s) << '\n';
-    }
+    TestDefaultConstructibleType
+        <
+            const std::string
+        >
+        (
+            "const std::string"
+        );
+    TestDefaultConstructibleType
+        <
+            const std::vector<int>
+        >
+        (
+            "const std::vector<int>"
+        );
+    TestDefaultConstructibleType
+        <
+            const std::deque<unsigned long>
+        >
+        (
+            "const std::deque<unsigned long>"
+        );
+    TestDefaultConstructibleType
+        <
+            const std::vector<std::pair<std::string, int>>
+        >
+        (
+            "const std::vector<std::pair<std::string, int>>"
+        );
+    // {
+    //     const std::vector<std::pair<std::string, int>> v;
+    //     //const auto &&vv = std::move(v);
+    //     std::string type_full = var_type_name_full(v);
+    //     std::string type_clean = type_name::demangle_typename(type_full);
+    //     std::cout << "type_full: " << type_full << "\n";
+    //     std::cout << "type_clean: " << type_clean << '\n';
+    // }
     // {
     //     std::cout << "\n";
     //     const std::vector<std::pair<std::string, int>> v;

@@ -62,7 +62,7 @@ std::string demangle_typename(const std::string type_name)
     std::string clean2;
     {
         std::vector<std::pair<std::string, std::string>> replacements = {
-            {"std::basic_string<char>", "string"}};
+            {"std::basic_string<char>", "std::string"}};
         clean2 = clean1;
         for (const auto &r : replacements)
             clean2 = fp::replace_tokens(r.first, r.second, clean2);
