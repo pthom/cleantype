@@ -27,8 +27,10 @@ fp::fp_add::string_tree filter_undesirable_template_noise(const fp::fp_add::stri
     std::function<bool(const std::string &)> is_node_desirable =
         [](const std::string &nodename) {
             std::vector<std::string> undesirable_nodes = {
-                "std::char_traits",
-                "std::allocator"};
+                  "std::char_traits"
+                , "std::allocator"
+                , "class std::allocator"
+                };
             bool found =
                 std::find(undesirable_nodes.begin(), undesirable_nodes.end(), fp::trim(' ', nodename)) != undesirable_nodes.end();
             return !found;
@@ -62,7 +64,9 @@ std::string demangle_typename(const std::string type_name)
     std::string clean2;
     {
         std::vector<std::pair<std::string, std::string>> replacements = {
-            {"std::basic_string<char>", "std::string"}};
+                  {"std::basic_string<char>", "std::string"}
+                , {"class std::basic_string<char>", "std::string"}
+            };
         clean2 = clean1;
         for (const auto &r : replacements)
             clean2 = fp::replace_tokens(r.first, r.second, clean2);
