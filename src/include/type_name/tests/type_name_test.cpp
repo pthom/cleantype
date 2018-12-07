@@ -64,45 +64,13 @@ extract_parenthesis_content_at_end_result extract_parenthesis_content_at_end(con
     result.success = true;
     return result;
 }
-// http://www.cplusplus.com/forum/general/223816/ pour wrapper une lambda dans un std::function
+// http://www.cplusplus.com/forum/general/223816/ pour wrapper une lambda dans une std::function
 // marchera pas avec lambda polymorphique...
-// auto glambda = [] (auto a) { return a; };
-// Will make glambda an instance of this type:
 
-// class /* unnamed */
-// {
-// public:
-//     template<typename T>
-//     T operator () (T a) const { return a; }
-// };
-template <typename LambdaFunction>
-std::string type_lambda(LambdaFunction fn)
+
+std::string _mem_fn_to_lambda_type(const std::string & mem_fn_type)
 {
-    // auto f = [&c](int a, int b) -> double { return a + b + c; };
-    // MSVC : class std::_Mem_fn<double (__thiscall <lambda_1d102738ade82cc35233c841173ca72c>::*)(int,int)const >
-    // clang: std::__1::__mem_fn<double (type_name::_DOCTEST_ANON_FUNC_2()::$_1::*)(int, int) const>
-    // MSVC : double (__thiscall <lambda_1d102738ade82cc35233c841173ca72c>::*)(int,int)const
-
-    //auto f = [](int a, int b)  { return std::pair<int, int>(a, b); };
-    //clang: std::__1::__mem_fn<std::__1::pair<int, int> (type_name::_DOCTEST_ANON_FUNC_2()::$_1::*)(int, int) const>
-    //clang: std::__1::pair<int, int> (type_name::_DOCTEST_ANON_FUNC_2()::$_1::*)(int, int) const
-
-    //clang: std::__1::pair<int, int> (type_name::_DOCTEST_ANON_FUNC_2()::$_1::*)(int, int) const
-
-    // algo :
-    // 1.
-    // au debut : aller jusqu'au premier < (et le supprimer)
-    // a la fin : aller jusqu'a la premiere ")" (et la garder)
-    //
-    //
-    // 2. Aller jusqu'a la premiere parenthese, tout
-
-    auto as_mem_fn = std::mem_fn( & decltype(fn)::operator() );
-     // ajouter un param template ici
-    // auto as_mem_fn = std::mem_fn( & decltype(fn)::operator<Args...>() );
-
-    std::string lambda_full_type = var_type_name_full(as_mem_fn);
-
+    std::string lambda_full_type = mem_fn_type;
     // Suppress mem_fn< at the start
     size_t idx1 = lambda_full_type.find('<');
     if (idx1 ==  std::string::npos)
@@ -129,6 +97,48 @@ std::string type_lambda(LambdaFunction fn)
     return std::string("lambda: ") + params + " -> " + return_type;
 }
 
+template <typename LambdaFunction>
+std::string type_lambda(LambdaFunction fn)
+{
+    // auto f = [&c](int a, int b) -> double { return a + b + c; };
+    // MSVC : class std::_Mem_fn<double (__thiscall <lambda_1d102738ade82cc35233c841173ca72c>::*)(int,int)const >
+    // clang: std::__1::__mem_fn<double (type_name::_DOCTEST_ANON_FUNC_2()::$_1::*)(int, int) const>
+    // MSVC : double (__thiscall <lambda_1d102738ade82cc35233c841173ca72c>::*)(int,int)const
+
+    //auto f = [](int a, int b)  { return std::pair<int, int>(a, b); };
+    //clang: std::__1::__mem_fn<std::__1::pair<int, int> (type_name::_DOCTEST_ANON_FUNC_2()::$_1::*)(int, int) const>
+    //clang: std::__1::pair<int, int> (type_name::_DOCTEST_ANON_FUNC_2()::$_1::*)(int, int) const
+
+    //clang: std::__1::pair<int, int> (type_name::_DOCTEST_ANON_FUNC_2()::$_1::*)(int, int) const
+
+    // algo :
+    // 1.
+    // au debut : aller jusqu'au premier < (et le supprimer)
+    // a la fin : aller jusqu'a la premiere ")" (et la garder)
+    //
+    //
+    // 2. Aller jusqu'a la premiere parenthese, tout
+
+    auto as_mem_fn = std::mem_fn( & decltype(fn)::operator() );
+     // ajouter un param template ici
+    // auto as_mem_fn = std::mem_fn( & decltype(fn)::operator<Args...>() );
+
+    std::string mem_fn_type = var_type_name_full(as_mem_fn);
+    return _mem_fn_to_lambda_type(mem_fn_type);
+}
+
+template <typename LambdaFunction, typename... Args>
+std::string type_lambda_variadic(LambdaFunction fn)
+{
+    auto as_mem_fn = std::mem_fn( & LambdaFunction::template operator()<Args...> );
+    std::string mem_fn_type = var_type_name_full(as_mem_fn);
+    return _mem_fn_to_lambda_type(mem_fn_type);
+}
+
+// std::string make_type_lambda_variadic()
+auto make_type_lambda_variadic = [](auto f) {
+
+};
 
 TEST_CASE("testing sample_lib")
 {
@@ -142,8 +152,11 @@ TEST_CASE("testing sample_lib")
     auto my_square = [](int a) { return a * a;};
     auto my_double = [](int a) { return a * 2; };
     auto ff = fplus::fwd::compose(my_square, my_double);
-    auto as_mem_fn = std::mem_fn( & decltype(ff)::operator()<int> );
-    std::cout << var_type_name_full(as_mem_fn) << '\n';
+
+    std::cout << '\n';
+    std::cout << type_lambda_variadic<decltype(ff), int>(ff);
+
+
 
     //std::cout << type_lambda(ff) << "\n";
 
