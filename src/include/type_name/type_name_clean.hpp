@@ -30,6 +30,7 @@ fp::fp_add::string_tree filter_undesirable_template_noise(const fp::fp_add::stri
                   "std::char_traits"
                 , "std::allocator"
                 , "class std::allocator"
+                , "std::less"
                 };
             bool found =
                 std::find(undesirable_nodes.begin(), undesirable_nodes.end(), fp::trim(' ', nodename)) != undesirable_nodes.end();
@@ -50,7 +51,9 @@ std::string demangle_typename(const std::string type_name)
     std::string type_name_cleaned;
     {
         std::vector<std::pair<std::string, std::string>> replacements = {
-            {"::__1", ""}};
+            {"::__1", ""},
+            {"::__cxx11", ""},
+            };
         type_name_cleaned = type_name;
         for (const auto &r : replacements)
             type_name_cleaned = fp::replace_tokens(r.first, r.second, type_name_cleaned);
