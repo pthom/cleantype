@@ -188,14 +188,4 @@ namespace type_name
     #define log_type_lambda_full(f) std::cout << log_type_lambda_full_str(f) << std::endl
     #define log_type_lambda_clean(f) std::cout << log_type_lambda_clean_str(f) << std::endl
 
-
-    template <typename LambdaFunction, typename... Args>
-    std::string type_lambda_variadic(LambdaFunction fn, bool clean)
-    {
-        auto as_mem_fn = std::mem_fn( & LambdaFunction::template operator()<Args...> );
-        std::string mem_fn_type = var_type_name_full(as_mem_fn);
-        return internal::_mem_fn_to_lambda_type(mem_fn_type, clean);
-    }
-
-
 } // namespace type_name

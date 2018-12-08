@@ -49,22 +49,6 @@ TEST_CASE("log_var")
 }
 
 
-
-
-
-
-
-
-namespace type_name
-{
-
-    // std::string make_type_lambda_variadic()
-    auto make_type_lambda_variadic = [](auto f) {
-
-    };
-}
-
-
 TEST_CASE("log_type_lambda_clean")
 {
     {
@@ -93,6 +77,23 @@ TEST_CASE("log_type_lambda_clean")
 }
 
 
+namespace type_name
+{
+    template <typename LambdaFunction, typename... Args>
+    std::string type_lambda_variadic(LambdaFunction fn, bool clean)
+    {
+        auto as_mem_fn = std::mem_fn( & LambdaFunction::template operator()<Args...> );
+        std::string mem_fn_type = var_type_name_full(as_mem_fn);
+        return internal::_mem_fn_to_lambda_type(mem_fn_type, clean);
+    }
+
+    // std::string make_type_lambda_variadic()
+    auto make_type_lambda_variadic = [](auto f) {
+
+    };
+}
+
+
 TEST_CASE("log_type_lambda_clean___compose")
 {
 
@@ -111,60 +112,6 @@ TEST_CASE("log_type_lambda_clean___compose")
 // - type of functions (wrap in std::function ?)
 
 
-TEST_CASE("testing sample_lib")
-{
-
-    // std::cout << '\n';
-    // std::cout << type_lambda_variadic<decltype(ff), int>(ff) << std::endl;
-
-
-
-    //std::cout << type_lambda(ff) << "\n";
-
-    // auto t = std::mem_fn( & decltype(f)::operator() );
-    // std::string type_full = var_type_name_full(
-    //     t );
-    // std::cout << "type_full : " << type_full << "\n";
-}
-
-
-
-TEST_CASE("demangle_test_fixme")
-{
-    // {
-    //     const std::vector<std::pair<std::string, int>> v;
-    //     //const auto &&vv = std::move(v);
-    //     std::string type_full = var_type_name_full(v);
-    //     std::string type_clean = type_name::demangle_typename(type_full);
-    //     std::cout << "type_full: " << type_full << "\n";
-    //     std::cout << "type_clean: " << type_clean << '\n';
-    // }
-    // {
-    //     std::cout << "\n";
-    //     const std::vector<std::pair<std::string, int>> v;
-    //     const auto &&vv = std::move(v);
-    //     auto s = var_type_name_full(vv);
-    //     std::cout << "Mangled:\n"
-    //               << s << "\n";
-    //     std::cout << "\n";
-    //     std::cout << "Demangled:\n"
-    //               << type_name::demangle_typename(s) << '\n';
-    // }
-
-    // {
-    //     std::cout << "\n";
-    //     auto f = [](const std::vector<std::string> &v, int a) {
-    //         return v.size() + a;
-    //     };
-    //     auto s = var_type_name_full(f);
-    //     std::cout << "Mangled:\n"
-    //               << s << "\n";
-    //     std::cout << "\n";
-    //     std::cout << "Demangled:\n"
-    //               << type_name::demangle_typename(s) << '\n';
-    // }
-
-}
 
 
 
@@ -217,4 +164,42 @@ TEST_CASE("tokenize_lambda_params")
         }};
         REQUIRE_EQ(params, expected);
     }
+}
+
+
+TEST_CASE("demangle_test_fixme")
+{
+    // {
+    //     const std::vector<std::pair<std::string, int>> v;
+    //     //const auto &&vv = std::move(v);
+    //     std::string type_full = var_type_name_full(v);
+    //     std::string type_clean = type_name::demangle_typename(type_full);
+    //     std::cout << "type_full: " << type_full << "\n";
+    //     std::cout << "type_clean: " << type_clean << '\n';
+    // }
+    // {
+    //     std::cout << "\n";
+    //     const std::vector<std::pair<std::string, int>> v;
+    //     const auto &&vv = std::move(v);
+    //     auto s = var_type_name_full(vv);
+    //     std::cout << "Mangled:\n"
+    //               << s << "\n";
+    //     std::cout << "\n";
+    //     std::cout << "Demangled:\n"
+    //               << type_name::demangle_typename(s) << '\n';
+    // }
+
+    // {
+    //     std::cout << "\n";
+    //     auto f = [](const std::vector<std::string> &v, int a) {
+    //         return v.size() + a;
+    //     };
+    //     auto s = var_type_name_full(f);
+    //     std::cout << "Mangled:\n"
+    //               << s << "\n";
+    //     std::cout << "\n";
+    //     std::cout << "Demangled:\n"
+    //               << type_name::demangle_typename(s) << '\n';
+    // }
+
 }
