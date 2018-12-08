@@ -6,6 +6,7 @@
 #include <functional>
 #include <map>
 
+#define LOG(str) std::cout << str << std::endl
 
 
 TEST_CASE("log_var")
@@ -53,75 +54,56 @@ TEST_CASE("log_type_lambda_clean")
 {
     {
         auto f = [](){ std::cout << "Hello"; };
-        REQUIRE_EQ(log_type_lambda_clean_str(f), "[lambda: () -> void] f");
+        REQUIRE_EQ(show_details_lambda(f), "[lambda: () -> void] f");
     }
     {
         auto f = [](){ return 42u; };
-        REQUIRE_EQ(log_type_lambda_clean_str(f), "[lambda: () -> unsigned int] f");
+        REQUIRE_EQ(show_details_lambda(f), "[lambda: () -> unsigned int] f");
     }
     {
         int c = 5;
         auto f = [&c](int a, int b) -> double { return a + b + c; };
-        REQUIRE_EQ(log_type_lambda_clean_str(f), "[lambda: (int, int) -> double] f");
+        REQUIRE_EQ(show_details_lambda(f), "[lambda: (int, int) -> double] f");
     }
     {
         int c = 5;
         auto f = [](int a, int b)  { return std::pair<int, double>(a + b, cos(a + static_cast<double>(b))); };
-        REQUIRE_EQ(log_type_lambda_clean_str(f), "[lambda: (int, int) -> std::pair<int, double>] f");
+        REQUIRE_EQ(show_details_lambda(f), "[lambda: (int, int) -> std::pair<int, double>] f");
     }
     {
         std::string prefix = "a-";
         auto f = [&prefix](const std::string &s)  { return prefix + s; };
-        REQUIRE_EQ(log_type_lambda_clean_str(f), "[lambda: (std::string& const) -> std::string] f");
+        REQUIRE_EQ(show_details_lambda(f), "[lambda: (std::string& const) -> std::string] f");
     }
 }
 
 
 namespace type_name
 {
-    template <typename LambdaFunction, typename... Args>
-    std::string type_lambda_generic(LambdaFunction fn, bool clean)
+    namespace internal
     {
-        auto ptr = &decltype(fn)::template operator()<Args...>;
-        //auto as_mem_fn = std::mem_fn( & LambdaFunction::template operator()<Args...> );
-        auto as_mem_fn = std::mem_fn(ptr);
-        std::string mem_fn_type = var_type_name_full(as_mem_fn);
-        return internal::_mem_fn_to_lambda_type(mem_fn_type, clean);
+        template <typename LambdaFunction, typename... Args>
+        struct lambda_generic_type_holder {
+            std::string type_name;
+            lambda_generic_type_holder() {
+                auto ptr = &LambdaFunction::template operator()<Args...>;
+                auto as_mem_fn = std::mem_fn(ptr);
+                std::string mem_fn_type = var_type_name_full(as_mem_fn);
+                bool clean = true;
+                type_name = type_name::internal::_mem_fn_to_lambda_type(mem_fn_type, clean);
+            }
+        };
     }
-
-    // std::string make_type_lambda_generic()
-    // template<typename... Args>
-    // std::string make_type_lambda_generic(auto fn) {
-    //     std::string result = type_lambda_generic <decltype(fn), Args...>(fn, true);
-    //     return result;
-    // }
 }
 
-//#define v2_type_lambda_generic(fn, __VA_ARGS__) type_name::type_lambda_generic<decltype(fn), __VA_ARGS__>(fn, true)
-
-// debug variadic macros
-template <typename LambdaFunction, typename... Args>
-struct lambda_generic_type_holder {
-    bool r = true;
-    //using ArgsType = decltype(Args...);
-    std::string type_name;
-    lambda_generic_type_holder() {
-        auto ptr = &LambdaFunction::template operator()<Args...>;
-        auto as_mem_fn = std::mem_fn(ptr);
-        std::string mem_fn_type = var_type_name_full(as_mem_fn);
-        bool clean = true;
-        type_name = type_name::internal::_mem_fn_to_lambda_type(mem_fn_type, clean);
-    }
-};
 
 // NAMING = show_detail / show_detail_lambda / show_detail_lambda_generic_1 etc ...
 
 
-#define show_detail_lambda_generic_1(fn, arg1) lambda_generic_type_holder<decltype(fn), decltype(arg1)>().type_name
-#define show_detail_lambda_generic_2(fn, arg1, arg2) lambda_generic_type_holder<decltype(fn), decltype(arg1), decltype(arg2)>().type_name
-#define show_detail_lambda_generic_3(fn, arg1, arg2, arg3) lambda_generic_type_holder<decltype(fn), decltype(arg1), decltype(arg2), decltype(arg3)>().type_name
+#define show_detail_lambda_generic_1(fn, arg1) type_name::internal::lambda_generic_type_holder<decltype(fn), decltype(arg1)>().type_name
+#define show_detail_lambda_generic_2(fn, arg1, arg2) type_name::internal::lambda_generic_type_holder<decltype(fn), decltype(arg1), decltype(arg2)>().type_name
+#define show_detail_lambda_generic_3(fn, arg1, arg2, arg3) type_name::internal::lambda_generic_type_holder<decltype(fn), decltype(arg1), decltype(arg2), decltype(arg3)>().type_name
 
-#define LOG(str) std::cout << str << std::endl
 
 TEST_CASE("log_type_lambda_clean___compose")
 {
@@ -146,6 +128,12 @@ TEST_CASE("log_type_lambda_clean___compose")
         LOG(show_detail_lambda_generic_1(f, 4.));
         LOG(show_detail_lambda_generic_2(f4, 3, 4.));
     }
+}
+
+
+TEST_CASE("log_type_lambda_clean___compose")
+{
+
 }
 
 

@@ -183,9 +183,7 @@ namespace type_name
     }
 
 
-    #define log_type_lambda_full_str(f) std::string("[") + type_name::type_lambda_full(f) + "] " + #f
-    #define log_type_lambda_clean_str(f) std::string("[") + type_name::type_lambda_clean(f) + "] " + #f
-    #define log_type_lambda_full(f) std::cout << log_type_lambda_full_str(f) << std::endl
-    #define log_type_lambda_clean(f) std::cout << log_type_lambda_clean_str(f) << std::endl
+    #define show_details_lambda_full(f) std::string("[") + type_name::type_lambda_full(f) + "] " + #f
+    #define show_details_lambda(f) std::string("[") + type_name::type_lambda_clean(f) + "] " + #f
 
 } // namespace type_name
