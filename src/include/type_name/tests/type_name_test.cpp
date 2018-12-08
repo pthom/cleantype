@@ -117,9 +117,9 @@ struct lambda_generic_type_holder {
 // NAMING = show_detail / show_detail_lambda / show_detail_lambda_generic_1 etc ...
 
 
-#define v3_type_lambda_generic_1(fn, arg1) lambda_generic_type_holder<decltype(fn), decltype(arg1)>().type_name
-#define v3_type_lambda_generic_2(fn, arg1, arg2) lambda_generic_type_holder<decltype(fn), decltype(arg1), decltype(arg2)>().type_name
-#define v3_type_lambda_generic_3(fn, arg1, arg2, arg3) lambda_generic_type_holder<decltype(fn), decltype(arg1), decltype(arg2), decltype(arg3)>().type_name
+#define show_detail_lambda_generic_1(fn, arg1) lambda_generic_type_holder<decltype(fn), decltype(arg1)>().type_name
+#define show_detail_lambda_generic_2(fn, arg1, arg2) lambda_generic_type_holder<decltype(fn), decltype(arg1), decltype(arg2)>().type_name
+#define show_detail_lambda_generic_3(fn, arg1, arg2, arg3) lambda_generic_type_holder<decltype(fn), decltype(arg1), decltype(arg2), decltype(arg3)>().type_name
 
 #define LOG(str) std::cout << str << std::endl
 
@@ -143,8 +143,8 @@ TEST_CASE("log_type_lambda_clean___compose")
         };
 
         int dummy = 4;
-        LOG(v3_type_lambda_generic_1(f, 4.));
-        LOG(v3_type_lambda_generic_2(f4, 3, 4.));
+        LOG(show_detail_lambda_generic_1(f, 4.));
+        LOG(show_detail_lambda_generic_2(f4, 3, 4.));
     }
 }
 
