@@ -221,7 +221,7 @@ std::string _mem_fn_to_lambda_type(const std::string & mem_fn_type, bool clean)
     // Separate params and clean them, then join them
     const std::string params_cleaned = [&](){
         auto params_list = tokenize_lambda_params(params, clean);
-        return fp::join(std::string(" "), params_list);
+        return fp::join(std::string(", "), params_list);
     }();
 
     // garbage between the parentheses before (lambda anonymous name)
@@ -276,10 +276,10 @@ std::string type_lambda_clean(LambdaFunction fn)
 }
 
 
-#define log_type_lambda_full_str(f) std::string("[") + type_lambda_full(f) + "] " + #f + " = "
-#define log_type_lambda_clean_str(f) std::string("[") + type_lambda_clean(f) + "] " + #f + " = "
-#define log_type_lambda_full(f) std::cout << log_type_lambda_full_str(f) << std::endl;
-#define log_type_lambda_clean(f) std::cout << log_type_lambda_clean_str(f) << std::endl;
+#define log_type_lambda_full_str(f) std::string("[") + type_lambda_full(f) + "] " + #f
+#define log_type_lambda_clean_str(f) std::string("[") + type_lambda_clean(f) + "] " + #f
+#define log_type_lambda_full(f) std::cout << log_type_lambda_full_str(f) << std::endl
+#define log_type_lambda_clean(f) std::cout << log_type_lambda_clean_str(f) << std::endl
 
 
 template <typename LambdaFunction, typename... Args>
@@ -296,6 +296,48 @@ auto make_type_lambda_variadic = [](auto f) {
 
 };
 
+
+TEST_CASE("log_type_lambda_clean")
+{
+    {
+        auto f = [](){ std::cout << "Hello"; };
+        REQUIRE_EQ(log_type_lambda_clean_str(f), "[lambda: () -> void] f");
+    }
+    {
+        auto f = [](){ return 42u; };
+        REQUIRE_EQ(log_type_lambda_clean_str(f), "[lambda: () -> unsigned int] f");
+    }
+    {
+        int c = 5;
+        auto f = [&c](int a, int b) -> double { return a + b + c; };
+        REQUIRE_EQ(log_type_lambda_clean_str(f), "[lambda: (int, int) -> double] f");
+    }
+    {
+        int c = 5;
+        auto f = [](int a, int b)  { return std::pair<int, double>(a + b, cos(a + static_cast<double>(b))); };
+        REQUIRE_EQ(log_type_lambda_clean_str(f), "[lambda: (int, int) -> std::pair<int, double>] f");
+    }
+    {
+        std::string prefix = "a-";
+        auto f = [&prefix](const std::string &s)  { return prefix + s; };
+        REQUIRE_EQ(log_type_lambda_clean_str(f), "[lambda: (std::string& const) -> std::string] f");
+    }
+}
+
+
+TEST_CASE("log_type_lambda_clean___compose")
+{
+    {
+        auto my_square = [](int a) { return a * a;};
+        auto my_double = [](int a) { return a * 2; };
+        auto f = fplus::fwd::compose(my_square, my_double);
+        //log_type_lambda_clean_str(f);
+        std::cout << type_lambda_variadic<decltype(f), int>(f, true) << std::endl;
+    }
+
+}
+
+
 // TODO :
 // - type of polymorphic lambdas
 // - type of functions (wrap in std::function ?)
@@ -303,35 +345,9 @@ auto make_type_lambda_variadic = [](auto f) {
 
 TEST_CASE("testing sample_lib")
 {
-    // int c = 5;
-    // auto f = [&c](int a, int b) -> double { return a + b + c; };
-    //auto f = [](int a, int b)  { return std::pair<int, int>(a, b); };
 
-    // std::basic_string <char> s_;
-    // std::basic_string <char> &s(s_);
-    // std::cout << var_name_type_name_clean(s) << "\n";
 
-    // auto f = [](const int & a, int & b)  { return std::pair<int, double>(a + b, cos(a + b)); };
-    // std::cout << log_type_lambda(f) << "\n";
 
-    // auto f2 = []()  { return 42; };
-    // std::cout << log_type_lambda(f2) << "\n";
-
-    // auto f3 = []()  { std::cout << "Hello"; };
-    // std::cout << log_type_lambda(f3) << "\n";
-
-    // auto f4 = []()  { return std::string("Hello"); };
-    // std::cout << log_type_lambda(f4) << "\n";
-
-    int a = 5;
-    log_var(a);
-
-    auto f5 = [](const std::string & s)  { return s + s; };
-    log_type_lambda_clean(f5);
-
-    // auto my_square = [](int a) { return a * a;};
-    // auto my_double = [](int a) { return a * 2; };
-    // auto ff = fplus::fwd::compose(my_square, my_double);
 
     // std::cout << '\n';
     // std::cout << type_lambda_variadic<decltype(ff), int>(ff) << std::endl;
