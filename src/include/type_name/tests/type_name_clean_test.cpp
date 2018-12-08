@@ -79,10 +79,10 @@ TEST_CASE("clean_typename_from_string")
 {
     auto make_one_test = make_test_string_transform(type_name::clean_typename);
     make_one_test(
-        "  int   ", 
+        "  int   ",
         "int");
     make_one_test(
-        "std::pair<int,double> ", 
+        "std::pair<int,double> ",
         "std::pair<int, double>");
     make_one_test(
         "std::pair<int, double> ",

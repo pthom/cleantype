@@ -11,7 +11,7 @@ using code_pair = fp::fp_add::lhs_rhs; // for example in "std::vector<int> const
 using code_pair_tree = fp::tree<code_pair>;
 
 // TODO add namespace internal !
- 
+
 inline fp::fp_add::tree_separators make_template_tree_separators()
 {
     fp::fp_add::tree_separators sep;
@@ -101,7 +101,7 @@ inline std::string perform_std_replacements(const std::string & type_name)
         , {"std::basic_string <char>", "std::string"}
         , {"std::basic_string &<char>", "std::string &"}
         //, {"std::basic_string & const<char>", "std::string& const"}
-        , { "std::basic_string const &<char>", "std::string const &" }          
+        , { "std::basic_string const &<char>", "std::string const &" }
         , {"class std::basic_string<char>", "std::string"}
         , { "> >", ">>" }
     });
@@ -199,8 +199,8 @@ inline std::string clean_typename(const std::string & type_name_)
     code_pair_tree template_tree_filtered = filter_undesirable_template_leafs(template_tree);
 
     auto template_tree_filtered_str = fp::fp_add::show_tree_lhs_rhs(
-        template_tree_filtered, 
-        make_template_tree_separators(), 
+        template_tree_filtered,
+        make_template_tree_separators(),
         make_template_show_tree_options());
 
     std::string final_type = perform_std_replacements(template_tree_filtered_str);

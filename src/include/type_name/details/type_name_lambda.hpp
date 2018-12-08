@@ -111,7 +111,7 @@ namespace type_name
             // Suppress mem_fn< at the start
             size_t idx1 = result.find('<');
             if (idx1 == std::string::npos)
-            return "Error, can not find first '<' in mem_fn_type: " + mem_fn_type;
+                return "Error, can not find first '<' in mem_fn_type: " + mem_fn_type;
             result = result.substr(idx1 + 1);
 
             // Suppress all after the last ')'
