@@ -7,6 +7,9 @@
 namespace type_name
 {
 
+using code_pair = fp::fp_add::lhs_rhs; // for example in "std::vector<int> const &", then start = "std::vector" and end = "const &"
+using code_pair_tree = fp::tree<code_pair>;
+
 // TODO add namespace internal !
  
 inline fp::fp_add::tree_separators make_template_tree_separators()
@@ -17,25 +20,29 @@ inline fp::fp_add::tree_separators make_template_tree_separators()
     sep.separate_siblings = ',';
     return sep;
 }
-inline fp::fp_add::show_tree_options make_template_show_tree_options()
+
+
+inline fp::fp_add::show_tree_lhs_rhs_options make_template_show_tree_options()
 {
-    fp::fp_add::show_tree_options result;
+    fp::fp_add::show_tree_lhs_rhs_options result;
     result.add_new_lines = false;
     result.add_space_between_siblings = true;
     result.indent = "";
+    result.add_space_after_lhs = false;
+    result.add_space_before_rhs = true;
     return result;
 }
 
 
-inline fp::fp_add::string_tree parse_template_tree(const std::string &s)
+inline code_pair_tree parse_template_tree(const std::string &s)
 {
-    return parse_string_tree(s, make_template_tree_separators(), false, false);
+    return parse_lhs_rhs_tree(s, make_template_tree_separators(), false, false);
 }
 
-inline fp::fp_add::string_tree filter_undesirable_template_leafs(const fp::fp_add::string_tree &xs)
+inline code_pair_tree filter_undesirable_template_leafs(const code_pair_tree &xs)
 {
-    std::function<bool(const std::string &)> is_node_desirable =
-        [](const std::string &nodename) {
+    std::function<bool(const code_pair &)> is_node_desirable =
+        [](const code_pair &code_pair) {
             std::vector<std::string> undesirable_nodes = {
                   "std::char_traits"
                 , "struct std::char_traits"
@@ -44,7 +51,7 @@ inline fp::fp_add::string_tree filter_undesirable_template_leafs(const fp::fp_ad
                 , "std::less"
                 };
             bool found =
-                std::find(undesirable_nodes.begin(), undesirable_nodes.end(), fp::trim(' ', nodename)) != undesirable_nodes.end();
+                std::find(undesirable_nodes.begin(), undesirable_nodes.end(), fp::trim(' ', code_pair.lhs)) != undesirable_nodes.end();
             return !found;
         };
 
@@ -110,9 +117,10 @@ inline std::vector<std::string> _split_string(const std::string& s, char delimit
     return tokens;
 }
 
-inline void trim_spaces_inplace(std::string & xs_io)
+inline void trim_spaces_inplace(code_pair & xs_io)
 {
-    xs_io = fp::trim(' ', xs_io);
+    xs_io.lhs = fp::trim(' ', xs_io.lhs);
+    xs_io.rhs = fp::trim(' ', xs_io.rhs);
 }
 
 // "const T &" should become "T const &"
@@ -186,11 +194,11 @@ inline std::string clean_typename(const std::string & type_name_)
 
     std::string type_name_cleaned = remove_struct_class(remove_extra_namespaces(type_name));
 
-    fp::fp_add::string_tree template_tree = parse_template_tree(type_name_cleaned);
+    code_pair_tree template_tree = parse_template_tree(type_name_cleaned);
     fp::fp_add::tree_transform_leafs_depth_first_inplace(trim_spaces_inplace, template_tree);
-    fp::fp_add::string_tree template_tree_filtered = filter_undesirable_template_leafs(template_tree);
+    code_pair_tree template_tree_filtered = filter_undesirable_template_leafs(template_tree);
 
-    auto template_tree_filtered_str = fp::fp_add::show_tree(
+    auto template_tree_filtered_str = fp::fp_add::show_tree_lhs_rhs(
         template_tree_filtered, 
         make_template_tree_separators(), 
         make_template_show_tree_options());

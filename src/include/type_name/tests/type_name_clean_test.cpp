@@ -104,8 +104,10 @@ TEST_CASE("clean_typename_from_string")
         "std::string const &");
     make_one_test(
         "class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &",
-        "std::string const &"
-    );
+        "std::string const &");
+    make_one_test(
+        "class std::vector<int,class std::allocator<int> > const&",
+        "std::vector<int> const &");
 }
 
 
