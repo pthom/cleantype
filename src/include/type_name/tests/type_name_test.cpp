@@ -90,7 +90,11 @@ namespace type_name
         struct lambda_generic_type_holder {
             std::string type_name;
             lambda_generic_type_holder() {
-                auto ptr = &LambdaFunction::template operator()<Args...>;
+#ifdef _MSC_VER
+                auto ptr = &LambdaFunction::operator()<Args...>;
+#else
+              auto ptr = &LambdaFunction::template operator() < Args... > ;
+#endif
                 auto as_mem_fn = std::mem_fn(ptr);
                 std::string mem_fn_type = var_type_name_full(as_mem_fn);
                 bool clean = true;
@@ -132,8 +136,7 @@ TEST_CASE("log_type_lambda_clean___compose")
             return x + y;
         };
 
-        int dummy = 4;
-        LOG(show_details_lambda_generic_1(f, 4.));
+        LOG(show_details_lambda_generic_1(f, 4));
         LOG(show_details_lambda_generic_2(f4, 3, 4.));
     }
 }
