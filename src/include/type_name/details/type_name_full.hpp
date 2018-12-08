@@ -29,7 +29,7 @@ type_name_full()
         );
     std::string r = own != nullptr ? own.get() : typeid(TR).name();
     if (std::is_const<TR>::value)
-        r = "const " + r;
+        r =  r + " const";
     if (std::is_volatile<TR>::value)
         r = "volatile" + r;
     if (std::is_lvalue_reference<T>::value)

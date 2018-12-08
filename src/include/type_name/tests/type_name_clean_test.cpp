@@ -49,16 +49,6 @@ TEST_CASE("log_var")
   }
 }
 
-template<typename T>
-void impl_test_clean_type__defaultcontructible(const std::string & expectedRepr)
-{
-    std::string type_full = var_type_name_full( T() );
-    std::string type_clean = type_name::clean_typename(type_full);
-    LOG(type_full);
-    LOG(type_clean);
-    std::string expectedRepr2 = fp::replace_tokens(" COMMA ", ", ", expectedRepr);
-    REQUIRE_EQ(type_clean, expectedRepr2);
-}
 
 template<typename Transform>
 auto make_test_string_transform(Transform f)
@@ -82,6 +72,8 @@ TEST_CASE("DISABLED_apply_east_const")
     //    "const std::string & ",
     //    "std::string const &");
 }
+
+
 
 TEST_CASE("clean_typename_from_string")
 {
@@ -117,8 +109,28 @@ TEST_CASE("clean_typename_from_string")
 }
 
 
+void compare_type_full_to_repr(const std::string & type_full, const std::string &expected_repr)
+{
+    std::string type_clean = type_name::clean_typename(type_full);
+    std::string expected_repr2 = fp::replace_tokens(" COMMA ", ", ", expected_repr);
+    REQUIRE_EQ(type_clean, expected_repr2);
+}
+
+
+template<typename T>
+void impl_test_clean_type(const std::string & expectedRepr, T value)
+{
+    std::string type_full = var_type_name_full(value);
+    compare_type_full_to_repr(type_full, expectedRepr);
+}
+
+
 #define test_clean_type__defaultcontructible(type_definition) \
-    impl_test_clean_type__defaultcontructible<type_definition>( #type_definition )
+    { \
+    type_definition value = type_definition();  \
+    impl_test_clean_type<type_definition>( #type_definition, value ); \
+    impl_test_clean_type<type_definition const &>(#type_definition" const &", value); \
+    }
 
 #define COMMA ,
 
