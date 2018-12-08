@@ -102,15 +102,15 @@ TEST_CASE("log_type_lambda_clean___compose")
         auto my_double = [](int a) { return a * 2; };
         auto f = fplus::fwd::compose(my_square, my_double);
         //log_type_lambda_clean_str(f);
-        std::cout << type_name::type_lambda_variadic<decltype(f), int>(f, true) << std::endl;
+        //std::cout << type_name::type_lambda_variadic<decltype(f), int>(f, true) << std::endl;
     }
 }
 
 
 // TODO :
+// - finish variadic lambdas
 // - type of polymorphic lambdas
 // - type of functions (wrap in std::function ?)
-
 
 
 
