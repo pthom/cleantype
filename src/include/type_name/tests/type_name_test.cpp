@@ -80,19 +80,42 @@ TEST_CASE("log_type_lambda_clean")
 namespace type_name
 {
     template <typename LambdaFunction, typename... Args>
-    std::string type_lambda_variadic(LambdaFunction fn, bool clean)
+    std::string type_lambda_generic(LambdaFunction fn, bool clean)
     {
         auto as_mem_fn = std::mem_fn( & LambdaFunction::template operator()<Args...> );
         std::string mem_fn_type = var_type_name_full(as_mem_fn);
         return internal::_mem_fn_to_lambda_type(mem_fn_type, clean);
     }
 
-    // std::string make_type_lambda_variadic()
-    auto make_type_lambda_variadic = [](auto f) {
-
-    };
+    // std::string make_type_lambda_generic()
+    // template<typename... Args>
+    // std::string make_type_lambda_generic(auto fn) {
+    //     std::string result = type_lambda_generic <decltype(fn), Args...>(fn, true);
+    //     return result;
+    // }
 }
 
+#define v2_type_lambda_generic(fn, __VA_ARGS__) type_name::type_lambda_generic<decltype(fn), __VA_ARGS__>(fn, true)
+
+// debug variadic macros
+template <typename LambdaFunction, typename... Args>
+struct lambda_generic_type_holder {
+    bool r = true;
+    //using ArgsType = decltype(Args...);
+    std::string type_name;
+    lambda_generic_type_holder() {
+        auto as_mem_fn = std::mem_fn( & LambdaFunction::template operator()<Args...> );
+        std::string mem_fn_type = var_type_name_full(as_mem_fn);
+        bool clean = true;
+        type_name = type_name::internal::_mem_fn_to_lambda_type(mem_fn_type, clean);
+    }
+};
+
+#define v3_type_lambda_generic_1(fn, arg1) lambda_generic_type_holder<decltype(fn), decltype(arg1)>().type_name
+#define v3_type_lambda_generic_2(fn, arg1, arg2) lambda_generic_type_holder<decltype(fn), decltype(arg1), decltype(arg2)>().type_name
+#define v3_type_lambda_generic_3(fn, arg1, arg2, arg3) lambda_generic_type_holder<decltype(fn), decltype(arg1), decltype(arg2), decltype(arg3)>().type_name
+
+#define LOG(str) std::cout << str << std::endl
 
 TEST_CASE("log_type_lambda_clean___compose")
 {
@@ -101,8 +124,31 @@ TEST_CASE("log_type_lambda_clean___compose")
         auto my_square = [](int a) { return a * a;};
         auto my_double = [](int a) { return a * 2; };
         auto f = fplus::fwd::compose(my_square, my_double);
+
+        auto double_auto = [](auto x) { return 2. * x; };
+
+        // gcc fight
         //log_type_lambda_clean_str(f);
-        //std::cout << type_name::type_lambda_variadic<decltype(f), int>(f, true) << std::endl;
+        //std::cout << type_name::type_lambda_generic<decltype(f), int>(f, true) << std::endl;
+        {
+            #define LambdaFunction decltype(double_auto)
+            #define Args int
+            auto as_mem_fn = std::mem_fn( & LambdaFunction::template operator()<double> );
+
+        }
+
+        //using namespace type_name;
+
+        // debug variadic macros : https://gcc.gnu.org/onlinedocs/cpp/Variadic-Macros.html
+        LOG(v2_type_lambda_generic(f, int));
+
+        auto f4 = [](auto x, auto y) {
+            return x + y;
+        };
+
+        int dummy = 4;
+        LOG(v3_type_lambda_generic_1(f, 4.));
+        LOG(v3_type_lambda_generic_2(f4, 3, 4.));
     }
 }
 
