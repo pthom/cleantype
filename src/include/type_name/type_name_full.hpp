@@ -46,7 +46,19 @@ type_name_full()
 #define var_type_name_full(var) type_name::type_name_full<decltype(var)>()
 
 // Also displays the variable name
-#define log_var_type_name_full(var) std::string("type_full(") + #var + ") = " + var_type_name_full(var)
+#define log_var_type_name_full_str(var) std::string("type_full(") + #var + ") = " + var_type_name_full(var)
 
+#define log_var_str_full(var) \
+        std::string("[") + var_type_name_full(var) + "] " + #var \
+        + " = " \
+        + fp::show(var)
+
+#define log_var_str_full_cont(var) \
+        std::string("[") + var_type_name_full(var) + "] " + #var \
+        + " = " \
+        + fp::show_cont(var)
+
+#define log_var_full(var) std::cout << log_var_str_full(var) << std::endl;
+#define log_var_full_cont(var) std::cout << log_var_str_full_cont(var) << std::endl;
 
 } // namespace fplus

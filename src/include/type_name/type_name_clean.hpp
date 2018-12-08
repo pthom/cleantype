@@ -99,12 +99,13 @@ std::string demangle_typename(const std::string & type_name_)
         + " = " \
         + fp::show(var)
 
+
 #define log_var_str_cont(var) \
         std::string("[") + var_type_name_clean(var) + "] " + #var \
         + " = " \
         + fp::show_cont(var)
 
+
 #define log_var(var) std::cout << log_var_str(var) << std::endl;
 #define log_var_cont(var) std::cout << log_var_str_cont(var) << std::endl;
-
 } // namespace type_name
