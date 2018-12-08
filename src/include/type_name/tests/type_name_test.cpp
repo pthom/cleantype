@@ -51,17 +51,6 @@ TEST_CASE("log_var")
 namespace type_name
 {
 
-template<typename T> void TestDefaultConstructibleType(const std::string & expectedTypeClean)
-{
-    const T v;
-    std::string type_full = var_type_name_full(v);
-    std::string type_clean = type_name::demangle_typename(type_full);
-    std::cout << "type_full : " << type_full << "\n";
-    std::cout << "type_clean: " << type_clean << '\n';
-    std::cout << "expected  : " << expectedTypeClean << '\n';
-    CHECK(type_clean == expectedTypeClean);
-}
-
 std::string remove_outer_parenthesis(const std::string & s)
 {
     assert(s.size() >= 2 );
@@ -334,7 +323,6 @@ TEST_CASE("log_type_lambda_clean___compose")
         //log_type_lambda_clean_str(f);
         std::cout << type_lambda_variadic<decltype(f), int>(f, true) << std::endl;
     }
-
 }
 
 
@@ -345,9 +333,6 @@ TEST_CASE("log_type_lambda_clean___compose")
 
 TEST_CASE("testing sample_lib")
 {
-
-
-
 
     // std::cout << '\n';
     // std::cout << type_lambda_variadic<decltype(ff), int>(ff) << std::endl;
@@ -360,38 +345,12 @@ TEST_CASE("testing sample_lib")
     // std::string type_full = var_type_name_full(
     //     t );
     // std::cout << "type_full : " << type_full << "\n";
-
-    // TestDefaultConstructibleType
-    //     <
-    //         const std::string
-    //     >
-    //     (
-    //         "const std::string"
-    //     );
-    // TestDefaultConstructibleType
-    //     <
-    //         const std::vector<int>
-    //     >
-    //     (
-    //         "const std::vector<int>"
-    //     );
-    // TestDefaultConstructibleType
-    //     <
-    //         const std::deque<unsigned long>
-    //     >
-    //     (
-    //         "const std::deque<unsigned long>"
-    //     );
-    // TestDefaultConstructibleType
-    //     <
-    //         const std::vector<std::pair<std::string, int>>
-    //     >
-    //     (
-    //         "const std::vector<std::pair<std::string, int>>"
-    //     );
+}
 
 
 
+TEST_CASE("demangle_test_fixme")
+{
     // {
     //     const std::vector<std::pair<std::string, int>> v;
     //     //const auto &&vv = std::move(v);
@@ -424,5 +383,6 @@ TEST_CASE("testing sample_lib")
     //     std::cout << "Demangled:\n"
     //               << type_name::demangle_typename(s) << '\n';
     // }
+
 }
 }
