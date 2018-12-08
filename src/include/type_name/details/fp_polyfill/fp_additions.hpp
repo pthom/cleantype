@@ -17,12 +17,22 @@ namespace fp
 {
 namespace fp_add
 {
+
 using string_tree = tree<std::string>;
+
 struct tree_separators {
     char open_child = '<';
     char close_child = '>';
     char separate_siblings = ',';
 };
+
+struct show_tree_options
+{
+    bool add_new_lines = true;
+    bool add_space_between_siblings = false;
+    std::string indent = "  ";
+};
+
 
 inline string_tree parse_string_tree(
     const std::string &s,
@@ -103,40 +113,62 @@ tree<T> tree_keep_if(std::function<bool(const T &)> f, const tree<T> &xs)
     return result;
 }
 
+
+template <typename T, typename Transformer_T>
+void tree_transform_leafs_depth_first_inplace(Transformer_T transformer, tree<T> &xs_io)
+{
+    for (auto & child : xs_io.children_)
+        tree_transform_leafs_depth_first_inplace(transformer, child);
+    transformer(xs_io.value_);
+}
+
+template <typename T, typename Transformer_T>
+void tree_transform_leafs_breadth_first_inplace(Transformer_T transformer, tree<T> &xs_io)
+{
+    transformer(xs_io.value_);
+    for (auto & child : xs_io.children_)
+        tree_transform_leafs_breadth_first_inplace(transformer, child);
+}
+
+
 template <typename T>
 std::string show_tree(
     const tree<T> &v,
     const tree_separators & separators,
-    bool add_new_lines = true,
-    const std::string &indent = "  ",
+    const show_tree_options & show_tree_options_,
     int level = 0)
 {
-    auto line_start = fp::repeat(level, indent);
+    auto line_start = fp::repeat(level, show_tree_options_.indent);
 
     std::string result;
-    if (add_new_lines)
+    if (show_tree_options_.add_new_lines)
         result = line_start;
 
     result += fp::show(v.value_);
 
     if (!v.children_.empty())
     {
-        if (add_new_lines)
+        if (show_tree_options_.add_new_lines)
             result += "\n" + line_start;
         result += separators.open_child;
-        if (add_new_lines)
+        if (show_tree_options_.add_new_lines)
             result += "\n";
 
         std::vector<std::string> children_strs =
             fp_incompat::transform_vector<std::string>([=](const tree<T> &vv) -> std::string {
-                return show_tree(vv, separators, add_new_lines, indent, level + 1);
+                return show_tree(vv, separators, show_tree_options_, level + 1);
             },
             v.children_);
-        std::string children_str = join(show(separators.separate_siblings), children_strs);
+
+        const std::string siblings_separator =
+            show_tree_options_.add_space_between_siblings ?
+                    show(separators.separate_siblings) + " "
+                :   show(separators.separate_siblings);
+        std::string children_str = join(siblings_separator, children_strs);
 
         result += children_str;
 
-        if (add_new_lines)
+        if (show_tree_options_.add_new_lines)
             result += "\n" + line_start;
         result += separators.close_child;
     }

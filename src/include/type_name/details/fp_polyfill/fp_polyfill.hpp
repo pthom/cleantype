@@ -26,6 +26,16 @@ inline std::string repeat(std::size_t n, const std::string& xs)
     return xss;
 }
 
+// this is a simplified version of fplus::transform that accepts only vectors
+template <typename F, typename T>
+std::vector<T> transform(F f, const std::vector<T>& xs) {
+    std::vector <T> out;
+    for (const auto & x : xs)
+        out.push_back(f(x));
+    return out;
+}
+
+
 // this is a simplified version of fplus::keep_if that accepts only vectors
 template <typename T, typename F>
 std::vector<T> keep_if(F f, const std::vector<T>& xs) {
@@ -47,6 +57,17 @@ inline std::string join(const std::string & separator, const std::vector<std::st
         out += xs[idx];
         if ( idx < xs.size() - 1 )
             out+= separator;
+    }
+    return out;
+}
+inline std::string join(const std::string & separator, const std::deque<std::string> & xs)
+{
+    std::string out;
+    for (size_t idx = 0; idx < xs.size(); idx++)
+    {
+        out += xs[idx];
+        if (idx < xs.size() - 1)
+            out += separator;
     }
     return out;
 }
