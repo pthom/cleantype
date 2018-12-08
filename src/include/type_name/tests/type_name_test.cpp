@@ -106,8 +106,8 @@ struct lambda_generic_type_holder {
     //using ArgsType = decltype(Args...);
     std::string type_name;
     lambda_generic_type_holder() {
-        //auto ptr = &decltype(fn)::template operator()<Args...>;
-        auto as_mem_fn = std::mem_fn( & LambdaFunction::template operator()<Args...> );
+        auto ptr = &LambdaFunction::template operator()<Args...>;
+        auto as_mem_fn = std::mem_fn(ptr);
         std::string mem_fn_type = var_type_name_full(as_mem_fn);
         bool clean = true;
         type_name = type_name::internal::_mem_fn_to_lambda_type(mem_fn_type, clean);
