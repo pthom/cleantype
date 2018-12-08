@@ -128,7 +128,7 @@ namespace type_name
         inline std::string _mem_fn_to_lambda_type(const std::string & mem_fn_type, bool clean)
         {
             const std::string lambda_full_type = _remove_mem_fn_surround(mem_fn_type);
-            std::cout << lambda_full_type << std::endl;
+            // std::cout << lambda_full_type << std::endl;
             std::string params_str, return_str_with_leading_garbage;
             {
                 // lambda params are at the end between parenthesis

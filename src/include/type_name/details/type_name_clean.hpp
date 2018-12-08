@@ -212,9 +212,6 @@ inline std::string clean_typename(const std::string & type_name_)
 
 #define var_type_name_clean(var) type_name::clean_typename( var_type_name_full(var) )
 
-// Also displays the variable name
-#define var_name_type_name_clean(var) std::string("type_clean(") + #var + ") = " + var_type_name_clean(var)
-#define log_var_name_type_name_clean(var) std::cout << var_name_type_name_clean(var) << std::endl;
 
 #define show_details(var) \
         std::string("[") + var_type_name_clean(var) + "] " + #var \
