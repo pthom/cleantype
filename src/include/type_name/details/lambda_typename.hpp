@@ -164,6 +164,8 @@ namespace type_name
 
     } // namespace internal
 
+
+
     //////////////////////////////
     // Start of public API
     //////////////////////////////
