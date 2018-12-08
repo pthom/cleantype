@@ -115,6 +115,6 @@ TEST_CASE("_mem_fn_to_lambda_type")
     std::string expected = "[lambda: (int, int) -> std::pair<int, double>]";
     //                      "lambda: (int, int) -> std::pair<int,double>"
     auto computed = type_name::internal::_mem_fn_to_lambda_type(memfn_type, true);
-    LOG(computed);
+    //LOG(computed);
   }
 }
