@@ -49,40 +49,110 @@ TEST_CASE("log_var")
   }
 }
 
-
-
-TEST_CASE("demangle_test_fixme")
+template<typename T>
+void impl_test_clean_type__defaultcontructible(const std::string & expectedRepr)
 {
-  // {
-  //     const std::vector<std::pair<std::string, int>> v;
-  //     //const auto &&vv = std::move(v);
-  //     std::string type_full = var_type_name_full(v);
-  //     std::string type_clean = type_name::demangle_typename(type_full);
-  //     std::cout << "type_full: " << type_full << "\n";
-  //     std::cout << "type_clean: " << type_clean << '\n';
-  // }
-  // {
-  //     std::cout << "\n";
-  //     const std::vector<std::pair<std::string, int>> v;
-  //     const auto &&vv = std::move(v);
-  //     auto s = var_type_name_full(vv);
-  //     std::cout << "Mangled:\n"
-  //               << s << "\n";
-  //     std::cout << "\n";
-  //     std::cout << "Demangled:\n"
-  //               << type_name::demangle_typename(s) << '\n';
-  // }
+    std::string type_full = var_type_name_full( T() );
+    std::string type_clean = type_name::clean_typename(type_full);
+    LOG(type_full);
+    LOG(type_clean);
+    std::string expectedRepr2 = fp::replace_tokens(" COMMA ", ", ", expectedRepr);
+    REQUIRE_EQ(type_clean, expectedRepr2);
+}
 
-  // {
-  //     std::cout << "\n";
-  //     auto f = [](const std::vector<std::string> &v, int a) {
-  //         return v.size() + a;
-  //     };
-  //     auto s = var_type_name_full(f);
-  //     std::cout << "Mangled:\n"
-  //               << s << "\n";
-  //     std::cout << "\n";
-  //     std::cout << "Demangled:\n"
-  //               << type_name::demangle_typename(s) << '\n';
-  // }
+template<typename Transform>
+auto make_test_string_transform(Transform f)
+{
+    return [f](const std::string & input, const std::string & expected_output) {
+        std::string computed_output = f(input);
+        REQUIRE_EQ(computed_output, expected_output);
+    };
+}
+
+TEST_CASE("DISABLED_apply_east_const")
+{
+    //auto make_one_test = make_test_string_transform(type_name::DISABLED_apply_east_const);
+    //make_one_test(
+    //    "const std::string",
+    //    "std::string const");
+    //make_one_test(
+    //    "const std::string&",
+    //    "std::string const &");
+    //make_one_test(
+    //    "const std::string & ",
+    //    "std::string const &");
+}
+
+TEST_CASE("clean_typename_from_string")
+{
+    auto make_one_test = make_test_string_transform(type_name::clean_typename);
+    make_one_test(
+        "  int   ", 
+        "int");
+    make_one_test(
+        "std::pair<int,double> ", 
+        "std::pair<int, double>");
+    make_one_test(
+        "std::pair<int, double> ",
+        "std::pair<int, double>");
+    make_one_test(
+        "std::pair < std::vector< std::string,int > >",
+        "std::pair<std::vector<std::string, int>>");
+    make_one_test(
+        "std::pair < std::vector< std::string > >",
+        "std::pair<std::vector<std::string>>");
+    //make_one_test(
+    //    "const int",
+    //    "int const"); // compilers prefer east const and never emit west const type info !
+    make_one_test(
+        "int&",
+        "int &");
+    make_one_test(
+        "std::string const&",
+        "std::string const &");
+    make_one_test(
+        "class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &",
+        "std::string const &"
+    );
+}
+
+
+#define test_clean_type__defaultcontructible(type_definition) \
+    impl_test_clean_type__defaultcontructible<type_definition>( #type_definition )
+
+#define COMMA ,
+
+TEST_CASE("clean_typename_from_type")
+{
+    test_clean_type__defaultcontructible(int);
+    test_clean_type__defaultcontructible(std::vector<int>);
+    test_clean_type__defaultcontructible(std::pair<int COMMA int>);
+    test_clean_type__defaultcontructible(std::deque<std::pair<std::string COMMA std::map<int COMMA int>>>);
+    test_clean_type__defaultcontructible(std::set<int>);
+    test_clean_type__defaultcontructible(std::list<std::string>);
+
+    //{
+   //    const std::vector<std::pair<std::string, int>> v;
+   //    //const auto &&vv = std::move(v);
+   //    std::string type_full = var_type_name_full(v);
+   //    std::string type_clean = type_name::clean_typename(type_full);
+   //    LOG(type_full);
+   //    LOG(type_clean);
+   //}
+   //{
+   //    std::cout << "\n";
+   //    const std::vector<std::pair<std::string, int>> v;
+   //    const auto &&vv = std::move(v);
+   //    std::string type_full = var_type_name_full(vv);
+   //    std::string type_clean = type_name::clean_typename(type_full);
+   //}
+
+   //{
+   //    std::cout << "\n";
+   //    auto f = [](const std::vector<std::string> &v, int a) {
+   //        return v.size() + a;
+   //    };
+   //    std::string type_full = var_type_name_full(f);
+   //    std::string type_clean = type_name::clean_typename(type_full);
+   //}
 }

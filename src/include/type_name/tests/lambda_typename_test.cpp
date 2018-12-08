@@ -6,6 +6,14 @@
 
 #define LOG(str) std::cout << str << std::endl
 
+template<typename Lambda> void test_one_lambda(Lambda f, const std::string & expected_type)
+{
+    const std::string computed_type = show_details_lambda(f);
+    REQUIRE_EQ(computed_type, expected_type);
+}
+
+
+
 TEST_CASE("log_type_lambda_clean")
 {
   {
@@ -15,28 +23,26 @@ TEST_CASE("log_type_lambda_clean")
   {
     auto f = []() { return 42u; };
     auto s = show_details_lambda(f);
-    REQUIRE_EQ(show_details_lambda(f), "[lambda: () -> unsigned int] f");
+    test_one_lambda(f, "[lambda: () -> unsigned int] f");
   }
   {
     int c = 5;
     auto f = [&c](int a, int b) -> double { return a + b + c; };
-    REQUIRE_EQ(show_details_lambda(f), "[lambda: (int, int) -> double] f");
+    test_one_lambda(f, "[lambda: (int, int) -> double] f");
+  }
+  {
+      auto f = [](std::string const &a, const std::string & b) { return a + b; };
+      test_one_lambda(f, "[lambda: (std::string const &, std::string const &) -> std::string] f");
   }
   {
     int c = 5;
     auto f = [](int a, int b) { return std::pair<int, double>(a + b, cos(a + static_cast<double>(b))); };
-#ifndef _MSC_VER // missing space after ','
-    REQUIRE_EQ(show_details_lambda(f), "[lambda: (int, int) -> std::pair<int, double>] f");
-#endif
+    test_one_lambda(f, "[lambda: (int, int) -> std::pair<int, double>] f");
   }
   {
     std::string prefix = "a-";
     auto f = [&prefix](const std::string &s) { return prefix + s; };
-    std::string expected1("[lambda: (std::string& const) -> std::string] f");
-    std::string expected2("[lambda: (std::string & const) -> std::string] f");
-    std::string computed = show_details_lambda(f);
-    REQUIRE(((computed == expected1) || (computed == expected2)));
-    // REQUIRE_EQ(show_details_lambda(f), "[lambda: (std::string& const) -> std::string] f");
+    test_one_lambda(f, "[lambda: (std::string const &) -> std::string] f");
   }
 }
 
@@ -92,3 +98,23 @@ TEST_CASE("tokenize_lambda_params")
     }
 }
 
+TEST_CASE("extract_parenthesis_content_at_end")
+{
+    std::string input = "ABC(DEF)(GHI)KLM";
+    auto r = type_name::internal::extract_parenthesis_content_at_end(input);
+    REQUIRE_EQ(r.parenthesis_content, "GHI");
+    REQUIRE_EQ(r.remaining_at_start, "ABC(DEF)");
+    REQUIRE(r.success);
+}
+
+
+TEST_CASE("_mem_fn_to_lambda_type")
+{
+  {
+    std::string memfn_type = "class std::_Mem_fn<struct std::pair<int,double> (__thiscall <lambda_e15113958de8c2368f6f706484d8ddc7>::*)(int,int)const >";
+    std::string expected = "[lambda: (int, int) -> std::pair<int, double>]";
+    //                      "lambda: (int, int) -> std::pair<int,double>"
+    auto computed = type_name::internal::_mem_fn_to_lambda_type(memfn_type, true);
+    LOG(computed);
+  }
+}

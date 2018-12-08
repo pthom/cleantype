@@ -5,8 +5,6 @@ namespace type_name
 {
     namespace internal
     {
-
-
         inline std::string remove_outer_parenthesis(const std::string & s)
         {
             assert(s.size() >= 2 );
@@ -19,17 +17,23 @@ namespace type_name
 
         struct extract_parenthesis_content_at_end_result
         {
-            std::string remaining;
+            std::string remaining_at_start;
             std::string parenthesis_content;
             bool success;
+
+            static extract_parenthesis_content_at_end_result error() {
+                extract_parenthesis_content_at_end_result r;
+                r.success = false;
+                return r;
+            }
         };
 
-
+        // Example : 
+        //  "ABC(DEF)(GHI)KLM"
+        // Returns { remaining_at_start = "ABC", parenthesis_content="GHI", success = true }
         inline extract_parenthesis_content_at_end_result extract_parenthesis_content_at_end(const std::string & str)
         {
             extract_parenthesis_content_at_end_result result;
-
-            extract_parenthesis_content_at_end_result error; error.success = false;
 
             std::string s = str;
 
@@ -37,7 +41,7 @@ namespace type_name
             {
                 s.pop_back();
                 if (s.empty())
-                    return error;
+                    return extract_parenthesis_content_at_end_result::error();
             }
 
             std::vector<char> content;
@@ -54,23 +58,23 @@ namespace type_name
                     nb_parenthesis --;
                 s.pop_back();
                 if (s.empty())
-                    return error;
+                    return extract_parenthesis_content_at_end_result::error();
             }
             std::reverse(content.begin(), content.end());
             for (auto c : content)
                 result.parenthesis_content += c;
-            result.remaining = s;
+
+            result.parenthesis_content = remove_outer_parenthesis(result.parenthesis_content);
+            result.remaining_at_start = s;
             result.success = true;
             return result;
         }
-        // http://www.cplusplus.com/forum/general/223816/ pour wrapper une lambda dans une std::function
-        // marchera pas avec lambda polymorphique...
 
 
         inline std::vector<std::string> tokenize_lambda_params(const std::string & params, bool clean)
         {
             auto clean_param_if_needed = [&clean](const std::string & param) {
-                return clean ? demangle_typename(param) : fp::trim(' ', param);
+                return clean ? clean_typename(param) : fp::trim(' ', param);
             };
 
             std::vector<std::string> result;
@@ -98,28 +102,41 @@ namespace type_name
         }
 
 
-        inline std::string _mem_fn_to_lambda_type(const std::string & mem_fn_type, bool clean)
+        inline std::string _remove_mem_fn_surround(const std::string & mem_fn_type)
         {
-            std::string lambda_full_type = mem_fn_type;
+            std::string result = mem_fn_type;
             // Suppress mem_fn< at the start
-            size_t idx1 = lambda_full_type.find('<');
-            if (idx1 ==  std::string::npos)
-                return "Error, can not find first '<' in lambda_full_type: " + lambda_full_type;
-            lambda_full_type = lambda_full_type.substr(idx1 + 1);
+            size_t idx1 = result.find('<');
+            if (idx1 == std::string::npos)
+            return "Error, can not find first '<' in mem_fn_type: " + mem_fn_type;
+            result = result.substr(idx1 + 1);
 
             // Suppress all after the last ')'
-            size_t idx2 = lambda_full_type.rfind(')');
-            if (idx1 ==  std::string::npos)
-                return "Error, can not find last '>' in lambda_full_type: " + lambda_full_type;
-            lambda_full_type = lambda_full_type.substr(0, idx2 + 1);
+            size_t idx2 = result.rfind(')');
+            if (idx1 == std::string::npos)
+                return "Error, can not find last '>' in mem_fn_type: " + mem_fn_type;
+            result = result.substr(0, idx2 + 1);
 
-            // lambda params are at the end between parenthesis
-            auto params_r = extract_parenthesis_content_at_end(lambda_full_type);
-            std::string params = remove_outer_parenthesis(params_r.parenthesis_content);
+            return result;
+        }
+
+
+
+        inline std::string _mem_fn_to_lambda_type(const std::string & mem_fn_type, bool clean)
+        {
+            const std::string lambda_full_type = _remove_mem_fn_surround(mem_fn_type);
+            std::cout << lambda_full_type << std::endl;
+            std::string params_str, return_str_with_leading_garbage;
+            {
+                // lambda params are at the end between parenthesis
+                auto params_r = extract_parenthesis_content_at_end(lambda_full_type);
+                params_str = params_r.parenthesis_content;
+                return_str_with_leading_garbage = params_r.remaining_at_start;
+            }
 
             // Separate params and clean them, then join them
             const std::string params_cleaned = [&](){
-                auto params_list = tokenize_lambda_params(params, clean);
+                auto params_list = tokenize_lambda_params(params_str, clean);
                 std::string params_joined = fp::join(std::string(", "), params_list);
                 if (params_joined == "void")
                   params_joined = "";
@@ -127,9 +144,13 @@ namespace type_name
             }();
 
             // garbage between the parentheses before (lambda anonymous name)
-            auto garbage_r = extract_parenthesis_content_at_end(params_r.remaining);
+            std::string return_str;
+            {
+                auto garbage_r = extract_parenthesis_content_at_end(return_str_with_leading_garbage);
+                return_str = garbage_r.remaining_at_start;
+            }
 
-            std::string return_type = clean ? demangle_typename(garbage_r.remaining) : garbage_r.remaining;
+            std::string return_type = clean ? clean_typename(return_str) : return_str;
             // std::cout << "params= " << params << '\n';
             // std::cout << "return_type= " << return_type << '\n';
             return std::string("lambda: ") + "(" + params_cleaned + ")" + " -> " + return_type;
