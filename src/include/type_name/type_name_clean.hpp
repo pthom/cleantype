@@ -69,10 +69,11 @@ std::string demangle_typename(const std::string & type_name_)
     std::string clean2;
     {
         std::vector<std::pair<std::string, std::string>> replacements = {
-                  {"std::basic_string<char>", "std::string"}
+                  {"const&", "& const"}  // the output is west const
+                , {"std::basic_string<char>", "std::string"}
                 , {"std::basic_string <char>", "std::string"}
                 , {"std::basic_string&<char>", "std::string&"}
-                , {"std::basic_string const&<char>", "std::string& const"}
+                , {"std::basic_string & const<char>", "std::string& const"}
                 , {"class std::basic_string<char>", "std::string"}
             };
         clean2 = clean1;
