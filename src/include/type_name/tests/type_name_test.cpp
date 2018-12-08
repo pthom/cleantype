@@ -73,7 +73,11 @@ TEST_CASE("log_type_lambda_clean")
     {
         std::string prefix = "a-";
         auto f = [&prefix](const std::string &s)  { return prefix + s; };
-        REQUIRE_EQ(show_details_lambda(f), "[lambda: (std::string& const) -> std::string] f");
+        std::string expected1("[lambda: (std::string& const) -> std::string] f");
+        std::string expected2("[lambda: (std::string & const) -> std::string] f");
+        std::string computed = show_details_lambda(f);
+        REQUIRE( ( (computed == expected1) || (computed == expected2) ) );
+        // REQUIRE_EQ(show_details_lambda(f), "[lambda: (std::string& const) -> std::string] f");
     }
 }
 
