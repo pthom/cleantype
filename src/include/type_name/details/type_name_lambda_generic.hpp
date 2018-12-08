@@ -22,14 +22,15 @@ namespace type_name
   }
 }
 
-#define show_type_lambda_generic_1(fn, arg1) type_name::internal::lambda_generic_type_holder<decltype(fn), decltype(arg1)>().type_name
-#define show_type_lambda_generic_2(fn, arg1, arg2) type_name::internal::lambda_generic_type_holder<decltype(fn), decltype(arg1), decltype(arg2)>().type_name
-#define show_type_lambda_generic_3(fn, arg1, arg2, arg3) type_name::internal::lambda_generic_type_holder<decltype(fn), decltype(arg1), decltype(arg2), decltype(arg3)>().type_name
-#define show_type_lambda_generic_4(fn, arg1, arg2, arg3, arg4) type_name::internal::lambda_generic_type_holder<decltype(fn), decltype(arg1), decltype(arg2), decltype(arg3), decltype(arg4)>().type_name
-#define show_type_lambda_generic_5(fn, arg1, arg2, arg3, arg4, arg5) type_name::internal::lambda_generic_type_holder<decltype(fn), decltype(arg1), decltype(arg2), decltype(arg3), decltype(arg4), decltype(arg5)>().type_name
 
-#define show_details_lambda_generic_1(fn, arg1) std::string("[") + show_type_lambda_generic_1(fn, arg1) + "] " + #fn
-#define show_details_lambda_generic_2(fn, arg1, arg2) std::string("[") + show_type_lambda_generic_2(fn, arg1, arg2) + "] " + #fn
-#define show_details_lambda_generic_3(fn, arg1, arg2, arg3) std::string("[") + show_type_lambda_generic_3(fn, arg1, arg2, arg3) + "] " + #fn
-#define show_details_lambda_generic_4(fn, arg1, arg2, arg3, arg4) std::string("[") + show_type_lambda_generic_4(fn, arg1, arg2, arg3, arg4) + "] " + #fn
-#define show_details_lambda_generic_5(fn, arg1, arg2, arg3, arg4, arg5) std::string("[") + show_type_lambda_generic_5(fn, arg1, arg2, arg3, arg4, arg5) + "] " + #fn
+#define show_type_lambda_generic_fromparams_1(fn, arg1) type_name::internal::lambda_generic_type_holder<decltype(fn), decltype(arg1)>().type_name
+#define show_type_lambda_generic_fromparams_2(fn, arg1, arg2) type_name::internal::lambda_generic_type_holder<decltype(fn), decltype(arg1), decltype(arg2)>().type_name
+#define show_type_lambda_generic_fromparams_3(fn, arg1, arg2, arg3) type_name::internal::lambda_generic_type_holder<decltype(fn), decltype(arg1), decltype(arg2), decltype(arg3)>().type_name
+#define show_type_lambda_generic_fromparams_4(fn, arg1, arg2, arg3, arg4) type_name::internal::lambda_generic_type_holder<decltype(fn), decltype(arg1), decltype(arg2), decltype(arg3), decltype(arg4)>().type_name
+#define show_type_lambda_generic_fromparams_5(fn, arg1, arg2, arg3, arg4, arg5) type_name::internal::lambda_generic_type_holder<decltype(fn), decltype(arg1), decltype(arg2), decltype(arg3), decltype(arg4), decltype(arg5)>().type_name
+
+#define show_details_lambda_generic_fromparams_1(fn, arg1) std::string("[") + show_type_lambda_generic_fromparams_1(fn, arg1) + "] " + #fn
+#define show_details_lambda_generic_fromparams_2(fn, arg1, arg2) std::string("[") + show_type_lambda_generic_fromparams_2(fn, arg1, arg2) + "] " + #fn
+#define show_details_lambda_generic_fromparams_3(fn, arg1, arg2, arg3) std::string("[") + show_type_lambda_generic_fromparams_3(fn, arg1, arg2, arg3) + "] " + #fn
+#define show_details_lambda_generic_fromparams_4(fn, arg1, arg2, arg3, arg4) std::string("[") + show_type_lambda_generic_fromparams_4(fn, arg1, arg2, arg3, arg4) + "] " + #fn
+#define show_details_lambda_generic_fromparams_5(fn, arg1, arg2, arg3, arg4, arg5) std::string("[") + show_type_lambda_generic_fromparams_5(fn, arg1, arg2, arg3, arg4, arg5) + "] " + #fn
