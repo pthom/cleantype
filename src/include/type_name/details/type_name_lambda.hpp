@@ -28,11 +28,14 @@ namespace type_name
             }
         };
 
-        // Example : 
+        // Example :
         //  "ABC(DEF)(GHI)KLM"
         // Returns { remaining_at_start = "ABC", parenthesis_content="GHI", success = true }
         inline extract_parenthesis_content_at_end_result extract_parenthesis_content_at_end(const std::string & str)
         {
+            if (str.empty())
+                return extract_parenthesis_content_at_end_result::error();
+
             extract_parenthesis_content_at_end_result result;
 
             std::string s = str;
