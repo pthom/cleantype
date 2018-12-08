@@ -6,19 +6,19 @@
 
 #define LOG(str) std::cout << str << std::endl
 
-TEST_CASE("log_var")
+TEST_CASE("show_details")
 {
   {
     int a = 1;
-    REQUIRE_EQ(log_var_str(a), "[int] a = 1");
+    REQUIRE_EQ(show_details(a), "[int] a = 1");
   }
   {
     std::string s("hello");
-    REQUIRE_EQ(log_var_str(s), "[std::string] s = hello");
+    REQUIRE_EQ(show_details(s), "[std::string] s = hello");
   }
   {
     std::vector<int> v{ { 1, 2, 3, 4, 5 } };
-    REQUIRE_EQ(log_var_str(v), "[std::vector<int>] v = [1, 2, 3, 4, 5]");
+    REQUIRE_EQ(show_details(v), "[std::vector<int>] v = [1, 2, 3, 4, 5]");
   }
   {
     std::map<std::string, int> v{ {
@@ -26,9 +26,9 @@ TEST_CASE("log_var")
       { "b", 2 },
       { "c", 3 }
       } };
-    auto t = log_var_str_cont(v);
+    auto t = show_details_cont(v);
 #ifndef _MSC_VER // WIP !!!             "[std::map<std::string,int>] v = [(a, 1), (b, 2), (c, 3)]"
-    REQUIRE_EQ(log_var_str_cont(v), "[std::map<std::string, int>] v = [(a, 1), (b, 2), (c, 3)]");
+    REQUIRE_EQ(show_details_cont(v), "[std::map<std::string, int>] v = [(a, 1), (b, 2), (c, 3)]");
 #endif
   }
   {
@@ -37,7 +37,7 @@ TEST_CASE("log_var")
       { "b" },
       { "c" }
       } };
-    REQUIRE_EQ(log_var_str(v), "[std::vector<std::string>] v = [a, b, c]");
+    REQUIRE_EQ(show_details(v), "[std::vector<std::string>] v = [a, b, c]");
   }
   {
     std::set<std::string> v{ {
@@ -45,7 +45,7 @@ TEST_CASE("log_var")
       { "b" },
       { "c" }
       } };
-    REQUIRE_EQ(log_var_str(v), "[std::set<std::string>] v = [a, b, c]");
+    REQUIRE_EQ(show_details(v), "[std::set<std::string>] v = [a, b, c]");
   }
 }
 

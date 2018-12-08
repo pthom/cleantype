@@ -48,12 +48,12 @@ type_name_full()
 // Also displays the variable name
 #define log_var_type_name_full_str(var) std::string("type_full(") + #var + ") = " + var_type_name_full(var)
 
-#define show_details(var) \
+#define show_details_full(var) \
         std::string("[") + var_type_name_full(var) + "] " + #var \
         + " = " \
         + fp::show(var)
 
-#define show_details_cont(var) \
+#define show_details_full_cont(var) \
         std::string("[") + var_type_name_full(var) + "] " + #var \
         + " = " \
         + fp::show_cont(var)

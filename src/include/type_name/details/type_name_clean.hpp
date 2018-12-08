@@ -216,18 +216,15 @@ inline std::string clean_typename(const std::string & type_name_)
 #define var_name_type_name_clean(var) std::string("type_clean(") + #var + ") = " + var_type_name_clean(var)
 #define log_var_name_type_name_clean(var) std::cout << var_name_type_name_clean(var) << std::endl;
 
-#define log_var_str(var) \
+#define show_details(var) \
         std::string("[") + var_type_name_clean(var) + "] " + #var \
         + " = " \
         + fp::show(var)
 
 
-#define log_var_str_cont(var) \
+#define show_details_cont(var) \
         std::string("[") + var_type_name_clean(var) + "] " + #var \
         + " = " \
         + fp::show_cont(var)
 
-
-#define log_var(var) std::cout << log_var_str(var) << std::endl;
-#define log_var_cont(var) std::cout << log_var_str_cont(var) << std::endl;
 } // namespace type_name
