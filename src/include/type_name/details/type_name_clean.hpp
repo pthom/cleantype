@@ -103,6 +103,7 @@ inline std::string perform_std_replacements(const std::string & type_name)
         //, {"std::basic_string & const<char>", "std::string& const"}
         , { "std::basic_string const &<char>", "std::string const &" }
         , {"class std::basic_string<char>", "std::string"}
+        , {"std::string const & __ptr64", "std::string const &"}
         , { "> >", ">>" }
     });
 }
