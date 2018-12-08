@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
 
-#include "type_name/type_name_full.hpp"
-#include "type_name/details/fp_additions.hpp"
+#include "type_name/details/type_name_full.hpp"
+#include "type_name/details/fp_polyfill/fp_additions.hpp"
 
 namespace type_name
 {

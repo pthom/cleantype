@@ -1,4 +1,5 @@
-#include "type_name/type_name_clean.hpp"
+#pragma once
+#include <type_name/details/type_name_clean.hpp>
 
 namespace type_name
 {

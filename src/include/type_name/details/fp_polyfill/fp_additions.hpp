@@ -8,8 +8,8 @@
 #include <algorithm>
 #include <functional>
 
-#include "type_name/details/fp_polyfill.hpp"
-#include "type_name/details/fp_incompat.hpp"
+#include "type_name/details/fp_polyfill/fp_polyfill.hpp"
+#include "type_name/details/fp_polyfill/fp_incompat.hpp"
 
 
 // Additions to fplus
