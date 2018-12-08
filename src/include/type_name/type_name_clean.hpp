@@ -8,7 +8,7 @@ namespace type_name
 {
 
 
-fp::fp_add::tree_separators make_template_tree_separators()
+inline fp::fp_add::tree_separators make_template_tree_separators()
 {
     fp::fp_add::tree_separators sep;
     sep.open_child = '<';
@@ -17,12 +17,12 @@ fp::fp_add::tree_separators make_template_tree_separators()
     return sep;
 }
 
-fp::fp_add::string_tree parse_template_tree(const std::string &s)
+inline fp::fp_add::string_tree parse_template_tree(const std::string &s)
 {
     return parse_string_tree(s, make_template_tree_separators(), false, false);
 }
 
-fp::fp_add::string_tree filter_undesirable_template_noise(const fp::fp_add::string_tree &xs)
+inline fp::fp_add::string_tree filter_undesirable_template_noise(const fp::fp_add::string_tree &xs)
 {
     std::function<bool(const std::string &)> is_node_desirable =
         [](const std::string &nodename) {
@@ -47,7 +47,7 @@ struct demangle_typename_params
     bool remove_std = false;
 };
 
-std::string demangle_typename(const std::string & type_name_)
+inline std::string demangle_typename(const std::string & type_name_)
 {
     std::string type_name = fp::trim(' ', type_name_);
 

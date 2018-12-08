@@ -24,7 +24,7 @@ struct tree_separators {
     char separate_siblings = ',';
 };
 
-string_tree parse_string_tree(
+inline string_tree parse_string_tree(
     const std::string &s,
     const tree_separators & separators,
     bool remove_space_after_tok,
