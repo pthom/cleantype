@@ -46,8 +46,10 @@ struct demangle_typename_params
     bool remove_std = false;
 };
 
-std::string demangle_typename(const std::string type_name)
+std::string demangle_typename(const std::string & type_name_)
 {
+    std::string type_name = fp::trim(' ', type_name_);
+
     std::string type_name_cleaned;
     {
         std::vector<std::pair<std::string, std::string>> replacements = {
@@ -68,6 +70,9 @@ std::string demangle_typename(const std::string type_name)
     {
         std::vector<std::pair<std::string, std::string>> replacements = {
                   {"std::basic_string<char>", "std::string"}
+                , {"std::basic_string <char>", "std::string"}
+                , {"std::basic_string&<char>", "std::string&"}
+                , {"std::basic_string const&<char>", "std::string& const"}
                 , {"class std::basic_string<char>", "std::string"}
             };
         clean2 = clean1;
@@ -82,5 +87,24 @@ std::string demangle_typename(const std::string type_name)
     //return name;
 }
 
+
+#define var_type_name_clean(var) type_name::demangle_typename( var_type_name_full(var) )
+
+// Also displays the variable name
+#define var_name_type_name_clean(var) std::string("type_clean(") + #var + ") = " + var_type_name_clean(var)
+#define log_var_name_type_name_clean(var) std::cout << var_name_type_name_clean(var) << std::endl;
+
+#define log_var_str(var) \
+        std::string("[") + var_type_name_clean(var) + "] " + #var \
+        + " = " \
+        + fp::show(var)
+
+#define log_var_str_cont(var) \
+        std::string("[") + var_type_name_clean(var) + "] " + #var \
+        + " = " \
+        + fp::show_cont(var)
+
+#define log_var(var) std::cout << log_var_str(var) << std::endl;
+#define log_var_cont(var) std::cout << log_var_str_cont(var) << std::endl;
 
 } // namespace type_name

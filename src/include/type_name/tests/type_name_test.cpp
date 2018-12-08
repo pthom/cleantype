@@ -3,6 +3,49 @@
 #include "type_name/type_name_clean.hpp"
 #include <fplus/fplus.hpp>
 #include <functional>
+#include <map>
+
+
+
+TEST_CASE("log_var")
+{
+    {
+        int a = 1;
+        REQUIRE_EQ(log_var_str(a), "[int] a = 1");
+    }
+    {
+        std::string s("hello");
+        REQUIRE_EQ(log_var_str(s), "[std::string] s = hello");
+    }
+    {
+        std::vector<int> v{{ 1, 2, 3, 4, 5}};
+        REQUIRE_EQ(log_var_str(v), "[std::vector<int>] v = [1, 2, 3, 4, 5]");
+    }
+    {
+        std::map<std::string, int> v {{
+            {"a", 1},
+            {"b", 2},
+            {"c", 3}
+        }};
+         REQUIRE_EQ(log_var_str_cont(v), "[std::map<std::string, int>] v = [(a, 1), (b, 2), (c, 3)]");
+    }
+    {
+        std::vector<std::string> v {{
+            {"a"},
+            {"b"},
+            {"c"}
+        }};
+         REQUIRE_EQ(log_var_str(v), "[std::vector<std::string>] v = [a, b, c]");
+    }
+    {
+        std::set<std::string> v {{
+            {"a"},
+            {"b"},
+            {"c"}
+        }};
+         REQUIRE_EQ(log_var_str(v), "[std::set<std::string>] v = [a, b, c]");
+    }
+}
 
 
 namespace type_name
@@ -17,6 +60,15 @@ template<typename T> void TestDefaultConstructibleType(const std::string & expec
     std::cout << "type_clean: " << type_clean << '\n';
     std::cout << "expected  : " << expectedTypeClean << '\n';
     CHECK(type_clean == expectedTypeClean);
+}
+
+std::string remove_outer_parenthesis(const std::string & s)
+{
+    assert(s.size() >= 2 );
+    assert(s.front() =='(');
+    assert(s.back() ==')');
+    std::string result(s.begin() + 1, s.end() - 1);
+    return result;
 }
 
 struct extract_parenthesis_content_at_end_result
@@ -68,7 +120,86 @@ extract_parenthesis_content_at_end_result extract_parenthesis_content_at_end(con
 // marchera pas avec lambda polymorphique...
 
 
-std::string _mem_fn_to_lambda_type(const std::string & mem_fn_type)
+std::vector<std::string> tokenize_lambda_params(const std::string & params, bool clean)
+{
+    auto clean_param_if_needed = [&clean](const std::string & param) {
+        return clean ? demangle_typename(param) : fp::trim(' ', param);
+    };
+
+    std::vector<std::string> result;
+    // counts < and > occurrences
+    int count = 0;
+    std::string current;
+    for (const auto c : params)
+    {
+        if (c == '<')
+            ++count;
+        if (c == '>')
+            --count;
+        if ( (c == ',') && (count == 0))
+        {
+            result.push_back(clean_param_if_needed(current));
+            current = "";
+        }
+        else
+        {
+            current += c;
+        }
+    }
+    result.push_back(clean_param_if_needed(current));
+    return result;
+}
+
+TEST_CASE("tokenize_lambda_params")
+{
+    {
+        std::string params_str("int, string");
+        auto params = tokenize_lambda_params(params_str, false);
+        std::vector<std::string> expected {{
+            {"int"},
+            {"string"}
+        }};
+        REQUIRE_EQ(params, expected);
+    }
+    {
+        std::string params_str("int, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, double");
+        auto params = tokenize_lambda_params(params_str, false);
+        std::vector<std::string> expected {{
+            {"int"},
+            {"std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >"},
+            {"double"},
+        }};
+        REQUIRE_EQ(params, expected);
+    }
+    {
+        std::string params_str("int, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, double");
+        auto params = tokenize_lambda_params(params_str, true);
+        std::vector<std::string> expected {{
+            {"int"},
+            {"std::string"},
+            {"double"},
+        }};
+        REQUIRE_EQ(params, expected);
+    }
+    {
+        std::string params_str("");
+        auto params = tokenize_lambda_params(params_str, true);
+        std::vector<std::string> expected {{
+        }};
+        REQUIRE_EQ(params, expected);
+    }
+    {
+        std::string params_str("int");
+        auto params = tokenize_lambda_params(params_str, true);
+        std::vector<std::string> expected {{
+            "int"
+        }};
+        REQUIRE_EQ(params, expected);
+    }
+}
+
+
+std::string _mem_fn_to_lambda_type(const std::string & mem_fn_type, bool clean)
 {
     std::string lambda_full_type = mem_fn_type;
     // Suppress mem_fn< at the start
@@ -85,20 +216,25 @@ std::string _mem_fn_to_lambda_type(const std::string & mem_fn_type)
 
     // lambda params are at the end between parenthesis
     auto params_r = extract_parenthesis_content_at_end(lambda_full_type);
-    std::string params = params_r.parenthesis_content;
+    std::string params = remove_outer_parenthesis(params_r.parenthesis_content);
+
+    // Separate params and clean them, then join them
+    const std::string params_cleaned = [&](){
+        auto params_list = tokenize_lambda_params(params, clean);
+        return fp::join(std::string(" "), params_list);
+    }();
 
     // garbage between the parentheses before (lambda anonymous name)
     auto garbage_r = extract_parenthesis_content_at_end(params_r.remaining);
 
-    std::string return_type = garbage_r.remaining;
-
+    std::string return_type = clean ? demangle_typename(garbage_r.remaining) : garbage_r.remaining;
     // std::cout << "params= " << params << '\n';
     // std::cout << "return_type= " << return_type << '\n';
-    return std::string("lambda: ") + params + " -> " + return_type;
+    return std::string("lambda: ") + "(" + params_cleaned + ")" + " -> " + return_type;
 }
 
 template <typename LambdaFunction>
-std::string type_lambda(LambdaFunction fn)
+std::string type_lambda(LambdaFunction fn, bool clean)
 {
     // auto f = [&c](int a, int b) -> double { return a + b + c; };
     // MSVC : class std::_Mem_fn<double (__thiscall <lambda_1d102738ade82cc35233c841173ca72c>::*)(int,int)const >
@@ -124,21 +260,46 @@ std::string type_lambda(LambdaFunction fn)
     // auto as_mem_fn = std::mem_fn( & decltype(fn)::operator<Args...>() );
 
     std::string mem_fn_type = var_type_name_full(as_mem_fn);
-    return _mem_fn_to_lambda_type(mem_fn_type);
+    return _mem_fn_to_lambda_type(mem_fn_type, clean);
 }
 
+template <typename LambdaFunction>
+std::string type_lambda_full(LambdaFunction fn)
+{
+    return type_lambda(fn, false);
+}
+
+template <typename LambdaFunction>
+std::string type_lambda_clean(LambdaFunction fn)
+{
+    return type_lambda(fn, true);
+}
+
+
+#define log_type_lambda_full_str(f) std::string("[") + type_lambda_full(f) + "] " + #f + " = "
+#define log_type_lambda_clean_str(f) std::string("[") + type_lambda_clean(f) + "] " + #f + " = "
+#define log_type_lambda_full(f) std::cout << log_type_lambda_full_str(f) << std::endl;
+#define log_type_lambda_clean(f) std::cout << log_type_lambda_clean_str(f) << std::endl;
+
+
 template <typename LambdaFunction, typename... Args>
-std::string type_lambda_variadic(LambdaFunction fn)
+std::string type_lambda_variadic(LambdaFunction fn, bool clean)
 {
     auto as_mem_fn = std::mem_fn( & LambdaFunction::template operator()<Args...> );
     std::string mem_fn_type = var_type_name_full(as_mem_fn);
-    return _mem_fn_to_lambda_type(mem_fn_type);
+    return _mem_fn_to_lambda_type(mem_fn_type, clean);
 }
+
 
 // std::string make_type_lambda_variadic()
 auto make_type_lambda_variadic = [](auto f) {
 
 };
+
+// TODO :
+// - type of polymorphic lambdas
+// - type of functions (wrap in std::function ?)
+
 
 TEST_CASE("testing sample_lib")
 {
@@ -146,15 +307,34 @@ TEST_CASE("testing sample_lib")
     // auto f = [&c](int a, int b) -> double { return a + b + c; };
     //auto f = [](int a, int b)  { return std::pair<int, int>(a, b); };
 
-    auto f = [](int & a, int & b)  { return std::pair<int, double>(a + b, cos(a + b)); };
-    std::cout << type_lambda(f) << "\n";
+    // std::basic_string <char> s_;
+    // std::basic_string <char> &s(s_);
+    // std::cout << var_name_type_name_clean(s) << "\n";
 
-    auto my_square = [](int a) { return a * a;};
-    auto my_double = [](int a) { return a * 2; };
-    auto ff = fplus::fwd::compose(my_square, my_double);
+    // auto f = [](const int & a, int & b)  { return std::pair<int, double>(a + b, cos(a + b)); };
+    // std::cout << log_type_lambda(f) << "\n";
 
-    std::cout << '\n';
-    std::cout << type_lambda_variadic<decltype(ff), int>(ff);
+    // auto f2 = []()  { return 42; };
+    // std::cout << log_type_lambda(f2) << "\n";
+
+    // auto f3 = []()  { std::cout << "Hello"; };
+    // std::cout << log_type_lambda(f3) << "\n";
+
+    // auto f4 = []()  { return std::string("Hello"); };
+    // std::cout << log_type_lambda(f4) << "\n";
+
+    int a = 5;
+    log_var(a);
+
+    auto f5 = [](const std::string & s)  { return s + s; };
+    log_type_lambda_clean(f5);
+
+    // auto my_square = [](int a) { return a * a;};
+    // auto my_double = [](int a) { return a * 2; };
+    // auto ff = fplus::fwd::compose(my_square, my_double);
+
+    // std::cout << '\n';
+    // std::cout << type_lambda_variadic<decltype(ff), int>(ff) << std::endl;
 
 
 

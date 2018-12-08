@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include <fplus/fplus.hpp> // REMOVE ME !!!
+
 namespace fp
 {
 template <typename T>
@@ -87,13 +89,44 @@ std::string trim(const char & trim_what, const std::string & xs)
 }
 
 
+// TO REDO
 template <typename T>
-std::string show(T && v)
+std::string show(T & v)
 {
-    std::stringstream ss;
-    ss << v;
-    return ss.str();
+    return fplus::show(v);
 }
+
+template <typename T>
+std::string show_cont(T & v)
+{
+    return fplus::show_cont(v);
+}
+
+// template <typename T>
+// std::string show(T & v)
+// {
+//     std::stringstream ss;
+//     ss << v;
+//     return ss.str();
+// }
+
+// template <typename T>
+// std::string show(const std::vector<T> & xs)
+// {
+//     std::stringstream ss;
+//     ss << "[";
+//     bool has_previous = false;
+//     for (const auto & x : xs)
+//     {
+//         if (has_previous)
+//             ss << ", ";
+//         //ss << x;
+//         has_previous = true;
+//     }
+//     ss << "]";
+//     return ss.str();
+// }
+
 
 // this is a simplified version of fplus::replace_tokens that accepts only strings
 std::string replace_tokens(const std::string& from, const std::string& to, const std::string& xs)
