@@ -119,7 +119,10 @@ namespace type_name
             // Separate params and clean them, then join them
             const std::string params_cleaned = [&](){
                 auto params_list = tokenize_lambda_params(params, clean);
-                return fp::join(std::string(", "), params_list);
+                std::string params_joined = fp::join(std::string(", "), params_list);
+                if (params_joined == "void")
+                  params_joined = "";
+                return params_joined;
             }();
 
             // garbage between the parentheses before (lambda anonymous name)

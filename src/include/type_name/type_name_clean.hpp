@@ -77,6 +77,7 @@ std::string demangle_typename(const std::string & type_name_)
                 , {"std::basic_string <char>", "std::string"}
                 , {"std::basic_string&<char>", "std::string&"}
                 , {"std::basic_string & const<char>", "std::string& const"}
+                ,{ "std::basic_string const &<char>", "std::string& const" }          
                 , {"class std::basic_string<char>", "std::string"}
                 , { ", ", "," }
                 ,{ "> >", ">>" }
