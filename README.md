@@ -5,4 +5,6 @@ MSVC :
 
 
 # type_name
-display friendly type names in C++
+Display friendly type names in C++
+
+[Read the manual](http://htmlpreview.github.io/?https://github.com/pthom/type_name/blob/master/Manual.html) (work in construction).
