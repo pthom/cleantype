@@ -82,7 +82,9 @@ namespace type_name
     template <typename LambdaFunction, typename... Args>
     std::string type_lambda_generic(LambdaFunction fn, bool clean)
     {
-        auto as_mem_fn = std::mem_fn( & LambdaFunction::template operator()<Args...> );
+        auto ptr = &decltype(fn)::template operator()<Args...>;
+        //auto as_mem_fn = std::mem_fn( & LambdaFunction::template operator()<Args...> );
+        auto as_mem_fn = std::mem_fn(ptr);
         std::string mem_fn_type = var_type_name_full(as_mem_fn);
         return internal::_mem_fn_to_lambda_type(mem_fn_type, clean);
     }
@@ -95,7 +97,7 @@ namespace type_name
     // }
 }
 
-#define v2_type_lambda_generic(fn, __VA_ARGS__) type_name::type_lambda_generic<decltype(fn), __VA_ARGS__>(fn, true)
+//#define v2_type_lambda_generic(fn, __VA_ARGS__) type_name::type_lambda_generic<decltype(fn), __VA_ARGS__>(fn, true)
 
 // debug variadic macros
 template <typename LambdaFunction, typename... Args>
@@ -104,12 +106,16 @@ struct lambda_generic_type_holder {
     //using ArgsType = decltype(Args...);
     std::string type_name;
     lambda_generic_type_holder() {
+        //auto ptr = &decltype(fn)::template operator()<Args...>;
         auto as_mem_fn = std::mem_fn( & LambdaFunction::template operator()<Args...> );
         std::string mem_fn_type = var_type_name_full(as_mem_fn);
         bool clean = true;
         type_name = type_name::internal::_mem_fn_to_lambda_type(mem_fn_type, clean);
     }
 };
+
+// NAMING = show_detail / show_detail_lambda / show_detail_lambda_generic_1 etc ...
+
 
 #define v3_type_lambda_generic_1(fn, arg1) lambda_generic_type_holder<decltype(fn), decltype(arg1)>().type_name
 #define v3_type_lambda_generic_2(fn, arg1, arg2) lambda_generic_type_holder<decltype(fn), decltype(arg1), decltype(arg2)>().type_name
@@ -127,20 +133,10 @@ TEST_CASE("log_type_lambda_clean___compose")
 
         auto double_auto = [](auto x) { return 2. * x; };
 
-        // gcc fight
-        //log_type_lambda_clean_str(f);
-        //std::cout << type_name::type_lambda_generic<decltype(f), int>(f, true) << std::endl;
-        {
-            #define LambdaFunction decltype(double_auto)
-            #define Args int
-            auto as_mem_fn = std::mem_fn( & LambdaFunction::template operator()<double> );
-
-        }
-
         //using namespace type_name;
 
         // debug variadic macros : https://gcc.gnu.org/onlinedocs/cpp/Variadic-Macros.html
-        LOG(v2_type_lambda_generic(f, int));
+        // LOG(v2_type_lambda_generic(f, int));
 
         auto f4 = [](auto x, auto y) {
             return x + y;
