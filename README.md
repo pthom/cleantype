@@ -2,6 +2,30 @@
 # `type_name` a developper friendly `typeid` header only alternative
 Display a **readable** type and content for variables and lambdas. 
 
+<!--
+![Build Status Travis](https://travis-ci.org/pthom/type_name.svg?branch=master)
+![Build Status AppVeyor](https://ci.appveyor.com/api/projects/status/github/pthom/type-name)
+-->
+
+<table>
+    <tr>
+      <td>
+        Travis <img src="https://travis-ci.org/pthom/type_name.svg?branch=master" />
+     </td>
+     <td>
+        Windows <img src="https://ci.appveyor.com/api/projects/status/github/pthom/type-name" />
+    </td>
+     <td>
+        License <img src="https://img.shields.io/badge/license-boost%201.0-blue.svg" />
+    </td>
+    <td>
+        Try this online!
+        <a href="https://mybinder.org/v2/gh/pthom/type_name/typename?filepath=notebooks%2Ftypename%2Ftypename.ipynb"> 
+            <img src="https://mybinder.org/badge_logo.svg" /> 
+        </a>
+    </tr>
+</table>    
+
 In C++, [typeid.name()](https://en.cppreference.com/w/cpp/language/typeid) is able to display the type of variables.
 However it has several limitations:
 
@@ -18,11 +42,15 @@ This library tries to overcomes some of these limitations. It is composed mainly
 
 # Installation and usage
 `type_name`is a small header only library, so you just need to clone it and add it to your path.
+
 Then, include `type_name/type_name.hpp`.
+
+You can also try this directly inside [binder](https://mybinder.org/) : click on the "launch binder" at the top of this page. Beware, it require about 2 minutes to load; but then you will be able to run the code live from your browser!
 
 
 ```c++
-#pragma cling add_include_path("./include") // Special macro to change the include path
+// Special macro to change the include path (this is required for the binder demo)
+#pragma cling add_include_path("./include")
 #include <type_name/type_name.hpp>
 // The includes below are not required, they are just used for the purpose of this manual
 #include <future> 
