@@ -224,7 +224,8 @@ namespace type_name
     }
 
 
-    #define show_details_lambda_full(f) std::string("[") + type_name::type_lambda_full(f) + "] " + #f
-    #define show_details_lambda(f) std::string("[") + type_name::type_lambda_clean(f) + "] " + #f
 
 } // namespace type_name
+
+#define show_details_lambda_full(f) std::string("[") + type_name::type_lambda_full(f) + "] " + #f
+#define show_details_lambda(f) std::string("[") + type_name::type_lambda_clean(f) + "] " + #f

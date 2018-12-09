@@ -14,6 +14,10 @@ namespace type_name
         auto ptr = &LambdaFunction::template operator() < Args... > ;
 #endif
         auto as_mem_fn = std::mem_fn(ptr);
+
+        // auto as_mem_fn = std::mem_fn(
+        //     & LambdaFunction::template operator()<Args...> );
+
         std::string mem_fn_type = type_name_full(as_mem_fn);
         bool clean = true;
         type_name = type_name::internal::_mem_fn_to_lambda_type(mem_fn_type, clean);
