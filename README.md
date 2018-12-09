@@ -20,7 +20,7 @@ Display **readable** types and contents for C++ variables and lambdas.
     </td>
     <td>
         Try this online!
-        <a href="https://mybinder.org/v2/gh/pthom/type_name/typename?filepath=notebooks%2Ftypename%2Ftypename.ipynb"> 
+        <a href="https://mybinder.org/v2/gh/pthom/Cling_Repl_Demo/typename?filepath=notebooks%2Ftypename%2Ftypename.ipynb"> 
             <img src="https://mybinder.org/badge_logo.svg" /> 
         </a>
     </tr>
