@@ -32,7 +32,7 @@ namespace type_name
             if (std::is_const<TR>::value)
                 r =  r + " const";
             if (std::is_volatile<TR>::value)
-                r = "volatile" + r;
+                r = r + " volatile" ;
             if (std::is_lvalue_reference<T>::value)
                 r += "&";
             else if (std::is_rvalue_reference<T>::value)
