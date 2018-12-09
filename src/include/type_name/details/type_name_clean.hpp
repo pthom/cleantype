@@ -168,28 +168,41 @@ namespace type_name
 
     } // namespace internal
 
+
+    template <class T> std::string clean()
+    {
+        return internal::impl_clean( internal::impl_full<T>() );
+    }
+
+
+    template <class T> std::string show_details(T && v) {
+        return clean<T>(v) + " = " + fp::show(v);
+    }
+
     //////////////////////////////
     // Start of public API
     //////////////////////////////
 
-    inline std::string clean(const std::string & typ_name)
-    {
-        return internal::impl_clean(typ_name);
-    }
-
+    // * `type_name::clean<T>()` is a function that will return a string containing
+    //    the readable type of a variable.
+    template <class T> std::string clean();
+    // * `type_name::show_details(T && v)` is a function that will return a string containing
+    //    the readable type of a variable, as well as its content
+    template <class T> std::string show_details(T && v);
 
 } // namespace type_name
 
-#define m_type_name_clean(var) type_name::clean( m_type_name_full(var) )
+
+#define m_type_name_clean(var) type_name::clean<decltype(var)>()
 
 
-#define show_details(var) \
+#define m_show_details(var) \
         std::string("[") + m_type_name_clean(var) + "] " + #var \
         + " = " \
         + fp::show(var)
 
 
-#define show_details_cont(var) \
+#define m_show_details_cont(var) \
         std::string("[") + m_type_name_clean(var) + "] " + #var \
         + " = " \
         + fp::show_cont(var)

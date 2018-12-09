@@ -9,9 +9,12 @@
 namespace type_name
 {
 
-    // * `type_name::full(var)` is a function that will return a string containing
+    // * `type_name::full<T>()` is a function that will return a string containing
     //    the full type of a variable.
     template <class T> std::string full();
+    // * `type_name::show_details_full(T && v)` is a function that will return a string containing
+    //    the full type of a variable, as well as its content
+    template <class T> std::string show_details_full(T && v);
 
     // * `m_type_name_full(var)` is a macro that will also return the full type,
     //    but, it is able to also correctly display rvalue reference types.

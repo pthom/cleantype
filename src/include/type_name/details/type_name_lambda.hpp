@@ -28,11 +28,12 @@ namespace type_name
             }
         };
 
-        // Example :
-        //  "ABC(DEF)(GHI)KLM"
+
         // Returns { remaining_at_start = "ABC", parenthesis_content="GHI", success = true }
         inline extract_parenthesis_content_at_end_result extract_parenthesis_content_at_end(const std::string & str)
         {
+            // Example :
+            //  "ABC(DEF)(GHI)KLM"
             if (str.empty())
             {
                 std::cerr << "extract_parenthesis_content_at_end_result : error (empty input)" << std::endl;
@@ -133,7 +134,6 @@ namespace type_name
         }
 
 
-
         inline std::string _mem_fn_to_lambda_type(const std::string & mem_fn_type, bool clean_params)
         {
             const std::string lambda_full_type = _remove_mem_fn_surround(mem_fn_type);
@@ -176,6 +176,8 @@ namespace type_name
         template <typename LambdaFunction>
         std::string type_lambda(LambdaFunction fn, bool clean_params)
         {
+            // Examples of possible inputs:
+
             // auto f = [&c](int a, int b) -> double { return a + b + c; };
             // MSVC : class std::_Mem_fn<double (__thiscall <lambda_1d102738ade82cc35233c841173ca72c>::*)(int,int)const >
             // clang: std::__1::__mem_fn<double (type_name::_DOCTEST_ANON_FUNC_2()::$_1::*)(int, int) const>
@@ -187,18 +189,7 @@ namespace type_name
 
             //clang: std::__1::pair<int, int> (type_name::_DOCTEST_ANON_FUNC_2()::$_1::*)(int, int) const
 
-            // algo :
-            // 1.
-            // au debut : aller jusqu'au premier < (et le supprimer)
-            // a la fin : aller jusqu'a la premiere ")" (et la garder)
-            //
-            //
-            // 2. Aller jusqu'a la premiere parenthese, tout
-
             auto as_mem_fn = std::mem_fn( & decltype(fn)::operator() );
-            // ajouter un param template ici
-            // auto as_mem_fn = std::mem_fn( & decltype(fn)::operator<Args...>() );
-
             std::string mem_fn_type = m_type_name_full(as_mem_fn);
             return _mem_fn_to_lambda_type(mem_fn_type, clean_params);
         }
@@ -222,9 +213,6 @@ namespace type_name
     {
         return internal::type_lambda(fn, true);
     }
-
-
-
 } // namespace type_name
 
 #define show_details_lambda_full(f) std::string("[") + type_name::type_lambda_full(f) + "] " + #f

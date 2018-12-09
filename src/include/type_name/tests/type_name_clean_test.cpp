@@ -6,19 +6,19 @@
 
 #define LOG(str) std::cout << str << std::endl
 
-TEST_CASE("show_details")
+TEST_CASE("m_show_details")
 {
   {
     int a = 1;
-    REQUIRE_EQ(show_details(a), "[int] a = 1");
+    REQUIRE_EQ(m_show_details(a), "[int] a = 1");
   }
   {
     std::string s("hello");
-    REQUIRE_EQ(show_details(s), "[std::string] s = hello");
+    REQUIRE_EQ(m_show_details(s), "[std::string] s = hello");
   }
   {
     std::vector<int> v{ { 1, 2, 3, 4, 5 } };
-    REQUIRE_EQ(show_details(v), "[std::vector<int>] v = [1, 2, 3, 4, 5]");
+    REQUIRE_EQ(m_show_details(v), "[std::vector<int>] v = [1, 2, 3, 4, 5]");
   }
   {
     std::map<std::string, int> v{ {
@@ -26,9 +26,9 @@ TEST_CASE("show_details")
       { "b", 2 },
       { "c", 3 }
       } };
-    auto t = show_details_cont(v);
+    auto t = m_show_details_cont(v);
 #ifndef _MSC_VER // WIP !!!             "[std::map<std::string,int>] v = [(a, 1), (b, 2), (c, 3)]"
-    REQUIRE_EQ(show_details_cont(v), "[std::map<std::string, int>] v = [(a, 1), (b, 2), (c, 3)]");
+    REQUIRE_EQ(m_show_details_cont(v), "[std::map<std::string, int>] v = [(a, 1), (b, 2), (c, 3)]");
 #endif
   }
   {
@@ -37,7 +37,7 @@ TEST_CASE("show_details")
       { "b" },
       { "c" }
       } };
-    REQUIRE_EQ(show_details(v), "[std::vector<std::string>] v = [a, b, c]");
+    REQUIRE_EQ(m_show_details(v), "[std::vector<std::string>] v = [a, b, c]");
   }
   {
     std::set<std::string> v{ {
@@ -45,7 +45,7 @@ TEST_CASE("show_details")
       { "b" },
       { "c" }
       } };
-    REQUIRE_EQ(show_details(v), "[std::set<std::string>] v = [a, b, c]");
+    REQUIRE_EQ(m_show_details(v), "[std::set<std::string>] v = [a, b, c]");
   }
 }
 
@@ -77,7 +77,7 @@ TEST_CASE("DISABLED_apply_east_const")
 
 TEST_CASE("clean_typename_from_string")
 {
-    auto make_one_test = make_test_string_transform(type_name::clean);
+    auto make_one_test = make_test_string_transform(type_name::internal::impl_clean);
     make_one_test(
         "  int   ",
         "int");
@@ -119,7 +119,7 @@ TEST_CASE("clean_typename_from_string")
 
 void compare_type_full_to_repr(const std::string & type_full, const std::string &expected_repr)
 {
-    std::string type_clean = type_name::clean(type_full);
+    std::string type_clean = type_name::internal::impl_clean(type_full);
     std::string expected_repr2 = fp::replace_tokens(" COMMA ", ", ", expected_repr);
     REQUIRE_EQ(type_clean, expected_repr2);
 }
