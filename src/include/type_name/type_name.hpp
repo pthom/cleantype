@@ -96,25 +96,3 @@ namespace type_name
 
 
 // FIXME /  TODO : Add doc here !!! (And link)
-
-/*
-  tn_type_name_full
-  tn_show_details_full
-  tn_show_details_full_cont
-
-  tn_type_name_clean(var)
-  show_details(var)
-  show_details_cont(var)
-
-  lambda_full
-  lambda_clean
-  tn_show_details_lambda
-  tn_show_details_lambda_full
-
-  tn_type_lamda_generic_fromparams_1
-  show_type_lambda_generic_fromtypes_1
-  show_details_lambda_generic_fromparams_1
-  show_details_lambda_generic_fromtypes_1
-
-  show_type_function_fromparams_1
-*/
