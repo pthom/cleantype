@@ -2,6 +2,8 @@
 #include <vector>
 #include <type_name/type_name.hpp>
 
+#ifndef _MSC_VER
+
 #if !defined(__clang__) && ( defined(__GNUC__) || defined(__GNUG__) )
     #define IS_GCC_COMPILER
 #endif
@@ -55,3 +57,5 @@ TEST_CASE("log_wrap_function")
     // );
 }
 #endif // #ifndef IS_GCC_COMPILER
+
+#endif // #ifndef _MSC_VER

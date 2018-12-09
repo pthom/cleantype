@@ -1,6 +1,8 @@
 #include <type_name/type_name.hpp>
 #include <type_name/details/fp_polyfill/fp_polyfill.hpp>
 
+#ifndef _MSC_VER
+
 namespace type_name
 {
     namespace internal
@@ -41,3 +43,5 @@ namespace type_name
   show_type_lambda_generic_fromtypes_4(type_name::internal::wrap_function(f), arg1, arg2, arg3, arg4))
 #define show_type_function_fromtypes_5(f, arg1, arg2, arg3, arg4, arg5) type_name::internal::lambda_to_fn(\
   show_type_lambda_generic_fromtypes_5(type_name::internal::wrap_function(f), arg1, arg2, arg3, arg4, arg5))
+
+#endif // #ifndef _MSC_VER
