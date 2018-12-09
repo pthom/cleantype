@@ -39,10 +39,7 @@ type_name_full()
     return r;
 }
 
-// template<typename T>
-// auto var_type_name_full(T && v) {
-//     return type_name<decltype(v)>();
-// }
+
 #define var_type_name_full(var) type_name::type_name_full<decltype(var)>()
 
 // Also displays the variable name

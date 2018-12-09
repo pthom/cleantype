@@ -82,6 +82,12 @@ TEST_CASE("clean_typename_from_string")
         "  int   ",
         "int");
     make_one_test(
+        "int&",
+        "int &");
+    make_one_test(
+        "int&&",
+        "int &&");
+    make_one_test(
         "std::pair<int,double> ",
         "std::pair<int, double>");
     make_one_test(

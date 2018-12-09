@@ -34,7 +34,10 @@ namespace type_name
         inline extract_parenthesis_content_at_end_result extract_parenthesis_content_at_end(const std::string & str)
         {
             if (str.empty())
+            {
+                std::cerr << "extract_parenthesis_content_at_end_result : error (empty input)" << std::endl;
                 return extract_parenthesis_content_at_end_result::error();
+            }
 
             extract_parenthesis_content_at_end_result result;
 
@@ -44,7 +47,10 @@ namespace type_name
             {
                 s.pop_back();
                 if (s.empty())
+                {
+                    std::cerr << "extract_parenthesis_content_at_end_result: error (missing last ')' )" << std::endl;
                     return extract_parenthesis_content_at_end_result::error();
+                }
             }
 
             std::vector<char> content;
@@ -61,7 +67,10 @@ namespace type_name
                     nb_parenthesis --;
                 s.pop_back();
                 if (s.empty())
+                {
+                    std::cerr << "extract_parenthesis_content_at_end_result: error (non zero count of '()' )" << std::endl;
                     return extract_parenthesis_content_at_end_result::error();
+                }
             }
             std::reverse(content.begin(), content.end());
             for (auto c : content)
@@ -133,6 +142,8 @@ namespace type_name
             {
                 // lambda params are at the end between parenthesis
                 auto params_r = extract_parenthesis_content_at_end(lambda_full_type);
+                if (!params_r.success)
+                    std::cerr << "_mem_fn_to_lambda_type : error parsing mem_fn_type --> " << mem_fn_type << std::endl;
                 params_str = params_r.parenthesis_content;
                 return_str_with_leading_garbage = params_r.remaining_at_start;
             }
@@ -150,6 +161,8 @@ namespace type_name
             std::string return_str;
             {
                 auto garbage_r = extract_parenthesis_content_at_end(return_str_with_leading_garbage);
+                if (!garbage_r.success)
+                    std::cerr << "_mem_fn_to_lambda_type : error parsing mem_fn_type --> " << mem_fn_type << std::endl;
                 return_str = garbage_r.remaining_at_start;
             }
 

@@ -124,65 +124,17 @@ inline void trim_spaces_inplace(code_pair & xs_io)
     xs_io.rhs = fp::trim(' ', xs_io.rhs);
 }
 
-// "const T &" should become "T const &"
-inline std::string DISABLED_apply_east_const(const std::string & type_name)
-{
-    return type_name;
-    // Examples:
-    // Case 1: "const std::string" => "std::string const"
-    // Case 2: "const std::string&" => "std::string const &"
-    auto typename_ref_attached = perform_replacements(type_name, {
-        { " &", "&" },
-        { "& ", "&" }
-    });
-
-    auto words = _split_string(typename_ref_attached, ' ');
-
-    if (words.empty())
-        return "";
-
-    std::deque<std::string> reordered_words;
-    for (const auto & word : words)
-        reordered_words.push_back(word);
-
-    {
-        if (words.front() == "const")
-        {
-            // Take care of case 1:
-            // Case 1: "const std::string" => "std::string const"
-            reordered_words.pop_front();
-            reordered_words.push_back("const");
-
-            // Take care of case 2:
-            // Case 2: "const std::string&" => "std::string const &"
-            if (reordered_words.size() >= 2)
-            {
-                auto & word_last = reordered_words.back();
-                auto & word_before_last = reordered_words[reordered_words.size() - 2];
-                if (word_before_last.back() == '&')
-                {
-                    word_before_last.pop_back();
-                    word_last.push_back(' '); word_last.push_back('&');
-                }
-            }
-        }
-    }
-
-    std::string out = fp::join(std::string(" "), reordered_words);
-    return out;
-}
-
 
 inline std::string add_space_before_ref(const std::string & type_name)
 {
     std::string result = "";
-    bool space_before = false;
+    bool space_or_ref_before = false;
     for (auto c : type_name)
     {
         if (c == '&')
-            if (!space_before)
+            if (!space_or_ref_before)
                 result = result + " ";
-        space_before = (c == ' ');
+        space_or_ref_before = ( (c == ' ') || (c == '&'));
         result = result + c;
     }
     return result;
