@@ -68,6 +68,30 @@ namespace type_name
 
     // *  `tn_show_details_lambda_full(var)` is a macro that will return a string containing the
     //    full signature of a lambda and its name
+
+    /////////////////////////
+    // lambdas ( generic)
+    /////////////////////////
+    // * `type_name::lambda_generic_clean<Args...>(LambdaFn fn)` is a function that will return a string containing
+    //    the readable signature of a generic lambda.
+    // You will need to specify the type of the auto parameters
+    // Example:
+    //    auto f = [](auto x, auto y) { return x + y; };
+    //    std::cout << type_name::lambda_generic_clean<int, char>(f) << std::endl;
+    //     ==>   lambda: (int, char) -> int
+    template <typename... Args, typename GenericLambda> std::string lambda_generic_clean(GenericLambda fn);
+
+    // * `type_name::lambda_generic_full<Args...>(LambdaFn fn)` is a function that will return a string containing
+    //    the full signature of a generic lambda.
+    template <typename... Args, typename GenericLambda> std::string lambda_generic_full(GenericLambda fn);
+
+    // *  `tn_type_lamda_generic_fromparams_XXX(lambda, arg1, arg2, ...)` is a macro that will return a string containing the
+    //     signature of a generic lambda where you do not specify the args type, instead you give example of these types.
+    //     (XXX is the number of params of the lambda, and can vary from 1 to 5).
+
+
+
+
 }
 
 
@@ -87,7 +111,7 @@ namespace type_name
   tn_show_details_lambda
   tn_show_details_lambda_full
 
-  show_type_lambda_generic_fromparams_1
+  tn_type_lamda_generic_fromparams_1
   show_type_lambda_generic_fromtypes_1
   show_details_lambda_generic_fromparams_1
   show_details_lambda_generic_fromtypes_1

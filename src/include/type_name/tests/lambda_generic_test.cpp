@@ -13,16 +13,35 @@
 
 
 
-TEST_CASE("tuc")
+TEST_CASE("lambda_generic_clean")
 {
-    auto f = [](auto i) { return 2 * i; };
-    //auto mem_fn = lambda_to_mem_fn2<int>(f);
-    //std::cout << type_name::clean< decltype(mem_fn) >();
-
-    std::cout << "--->" << type_name::lambda_generic_clean2<int>(f) << "<---\n";
+    {
+        auto f = [](auto i) { return 2 * i; };
+        REQUIRE_EQ(
+            type_name::lambda_generic_clean<int>(f),
+            "lambda: (int) -> int"
+        );
+    }
+    {
+        auto f = [](auto b) {
+            std::vector<int> range = fplus::numbers(0, b);
+            return fplus::pairs_to_map_grouped( fplus::overlapping_pairs_cyclic(range) );
+        };
+        REQUIRE_EQ(
+            type_name::lambda_generic_clean<int>(f),
+            "lambda: (int) -> std::map<int, std::vector<int>>"
+        );
+    }
+    {
+        auto f = [](auto a, auto b) {
+            return a + b;
+        };
+        REQUIRE_EQ(
+            type_name::lambda_generic_clean<int, char>(f),
+            "lambda: (int, char) -> int"
+        );
+    }
 }
-
-
 
 
 TEST_CASE("lambda_generic_1_to_5_params")
@@ -30,47 +49,20 @@ TEST_CASE("lambda_generic_1_to_5_params")
     {
         auto f = [](auto i) { return 2 * i; };
         REQUIRE_EQ(
-            show_type_lambda_generic_fromparams_1(f, 1),
+            tn_type_lamda_generic_fromparams_1(f, 1),
             "lambda: (int) -> int");
-        REQUIRE_EQ(
-            show_type_lambda_generic_fromtypes_1(f, int),
-            "lambda: (int) -> int");
-        REQUIRE_EQ(
-            show_details_lambda_generic_fromparams_1(f, 1),
-            "[lambda: (int) -> int] f");
-        REQUIRE_EQ(
-            show_details_lambda_generic_fromtypes_1(f, int),
-            "[lambda: (int) -> int] f");
     }
     {
         auto f = [](auto i, auto j) { return 2 * i + j; };
         REQUIRE_EQ(
-            show_type_lambda_generic_fromparams_2(f, 1, 1),
+            tn_type_lamda_generic_fromparams_2(f, 1, 1),
             "lambda: (int, int) -> int");
-        REQUIRE_EQ(
-            show_type_lambda_generic_fromtypes_2(f, int, int),
-            "lambda: (int, int) -> int");
-        REQUIRE_EQ(
-            show_details_lambda_generic_fromparams_2(f, 1, 1),
-            "[lambda: (int, int) -> int] f");
-        REQUIRE_EQ(
-            show_details_lambda_generic_fromtypes_2(f, int, int),
-            "[lambda: (int, int) -> int] f");
     }
     {
         auto f = [](auto i, auto j, auto k) { return 2 * i + j + 3 * k; };
         REQUIRE_EQ(
-            show_type_lambda_generic_fromparams_3(f, 1, 1, 1),
+            tn_type_lamda_generic_fromparams_3(f, 1, 1, 1),
             "lambda: (int, int, int) -> int");
-        REQUIRE_EQ(
-            show_type_lambda_generic_fromtypes_3(f, int, int, int),
-            "lambda: (int, int, int) -> int");
-        REQUIRE_EQ(
-            show_details_lambda_generic_fromparams_3(f, 1, 1, 1),
-            "[lambda: (int, int, int) -> int] f");
-        REQUIRE_EQ(
-            show_details_lambda_generic_fromtypes_3(f, int, int, int),
-            "[lambda: (int, int, int) -> int] f");
     }
 }
 
@@ -86,7 +78,7 @@ TEST_CASE("lambda_generic_composition")
 
     {
         REQUIRE_EQ(
-            show_type_lambda_generic_fromparams_1(lambda_composed, 1),
+            tn_type_lamda_generic_fromparams_1(lambda_composed, 1),
             "lambda: (int &&) -> int"
         );
     }
@@ -95,7 +87,7 @@ TEST_CASE("lambda_generic_composition")
         auto local_lambda_generic = [](int a) { return a * 2; };
         auto local_lambda_composed = fplus::fwd::compose(local_lambda_std, local_lambda_generic);
         REQUIRE_EQ(
-            show_type_lambda_generic_fromparams_1(local_lambda_composed, 1),
+            tn_type_lamda_generic_fromparams_1(local_lambda_composed, 1),
             "lambda: (int &&) -> int"
         );
     }

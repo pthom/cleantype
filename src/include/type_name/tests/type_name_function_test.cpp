@@ -43,14 +43,11 @@ auto foo(int a, int b, int c, int d, int e) // return std::map<std::string, int>
     };
 }
 
+
 TEST_CASE("log_wrap_function")
 {
     REQUIRE_EQ(
       show_type_function_fromparams_1(my_make_range, 1),
-      "function: (int) -> std::vector<int>"
-    );
-    REQUIRE_EQ(
-      show_type_function_fromtypes_1(my_make_range, int),
       "function: (int) -> std::vector<int>"
     );
 
