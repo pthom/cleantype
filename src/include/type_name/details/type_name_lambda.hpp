@@ -197,23 +197,31 @@ namespace type_name
     } // namespace internal
 
 
-
-    //////////////////////////////
-    // Start of public API
-    //////////////////////////////
-
     template <typename LambdaFunction>
-    std::string type_lambda_full(LambdaFunction fn)
+    std::string lambda_full(LambdaFunction fn)
     {
         return internal::type_lambda(fn, false);
     }
 
     template <typename LambdaFunction>
-    std::string type_lambda_clean(LambdaFunction fn)
+    std::string lambda_clean(LambdaFunction fn)
     {
         return internal::type_lambda(fn, true);
     }
+
+
+    //////////////////////////////
+    // Start of public API
+    //////////////////////////////
+
+    // * `type_name::lambda_clean<LambdaFn>(LambdaFn fn)` is a function that will return a string containing
+    //    the readable signature of a lambda (non generic)
+    template <typename LambdaFn> std::string lambda_clean(LambdaFn fn);
+    // * `type_name::lambda_clean<LambdaFn>(LambdaFn fn)` is a function that will return a string containing
+    //    the full signature of a lambda (non generic)
+    template <typename LambdaFn> std::string lambda_clean(LambdaFn fn);
+
 } // namespace type_name
 
-#define show_details_lambda_full(f) std::string("[") + type_name::type_lambda_full(f) + "] " + #f
-#define show_details_lambda(f) std::string("[") + type_name::type_lambda_clean(f) + "] " + #f
+#define m_show_details_lambda(f) std::string("[") + type_name::lambda_clean(f) + "] " + #f
+#define m_show_details_lambda_full(f) std::string("[") + type_name::lambda_full(f) + "] " + #f
