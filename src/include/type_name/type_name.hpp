@@ -19,14 +19,14 @@ namespace type_name
     //    the full type of a variable, as well as its content
     template <class T> std::string show_details_full(T && v);
 
-    // * `m_type_name_full(var)` is a macro that will also return the full type,
+    // * `tn_type_name_full(var)` is a macro that will also return the full type,
     //    but, it is able to also correctly display rvalue reference types.
 
-    // *  `m_show_details_full(var)` is a macro that will return a string containing the name,
+    // *  `tn_show_details_full(var)` is a macro that will return a string containing the name,
     //    type and content of a variable (in this case, the underlying type of 'var'
     //    has to have an 'ostream & operator<<')
 
-    // * `m_show_details_full_cont` is a version of m_show_details_full for complex containers
+    // * `tn_show_details_full_cont` is a version of tn_show_details_full for complex containers
     //    like "std::map". "cont" stands for "container".
 
 
@@ -41,14 +41,14 @@ namespace type_name
     //    the readable type of a variable, as well as its content
     template <class T> std::string show_details(T && v);
 
-    // * `m_type_name_clean(var)` is a macro that will also return the full type,
+    // * `tn_type_name_clean(var)` is a macro that will also return the full type,
     //    but, it is able to also correctly display rvalue reference types.
 
-    // *  `m_show_details(var)` is a macro that will return a string containing the name,
+    // *  `tn_show_details(var)` is a macro that will return a string containing the name,
     //    type and content of a variable (in this case, the underlying type of 'var'
     //    has to have an 'ostream & operator<<')
 
-    // * `m_show_details_cont` (macro) is a version of m_show_details for complex containers
+    // * `tn_show_details_cont` (macro) is a version of tn_show_details for complex containers
     //    like "std::map". "cont" stands for "container".
 
 
@@ -63,10 +63,10 @@ namespace type_name
     //    the full signature of a lambda (non generic)
     template <typename LambdaFn> std::string lambda_clean(LambdaFn fn);
 
-    // *  `m_show_details_lambda(var)` is a macro that will return a string containing the
+    // *  `tn_show_details_lambda(var)` is a macro that will return a string containing the
     //    readable signature of a lambda and its name
 
-    // *  `m_show_details_lambda_full(var)` is a macro that will return a string containing the
+    // *  `tn_show_details_lambda_full(var)` is a macro that will return a string containing the
     //    full signature of a lambda and its name
 }
 
@@ -74,18 +74,18 @@ namespace type_name
 // FIXME /  TODO : Add doc here !!! (And link)
 
 /*
-  m_type_name_full
-  m_show_details_full
-  m_show_details_full_cont
+  tn_type_name_full
+  tn_show_details_full
+  tn_show_details_full_cont
 
-  m_type_name_clean(var)
+  tn_type_name_clean(var)
   show_details(var)
   show_details_cont(var)
 
   lambda_full
   lambda_clean
-  m_show_details_lambda
-  m_show_details_lambda_full
+  tn_show_details_lambda
+  tn_show_details_lambda_full
 
   show_type_lambda_generic_fromparams_1
   show_type_lambda_generic_fromtypes_1

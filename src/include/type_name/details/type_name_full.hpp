@@ -65,21 +65,21 @@ namespace type_name
 } // namespace type_name
 
 
-// * `m_type_name_full(var)` is a macro that will also return the full type,
+// * `tn_type_name_full(var)` is a macro that will also return the full type,
 //    but, it is able to also correctly display rvalue reference types.
-#define m_type_name_full(var) type_name::full<decltype(var)>()
+#define tn_type_name_full(var) type_name::full<decltype(var)>()
 
-// *  `m_show_details_full(var)` will return a string containing the name,
+// *  `tn_show_details_full(var)` will return a string containing the name,
 //    type and content of a variable (in this case, the underlying type of 'var'
 //    has to have an 'ostream & operator<<')
-#define m_show_details_full(var) \
-        std::string("[") + m_type_name_full(var) + "] " + #var \
+#define tn_show_details_full(var) \
+        std::string("[") + tn_type_name_full(var) + "] " + #var \
         + " = " \
         + fp::show(var)
 
-// * `m_show_details_full_cont` is a version of m_show_details_full for complex containers
+// * `tn_show_details_full_cont` is a version of tn_show_details_full for complex containers
 //    like "std::map". "cont" stands for "container".
-#define m_show_details_full_cont(var) \
-        std::string("[") + m_type_name_full(var) + "] " + #var \
+#define tn_show_details_full_cont(var) \
+        std::string("[") + tn_type_name_full(var) + "] " + #var \
         + " = " \
         + fp::show_cont(var)

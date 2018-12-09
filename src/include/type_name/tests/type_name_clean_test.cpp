@@ -6,19 +6,19 @@
 
 #define LOG(str) std::cout << str << std::endl
 
-TEST_CASE("m_show_details")
+TEST_CASE("tn_show_details")
 {
   {
     int a = 1;
-    REQUIRE_EQ(m_show_details(a), "[int] a = 1");
+    REQUIRE_EQ(tn_show_details(a), "[int] a = 1");
   }
   {
     std::string s("hello");
-    REQUIRE_EQ(m_show_details(s), "[std::string] s = hello");
+    REQUIRE_EQ(tn_show_details(s), "[std::string] s = hello");
   }
   {
     std::vector<int> v{ { 1, 2, 3, 4, 5 } };
-    REQUIRE_EQ(m_show_details(v), "[std::vector<int>] v = [1, 2, 3, 4, 5]");
+    REQUIRE_EQ(tn_show_details(v), "[std::vector<int>] v = [1, 2, 3, 4, 5]");
   }
   {
     std::map<std::string, int> v{ {
@@ -26,9 +26,9 @@ TEST_CASE("m_show_details")
       { "b", 2 },
       { "c", 3 }
       } };
-    auto t = m_show_details_cont(v);
+    auto t = tn_show_details_cont(v);
 #ifndef _MSC_VER // WIP !!!             "[std::map<std::string,int>] v = [(a, 1), (b, 2), (c, 3)]"
-    REQUIRE_EQ(m_show_details_cont(v), "[std::map<std::string, int>] v = [(a, 1), (b, 2), (c, 3)]");
+    REQUIRE_EQ(tn_show_details_cont(v), "[std::map<std::string, int>] v = [(a, 1), (b, 2), (c, 3)]");
 #endif
   }
   {
@@ -37,7 +37,7 @@ TEST_CASE("m_show_details")
       { "b" },
       { "c" }
       } };
-    REQUIRE_EQ(m_show_details(v), "[std::vector<std::string>] v = [a, b, c]");
+    REQUIRE_EQ(tn_show_details(v), "[std::vector<std::string>] v = [a, b, c]");
   }
   {
     std::set<std::string> v{ {
@@ -45,7 +45,7 @@ TEST_CASE("m_show_details")
       { "b" },
       { "c" }
       } };
-    REQUIRE_EQ(m_show_details(v), "[std::set<std::string>] v = [a, b, c]");
+    REQUIRE_EQ(tn_show_details(v), "[std::set<std::string>] v = [a, b, c]");
   }
 }
 
@@ -128,7 +128,7 @@ void compare_type_full_to_repr(const std::string & type_full, const std::string 
 template<typename T>
 void impl_test_clean_type(const std::string & expectedRepr, T value)
 {
-    std::string type_full = m_type_name_full(value);
+    std::string type_full = tn_type_name_full(value);
     compare_type_full_to_repr(type_full, expectedRepr);
 }
 
@@ -154,7 +154,7 @@ TEST_CASE("clean_typename_from_type")
     //{
    //    const std::vector<std::pair<std::string, int>> v;
    //    //const auto &&vv = std::move(v);
-   //    std::string type_full = m_type_name_full(v);
+   //    std::string type_full = tn_type_name_full(v);
    //    std::string type_clean = type_name::clean(type_full);
    //    LOG(type_full);
    //    LOG(type_clean);
@@ -163,7 +163,7 @@ TEST_CASE("clean_typename_from_type")
    //    std::cout << "\n";
    //    const std::vector<std::pair<std::string, int>> v;
    //    const auto &&vv = std::move(v);
-   //    std::string type_full = m_type_name_full(vv);
+   //    std::string type_full = tn_type_name_full(vv);
    //    std::string type_clean = type_name::clean(type_full);
    //}
 
@@ -172,7 +172,7 @@ TEST_CASE("clean_typename_from_type")
    //    auto f = [](const std::vector<std::string> &v, int a) {
    //        return v.size() + a;
    //    };
-   //    std::string type_full = m_type_name_full(f);
+   //    std::string type_full = tn_type_name_full(f);
    //    std::string type_clean = type_name::clean(type_full);
    //}
 }
