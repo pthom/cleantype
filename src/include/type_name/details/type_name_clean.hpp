@@ -163,17 +163,17 @@ inline std::string clean_typename(const std::string & type_name_)
 }
 
 
-#define var_type_name_clean(var) type_name::clean_typename( var_type_name_full(var) )
+#define type_name_clean(var) type_name::clean_typename( type_name_full(var) )
 
 
 #define show_details(var) \
-        std::string("[") + var_type_name_clean(var) + "] " + #var \
+        std::string("[") + type_name_clean(var) + "] " + #var \
         + " = " \
         + fp::show(var)
 
 
 #define show_details_cont(var) \
-        std::string("[") + var_type_name_clean(var) + "] " + #var \
+        std::string("[") + type_name_clean(var) + "] " + #var \
         + " = " \
         + fp::show_cont(var)
 

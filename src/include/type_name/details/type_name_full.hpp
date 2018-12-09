@@ -40,18 +40,15 @@ type_name_full()
 }
 
 
-#define var_type_name_full(var) type_name::type_name_full<decltype(var)>()
-
-// Also displays the variable name
-#define log_var_type_name_full_str(var) std::string("type_full(") + #var + ") = " + var_type_name_full(var)
+#define type_name_full(var) type_name::type_name_full<decltype(var)>()
 
 #define show_details_full(var) \
-        std::string("[") + var_type_name_full(var) + "] " + #var \
+        std::string("[") + type_name_full(var) + "] " + #var \
         + " = " \
         + fp::show(var)
 
 #define show_details_full_cont(var) \
-        std::string("[") + var_type_name_full(var) + "] " + #var \
+        std::string("[") + type_name_full(var) + "] " + #var \
         + " = " \
         + fp::show_cont(var)
 
