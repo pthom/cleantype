@@ -176,7 +176,7 @@ namespace type_name
 
 
     template <class T> std::string show_details(T && v) {
-        return clean<T>(v) + " = " + fp::show(v);
+        return clean<T>() + " = " + fp::show(v);
     }
 
     //////////////////////////////
