@@ -2,29 +2,58 @@
 
 namespace type_name
 {
-  namespace internal
-  {
-    template <typename LambdaFunction, typename... Args>
-    struct lambda_generic_type_holder {
-      std::string type_name;
-      lambda_generic_type_holder() {
-#ifdef _MSC_VER
-        auto ptr = &LambdaFunction::operator() < Args... > ;
-#else
-        auto ptr = &LambdaFunction::template operator() < Args... > ;
-#endif
-        auto as_mem_fn = std::mem_fn(ptr);
+    namespace internal
+    {
 
-        // auto as_mem_fn = std::mem_fn(
-        //     & LambdaFunction::template operator()<Args...> );
+        template <typename LambdaFunction, typename... Args>
+        auto lambda_to_mem_fn()
+        {
+            #ifdef _MSC_VER
+                auto ptr = &LambdaFunction::operator() < Args... > ;
+            #else
+                auto ptr = &LambdaFunction::template operator() < Args... > ;
+            #endif
+            auto as_mem_fn = std::mem_fn(ptr);
 
-        std::string mem_fn_type = tn_type_name_full(as_mem_fn);
-        bool clean = true;
-        type_name = type_name::internal::_mem_fn_to_lambda_type(mem_fn_type, clean);
-      }
-    };
-  }
-}
+            // The version belows fails on fcc (compiler bug probably)
+            // see https://stackoverflow.com/questions/53681778/generic-lambdas-mem-fn-with-gcc
+            // auto as_mem_fn = std::mem_fn(
+            //     & LambdaFunction::template operator()<Args...> );
+
+            return as_mem_fn;
+        }
+
+        template <typename LambdaFunction, typename... Args>
+        struct lambda_generic_type_holder {
+
+            std::string type_name;
+
+            lambda_generic_type_holder()
+            {
+                auto as_mem_fn = lambda_to_mem_fn<LambdaFunction, Args...>();
+
+                std::string mem_fn_type = tn_type_name_full(as_mem_fn);
+                bool clean = true;
+                type_name = type_name::internal::_mem_fn_to_lambda_type(mem_fn_type, clean);
+            }
+        };
+
+
+    } // namespace internal
+
+    template <typename LambdaFn, typename... Args> std::string lambda_generic_clean(LambdaFn fn)
+    {
+        internal::lambda_generic_type_holder<LambdaFn, Args...> holder;
+        return holder.type_name;
+    }
+
+
+
+    //////////////////////////////
+    // Start of public API
+    //////////////////////////////
+
+} // namespace type_name
 
 
 #define show_type_lambda_generic_fromparams_1(fn, arg1) type_name::internal::lambda_generic_type_holder<decltype(fn), decltype(arg1)>().type_name
