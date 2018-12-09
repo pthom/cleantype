@@ -1,7 +1,6 @@
 #pragma once
 
 #include <type_name/type_name.hpp>
-#include <type_name/details/apply_args.hpp>
 
 namespace type_name
 {
@@ -41,6 +40,20 @@ namespace type_name
             }
         };
 
+        template <typename... Args, typename GenericLambda> std::string impl_lambda_generic(GenericLambda fn)
+        {
+            #ifdef _MSC_VER
+                auto ptr = &GenericLambda::operator() < Args... > ;
+            #else
+                auto ptr = &GenericLambda::template operator() < Args... > ;
+            #endif
+            auto as_mem_fn = std::mem_fn(ptr);
+            std::string mem_fn_type = type_name::full < decltype(as_mem_fn) >();
+            bool clean_type = true;
+            std::string final_type = type_name::internal::_mem_fn_to_lambda_type(mem_fn_type, clean_type);
+            return final_type;
+        }
+
 
     } // namespace internal
 
@@ -49,6 +62,22 @@ namespace type_name
         internal::lambda_generic_type_holder<GenericLambda, Args...> holder;
         return holder.type_name;
     }
+
+    template <typename... Args, typename GenericLambda> std::string lambda_generic_clean2(GenericLambda fn)
+    {
+            #ifdef _MSC_VER
+                auto ptr = &GenericLambda::operator() < Args... > ;
+            #else
+                auto ptr = &GenericLambda::template operator() < Args... > ;
+            #endif
+            auto as_mem_fn = std::mem_fn(ptr);
+            std::string mem_fn_type = type_name::full < decltype(as_mem_fn) >();
+            bool clean_type = true;
+            std::string final_type = type_name::internal::_mem_fn_to_lambda_type(mem_fn_type, clean_type);
+            return final_type;
+        //return internal::impl_lambda_generic(fn);
+    }
+
 
 
     //////////////////////////////
