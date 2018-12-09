@@ -2,12 +2,22 @@
 #include <vector>
 #include <type_name/type_name.hpp>
 
-#ifndef _MSC_VER
+
+
+#ifdef _MSC_VER
+#define DISABLE_TEST
+#endif
 
 #if !defined(__clang__) && ( defined(__GNUC__) || defined(__GNUG__) )
     #define IS_GCC_COMPILER
+    #define DISABLE_TEST
+#endif
+#if defined(__clang__) && (__clang_major__ < 7)
+    #define DISABLE_TEST
 #endif
 
+
+#ifndef DISABLE_TEST
 
 auto my_make_range(int nb) // return std::vector<int>, but this is deduced
 {
@@ -33,7 +43,6 @@ auto foo(int a, int b, int c, int d, int e) // return std::map<std::string, int>
     };
 }
 
-#ifndef IS_GCC_COMPILER
 TEST_CASE("log_wrap_function")
 {
     REQUIRE_EQ(
@@ -56,6 +65,5 @@ TEST_CASE("log_wrap_function")
     //   "function: (int) -> std::vector<int>"
     // );
 }
-#endif // #ifndef IS_GCC_COMPILER
 
-#endif // #ifndef _MSC_VER
+#endif // #ifndef DISABLE_TEST

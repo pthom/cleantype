@@ -3,6 +3,7 @@
 
 #ifndef _MSC_VER
 
+
 namespace type_name
 {
     namespace internal
