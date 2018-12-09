@@ -13,8 +13,7 @@ Display **readable** types and contents for C++ variables and lambdas.
         Travis <img src="https://travis-ci.org/pthom/type_name.svg?branch=master" />
      </td>
      <td>
-        Windows <img src="https://ci.appveyor.com/api/projects/status/s6wmhg5q9l69w7aq/branch/master?svg=true
-" />
+        Windows <img src="https://ci.appveyor.com/api/projects/status/s6wmhg5q9l69w7aq/branch/master?svg=true" />
     </td>
      <td>
         License <img src="https://img.shields.io/badge/license-boost%201.0-blue.svg" />
