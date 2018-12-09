@@ -6,12 +6,32 @@
 #include <type_name/details/type_name_function.hpp>
 
 
+namespace type_name
+{
+
+    // * `type_name::full(var)` is a function that will return a string containing
+    //    the full type of a variable.
+    template <class T> std::string full();
+
+    // * `m_type_name_full(var)` is a macro that will also return the full type,
+    //    but, it is able to also correctly display rvalue reference types.
+
+    // *  `m_show_details_full(var)` will return a string containing the name,
+    //    type and content of a variable (in this case, the underlying type of 'var'
+    //    has to have an 'ostream & operator<<')
+
+    // * `m_show_details_full_cont` is a version of m_show_details_full for complex containers
+    //    like "std::map". "cont" stands for "container".
+
+}
+
+
 // FIXME /  TODO : Add doc here !!! (And link)
 
 /*
-  type_name_full
-  show_details_full
-  show_details_full_cont
+  m_type_name_full
+  m_show_details_full
+  m_show_details_full_cont
 
   type_name_clean(var)
   show_details(var)

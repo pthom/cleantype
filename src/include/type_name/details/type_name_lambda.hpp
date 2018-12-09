@@ -199,7 +199,7 @@ namespace type_name
             // ajouter un param template ici
             // auto as_mem_fn = std::mem_fn( & decltype(fn)::operator<Args...>() );
 
-            std::string mem_fn_type = type_name_full(as_mem_fn);
+            std::string mem_fn_type = m_type_name_full(as_mem_fn);
             return _mem_fn_to_lambda_type(mem_fn_type, clean);
         }
 

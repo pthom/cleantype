@@ -128,7 +128,7 @@ void compare_type_full_to_repr(const std::string & type_full, const std::string 
 template<typename T>
 void impl_test_clean_type(const std::string & expectedRepr, T value)
 {
-    std::string type_full = type_name_full(value);
+    std::string type_full = m_type_name_full(value);
     compare_type_full_to_repr(type_full, expectedRepr);
 }
 
@@ -154,7 +154,7 @@ TEST_CASE("clean_typename_from_type")
     //{
    //    const std::vector<std::pair<std::string, int>> v;
    //    //const auto &&vv = std::move(v);
-   //    std::string type_full = type_name_full(v);
+   //    std::string type_full = m_type_name_full(v);
    //    std::string type_clean = type_name::clean_typename(type_full);
    //    LOG(type_full);
    //    LOG(type_clean);
@@ -163,7 +163,7 @@ TEST_CASE("clean_typename_from_type")
    //    std::cout << "\n";
    //    const std::vector<std::pair<std::string, int>> v;
    //    const auto &&vv = std::move(v);
-   //    std::string type_full = type_name_full(vv);
+   //    std::string type_full = m_type_name_full(vv);
    //    std::string type_clean = type_name::clean_typename(type_full);
    //}
 
@@ -172,7 +172,7 @@ TEST_CASE("clean_typename_from_type")
    //    auto f = [](const std::vector<std::string> &v, int a) {
    //        return v.size() + a;
    //    };
-   //    std::string type_full = type_name_full(f);
+   //    std::string type_full = m_type_name_full(f);
    //    std::string type_clean = type_name::clean_typename(type_full);
    //}
 }

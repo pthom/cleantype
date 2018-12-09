@@ -163,7 +163,7 @@ inline std::string clean_typename(const std::string & type_name_)
 }
 
 
-#define type_name_clean(var) type_name::clean_typename( type_name_full(var) )
+#define type_name_clean(var) type_name::clean_typename( m_type_name_full(var) )
 
 
 #define show_details(var) \

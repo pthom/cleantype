@@ -12,9 +12,7 @@
 namespace type_name
 {
 
-template <class T>
-std::string
-type_name_full()
+template <class T> std::string full()
 {
     typedef typename std::remove_reference<T>::type TR;
     std::unique_ptr<char, void(*)(void*)> own
@@ -40,15 +38,15 @@ type_name_full()
 }
 
 
-#define type_name_full(var) type_name::type_name_full<decltype(var)>()
+#define m_type_name_full(var) type_name::full<decltype(var)>()
 
-#define show_details_full(var) \
-        std::string("[") + type_name_full(var) + "] " + #var \
+#define m_show_details_full(var) \
+        std::string("[") + m_type_name_full(var) + "] " + #var \
         + " = " \
         + fp::show(var)
 
-#define show_details_full_cont(var) \
-        std::string("[") + type_name_full(var) + "] " + #var \
+#define m_show_details_full_cont(var) \
+        std::string("[") + m_type_name_full(var) + "] " + #var \
         + " = " \
         + fp::show_cont(var)
 
