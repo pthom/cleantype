@@ -77,7 +77,7 @@ TEST_CASE("DISABLED_apply_east_const")
 
 TEST_CASE("clean_typename_from_string")
 {
-    auto make_one_test = make_test_string_transform(type_name::clean_typename);
+    auto make_one_test = make_test_string_transform(type_name::clean);
     make_one_test(
         "  int   ",
         "int");
@@ -119,7 +119,7 @@ TEST_CASE("clean_typename_from_string")
 
 void compare_type_full_to_repr(const std::string & type_full, const std::string &expected_repr)
 {
-    std::string type_clean = type_name::clean_typename(type_full);
+    std::string type_clean = type_name::clean(type_full);
     std::string expected_repr2 = fp::replace_tokens(" COMMA ", ", ", expected_repr);
     REQUIRE_EQ(type_clean, expected_repr2);
 }
@@ -155,7 +155,7 @@ TEST_CASE("clean_typename_from_type")
    //    const std::vector<std::pair<std::string, int>> v;
    //    //const auto &&vv = std::move(v);
    //    std::string type_full = m_type_name_full(v);
-   //    std::string type_clean = type_name::clean_typename(type_full);
+   //    std::string type_clean = type_name::clean(type_full);
    //    LOG(type_full);
    //    LOG(type_clean);
    //}
@@ -164,7 +164,7 @@ TEST_CASE("clean_typename_from_type")
    //    const std::vector<std::pair<std::string, int>> v;
    //    const auto &&vv = std::move(v);
    //    std::string type_full = m_type_name_full(vv);
-   //    std::string type_clean = type_name::clean_typename(type_full);
+   //    std::string type_clean = type_name::clean(type_full);
    //}
 
    //{
@@ -173,6 +173,6 @@ TEST_CASE("clean_typename_from_type")
    //        return v.size() + a;
    //    };
    //    std::string type_full = m_type_name_full(f);
-   //    std::string type_clean = type_name::clean_typename(type_full);
+   //    std::string type_clean = type_name::clean(type_full);
    //}
 }

@@ -83,10 +83,10 @@ namespace type_name
         }
 
 
-        inline std::vector<std::string> tokenize_lambda_params(const std::string & params, bool clean)
+        inline std::vector<std::string> tokenize_lambda_params(const std::string & params, bool clean_params)
         {
-            auto clean_param_if_needed = [&clean](const std::string & param) {
-                return clean ? clean_typename(param) : fp::trim(' ', param);
+            auto clean_param_if_needed = [&clean_params](const std::string & param) {
+                return clean_params ? impl_clean(param) : fp::trim(' ', param);
             };
 
             std::vector<std::string> result;
@@ -134,7 +134,7 @@ namespace type_name
 
 
 
-        inline std::string _mem_fn_to_lambda_type(const std::string & mem_fn_type, bool clean)
+        inline std::string _mem_fn_to_lambda_type(const std::string & mem_fn_type, bool clean_params)
         {
             const std::string lambda_full_type = _remove_mem_fn_surround(mem_fn_type);
             // std::cout << lambda_full_type << std::endl;
@@ -150,7 +150,7 @@ namespace type_name
 
             // Separate params and clean them, then join them
             const std::string params_cleaned = [&](){
-                auto params_list = tokenize_lambda_params(params_str, clean);
+                auto params_list = tokenize_lambda_params(params_str, clean_params);
                 std::string params_joined = fp::join(std::string(", "), params_list);
                 if (params_joined == "void")
                   params_joined = "";
@@ -166,7 +166,7 @@ namespace type_name
                 return_str = garbage_r.remaining_at_start;
             }
 
-            std::string return_type = clean ? clean_typename(return_str) : return_str;
+            std::string return_type = clean_params ? impl_clean(return_str) : return_str;
             // std::cout << "params= " << params << '\n';
             // std::cout << "return_type= " << return_type << '\n';
             return std::string("lambda: ") + "(" + params_cleaned + ")" + " -> " + return_type;
@@ -174,7 +174,7 @@ namespace type_name
 
 
         template <typename LambdaFunction>
-        std::string type_lambda(LambdaFunction fn, bool clean)
+        std::string type_lambda(LambdaFunction fn, bool clean_params)
         {
             // auto f = [&c](int a, int b) -> double { return a + b + c; };
             // MSVC : class std::_Mem_fn<double (__thiscall <lambda_1d102738ade82cc35233c841173ca72c>::*)(int,int)const >
@@ -200,7 +200,7 @@ namespace type_name
             // auto as_mem_fn = std::mem_fn( & decltype(fn)::operator<Args...>() );
 
             std::string mem_fn_type = m_type_name_full(as_mem_fn);
-            return _mem_fn_to_lambda_type(mem_fn_type, clean);
+            return _mem_fn_to_lambda_type(mem_fn_type, clean_params);
         }
 
     } // namespace internal

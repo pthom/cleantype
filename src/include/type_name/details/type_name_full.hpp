@@ -40,6 +40,10 @@ namespace type_name
     } // namespace internal
 
 
+    //////////////////////////////
+    // Start of public API
+    //////////////////////////////
+
     template <class T> std::string full() { return internal::full<T>();
 } // namespace type_name
 

@@ -143,7 +143,7 @@ namespace type_name
         }
 
 
-        inline std::string clean_typename(const std::string & typ_name)
+        inline std::string impl_clean(const std::string & typ_name)
         {
             std::string typ_name_trimmed = fp::trim(' ', typ_name);
 
@@ -168,25 +168,28 @@ namespace type_name
 
     } // namespace internal
 
+    //////////////////////////////
+    // Start of public API
+    //////////////////////////////
 
-    inline std::string clean_typename(const std::string & typ_name)
+    inline std::string clean(const std::string & typ_name)
     {
-        return internal::clean_typename(typ_name);
+        return internal::impl_clean(typ_name);
     }
 
 
 } // namespace type_name
 
-#define type_name_clean(var) type_name::clean_typename( m_type_name_full(var) )
+#define m_type_name_clean(var) type_name::clean( m_type_name_full(var) )
 
 
 #define show_details(var) \
-        std::string("[") + type_name_clean(var) + "] " + #var \
+        std::string("[") + m_type_name_clean(var) + "] " + #var \
         + " = " \
         + fp::show(var)
 
 
 #define show_details_cont(var) \
-        std::string("[") + type_name_clean(var) + "] " + #var \
+        std::string("[") + m_type_name_clean(var) + "] " + #var \
         + " = " \
         + fp::show_cont(var)

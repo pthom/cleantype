@@ -2,7 +2,7 @@
 # Display friendly type names
 Trying to solve the sad state of variables introspection at runtime: display a clean type, introspect lambda params and return types, etc.
 
-Using a homemade library (https://github.com/pthom/type_name). 
+Using a homemade library (https://github.com/pthom/type_name).
 
 
 ```c++
@@ -144,11 +144,11 @@ log_clean_vs_full(v);
 
 # Log lambdas (params & return type + name)
 
-Normaly, the inspection of a lambda at runtime reveals only a random name and address. 
+Normaly, the inspection of a lambda at runtime reveals only a random name and address.
 
-Here, we demonstrate how we can still extract some info from lambda functions. 
+Here, we demonstrate how we can still extract some info from lambda functions.
 
-For each of the lambdas below, the call to `log_type_lambda_clean` will output the correct lambda input params / return type.  
+For each of the lambdas below, the call to `log_type_lambda_clean` will output the correct lambda input params / return type.
 
 
 ```c++
@@ -227,4 +227,3 @@ std::cout << "(Full)  - "; log_type_lambda_full(f);
 
     (Clean) - [lambda: (std::set const&<std::string>) -> std::pair<std::string, unsigned long>] f
     (Full)  - [lambda: (std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&) -> std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, unsigned long> ] f
-

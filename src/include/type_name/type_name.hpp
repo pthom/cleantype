@@ -33,7 +33,7 @@ namespace type_name
   m_show_details_full
   m_show_details_full_cont
 
-  type_name_clean(var)
+  m_type_name_clean(var)
   show_details(var)
   show_details_cont(var)
 
