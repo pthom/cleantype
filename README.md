@@ -48,7 +48,7 @@ Then, include [type_name/type_name.hpp](src/include/type_name/type_name.hpp) (th
 
 # About this manual
 
-This manual is written using [cling](https://root.cern.ch/cling), [xeus cling](https://xeus-cling.readthedocs.io/en/latest/) and [jupyter notebook](https://jupyter.org/).
+This manual is written using [cling](https://root.cern.ch/cling), [xeus cling](https://xeus-cling.readthedocs.io/en/latest/) and [jupyter notebook](https://jupyter.org/). Cling enables a Read-Eval-Print-Loop (REPL) development mode with C++. This approach benefits a lot from having a good type introspection, which is the aim of this library. 
 
 The code that you read in this manual is real live code that can be executed inside jupyter notebook. 
 You can try it directly inside [binder](https://mybinder.org/) : click on the "launch binder" at the top of this page.<br/>
