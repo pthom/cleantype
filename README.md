@@ -39,21 +39,26 @@ However it has several limitations:
 
 This library tries to overcomes some of these limitations. It is composed mainly of C++11 / C++14 functions. It also contains some macros in order to be able to display rvalue reference type, as well as variables names. Macros are prepended with a suffix 'm_'.
 
+Note: this library is heavily [tested](https://github.com/pthom/type_name/tree/master/src/include/type_name/tests), with clang, gcc and msvc. However, it should be considered alpha state.
+
 # Installation and usage
 `type_name`is a small header only library, so you just need to clone it and add it to your path.
 
-Then, include `type_name/type_name.hpp`.
-
-You can also try this directly inside [binder](https://mybinder.org/) : click on the "launch binder" at the top of this page. Beware, it require about 2 minutes to load; but then you will be able to run the code live from your browser!
+Then, include [type_name/type_name.hpp](src/include/type_name/type_name.hpp) (this file includes a comprehensive API doc)
 
 # About this manual
 
 This manual is written using [cling](https://root.cern.ch/cling), [xeus cling](https://xeus-cling.readthedocs.io/en/latest/) and [jupyter notebook](https://jupyter.org/).
 
-The code that you read in this manual is real live code that can be executed inside jupyter notebook. Click on the "launch binder" icon at the top if you want to try it : you will have to click on the "Run" button, in order to execute each cell.
+The code that you read in this manual is real live code that can be executed inside jupyter notebook. 
+You can try it directly inside [binder](https://mybinder.org/) : click on the "launch binder" at the top of this page.<br/>
+Notes:
+* Beware, it require about 2 minutes to load; but then you will be able to run the code live from your browser!
+* Inside the notebook, click on the "Run" button in order to execute each cell (in order)
+* You can modify and run the code as you desire inside binder!
+* Note that there is a limitation in cling that *requires that you add two ";" after each lambda function definition*
 
-The line `#pragma cling add_include_path` below is a special "cling" pragma, that will change the include path. 
-Beside this, everything is standard C++.
+The "#pragma cling add_include_path" is specific to cling. Beside this, everything is standard C++.
 
 
 ```c++
@@ -301,11 +306,9 @@ If we try to get the type of this lambda via `type_name_full`, we do not get muc
 std::cout << type_name::full<decltype(mystery_lambda)>();
 ```
 
-    __cling_Un1Qu37(void*)::$_0
+    __cling_Un1Qu38(void*)::$_0
 
 This is because "mystery_lambda" is actually a instance of a hidden class. We are actually looking for the signature of the operator() of this class. `type_lambda_clean` is able to extract the type of this operator and to display it in a readable way.
-
-### Just for fun (sic...), a comparison of `clean` vs `full` lambda type
 
 # Identify the signature of generic lambdas
 
@@ -351,19 +354,6 @@ std::cout << tn_type_lamda_generic_fromparams_2(add, 1u, -2);
     lambda: (unsigned int, int) -> unsigned int
 
 This second version is useful when you are lost in a forest of "auto" variables deep in the call stack, and you do not know the return type of the lambda, and you do not even know the type of the input parameters: in that case, if you have a working call example, then you can use it.
-
-### A more contrieved generic lambda example
-
-
-```c++
-auto generic_lambda = [](auto b) {
-  std::vector<int> range = fplus::numbers(0, b);
-  return fplus::pairs_to_map_grouped( fplus::overlapping_pairs_cyclic(range) );
-};
-std::cout << type_name::lambda_generic_clean<int>(generic_lambda);
-```
-
-    lambda: (int) -> std::map<int, std::vector<int>>
 
 # Identify the return type of an `auto` function
 

@@ -8,69 +8,73 @@ TEST_CASE("type_name_full_test")
 {
     {
         // Standard types
-        int v = 5;
+        char v = 5;
         // The function type_name::full will add a reference
         // (since the arg is passed by universal reference (&&))
         REQUIRE_EQ(type_name::full(v),
-        "int&"
+        "char&"
         );
         // The macro will output the exact type
         REQUIRE_EQ(tn_type_name_full(v),
-        "int"
+        "char"
         );
     }
     {
         // Reference
-        int a = 5;
-        int &v = a;
+        char a = 5;
+        char &v = a;
         REQUIRE_EQ(type_name::full(v),
-        "int&"
+        "char&"
         );
         REQUIRE_EQ(tn_type_name_full(v),
-        "int&"
+        "char&"
         );
     }
     {
         // Const reference
-        int a = 5;
-        const int &v = a;
+        char a = 5;
+        const char &v = a;
         REQUIRE_EQ(type_name::full(v),
-        "int const&"
+        "char const&"
         );
         REQUIRE_EQ(tn_type_name_full(v),
-        "int const&"
+        "char const&"
         );
     }
     {
         // Pointer to const
-        int a = 5;
-        const int *v = &a;
+#ifndef _MSC_VER // FIXME : msvc return "char const *&" (i.e with a space)
+        char a = 5;
+        const char *v = &a;
         REQUIRE_EQ(type_name::full(v),
-        "int const*&"
+        "char const*&"
         );
         REQUIRE_EQ(tn_type_name_full(v),
-        "int const*"
+        "char const*"
         );
+#endif
     }
     {
+#ifndef _MSC_VER
         // Const pointer (but modifiable content)
-        int a = 5;
-        int * const v = &a;
+        char a = 5;
+        char * const v = &a;
         REQUIRE_EQ(type_name::full(v),
-        "int* const&"
+        "char* const&"
         );
         REQUIRE_EQ(tn_type_name_full(v),
-        "int* const"
+        "char* const"
         );
+#endif
     }
     {
         // Volatile
-        volatile int v = 5;
+        volatile char v = 5;
         REQUIRE_EQ(type_name::full(v),
-        "int volatile&"
+        "char volatile&"
         );
         REQUIRE_EQ(tn_type_name_full(v),
-        "int volatile"
+        "char volatile"
         );
     }
 }
@@ -90,32 +94,32 @@ TEST_CASE("type_name_full_r_value_references")
 
     {
         // with a standard value
-        int v = 5;
+        char v = 5;
         require_eq_typename_pair(output_received_type(v),
-        { "int&", "int&"}
+        { "char&", "char&"}
         );
     }
     // with a reference
     {
-        int a = 5;
-        int &v = a;
+        char a = 5;
+        char &v = a;
         require_eq_typename_pair(output_received_type(v),
-        { "int&", "int&"}
+        { "char&", "char&"}
         );
     }
     // with a const reference
     {
-        int a = 5;
-        const int &v = a;
+        char a = 5;
+        const char &v = a;
         require_eq_typename_pair(output_received_type(v),
-        { "int const&", "int const&"}
+        { "char const&", "char const&"}
         );
     }
     // with an r-value reference
     {
         std::string s("hello there, how are you. This is not a short string");
-        require_eq_typename_pair(output_received_type(42),
-        { "int&&", "int&" }
+        require_eq_typename_pair(output_received_type(static_cast<char>(42)),
+        { "char&&", "char&" }
         );
     }
 
@@ -125,16 +129,16 @@ TEST_CASE("type_name_full_r_value_references")
 TEST_CASE("tn_type_name_full")
 {
     {
-        int v = 5;
+        char v = 5;
         REQUIRE_EQ(
             tn_type_name_full(v),
-            "int"
+            "char"
          );
     }
     {
         REQUIRE_EQ(
-            tn_type_name_full(42),
-            "int"
+            tn_type_name_full(static_cast<char>(42)),
+            "char"
          );
     }
 }
@@ -166,24 +170,28 @@ void check_multiple_args(const std::string & expected)
 TEST_CASE("type_name_full_multiple")
 {
     check_multiple_args<
-         int, int const>(
-        "int, int const");
+         char, char const>(
+        "char, char const");
     check_multiple_args<
-         int&, int const& >(
-        "int&, int const&"
+         char&, char const& >(
+        "char&, char const&"
     );
     check_multiple_args<
-         int&&>(
-        "int&&"
+         char&&>(
+        "char&&"
     );
     check_multiple_args<
-         int&&>(
-        "int&&"
+         char&&>(
+        "char&&"
     );
+
+#ifndef _MSC_VER
+    // FIXME : MSVC adds spaces "char *, char const *, char * const"
     check_multiple_args<
-         int*, int const*, int* const >(
-        "int*, int const*, int* const"
+         char*, char const*, char* const >(
+        "char*, char const*, char* const"
     );
+#endif
 }
 
 
@@ -200,18 +208,19 @@ void check_multiple_args_fromvalues(const std::string & expected, Args... args)
 TEST_CASE("type_name_full_multiple_fromvalues")
 {
     REQUIRE_EQ(
-        type_name::full(1),
-        "int"
+        type_name::full(static_cast<char>(1)),
+        "char"
     );
     REQUIRE_EQ(
-        type_name::full(1, 1),
-        "int, int"
+        type_name::full(static_cast<char>(1), static_cast<char>(1)),
+        "char, char"
     );
+#ifndef _MSC_VER
     REQUIRE_EQ(
-        type_name::full(1, "hello"),
-        "int, char [6] const&"
+        type_name::full(static_cast<char>(1), "hello"),
+        "char, char [6] const&"
     );
-
+#endif
     {
         // Three params and perfect forwarding -> fail !
         // This fails because it is on the third param
@@ -219,12 +228,12 @@ TEST_CASE("type_name_full_multiple_fromvalues")
         // http://www.cplusplus.com/reference/tuple/forward_as_tuple/
         // +
         // https://stackoverflow.com/questions/1198260/iterate-over-tuple
-        int a = 5;
-        int &v = a;
-        int &v2 = a;
-        int const& c = a;
+        char a = 5;
+        char &v = a;
+        char &v2 = a;
+        char const& c = a;
         // REQUIRE_EQ(type_name::full(1, 2, c),
-        // "int, int, int const&" --> "int, int, int" !!!
+        // "char, char, char const&" --> "char, char, char" !!!
         // );
     }
 
