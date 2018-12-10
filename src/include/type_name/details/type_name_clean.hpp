@@ -199,16 +199,16 @@ namespace type_name
 } // namespace type_name
 
 
-#define tn_type_name_clean(var) type_name::clean<decltype(var)>()
+#define TN_type_name_clean(var) type_name::clean<decltype(var)>()
 
 
-#define tn_show_details(var) \
-        std::string("[") + tn_type_name_clean(var) + "] " + #var \
+#define TN_show_details(var) \
+        std::string("[") + TN_type_name_clean(var) + "] " + #var \
         + " = " \
         + fp::show(var)
 
 
-#define tn_show_details_cont(var) \
-        std::string("[") + tn_type_name_clean(var) + "] " + #var \
+#define TN_show_details_cont(var) \
+        std::string("[") + TN_type_name_clean(var) + "] " + #var \
         + " = " \
         + fp::show_cont(var)

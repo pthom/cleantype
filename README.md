@@ -1,6 +1,6 @@
 
 # `type_name` a developper friendly `typeid` header only alternative
-Display **readable** types and contents for C++ variables and lambdas. 
+Display **readable** types and contents for C++ variables and lambdas.
 
 <!--
 ![Build Status Travis](https://travis-ci.org/pthom/type_name.svg?branch=master)
@@ -20,11 +20,11 @@ Display **readable** types and contents for C++ variables and lambdas.
     </td>
     <td>
         Try this online!
-        <a href="https://mybinder.org/v2/gh/pthom/type_name/master?filepath=notebooks%2Ftypename%2Ftypename.ipynb"> 
-            <img src="https://mybinder.org/badge_logo.svg" /> 
+        <a href="https://mybinder.org/v2/gh/pthom/type_name/master?filepath=notebooks%2Ftypename%2Ftypename.ipynb">
+            <img src="https://mybinder.org/badge_logo.svg" />
         </a>
     </tr>
-</table>    
+</table>
 
 In C++, [typeid.name()](https://en.cppreference.com/w/cpp/language/typeid) is able to display the type of variables.
 However it has several limitations:
@@ -50,7 +50,7 @@ Then, include [type_name/type_name.hpp](src/include/type_name/type_name.hpp) (th
 
 This manual is written using [cling](https://root.cern.ch/cling), [xeus cling](https://xeus-cling.readthedocs.io/en/latest/) and [jupyter notebook](https://jupyter.org/).
 
-The code that you read in this manual is real live code that can be executed inside jupyter notebook. 
+The code that you read in this manual is real live code that can be executed inside jupyter notebook.
 You can try it directly inside [binder](https://mybinder.org/) : click on the "launch binder" at the top of this page.<br/>
 Notes:
 * Beware, it require about 2 minutes to load; but then you will be able to run the code live from your browser!
@@ -67,7 +67,7 @@ The "#pragma cling add_include_path" is specific to cling. Beside this, everythi
 #include <type_name/type_name.hpp>
 
 // The includes below are not required, they are just used for the purpose of this manual
-#include <future> 
+#include <future>
 #include <numeric>
 #include <fplus/fplus.hpp>
 ```
@@ -84,30 +84,30 @@ The "#pragma cling add_include_path" is specific to cling. Beside this, everythi
 
 # Friendly type names for variables (clean type, name and value)
 
- ## Readable type names 
-                 
+ ## Readable type names
+
 * `type_name::clean<T...>()` is a function that will return a string containing
    a readable type, for a given type or pack of types
    Use it with "type_name::clean<decltype(var)>()"<br/>
-   Note: It will add a reference by default so that "int v = 5; type_name::clean(v)" will return "int&". 
-   Use the macro tn_type_name_clean() if you want to avoid this
+   Note: It will add a reference by default so that "int v = 5; type_name::clean(v)" will return "int&".
+   Use the macro TN_type_name_clean() if you want to avoid this
 
 * `type_name::clean<T...>(t...)` is a an easier version, using an instance of the type.<br/>
     Notes:
-     * It will add a reference. Use the macro tn_type_name_clean() if you want to avoid this
+     * It will add a reference. Use the macro TN_type_name_clean() if you want to avoid this
      * It is not able to output correctly r-value references. For this, use `type_name::clean<decltype(var)>()`
 
 * `type_name::show_details(T && v)` is a function that will return a string containing
    the readable type of a variable, as well as its content
 
-* `tn_type_name_clean(var)` is a macro that will also return the full type,
+* `TN_type_name_clean(var)` is a macro that will also return the full type,
    but, it is able to also correctly display rvalue reference types.
 
-*  `tn_show_details(var)` is a macro that will return a string containing the name,
+*  `TN_show_details(var)` is a macro that will return a string containing the name,
    type and content of a variable (in this case, the underlying type of 'var'
    has to have an 'ostream & operator<<')
 
-* `tn_show_details_cont` (macro) is a version of tn_show_details for complex containers
+* `TN_show_details_cont` (macro) is a version of TN_show_details for complex containers
    like "std::map". "cont" stands for "container".
 
 ### Examples
@@ -129,25 +129,25 @@ auto v = my_range(5);
 run_show(     type_name::clean(v)                   )
 run_show(     type_name::clean<decltype(v)>()       )
 run_show(     type_name::show_details(v)            )
-run_show(     tn_type_name_clean(v)                 )
-run_show(     tn_show_details(v)                    )
+run_show(     TN_type_name_clean(v)                 )
+run_show(     TN_show_details(v)                    )
 ```
 
     type_name::clean(v)
     std::list<int> &
-    
+
     type_name::clean<decltype(v)>()
     std::list<int>
-    
+
     type_name::show_details(v)
     std::list<int> & = [1, 2, 3, 4, 5]
-    
-    tn_type_name_clean(v)
+
+    TN_type_name_clean(v)
     std::list<int>
-    
-    tn_show_details(v)
+
+    TN_show_details(v)
     [std::list<int>] v = [1, 2, 3, 4, 5]
-    
+
 
 
 ### Examples with arguments pack
@@ -165,28 +165,28 @@ std::cout << type_name::clean<std::string, int, int &&, char &&>() << std::endl;
 ## Full type names
 * `type_name::full<T...>()` is a function that will return a string containing
    the full type. It also works with packs of types. Use it with "type_name::full<decltype(var)>()"<br/>
-   It will add a reference by default so that "int v = 5; type_name::full(v)" will return "int&". 
-   Use the macro tn_type_name_full() if you want to avoid this
+   It will add a reference by default so that "int v = 5; type_name::full(v)" will return "int&".
+   Use the macro TN_type_name_full() if you want to avoid this
 
 * `type_name::full<T...>(t...)` is a an easier version, using an instance of the type.<br/>
    Notes:
      * It will add a reference by default so that
         int v = 5; type_name::full(v) will return "int&"
-        => use the macro tn_type_name_full() if you want to avoid this
+        => use the macro TN_type_name_full() if you want to avoid this
      * It is not able to output correctly r-value references
          For this, use `type_name::full<decltype(var)>()`
 
 * `type_name::show_details_full(T && v)` is a function that will return a string containing
    the full type of a variable, as well as its content
 
-* `tn_type_name_full(var)` is a macro that will also return the full type,
+* `TN_type_name_full(var)` is a macro that will also return the full type,
    but, it is able to also correctly display rvalue reference types.
 
-*  `tn_show_details_full(var)` is a macro that will return a string containing the name,
+*  `TN_show_details_full(var)` is a macro that will return a string containing the name,
    type and content of a variable (in this case, the underlying type of 'var'
    has to have an 'ostream & operator<<')
 
-* `tn_show_details_full_cont` is a version of tn_show_details_full for complex containers
+* `TN_show_details_full_cont` is a version of TN_show_details_full for complex containers
    like "std::map". "cont" stands for "container".
 
 
@@ -196,25 +196,25 @@ std::cout << type_name::clean<std::string, int, int &&, char &&>() << std::endl;
 run_show(     type_name::full(v)                         )
 run_show(     type_name::full<decltype(v)>()             )
 run_show(     type_name::show_details_full(v)            )
-run_show(     tn_type_name_full(v)                       )
-run_show(     tn_show_details_full(v)                    )
+run_show(     TN_type_name_full(v)                       )
+run_show(     TN_show_details_full(v)                    )
 ```
 
     type_name::full(v)
     std::__cxx11::list<int, std::allocator<int> >&
-    
+
     type_name::full<decltype(v)>()
     std::__cxx11::list<int, std::allocator<int> >
-    
+
     type_name::show_details_full(v)
     [std::__cxx11::list<int, std::allocator<int> >&] = [1, 2, 3, 4, 5]
-    
-    tn_type_name_full(v)
+
+    TN_type_name_full(v)
     std::__cxx11::list<int, std::allocator<int> >
-    
-    tn_show_details_full(v)
+
+    TN_show_details_full(v)
     [std::__cxx11::list<int, std::allocator<int> >] v = [1, 2, 3, 4, 5]
-    
+
 
 
 ### Full type versus readable type :
@@ -229,33 +229,33 @@ run_show(     type_name::show_details(my_set)                    )
 
     type_name::show_details_full(my_set)
     [std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >&] = [Hello, There]
-    
+
     type_name::show_details(my_set)
     std::set<std::string> & = [Hello, There]
-    
+
 
 
 ## Display the content of complex containers
 
-* `tn_show_details_cont` (macro) is a version of tn_show_details for complex containers
+* `TN_show_details_cont` (macro) is a version of TN_show_details for complex containers
    like "std::map". "cont" stands for "container".
-* `tn_show_details_full_cont` enables to display the full type and content
+* `TN_show_details_full_cont` enables to display the full type and content
 
 These version are required for certains more complex containers, like "std::map". "cont" stands for "container".
 
 
 ```c++
 std::map<std::string, int> my_map {{{"a", 1}, {"b", 2}, {"c", 3} }};
-run_show(     tn_show_details_cont(my_map)                    )
-run_show(     tn_show_details_full_cont(my_map)               )
+run_show(     TN_show_details_cont(my_map)                    )
+run_show(     TN_show_details_full_cont(my_map)               )
 ```
 
-    tn_show_details_cont(my_map)
+    TN_show_details_cont(my_map)
     [std::map<std::string, int>] my_map = [(a, 1), (b, 2), (c, 3)]
-    
-    tn_show_details_full_cont(my_map)
+
+    TN_show_details_full_cont(my_map)
     [std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, int> > >] my_map = [(a, 1), (b, 2), (c, 3)]
-    
+
 
 
 # Identify the signature of non generic lambdas
@@ -265,10 +265,10 @@ run_show(     tn_show_details_full_cont(my_map)               )
 * `type_name::lambda_clean<LambdaFn>(LambdaFn fn)` is a function that will return a string containing
    the full signature of a non generic lambda
 
-*  `tn_show_details_lambda(var)` is a macro that will return a string containing the
+*  `TN_show_details_lambda(var)` is a macro that will return a string containing the
    readable signature of a lambda and its name
 
-*  `tn_show_details_lambda_full(var)` is a macro that will return a string containing the
+*  `TN_show_details_lambda_full(var)` is a macro that will return a string containing the
    full signature of a lambda and its name
 
 It is not alway easy to guess the return type of lambda. See the lambda below for example : it's return type is not easy to guess:
@@ -277,7 +277,7 @@ It is not alway easy to guess the return type of lambda. See the lambda below fo
 ```c++
 int start = 5;
 // what is the return type of this lambda ?
-auto mystery_lambda = [&start](int end) {    
+auto mystery_lambda = [&start](int end) {
     return fplus::overlapping_pairs_cyclic( fplus::numbers(start, end) );
 };;
 ```
@@ -286,15 +286,15 @@ auto mystery_lambda = [&start](int end) {
 ```c++
 // Let's see
 run_show(            type_name::lambda_clean(mystery_lambda)          );
-run_show(            tn_show_details_lambda(mystery_lambda)           );
+run_show(            TN_show_details_lambda(mystery_lambda)           );
 ```
 
     type_name::lambda_clean(mystery_lambda)
     lambda: (int) -> std::vector<std::pair<int, int>>
-    
-    tn_show_details_lambda(mystery_lambda)
+
+    TN_show_details_lambda(mystery_lambda)
     [lambda: (int) -> std::vector<std::pair<int, int>>] mystery_lambda
-    
+
 
 
 
@@ -316,7 +316,7 @@ This is because "mystery_lambda" is actually a instance of a hidden class. We ar
    the readable signature of a generic lambda. You will need to specify the type of the auto parameters
 * `type_name::lambda_generic_full<Args...>(LambdaFn fn)` is a function that will return a string containing
    the full signature of a generic lambda.
-*  `tn_type_lamda_generic_fromparams_XXX(lambda, arg1, arg2, ...)` is a macro that will return a string containing the
+*  `TN_type_lamda_generic_fromparams_XXX(lambda, arg1, arg2, ...)` is a macro that will return a string containing the
     signature of a generic lambda where you do not specify the args type, instead you give example of these types.
     (XXX is the number of params of the lambda, and can vary from 1 to 5).
 
@@ -327,7 +327,7 @@ Note: this is an advanced feature, and it might fail on certain compilers, such 
 
 ```c++
 auto add = [](auto a, auto b) {
-    return a + b; 
+    return a + b;
 };;
 ```
 
@@ -343,12 +343,12 @@ std::cout << type_name::lambda_generic_clean<int, double>(add) << std::endl;
     lambda: (int, double) -> double
 
 
-It can also be done by providing some example parameters : use `tn_type_lamda_generic_fromparams_XXX`, where X is the number of parameters of the lambda.
+It can also be done by providing some example parameters : use `TN_type_lamda_generic_fromparams_XXX`, where X is the number of parameters of the lambda.
 
 
 ```c++
 // extract the lambda type using example params
-std::cout << tn_type_lamda_generic_fromparams_2(add, 1u, -2);
+std::cout << TN_type_lamda_generic_fromparams_2(add, 1u, -2);
 ```
 
     lambda: (unsigned int, int) -> unsigned int
@@ -368,12 +368,12 @@ auto auto_fonction(int b) {
 ```
 
 # The zoo of type qualifiers
-`type_name`handles quite well `const`, `volatile`, references (`&`), rvalue references (`&&`), and pointers (`*`). See below a demonstration 
+`type_name`handles quite well `const`, `volatile`, references (`&`), rvalue references (`&&`), and pointers (`*`). See below a demonstration
 
 
 ```c++
 auto foo = [](auto && x) {
-    run_show(     tn_type_name_clean(x)                                );
+    run_show(     TN_type_name_clean(x)                                );
     run_show(     type_name::clean<decltype(x)>()                      );
 };;
 
@@ -381,7 +381,7 @@ auto foo = [](auto && x) {
     std::cout << " *********** " << title << " ***********\n";           \
     std::cout << "Bare variable (before the call)\n";                    \
     run_show(     type_name::clean<decltype(var)>()                    );\
-    run_show(     tn_type_name_clean(var)                              );\
+    run_show(     TN_type_name_clean(var)                              );\
     std::cout << "Now inside foo (pass by universal reference)\n";       \
     foo(var);
 ```
@@ -389,14 +389,14 @@ auto foo = [](auto && x) {
 
 ```c++
 {
-    int a = 5;  
+    int a = 5;
     test_call_foo(a, "Calling with an int lvalue (transformed to a ref by the call)");
-    
-    int const &  b = a; 
+
+    int const &  b = a;
     test_call_foo(b, "Calling with a const lvalue reference");
-    
+
     test_call_foo(42, "Calling with an rvalue reference");
-    
+
     int * const c = &a;
     test_call_foo(c, "Calling with a const pointer");
 
@@ -405,8 +405,8 @@ auto foo = [](auto && x) {
 
     int volatile vol = 42;
     test_call_foo(vol, "Calling with a volatile int");
-    
-    int const e = 5;  
+
+    int const e = 5;
     test_call_foo(e, "Calling with a const");
 
 }
@@ -416,105 +416,103 @@ auto foo = [](auto && x) {
     Bare variable (before the call)
     type_name::clean<decltype(a)>()
     int
-    
-    tn_type_name_clean(a)
+
+    TN_type_name_clean(a)
     int
-    
+
     Now inside foo (pass by universal reference)
-    tn_type_name_clean(x)
+    TN_type_name_clean(x)
     int &
-    
+
     type_name::clean<decltype(x)>()
     int &
-    
+
      *********** Calling with a const lvalue reference ***********
     Bare variable (before the call)
     type_name::clean<decltype(b)>()
     int const &
-    
-    tn_type_name_clean(b)
+
+    TN_type_name_clean(b)
     int const &
-    
+
     Now inside foo (pass by universal reference)
-    tn_type_name_clean(x)
+    TN_type_name_clean(x)
     int const &
-    
+
     type_name::clean<decltype(x)>()
     int const &
-    
+
      *********** Calling with an rvalue reference ***********
     Bare variable (before the call)
     type_name::clean<decltype(42)>()
     int
-    
-    tn_type_name_clean(42)
+
+    TN_type_name_clean(42)
     int
-    
+
     Now inside foo (pass by universal reference)
-    tn_type_name_clean(x)
+    TN_type_name_clean(x)
     int &&
-    
+
     type_name::clean<decltype(x)>()
     int &&
-    
+
      *********** Calling with a const pointer ***********
     Bare variable (before the call)
     type_name::clean<decltype(c)>()
     int* const
-    
-    tn_type_name_clean(c)
+
+    TN_type_name_clean(c)
     int* const
-    
+
     Now inside foo (pass by universal reference)
-    tn_type_name_clean(x)
+    TN_type_name_clean(x)
     int* const &
-    
+
     type_name::clean<decltype(x)>()
     int* const &
-    
+
      *********** Calling with a pointer to const ***********
     Bare variable (before the call)
     type_name::clean<decltype(d)>()
     int const*
-    
-    tn_type_name_clean(d)
+
+    TN_type_name_clean(d)
     int const*
-    
+
     Now inside foo (pass by universal reference)
-    tn_type_name_clean(x)
+    TN_type_name_clean(x)
     int const* &
-    
+
     type_name::clean<decltype(x)>()
     int const* &
-    
+
      *********** Calling with a volatile int ***********
     Bare variable (before the call)
     type_name::clean<decltype(vol)>()
     int volatile
-    
-    tn_type_name_clean(vol)
+
+    TN_type_name_clean(vol)
     int volatile
-    
+
     Now inside foo (pass by universal reference)
-    tn_type_name_clean(x)
+    TN_type_name_clean(x)
     int volatile &
-    
+
     type_name::clean<decltype(x)>()
     int volatile &
-    
+
      *********** Calling with a const ***********
     Bare variable (before the call)
     type_name::clean<decltype(e)>()
     int const
-    
-    tn_type_name_clean(e)
+
+    TN_type_name_clean(e)
     int const
-    
+
     Now inside foo (pass by universal reference)
-    tn_type_name_clean(x)
+    TN_type_name_clean(x)
     int const &
-    
+
     type_name::clean<decltype(x)>()
     int const &
-    
-

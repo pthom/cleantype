@@ -190,7 +190,7 @@ namespace type_name
             //clang: std::__1::pair<int, int> (type_name::_DOCTEST_ANON_FUNC_2()::$_1::*)(int, int) const
 
             auto as_mem_fn = std::mem_fn( & decltype(fn)::operator() );
-            std::string mem_fn_type = tn_type_name_full(as_mem_fn);
+            std::string mem_fn_type = TN_type_name_full(as_mem_fn);
             return _mem_fn_to_lambda_type(mem_fn_type, clean_params);
         }
 
@@ -223,5 +223,5 @@ namespace type_name
 
 } // namespace type_name
 
-#define tn_show_details_lambda(f) std::string("[") + type_name::lambda_clean(f) + "] " + #f
-#define tn_show_details_lambda_full(f) std::string("[") + type_name::lambda_full(f) + "] " + #f
+#define TN_show_details_lambda(f) std::string("[") + type_name::lambda_clean(f) + "] " + #f
+#define TN_show_details_lambda_full(f) std::string("[") + type_name::lambda_full(f) + "] " + #f

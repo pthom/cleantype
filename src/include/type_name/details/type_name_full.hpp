@@ -70,14 +70,14 @@ namespace type_name
 } // namespace type_name
 
 
-#define tn_type_name_full(var) type_name::full<decltype(var)>()
+#define TN_type_name_full(var) type_name::full<decltype(var)>()
 
-#define tn_show_details_full(var) \
-        std::string("[") + tn_type_name_full(var) + "] " + #var \
+#define TN_show_details_full(var) \
+        std::string("[") + TN_type_name_full(var) + "] " + #var \
         + " = " \
         + fp::show(var)
 
-#define tn_show_details_full_cont(var) \
-        std::string("[") + tn_type_name_full(var) + "] " + #var \
+#define TN_show_details_full_cont(var) \
+        std::string("[") + TN_type_name_full(var) + "] " + #var \
         + " = " \
         + fp::show_cont(var)

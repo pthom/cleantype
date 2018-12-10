@@ -15,7 +15,7 @@ TEST_CASE("type_name_full_test")
         "char&"
         );
         // The macro will output the exact type
-        REQUIRE_EQ(tn_type_name_full(v),
+        REQUIRE_EQ(TN_type_name_full(v),
         "char"
         );
     }
@@ -26,7 +26,7 @@ TEST_CASE("type_name_full_test")
         REQUIRE_EQ(type_name::full(v),
         "char&"
         );
-        REQUIRE_EQ(tn_type_name_full(v),
+        REQUIRE_EQ(TN_type_name_full(v),
         "char&"
         );
     }
@@ -37,7 +37,7 @@ TEST_CASE("type_name_full_test")
         REQUIRE_EQ(type_name::full(v),
         "char const&"
         );
-        REQUIRE_EQ(tn_type_name_full(v),
+        REQUIRE_EQ(TN_type_name_full(v),
         "char const&"
         );
     }
@@ -49,7 +49,7 @@ TEST_CASE("type_name_full_test")
         REQUIRE_EQ(type_name::full(v),
         "char const*&"
         );
-        REQUIRE_EQ(tn_type_name_full(v),
+        REQUIRE_EQ(TN_type_name_full(v),
         "char const*"
         );
 #endif
@@ -62,7 +62,7 @@ TEST_CASE("type_name_full_test")
         REQUIRE_EQ(type_name::full(v),
         "char* const&"
         );
-        REQUIRE_EQ(tn_type_name_full(v),
+        REQUIRE_EQ(TN_type_name_full(v),
         "char* const"
         );
 #endif
@@ -73,7 +73,7 @@ TEST_CASE("type_name_full_test")
         REQUIRE_EQ(type_name::full(v),
         "char volatile&"
         );
-        REQUIRE_EQ(tn_type_name_full(v),
+        REQUIRE_EQ(TN_type_name_full(v),
         "char volatile"
         );
     }
@@ -126,18 +126,18 @@ TEST_CASE("type_name_full_r_value_references")
 }
 
 
-TEST_CASE("tn_type_name_full")
+TEST_CASE("TN_type_name_full")
 {
     {
         char v = 5;
         REQUIRE_EQ(
-            tn_type_name_full(v),
+            TN_type_name_full(v),
             "char"
          );
     }
     {
         REQUIRE_EQ(
-            tn_type_name_full(static_cast<char>(42)),
+            TN_type_name_full(static_cast<char>(42)),
             "char"
          );
     }
