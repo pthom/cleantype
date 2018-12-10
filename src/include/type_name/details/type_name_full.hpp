@@ -46,8 +46,6 @@ namespace type_name
     std::string full () {
         return internal::impl_full<T>();
     }
-
-
     template <typename First, typename Second, typename ...Rest>
     std::string full () {
         return internal::impl_full<First>()+ ", " + full<Second, Rest...>();
@@ -57,11 +55,9 @@ namespace type_name
     template <typename T> std::string full(T && v) {
         return internal::impl_full<T>();
     }
-
-
     template <typename First, typename Second, typename ...Rest>
     std::string full(First && first, Second && second, Rest... rest) {
-        return internal::impl_full<First>()+ ", " + full<Second, Rest...>(
+        return internal::impl_full<First>() + ", " + full<Second, Rest...>(
             std::forward<Second>(second),
             std::forward<Rest>(rest)...
         );
@@ -71,16 +67,6 @@ namespace type_name
     template <typename T> std::string show_details_full(T && v) {
         return std::string("[") + full<T>() + "]" + " = " + fp::show(v);
     }
-
-
-    //////////////////////////////
-    // Start of public API
-    //////////////////////////////
-
-    template <typename T> std::string full ();
-    template <typename First, typename Second, typename ...Rest> std::string full ();
-    template <class T> std::string full(T && v);
-    template <class T> std::string show_details_full(T && v);
 } // namespace type_name
 
 

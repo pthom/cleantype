@@ -46,12 +46,24 @@ namespace type_name
     // readable types
     /////////////////////////
 
-    // * `type_name::clean<T>()` is a function that will return a string containing
-    //    the readable type of a variable.
-    template <class T> std::string clean();
+    // * `type_name::clean<T...>()` is a function that will return a string containing
+    //    a readable type, for a given type or pack of types
+    //    Use it with `type_name::clean<decltype(var)>()`
+    //    Note:
+    //      * It will add a reference by default so that
+    //         int v = 5; type_name::clean(v) will return "int&"
+    //         => use the macro tn_type_name_clean() if you want to avoid this
+
+    // * `type_name::clean<T...>(t...)` is a an easier version, using an instance of the type.
+    //    Notes:
+    //      * It will add a reference by default so that
+    //         int v = 5; type_name::clean(v) will return "int&"
+    //         => use the macro tn_type_name_clean() if you want to avoid this
+    //      * It is not able to output correctly r-value references
+    //          For this, use `type_name::clean<decltype(var)>()`
+
     // * `type_name::show_details(T && v)` is a function that will return a string containing
     //    the readable type of a variable, as well as its content
-    template <class T> std::string show_details(T && v);
 
     // * `tn_type_name_clean(var)` is a macro that will also return the full type,
     //    but, it is able to also correctly display rvalue reference types.

@@ -176,3 +176,33 @@ TEST_CASE("clean_typename_from_type")
    //    std::string type_clean = type_name::clean(type_full);
    //}
 }
+
+
+TEST_CASE("clean_pack")
+{
+    REQUIRE_EQ(
+         type_name::clean<std::string>()
+        ,                "std::string"
+    );
+    REQUIRE_EQ(
+         type_name::clean<std::string, std::vector<int>>()
+        ,                "std::string, std::vector<int>"
+    );
+    REQUIRE_EQ(
+         type_name::clean<std::string, std::vector<int> const &, int const &>()
+        ,                "std::string, std::vector<int> const &, int const &"
+    );
+}
+
+TEST_CASE("clean_multiple_args")
+{
+    REQUIRE_EQ(
+         type_name::clean(std::string("ah"), 1)
+        ,                "std::string, int"
+    );
+    std::vector<int> v;
+    REQUIRE_EQ(
+         type_name::clean(std::string("ah"), &v, 1)
+        ,                "std::string, std::vector<int> *, int"
+    );
+}
