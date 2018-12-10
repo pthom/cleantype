@@ -164,7 +164,7 @@ std::cout << type_name::clean<std::string, int, int &&, char &&>() << std::endl;
 
 ### Configuration of the clean types
 
-You can customize the suppressions and replacements inside [type_name/type_name_configuration.hpp](type_name/type_name_configuration.hpp)
+You can customize the suppressions and replacements inside [type_name/type_name_configuration.hpp](src/include/type_name/type_name_configuration.hpp)
 
 ## Full type names
 * `type_name::full<T...>()` is a function that will return a string containing
