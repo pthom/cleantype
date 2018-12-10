@@ -2,6 +2,7 @@
 #include "type_name/type_name.hpp"
 
 #define LOG(str) std::cout << str << std::endl
+#define LOG_VALUE(var) std::cout << #var << " = " << var << std::endl
 
 TEST_CASE("type_name_full_test")
 {
@@ -136,4 +137,32 @@ TEST_CASE("tn_type_name_full")
             "int"
          );
     }
+}
+
+
+
+#define COMMA ,
+
+TEST_CASE("type_name_full_multiple")
+{
+    REQUIRE_EQ(
+        type_name::full<int, int const>(),
+                       "int, int const"
+    );
+    REQUIRE_EQ(
+        type_name::full<int&, int const& >(),
+                       "int&, int const&"
+    );
+    REQUIRE_EQ(
+        type_name::full<int&&>(),
+                       "int&&"
+    );
+    REQUIRE_EQ(
+        type_name::full<int&&>(),
+                        "int&&"
+    );
+    REQUIRE_EQ(
+        type_name::full<int*, int const*, int* const >(),
+                       "int*, int const*, int* const"
+    );
 }
