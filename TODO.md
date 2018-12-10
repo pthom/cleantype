@@ -10,11 +10,10 @@
     * [N] Mention look for help?
 
 * [X] Windows build fails
-    * [ ] Investigate / Windows build issue
+    * [X] Investigate / Windows build issue
 
-* [ ] make replacements customizable
-* [ ] Make macros prefix configurable ?
-* [ ] Test type future & the like
+* [X] make replacements customizable
+* [X] Make macros prefix configurable / impossible => switched to TN_
 
 
 * Check references: (same, and for compile time)

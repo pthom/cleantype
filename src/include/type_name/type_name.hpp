@@ -1,4 +1,5 @@
 #pragma once
+#include <type_name/type_name_configuration.hpp>
 #include <type_name/details/type_name_full.hpp>
 #include <type_name/details/type_name_clean.hpp>
 #include <type_name/details/type_name_lambda.hpp>

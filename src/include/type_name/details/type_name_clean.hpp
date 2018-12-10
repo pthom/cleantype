@@ -45,13 +45,8 @@ namespace type_name
         {
             std::function<bool(const code_pair &)> is_node_desirable =
                 [](const code_pair &code_pair) {
-                    std::vector<std::string> undesirable_nodes = {
-                        "std::char_traits"
-                        , "struct std::char_traits"
-                        , "std::allocator"
-                        , "class std::allocator"
-                        , "std::less"
-                        };
+                    const std::vector<std::string> & undesirable_nodes =
+                        type_name::CleanConfiguration::GlobalConfig().undesirable_type_nodes_;
                     bool found =
                         std::find(undesirable_nodes.begin(), undesirable_nodes.end(), fp::trim(' ', code_pair.lhs)) != undesirable_nodes.end();
                     return !found;
@@ -61,51 +56,56 @@ namespace type_name
             return xss;
         }
 
+        inline std::string perform_suppressions(
+            const std::string & typ_name,
+            const std::vector<std::string> suppressions)
+        {
+            std::string result = typ_name;
+            for (const auto &v : suppressions)
+                result = fp::replace_tokens(v, "", result);
+            return result;
+        }
+
 
         inline std::string perform_replacements(
             const std::string & typ_name,
-            const std::vector<std::pair<std::string, std::string>> replacements)
+            const std::vector<std::array<std::string, 2>> replacements)
         {
             std::string result = typ_name;
             for (const auto &r : replacements)
-                result = fp::replace_tokens(r.first, r.second, result);
+                result = fp::replace_tokens(r[0], r[1], result);
             return result;
         }
 
 
         inline std::string remove_extra_namespaces(const std::string & typ_name)
         {
-            return perform_replacements(typ_name,
-            {
-                { "::__1", "" }
-                , { "::__cxx11", "" }
-            });
+            return perform_suppressions(
+                typ_name,
+                type_name::CleanConfiguration::GlobalConfig().suppress_extra_namespaces_);
         }
 
 
         inline std::string remove_struct_class(const std::string & typ_name)
         {
-            return perform_replacements(typ_name,
-            {
-                { "struct ", "" }
-                ,{ "class ", "" }
-            });
+            return perform_suppressions(
+                typ_name,
+                type_name::CleanConfiguration::GlobalConfig().suppress_extract_struct_class_);
+        }
+
+        inline std::string remove_custom(const std::string & typ_name)
+        {
+            return perform_suppressions(
+                typ_name,
+                type_name::CleanConfiguration::GlobalConfig().suppress_custom_);
         }
 
 
         inline std::string perform_std_replacements(const std::string & typ_name)
         {
             return perform_replacements(typ_name,
-            {
-                {"std::basic_string<char>", "std::string"}
-                , {"std::basic_string <char>", "std::string"}
-                , {"std::basic_string &<char>", "std::string &"}
-                //, {"std::basic_string & const<char>", "std::string& const"}
-                , { "std::basic_string const &<char>", "std::string const &" }
-                , {"class std::basic_string<char>", "std::string"}
-                , { "> >", ">>" }
-                , { " __ptr64", ""} // MSVC noise in 64 bits mode
-            });
+                type_name::CleanConfiguration::GlobalConfig().replacements_after_undesirable_node_extractions
+            );
         }
 
 
@@ -149,6 +149,7 @@ namespace type_name
 
             std::string typ_namecleaned = remove_struct_class(
                 remove_extra_namespaces(typ_name_trimmed));
+            typ_namecleaned = remove_struct_class(typ_namecleaned);
 
             code_pair_tree template_tree = parse_template_tree(typ_namecleaned);
             fp::fp_add::tree_transform_leafs_depth_first_inplace(trim_spaces_inplace, template_tree);
@@ -161,7 +162,6 @@ namespace type_name
 
             std::string final_type = perform_std_replacements(template_tree_filtered_str);
             final_type = add_space_before_ref(final_type);
-            //final_type = DISABLED_apply_east_const(final_type);
             return final_type;
         }
 

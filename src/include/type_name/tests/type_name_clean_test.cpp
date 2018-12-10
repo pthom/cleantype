@@ -57,20 +57,6 @@ auto make_test_string_transform(Transform f)
     };
 }
 
-TEST_CASE("DISABLED_apply_east_const")
-{
-    //auto make_one_test = make_test_string_transform(type_name::DISABLED_apply_east_const);
-    //make_one_test(
-    //    "const std::string",
-    //    "std::string const");
-    //make_one_test(
-    //    "const std::string&",
-    //    "std::string const &");
-    //make_one_test(
-    //    "const std::string & ",
-    //    "std::string const &");
-}
-
 
 
 TEST_CASE("clean_typename_from_string")
