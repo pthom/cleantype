@@ -6,9 +6,16 @@
 
 * [ ] Doc
     * [X] Script deploy(bash function)
-    * [ ] Mention beta / look for help
+    * [X] Mention beta
+    * [N] Mention look for help?
 
-* [ ] Windows build fails
+* [X] Windows build fails
+    * [ ] Investigate / Windows build issue
+
+* [ ] make replacements customizable
+* [ ] Make macros prefix configurable ?
+* [ ] Test type future & the like
+
 
 * Check references: (same, and for compile time)
     * [ ] boost::hana::experimental::type_name
@@ -16,12 +23,10 @@
     * [ ] ctti : Compile Time Type Information for C++
         https://github.com/Manu343726/ctti
 
-* [ ] Make macros prefix configurable ?
-* [ ] Test type future & the like
-* [ ] make replacements customizable
-* [ ] type function / several params
-  * [ ] Windows : disabled type function
-* [ ] lambda composed gcc ?
 
 
-* bug / 3rd param (forget this ?!)
+Bugs
+    * [ ] type function / several params
+    * [ ] Windows : disabled type function
+    * [ ] lambda composed gcc ?
+    * bug / 3rd param (forget this ?!)
