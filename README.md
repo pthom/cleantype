@@ -158,7 +158,7 @@ std::cout << type_name::clean(1, "Hello") << std::endl;
 std::cout << type_name::clean<std::string, int, int &&, char &&>() << std::endl;
 ```
 
-    int, char [6] const &
+    int, char[6] const &
     std::string, int, int &&, char &&
 
 
@@ -205,13 +205,13 @@ run_show(     TN_show_details_full(v)                    )
 ```
 
     type_name::full(v)
-    std::__cxx11::list<int, std::allocator<int> >&
+    std::__cxx11::list<int, std::allocator<int> > &
     
     type_name::full<decltype(v)>()
     std::__cxx11::list<int, std::allocator<int> >
     
     type_name::show_details_full(v)
-    [std::__cxx11::list<int, std::allocator<int> >&] = [1, 2, 3, 4, 5]
+    [std::__cxx11::list<int, std::allocator<int> > &] = [1, 2, 3, 4, 5]
     
     TN_type_name_full(v)
     std::__cxx11::list<int, std::allocator<int> >
@@ -232,7 +232,7 @@ run_show(     type_name::show_details(my_set)                    )
 ```
 
     type_name::show_details_full(my_set)
-    [std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >&] = [Hello, There]
+    [std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > &] = [Hello, There]
     
     type_name::show_details(my_set)
     std::set<std::string> & = [Hello, There]
@@ -310,7 +310,7 @@ If we try to get the type of this lambda via `type_name_full`, we do not get muc
 std::cout << type_name::full<decltype(mystery_lambda)>();
 ```
 
-    __cling_Un1Qu38(void*)::$_0
+    __cling_Un1Qu38(void *)::$_0
 
 This is because "mystery_lambda" is actually a instance of a hidden class. We are actually looking for the signature of the operator() of this class. `type_lambda_clean` is able to extract the type of this operator and to display it in a readable way.
 
