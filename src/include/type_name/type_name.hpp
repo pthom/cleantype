@@ -14,7 +14,22 @@ namespace type_name
 
     // * `type_name::full<T>()` is a function that will return a string containing
     //    the full type of a variable.
+    //    Use it with `type_name::full<decltype(var)>()`
+    //    Note:
+    //      * It will add a reference by default so that
+    //         int v = 5; type_name::full(v) will return "int&"
+    //         => use the macro tn_type_name_full() if you want to avoid this
     template <class T> std::string full();
+
+    // * `type_name::full<T>(T)` is a an easier version, using an instance of the type.
+    //    Notes:
+    //      * It will add a reference by default so that
+    //         int v = 5; type_name::full(v) will return "int&"
+    //         => use the macro tn_type_name_full() if you want to avoid this
+    //      * It is not able to output correctly r-value references
+    //          For this, use `type_name::full<decltype(var)>()`
+    template <class T> std::string full(T &&v);
+
     // * `type_name::show_details_full(T && v)` is a function that will return a string containing
     //    the full type of a variable, as well as its content
     template <class T> std::string show_details_full(T && v);

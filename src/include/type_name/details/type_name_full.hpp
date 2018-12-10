@@ -47,6 +47,11 @@ namespace type_name
     }
 
 
+    template <class T> std::string full(T &&v) {
+        return internal::impl_full<decltype(v)>();
+    }
+
+
     template <class T> std::string show_details_full(T && v) {
         return std::string("[") + full<T>() + "]" + " = " + fp::show(v);
     }
@@ -56,29 +61,19 @@ namespace type_name
     // Start of public API
     //////////////////////////////
 
-    // * `type_name::full<T>()` is a function that will return a string containing
-    //    the full type of a variable.
     template <class T> std::string full();
-    // * `type_name::show_details_full(T && v)` is a function that will return a string containing
-    //    the full type of a variable, as well as its content
+    template <class T> std::string full(T && v);
     template <class T> std::string show_details_full(T && v);
 } // namespace type_name
 
 
-// * `tn_type_name_full(var)` is a macro that will also return the full type,
-//    but, it is able to also correctly display rvalue reference types.
 #define tn_type_name_full(var) type_name::full<decltype(var)>()
 
-// *  `tn_show_details_full(var)` will return a string containing the name,
-//    type and content of a variable (in this case, the underlying type of 'var'
-//    has to have an 'ostream & operator<<')
 #define tn_show_details_full(var) \
         std::string("[") + tn_type_name_full(var) + "] " + #var \
         + " = " \
         + fp::show(var)
 
-// * `tn_show_details_full_cont` is a version of tn_show_details_full for complex containers
-//    like "std::map". "cont" stands for "container".
 #define tn_show_details_full_cont(var) \
         std::string("[") + tn_type_name_full(var) + "] " + #var \
         + " = " \
