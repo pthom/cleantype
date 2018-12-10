@@ -162,6 +162,10 @@ std::cout << type_name::clean<std::string, int, int &&, char &&>() << std::endl;
     std::string, int, int &&, char &&
 
 
+### Configuration of the clean types
+
+You can customize the suppressions and replacements inside [type_name/type_name_configuration.hpp](type_name/type_name_configuration.hpp)
+
 ## Full type names
 * `type_name::full<T...>()` is a function that will return a string containing
    the full type. It also works with packs of types. Use it with "type_name::full<decltype(var)>()"<br/>
