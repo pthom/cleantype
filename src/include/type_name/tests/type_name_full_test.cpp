@@ -12,7 +12,7 @@ TEST_CASE("type_name_full_test")
         // The function type_name::full will add a reference
         // (since the arg is passed by universal reference (&&))
         REQUIRE_EQ(type_name::full(v),
-        "char&"
+        "char &"
         );
         // The macro will output the exact type
         REQUIRE_EQ(TN_type_name_full(v),
@@ -24,10 +24,10 @@ TEST_CASE("type_name_full_test")
         char a = 5;
         char &v = a;
         REQUIRE_EQ(type_name::full(v),
-        "char&"
+        "char &"
         );
         REQUIRE_EQ(TN_type_name_full(v),
-        "char&"
+        "char &"
         );
     }
     {
@@ -35,43 +35,40 @@ TEST_CASE("type_name_full_test")
         char a = 5;
         const char &v = a;
         REQUIRE_EQ(type_name::full(v),
-        "char const&"
+        "char const &"
         );
         REQUIRE_EQ(TN_type_name_full(v),
-        "char const&"
+        "char const &"
         );
     }
     {
         // Pointer to const
-#ifndef _MSC_VER // FIXME : msvc return "char const *&" (i.e with a space)
+ // FIXME : msvc return "char const *&" (i.e with a space)
         char a = 5;
         const char *v = &a;
         REQUIRE_EQ(type_name::full(v),
-        "char const*&"
+        "char const * &"
         );
         REQUIRE_EQ(TN_type_name_full(v),
-        "char const*"
+        "char const *"
         );
-#endif
     }
     {
-#ifndef _MSC_VER
         // Const pointer (but modifiable content)
         char a = 5;
         char * const v = &a;
         REQUIRE_EQ(type_name::full(v),
-        "char* const&"
+        "char * const &"
         );
         REQUIRE_EQ(TN_type_name_full(v),
-        "char* const"
+        "char * const"
         );
-#endif
     }
     {
         // Volatile
         volatile char v = 5;
         REQUIRE_EQ(type_name::full(v),
-        "char volatile&"
+        "char volatile &"
         );
         REQUIRE_EQ(TN_type_name_full(v),
         "char volatile"
@@ -96,7 +93,7 @@ TEST_CASE("type_name_full_r_value_references")
         // with a standard value
         char v = 5;
         require_eq_typename_pair(output_received_type(v),
-        { "char&", "char&"}
+        { "char &", "char &"}
         );
     }
     // with a reference
@@ -104,7 +101,7 @@ TEST_CASE("type_name_full_r_value_references")
         char a = 5;
         char &v = a;
         require_eq_typename_pair(output_received_type(v),
-        { "char&", "char&"}
+        { "char &", "char &"}
         );
     }
     // with a const reference
@@ -112,14 +109,14 @@ TEST_CASE("type_name_full_r_value_references")
         char a = 5;
         const char &v = a;
         require_eq_typename_pair(output_received_type(v),
-        { "char const&", "char const&"}
+        { "char const &", "char const &"}
         );
     }
     // with an r-value reference
     {
         std::string s("hello there, how are you. This is not a short string");
         require_eq_typename_pair(output_received_type(static_cast<char>(42)),
-        { "char&&", "char&" }
+        { "char &&", "char &" }
         );
     }
 
@@ -173,25 +170,22 @@ TEST_CASE("type_name_full_multiple")
          char, char const>(
         "char, char const");
     check_multiple_args<
-         char&, char const& >(
-        "char&, char const&"
+         char &, char const & >(
+        "char &, char const &"
     );
     check_multiple_args<
-         char&&>(
-        "char&&"
+         char &&>(
+        "char &&"
     );
     check_multiple_args<
-         char&&>(
-        "char&&"
+         char &&>(
+        "char &&"
     );
 
-#ifndef _MSC_VER
-    // FIXME : MSVC adds spaces "char *, char const *, char * const"
     check_multiple_args<
-         char*, char const*, char* const >(
-        "char*, char const*, char* const"
+         char *, char const *, char * const >(
+        "char *, char const *, char * const"
     );
-#endif
 }
 
 
@@ -215,10 +209,11 @@ TEST_CASE("type_name_full_multiple_fromvalues")
         type_name::full(static_cast<char>(1), static_cast<char>(1)),
         "char, char"
     );
-#ifndef _MSC_VER
+    std::string tst = type_name::full(static_cast<char>(1), "hello");
+#ifndef _MSC_VER // msvc emits "char, char const[6] const &"
     REQUIRE_EQ(
         type_name::full(static_cast<char>(1), "hello"),
-        "char, char [6] const&"
+        "char, char[6] const &"
     );
 #endif
     {

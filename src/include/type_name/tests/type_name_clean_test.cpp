@@ -27,9 +27,7 @@ TEST_CASE("TN_show_details")
       { "c", 3 }
       } };
     auto t = TN_show_details_cont(v);
-#ifndef _MSC_VER // WIP !!!             "[std::map<std::string,int>] v = [(a, 1), (b, 2), (c, 3)]"
     REQUIRE_EQ(TN_show_details_cont(v), "[std::map<std::string, int>] v = [(a, 1), (b, 2), (c, 3)]");
-#endif
   }
   {
     std::vector<std::string> v{ {

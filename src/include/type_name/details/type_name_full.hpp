@@ -15,6 +15,45 @@ namespace type_name
 {
     namespace internal
     {
+        inline std::string remove_spaces_before(const char token, const std::string & str)
+        {
+            std::string result;
+            bool space_before = false;
+            for (auto c : str)
+            {
+                if ( (c == token) && space_before )
+                {
+                    result.pop_back();
+                }
+                result = result + c;
+
+                if (c == ' ')
+                    space_before = true;
+                else
+                    space_before = false;
+
+            }
+            return result;
+        }
+
+
+        inline std::string insert_spaces_before(const char token, const std::string & str)
+        {
+            std::string result;
+            bool space_or_same_token_before = true;
+            for (auto c : str)
+            {
+                if ((c == token) && !(space_or_same_token_before))
+                    result = result + " ";
+                result = result + c;
+                if ((c == ' ') || (c == token))
+                    space_or_same_token_before = true;
+                else
+                    space_or_same_token_before = false;
+            }
+            return result;
+        }
+
         template <class T> std::string impl_full()
         {
             typedef typename std::remove_reference<T>::type TR;
@@ -37,6 +76,12 @@ namespace type_name
                 r += "&";
             else if (std::is_rvalue_reference<T>::value)
                 r += "&&";
+
+            r = fp::replace_tokens("*&", "* &", r);
+            r = fp::replace_tokens("&*", "& *", r);
+            r = insert_spaces_before('&', r);
+            r = insert_spaces_before('*', r);
+            r = remove_spaces_before('[', r);
             return r;
         }
     } // namespace internal
