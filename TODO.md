@@ -1,12 +1,14 @@
 
 * [X] template <class T> std::string full(T)
-    * [ ] doc
+    * [X] doc
 * [X] <Args...> template <typename... Args> std::string full()
-    * [ ] doc
+    * [X] doc
 
 * [ ] Doc
-    * [ ] Script deploy(bash function)
+    * [X] Script deploy(bash function)
     * [ ] Mention beta / look for help
+
+* [ ] Windows build fails
 
 * Check references: (same, and for compile time)
     * [ ] boost::hana::experimental::type_name
