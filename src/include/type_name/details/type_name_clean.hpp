@@ -149,7 +149,7 @@ namespace type_name
 
             std::string typ_namecleaned = remove_struct_class(
                 remove_extra_namespaces(typ_name_trimmed));
-            typ_namecleaned = remove_struct_class(typ_namecleaned);
+            typ_namecleaned = remove_custom(typ_namecleaned);
 
             code_pair_tree template_tree = parse_template_tree(typ_namecleaned);
             fp::fp_add::tree_transform_leafs_depth_first_inplace(trim_spaces_inplace, template_tree);

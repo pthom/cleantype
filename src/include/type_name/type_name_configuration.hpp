@@ -27,6 +27,7 @@ namespace type_name
 
         // add your custom suppressions here
         std::vector<std::string> suppress_custom_ = {
+            " __ptr64"
         };
 
         // these node are suppressed after parse of the template tree of a type
