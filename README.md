@@ -20,7 +20,7 @@ Display **readable** types and contents for C++ variables and lambdas.
     </td>
     <td>
         Try this online!
-        <a href="https://mybinder.org/v2/gh/pthom/Cling_Repl_Demo/typename?filepath=notebooks%2Ftypename%2Ftypename.ipynb"> 
+        <a href="https://mybinder.org/v2/gh/pthom/type_name/master?filepath=notebooks%2Ftypename%2Ftypename.ipynb"> 
             <img src="https://mybinder.org/badge_logo.svg" /> 
         </a>
     </tr>
@@ -36,7 +36,6 @@ However it has several limitations:
  ````
  std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >
  ````
- 
 
 This library tries to overcomes some of these limitations. It is composed mainly of C++11 / C++14 functions. It also contains some macros in order to be able to display rvalue reference type, as well as variables names. Macros are prepended with a suffix 'm_'.
 
@@ -52,6 +51,7 @@ You can also try this directly inside [binder](https://mybinder.org/) : click on
 // Special macro to change the include path (this is required for the binder demo)
 #pragma cling add_include_path("./include")
 #include <type_name/type_name.hpp>
+
 // The includes below are not required, they are just used for the purpose of this manual
 #include <future> 
 #include <numeric>
