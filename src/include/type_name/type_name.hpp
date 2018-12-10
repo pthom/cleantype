@@ -12,27 +12,24 @@ namespace type_name
     // full types
     /////////////////////////
 
-    // * `type_name::full<T>()` is a function that will return a string containing
-    //    the full type of a variable.
+    // * `type_name::full<T...>()` is a function that will return a string containing
+    //    the full type. It also works with packs of types.
     //    Use it with `type_name::full<decltype(var)>()`
     //    Note:
     //      * It will add a reference by default so that
     //         int v = 5; type_name::full(v) will return "int&"
     //         => use the macro tn_type_name_full() if you want to avoid this
-    template <class T> std::string full();
 
-    // * `type_name::full<T>(T)` is a an easier version, using an instance of the type.
+    // * `type_name::full<T...>(t...)` is a an easier version, using an instance of the type.
     //    Notes:
     //      * It will add a reference by default so that
     //         int v = 5; type_name::full(v) will return "int&"
     //         => use the macro tn_type_name_full() if you want to avoid this
     //      * It is not able to output correctly r-value references
     //          For this, use `type_name::full<decltype(var)>()`
-    template <class T> std::string full(T &&v);
 
     // * `type_name::show_details_full(T && v)` is a function that will return a string containing
     //    the full type of a variable, as well as its content
-    template <class T> std::string show_details_full(T && v);
 
     // * `tn_type_name_full(var)` is a macro that will also return the full type,
     //    but, it is able to also correctly display rvalue reference types.
@@ -103,9 +100,6 @@ namespace type_name
     // *  `tn_type_lamda_generic_fromparams_XXX(lambda, arg1, arg2, ...)` is a macro that will return a string containing the
     //     signature of a generic lambda where you do not specify the args type, instead you give example of these types.
     //     (XXX is the number of params of the lambda, and can vary from 1 to 5).
-
-
-
 
 }
 

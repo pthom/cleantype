@@ -140,29 +140,92 @@ TEST_CASE("tn_type_name_full")
 }
 
 
+template<typename... Args>
+struct TemplateClass
+{
+    static std::string full_type() {
+        return type_name::full<Args...>();
+    }
+};
 
-#define COMMA ,
+
+template<typename... Args>
+void check_multiple_args(const std::string & expected)
+{
+    REQUIRE_EQ(
+        type_name::full<Args...>(),
+        expected
+    );
+    REQUIRE_EQ(
+        TemplateClass<Args...>::full_type(),
+        expected
+    );
+}
+
 
 TEST_CASE("type_name_full_multiple")
 {
+    check_multiple_args<
+         int, int const>(
+        "int, int const");
+    check_multiple_args<
+         int&, int const& >(
+        "int&, int const&"
+    );
+    check_multiple_args<
+         int&&>(
+        "int&&"
+    );
+    check_multiple_args<
+         int&&>(
+        "int&&"
+    );
+    check_multiple_args<
+         int*, int const*, int* const >(
+        "int*, int const*, int* const"
+    );
+}
+
+
+template<typename... Args>
+void check_multiple_args_fromvalues(const std::string & expected, Args... args)
+{
     REQUIRE_EQ(
-        type_name::full<int, int const>(),
-                       "int, int const"
+        type_name::full(args...),
+        expected
+    );
+}
+
+
+TEST_CASE("type_name_full_multiple_fromvalues")
+{
+    REQUIRE_EQ(
+        type_name::full(1),
+        "int"
     );
     REQUIRE_EQ(
-        type_name::full<int&, int const& >(),
-                       "int&, int const&"
+        type_name::full(1, 1),
+        "int, int"
     );
     REQUIRE_EQ(
-        type_name::full<int&&>(),
-                       "int&&"
+        type_name::full(1, "hello"),
+        "int, char [6] const&"
     );
-    REQUIRE_EQ(
-        type_name::full<int&&>(),
-                        "int&&"
-    );
-    REQUIRE_EQ(
-        type_name::full<int*, int const*, int* const >(),
-                       "int*, int const*, int* const"
-    );
+
+    {
+        // Three params and perfect forwarding -> fail !
+        // This fails because it is on the third param
+        // See possible leads:
+        // http://www.cplusplus.com/reference/tuple/forward_as_tuple/
+        // +
+        // https://stackoverflow.com/questions/1198260/iterate-over-tuple
+        int a = 5;
+        int &v = a;
+        int &v2 = a;
+        int const& c = a;
+        // REQUIRE_EQ(type_name::full(1, 2, c),
+        // "int, int, int const&" --> "int, int, int" !!!
+        // );
+    }
+
 }
