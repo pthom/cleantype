@@ -247,26 +247,6 @@ This is because "mystery_lambda" is actually a instance of a hidden class. We ar
 
 ### Just for fun (sic...), a comparison of `clean` vs `full` lambda type
 
-
-```c++
-{
-auto f = [](const std::set<std::string> & v) {
-    return  std::make_pair(
-        *v.begin(),
-        v.size()
-        );
-};
-
-std::cout << "(Clean) - " << show_details_lambda(f) << "\n\n";
-std::cout << "(Full)  - " << show_details_lambda_full(f) << std::endl;
-}
-```
-
-    (Clean) - [lambda: (std::set<std::string> const &) -> std::pair<std::string, unsigned long>] f
-    
-    (Full)  - [lambda: (std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&) -> std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, unsigned long> ] f
-
-
 # Identify the signature of generic lambdas
 
 * `type_name::lambda_generic_clean<Args...>(LambdaFn fn)` is a function that will return a string containing
