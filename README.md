@@ -28,7 +28,6 @@ Display **readable** types and contents for C++ variables and lambdas.
 
 In C++, [typeid.name()](https://en.cppreference.com/w/cpp/language/typeid) is able to display the type of variables.
 However it has several limitations:
-Hello
 
 * `const`, `volatile`, `&&`qualifiers are ignored
 * if cannot identify the signature of lambdas functions
@@ -46,6 +45,15 @@ This library tries to overcomes some of these limitations. It is composed mainly
 Then, include `type_name/type_name.hpp`.
 
 You can also try this directly inside [binder](https://mybinder.org/) : click on the "launch binder" at the top of this page. Beware, it require about 2 minutes to load; but then you will be able to run the code live from your browser!
+
+# About this manual
+
+This manual is written using [cling](https://root.cern.ch/cling), [xeus cling](https://xeus-cling.readthedocs.io/en/latest/) and [jupyter notebook](https://jupyter.org/).
+
+The code that you read in this manual is real live code that can be executed inside jupyter notebook. Click on the "launch binder" icon at the top if you want to try it : you will have to click on the "Run" button, in order to execute each cell.
+
+The line `#pragma cling add_include_path` below is a special "cling" pragma, that will change the include path. 
+Beside this, everything is standard C++.
 
 
 ```c++
@@ -73,15 +81,29 @@ You can also try this directly inside [binder](https://mybinder.org/) : click on
 
  ## Readable type names 
                  
-* `type_name::clean<T>()` is a function that will return a string containing
-   the readable type of a variable.
+* `type_name::clean<T...>()` is a function that will return a string containing
+   a readable type, for a given type or pack of types
+   Use it with "type_name::clean<decltype(var)>()"<br/>
+   Note: It will add a reference by default so that "int v = 5; type_name::clean(v)" will return "int&". 
+   Use the macro tn_type_name_clean() if you want to avoid this
+
+* `type_name::clean<T...>(t...)` is a an easier version, using an instance of the type.<br/>
+    Notes:
+     * It will add a reference. Use the macro tn_type_name_clean() if you want to avoid this
+     * It is not able to output correctly r-value references. For this, use `type_name::clean<decltype(var)>()`
+
 * `type_name::show_details(T && v)` is a function that will return a string containing
    the readable type of a variable, as well as its content
+
 * `tn_type_name_clean(var)` is a macro that will also return the full type,
    but, it is able to also correctly display rvalue reference types.
+
 *  `tn_show_details(var)` is a macro that will return a string containing the name,
    type and content of a variable (in this case, the underlying type of 'var'
    has to have an 'ostream & operator<<')
+
+* `tn_show_details_cont` (macro) is a version of tn_show_details for complex containers
+   like "std::map". "cont" stands for "container".
 
 ### Examples
 
@@ -99,12 +121,16 @@ auto v = my_range(5);
 
 
 ```c++
+run_show(     type_name::clean(v)                   )
 run_show(     type_name::clean<decltype(v)>()       )
 run_show(     type_name::show_details(v)            )
 run_show(     tn_type_name_clean(v)                 )
 run_show(     tn_show_details(v)                    )
 ```
 
+    type_name::clean(v)
+    std::list<int> &
+    
     type_name::clean<decltype(v)>()
     std::list<int>
     
@@ -119,26 +145,59 @@ run_show(     tn_show_details(v)                    )
     
 
 
+### Examples with arguments pack
+
+
+```c++
+std::cout << type_name::clean(1, "Hello") << std::endl;
+std::cout << type_name::clean<std::string, int, int &&, char &&>() << std::endl;
+```
+
+    int, char [6] const &
+    std::string, int, int &&, char &&
+
+
 ## Full type names
-* `type_name::full<T>()` is a function that will return a string containing
-   the full type of a variable.
+* `type_name::full<T...>()` is a function that will return a string containing
+   the full type. It also works with packs of types. Use it with "type_name::full<decltype(var)>()"<br/>
+   It will add a reference by default so that "int v = 5; type_name::full(v)" will return "int&". 
+   Use the macro tn_type_name_full() if you want to avoid this
+
+* `type_name::full<T...>(t...)` is a an easier version, using an instance of the type.<br/>
+   Notes:
+     * It will add a reference by default so that
+        int v = 5; type_name::full(v) will return "int&"
+        => use the macro tn_type_name_full() if you want to avoid this
+     * It is not able to output correctly r-value references
+         For this, use `type_name::full<decltype(var)>()`
+
 * `type_name::show_details_full(T && v)` is a function that will return a string containing
    the full type of a variable, as well as its content
+
 * `tn_type_name_full(var)` is a macro that will also return the full type,
    but, it is able to also correctly display rvalue reference types.
+
 *  `tn_show_details_full(var)` is a macro that will return a string containing the name,
    type and content of a variable (in this case, the underlying type of 'var'
    has to have an 'ostream & operator<<')
 
+* `tn_show_details_full_cont` is a version of tn_show_details_full for complex containers
+   like "std::map". "cont" stands for "container".
+
+
 
 
 ```c++
+run_show(     type_name::full(v)                         )
 run_show(     type_name::full<decltype(v)>()             )
 run_show(     type_name::show_details_full(v)            )
 run_show(     tn_type_name_full(v)                       )
 run_show(     tn_show_details_full(v)                    )
 ```
 
+    type_name::full(v)
+    std::__cxx11::list<int, std::allocator<int> >&
+    
     type_name::full<decltype(v)>()
     std::__cxx11::list<int, std::allocator<int> >
     
