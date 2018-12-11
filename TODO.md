@@ -2,6 +2,8 @@
 * [ ] fplus
    * [ ] polyfill show_cont / remove include
      * [ ] is show_cont really needed ? Test and remove / adjust doc if needed 
+        ==> it is needed for unknwon containers only
+        * [ ] implem show_cont and show for vector, set, deque, map, etc
    * [ ] string_tree is not needed -> remove dupl
    * [ ] post suggestion / additions
 * [ ] code-ballads
