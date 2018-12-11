@@ -1,22 +1,16 @@
 
-* [X] template <class T> std::string full(T)
-    * [X] doc
-* [X] <Args...> template <typename... Args> std::string full()
-    * [X] doc
-
+* [ ] fplus
+   * [ ] polyfill show_cont / remove include
+   * [ ] string_tree is not needed -> remove dupl
+   * [ ] post suggestion / additions
+* [ ] code-ballads
+   * [ ] Blog wordpress ?
 * [ ] Doc
-    * [X] Script deploy(bash function)
-    * [X] Mention beta
+    * [ ] Remove zoo qualifiers (or shorten it)
+    * [ ] Add remarks / boost::hana & ctti
     * [ ] Mention look for help?
     * [ ] Article ?
     * [ ] Insertion dans ClingRepl ?
-
-* [X] Windows build fails
-    * [X] Investigate / Windows build issue
-
-* [X] make replacements customizable
-* [X] Make macros prefix configurable / impossible => switched to TN_
-
 
 
 Bugs
