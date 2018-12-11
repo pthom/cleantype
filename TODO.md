@@ -1,6 +1,7 @@
 
 * [ ] fplus
    * [ ] polyfill show_cont / remove include
+     * [ ] is show_cont really needed ? Test and remove / adjust doc if needed 
    * [ ] string_tree is not needed -> remove dupl
    * [ ] post suggestion / additions
 * [ ] code-ballads
