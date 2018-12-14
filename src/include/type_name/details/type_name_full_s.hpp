@@ -14,29 +14,46 @@
 #include <boost/hana.hpp>
 //#include <boost/hana/experimental/type_name.hpp>
 
-//#define LOG_VAR(var) std::cout << "LOG_VAR " << #var << "=" << var << std::endl;
+//#define LOG_VAR(var) std::cout << "LOG_VAR " << #var << "==>" << var << "<==" << std::endl;
 #define LOG_VAR(var)
 
 #include <boost/hana/config.hpp>
 #include <boost/hana/string.hpp>
 
-#if defined(__clang__)
-    #define TYPE_NAME_PRETTY_FUNCTION_TYPE_PREFIX "boost::hana::hana_type_copy::detail::cstring boost::hana::hana_type_copy::detail::type_name_impl2() [T = "
+
+#ifdef _MSC_VER 
+#define _TNS__PRETTY_FUNCTION__ __FUNCSIG__
 #else
-    #define TYPE_NAME_PRETTY_FUNCTION_TYPE_PREFIX "constexpr boost::hana::hana_type_copy::detail::cstring boost::hana::hana_type_copy::detail::type_name_impl2() [with T = "
+#define _TNS__PRETTY_FUNCTION__ __PRETTY_FUNCTION__
 #endif
 
-#define TYPE_NAME_PRETTY_FUNCTION_TYPE_SUFFIX "]"
 
 #if defined(__clang__)
-    #define CAN_TYPENAME_CONSTEXPR
-    #define hana_type_copy_constexpr constexpr
+    #define _TNS_PRETTY_FUNCTION_TYPE_PREFIX "boost::hana::hana_type_copy::detail::cstring boost::hana::hana_type_copy::detail::type_name_impl2() [T = "
+    #define _TNS_PRETTY_FUNCTION_TYPE_SUFFIX "]"
+#elif defined(_MSC_VER)
+    #define _TNS_PRETTY_FUNCTION_TYPE_PREFIX  "struct boost::hana::hana_type_copy::detail::cstring __cdecl boost::hana::hana_type_copy::detail::type_name_impl2<"
+#define _TNS_PRETTY_FUNCTION_TYPE_SUFFIX ">(void)"
+#else // GCC
+    #define _TNS_PRETTY_FUNCTION_TYPE_PREFIX "constexpr boost::hana::hana_type_copy::detail::cstring boost::hana::hana_type_copy::detail::type_name_impl2() [with T = "
+    #define _TNS_PRETTY_FUNCTION_TYPE_SUFFIX "]"
+#endif
+
+
+// only clang and MSVC support constexpr typename 
+#if defined(__clang__) || defined(_MSC_VER)
+    #define _TNS_CAN_CONSTEXPR
+#endif
+
+
+
+#ifdef _TNS_CAN_CONSTEXPR
+    #define _TNS_CONSTEXPR_IF_POSSIBLE constexpr
     #define hana_type_copy_sizeof(var) sizeof(var) - 1
 #else
-    #define hana_type_copy_constexpr
+    #define _TNS_CONSTEXPR_IF_POSSIBLE
     #define hana_type_copy_sizeof(var) strlen(var)
 #endif
-
 
 #include <cstddef>
 #include <utility>
@@ -51,12 +68,12 @@ BOOST_HANA_NAMESPACE_BEGIN  namespace hana_type_copy {
         // Note: We substract the null terminator from the string sizes below.
         template <typename T>
         constexpr cstring type_name_impl2() {
-            hana_type_copy_constexpr char const* pretty_function = __PRETTY_FUNCTION__;
-            hana_type_copy_constexpr std::size_t total_size = hana_type_copy_sizeof(__PRETTY_FUNCTION__);
-            hana_type_copy_constexpr std::size_t prefix_size = hana_type_copy_sizeof(TYPE_NAME_PRETTY_FUNCTION_TYPE_PREFIX);
-            hana_type_copy_constexpr std::size_t suffix_size = hana_type_copy_sizeof(TYPE_NAME_PRETTY_FUNCTION_TYPE_SUFFIX);
+            _TNS_CONSTEXPR_IF_POSSIBLE char const* pretty_function = _TNS__PRETTY_FUNCTION__;
+            _TNS_CONSTEXPR_IF_POSSIBLE std::size_t total_size = hana_type_copy_sizeof(_TNS__PRETTY_FUNCTION__);
+            _TNS_CONSTEXPR_IF_POSSIBLE std::size_t prefix_size = hana_type_copy_sizeof(_TNS_PRETTY_FUNCTION_TYPE_PREFIX);
+            _TNS_CONSTEXPR_IF_POSSIBLE std::size_t suffix_size = hana_type_copy_sizeof(_TNS_PRETTY_FUNCTION_TYPE_SUFFIX);
             LOG_VAR(pretty_function);
-            LOG_VAR(TYPE_NAME_PRETTY_FUNCTION_TYPE_PREFIX);
+            LOG_VAR(_TNS_PRETTY_FUNCTION_TYPE_PREFIX);
             LOG_VAR(total_size);
             LOG_VAR(prefix_size);
             LOG_VAR(suffix_size);
@@ -74,7 +91,7 @@ BOOST_HANA_NAMESPACE_BEGIN  namespace hana_type_copy {
 
     template <typename T>
     auto type_name() {
-        #ifdef CAN_TYPENAME_CONSTEXPR
+        #ifdef _TNS_CAN_CONSTEXPR
             constexpr auto name = detail::type_name_impl2<T>();
             return detail::type_name_impl1<T>(std::make_index_sequence<name.length>{});
         #else
@@ -190,8 +207,9 @@ namespace type_name_s
             // will make the compiler fail (no call operator), but you can read
             // the name in the output if you squint your eyes
             //constexpr auto t = boost::hana::experimental::type_name<T>()();
-            return boost::hana::hana_type_copy::type_name<T>().c_str();
-            //return std::string("");
+            std::string r =  boost::hana::hana_type_copy::type_name<T>().c_str();
+            std::string r_trim = fp::trim(' ', r);
+            return r_trim;
         }
 
 

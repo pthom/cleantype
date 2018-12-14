@@ -9,4 +9,13 @@ add_test(NAME typename_test COMMAND typename_test)
 message("doctest_INCLUDES=${doctest_INCLUDES}")
 target_include_directories(typename_test PRIVATE ${doctest_INCLUDES})
 target_link_libraries(typename_test PRIVATE CONAN_PKG::boost)
+
+if (MSVC)
+    target_compile_options(typename_test PRIVATE /std:c++latest)
+    target_compile_definitions(typename_test PRIVATE 
+        -D_SILENCE_CXX17_IS_LITERAL_TYPE_DEPRECATION_WARNING 
+        -D_SILENCE_CXX17_RESULT_OF_DEPRECATION_WARNING
+        )
+endif()
+
 source_group(TREE ${CMAKE_SOURCE_DIR}/src/include/ FILES ${files})
