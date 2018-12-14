@@ -14,14 +14,14 @@
 #include <boost/hana.hpp>
 //#include <boost/hana/experimental/type_name.hpp>
 
-//#define LOG_VAR(var) std::cout << "LOG_VAR " << #var << "==>" << var << "<==" << std::endl;
-#define LOG_VAR(var)
+//#define TNS_LOG_VAR(var) std::cout << "LOG_VAR " << #var << "==>" << var << "<==" << std::endl;
+#define TNS_LOG_VAR(var)
 
 #include <boost/hana/config.hpp>
 #include <boost/hana/string.hpp>
 
 
-#ifdef _MSC_VER 
+#ifdef _MSC_VER
 #define _TNS__PRETTY_FUNCTION__ __FUNCSIG__
 #else
 #define _TNS__PRETTY_FUNCTION__ __PRETTY_FUNCTION__
@@ -40,7 +40,7 @@
 #endif
 
 
-// only clang and MSVC support constexpr typename 
+// only clang and MSVC support constexpr typename
 #if defined(__clang__) || defined(_MSC_VER)
     #define _TNS_CAN_CONSTEXPR
 #endif
@@ -72,12 +72,12 @@ BOOST_HANA_NAMESPACE_BEGIN  namespace hana_type_copy {
             _TNS_CONSTEXPR_IF_POSSIBLE std::size_t total_size = hana_type_copy_sizeof(_TNS__PRETTY_FUNCTION__);
             _TNS_CONSTEXPR_IF_POSSIBLE std::size_t prefix_size = hana_type_copy_sizeof(_TNS_PRETTY_FUNCTION_TYPE_PREFIX);
             _TNS_CONSTEXPR_IF_POSSIBLE std::size_t suffix_size = hana_type_copy_sizeof(_TNS_PRETTY_FUNCTION_TYPE_SUFFIX);
-            LOG_VAR(pretty_function);
-            LOG_VAR(_TNS_PRETTY_FUNCTION_TYPE_PREFIX);
-            LOG_VAR(total_size);
-            LOG_VAR(prefix_size);
-            LOG_VAR(suffix_size);
-            LOG_VAR(pretty_function + prefix_size);
+            TNS_LOG_VAR(pretty_function);
+            TNS_LOG_VAR(_TNS_PRETTY_FUNCTION_TYPE_PREFIX);
+            TNS_LOG_VAR(total_size);
+            TNS_LOG_VAR(prefix_size);
+            TNS_LOG_VAR(suffix_size);
+            TNS_LOG_VAR(pretty_function + prefix_size);
             return {pretty_function + prefix_size, total_size - prefix_size - suffix_size};
             //return {pretty_function, total_size};
         }
@@ -97,11 +97,11 @@ BOOST_HANA_NAMESPACE_BEGIN  namespace hana_type_copy {
         #else
             auto as_cstring = detail::type_name_impl2<T>();
             std::string name_full = std::string(as_cstring.ptr);
-            LOG_VAR(as_cstring.ptr);
-            LOG_VAR(as_cstring.length);
-            LOG_VAR(name_full);
+            TNS_LOG_VAR(as_cstring.ptr);
+            TNS_LOG_VAR(as_cstring.length);
+            TNS_LOG_VAR(name_full);
             std::string name_cut = name_full.substr(0, as_cstring.length);
-            LOG_VAR(name_cut);
+            TNS_LOG_VAR(name_cut);
             return name_cut;
         #endif
     }
@@ -282,7 +282,6 @@ namespace type_name_s
        //constexpr auto t = boost::hana::experimental::type_name<T>()();
        //static_assert(internal::impl_full<T...>() , "truc");
          static_assert(boost::hana::hana_type_copy::type_name<T>(), "truc");
-         
      }
 
 } // namespace type_name

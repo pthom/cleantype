@@ -18,7 +18,7 @@
 
 TEST_CASE("ERROR_full")
 {
-    // type_name_s::ERROR_full<int>();
+    //type_name_s::ERROR_full<int>();
 }
 
 TEST_CASE("type_name_full_test_s")
