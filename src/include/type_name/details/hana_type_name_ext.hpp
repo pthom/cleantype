@@ -1,10 +1,8 @@
+#include <cstddef>
+#include <utility>
+#include <cstring>
 #include <boost/hana/config.hpp>
 #include <boost/hana/string.hpp>
-
-
-// Used only to help debug
-//#define TNS_LOG_VAR(var) std::cout << "LOG_VAR " << #var << "==>" << var << "<==" << std::endl;
-#define TNS_LOG_VAR(var)
 
 
 #ifdef _MSC_VER
@@ -32,18 +30,15 @@
 #endif
 
 
-
 #ifdef _TNS_CAN_CONSTEXPR
     #define _TNS_CONSTEXPR_IF_POSSIBLE constexpr
-    #define hana_type_copy_sizeof(var) sizeof(var) - 1
+    #define _HANA_SIZEOF_OR_STRLEN(var) sizeof(var) - 1
 #else
     #define _TNS_CONSTEXPR_IF_POSSIBLE
-    #define hana_type_copy_sizeof(var) strlen(var)
+    #define _HANA_SIZEOF_OR_STRLEN(var) strlen(var)
 #endif
 
-#include <cstddef>
-#include <utility>
-#include <cstring>
+
 BOOST_HANA_NAMESPACE_BEGIN  namespace hana_type_ext {
     namespace detail {
         struct cstring {
@@ -51,21 +46,13 @@ BOOST_HANA_NAMESPACE_BEGIN  namespace hana_type_ext {
             std::size_t length;
         };
 
-        // Note: We substract the null terminator from the string sizes below.
         template <typename T>
         constexpr cstring type_name_impl2() {
             _TNS_CONSTEXPR_IF_POSSIBLE char const* pretty_function = _TNS__PRETTY_FUNCTION__;
-            _TNS_CONSTEXPR_IF_POSSIBLE std::size_t total_size = hana_type_copy_sizeof(_TNS__PRETTY_FUNCTION__);
-            _TNS_CONSTEXPR_IF_POSSIBLE std::size_t prefix_size = hana_type_copy_sizeof(_TNS_PRETTY_FUNCTION_TYPE_PREFIX);
-            _TNS_CONSTEXPR_IF_POSSIBLE std::size_t suffix_size = hana_type_copy_sizeof(_TNS_PRETTY_FUNCTION_TYPE_SUFFIX);
-            // TNS_LOG_VAR(pretty_function);
-            // TNS_LOG_VAR(_TNS_PRETTY_FUNCTION_TYPE_PREFIX);
-            // TNS_LOG_VAR(total_size);
-            // TNS_LOG_VAR(prefix_size);
-            // TNS_LOG_VAR(suffix_size);
-            // TNS_LOG_VAR(pretty_function + prefix_size);
+            _TNS_CONSTEXPR_IF_POSSIBLE std::size_t total_size = _HANA_SIZEOF_OR_STRLEN(_TNS__PRETTY_FUNCTION__);
+            _TNS_CONSTEXPR_IF_POSSIBLE std::size_t prefix_size = _HANA_SIZEOF_OR_STRLEN(_TNS_PRETTY_FUNCTION_TYPE_PREFIX);
+            _TNS_CONSTEXPR_IF_POSSIBLE std::size_t suffix_size = _HANA_SIZEOF_OR_STRLEN(_TNS_PRETTY_FUNCTION_TYPE_SUFFIX);
             return {pretty_function + prefix_size, total_size - prefix_size - suffix_size};
-            //return {pretty_function, total_size};
         }
 
         template <typename T, std::size_t ...i>
@@ -85,11 +72,7 @@ BOOST_HANA_NAMESPACE_BEGIN  namespace hana_type_ext {
         #else
             auto as_cstring = detail::type_name_impl2<T>();
             std::string name_full = std::string(as_cstring.ptr);
-            // TNS_LOG_VAR(as_cstring.ptr);
-            // TNS_LOG_VAR(as_cstring.length);
-            // TNS_LOG_VAR(name_full);
             std::string name_cut = name_full.substr(0, as_cstring.length);
-            // TNS_LOG_VAR(name_cut);
             return name_cut;
         #endif
     }
