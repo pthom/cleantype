@@ -111,11 +111,11 @@ BOOST_HANA_NAMESPACE_BEGIN  namespace hana_type_copy {
 } BOOST_HANA_NAMESPACE_END // hana_type_copy
 
 
-
 namespace type_name_s
 {
     namespace internal
     {
+        // TODO : port to hana::string !
         inline std::string remove_spaces_before(const char token, const std::string & str)
         {
             std::string result;
@@ -138,6 +138,7 @@ namespace type_name_s
         }
 
 
+        // TODO : port to hana::string !
         inline std::string insert_spaces_before(const char token, const std::string & str)
         {
             std::string result;
@@ -155,6 +156,8 @@ namespace type_name_s
             return result;
         }
 
+
+        // TODO : port to hana::string !
         inline std::string insert_spaces_after(const char token, const std::string & str)
         {
             std::string result;
@@ -169,6 +172,8 @@ namespace type_name_s
             return result;
         }
 
+
+        // TODO : port to hana::string !
         inline std::string insert_spaces_before_after(const char token, const std::string & str)
         {
             std::string result = insert_spaces_before(token, str);
@@ -178,38 +183,8 @@ namespace type_name_s
 
 
         template<typename T>
-        std::string impl_typeid_native()
-        {
-            typedef typename std::remove_reference<T>::type TR;
-            std::unique_ptr<char, void(*)(void*)> own
-                (
-        #ifndef _MSC_VER
-                        abi::__cxa_demangle(typeid(TR).name(), nullptr,
-                                                nullptr, nullptr),
-        #else
-                        nullptr,
-        #endif
-                        std::free
-                );
-            std::string r = own != nullptr ? own.get() : typeid(TR).name();
-            if (std::is_const<TR>::value)
-                r =  r + " const";
-            if (std::is_volatile<TR>::value)
-                r = r + " volatile" ;
-            if (std::is_lvalue_reference<T>::value)
-                r += "&";
-            else if (std::is_rvalue_reference<T>::value)
-                r += "&&";
-            return r;
-        }
-
-
-        template<typename T>
         auto impl_typeid_hana()
         {
-            //std::string r =  boost::hana::hana_type_copy::type_name<T>().c_str();
-            //std::string r_trim = fp::trim(' ', r);
-            //return r_trim;
             return boost::hana::hana_type_copy::type_name<T>();
         }
 
@@ -236,7 +211,6 @@ namespace type_name_s
         }
 
 
-
         template <typename... T> std::string impl_full()
         {
             std::string r = impl_typeid_recursive<T...>().c_str();
@@ -257,24 +231,11 @@ namespace type_name_s
     std::string full () {
         return type_name_s::internal::impl_full<T...>();
     }
-/*
-    template <typename First, typename Second, typename ...Rest>
-    std::string full () {
-        return type_name_s::internal::impl_full<First>()+ ", " + full<Second, Rest...>();
-    }
-*/
 
 
     template <typename... T> std::string full(T... v) {
         return internal::impl_full<T...>();
     }
-//    template <typename First, typename Second, typename ...Rest>
-//    std::string full(First && first, Second && second, Rest... rest) {
-//        return internal::impl_full<First>() + ", " + full<Second, Rest...>(
-//            std::forward<Second>(second),
-//            std::forward<Rest>(rest)...
-//        );
-//    }
 
 
     template <typename T> std::string show_details_full(T && v) {
@@ -288,7 +249,7 @@ namespace type_name_s
        // the name in the output if you squint your eyes
        //constexpr auto t = boost::hana::experimental::type_name<T>()();
        //static_assert(internal::impl_full<T...>() , "truc");
-         static_assert(boost::hana::hana_type_copy::type_name<T>(), "truc");      
+         static_assert(boost::hana::hana_type_copy::type_name<T>(), "truc");
      }
 
 } // namespace type_name
