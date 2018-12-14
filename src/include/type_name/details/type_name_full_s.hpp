@@ -275,6 +275,18 @@ namespace type_name_s
     template <typename T> std::string show_details_full(T && v) {
         return std::string("[") + full<T>() + "]" + " = " + fp::show(v);
     }
+
+
+     template<typename T>
+     void ERROR_full() {
+       // will make the compiler fail (no call operator), but you can read
+       // the name in the output if you squint your eyes
+       //constexpr auto t = boost::hana::experimental::type_name<T>()();
+       //static_assert(internal::impl_full<T...>() , "truc");
+         static_assert(boost::hana::hana_type_copy::type_name<T>(), "truc");
+         
+     }
+
 } // namespace type_name
 
 

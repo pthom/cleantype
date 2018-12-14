@@ -15,6 +15,12 @@
 #define MY_REQUIRE_EQ_STRING(a, b) REQUIRE_EQ(a, b)
 #endif
 
+
+TEST_CASE("ERROR_full")
+{
+    // type_name_s::ERROR_full<int>();
+}
+
 TEST_CASE("type_name_full_test_s")
 {
     {
