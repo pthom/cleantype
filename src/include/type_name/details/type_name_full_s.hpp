@@ -202,15 +202,12 @@ namespace type_name_s
 
 
         template<typename T>
-        std::string impl_typeid_hana()
+        auto impl_typeid_hana()
         {
-            // will make the compiler fail (no call operator), but you can read
-            // the name in the output if you squint your eyes
-            //constexpr auto t = boost::hana::experimental::type_name<T>()();
-            
-            std::string r =  boost::hana::hana_type_copy::type_name<T>().c_str();
-            std::string r_trim = fp::trim(' ', r);
-            return r_trim;
+            //std::string r =  boost::hana::hana_type_copy::type_name<T>().c_str();
+            //std::string r_trim = fp::trim(' ', r);
+            //return r_trim;
+            return boost::hana::hana_type_copy::type_name<T>();
         }
 
 
@@ -227,8 +224,8 @@ namespace type_name_s
             return impl_typeid<T>();  //std::string("");
         }
         template <typename First, typename Second, typename ...Rest>
-        std::string impl_typeid_recursive () {
-            return impl_typeid_recursive<First>() + ", " + impl_typeid_recursive<Second, Rest...>();
+        auto impl_typeid_recursive () {
+            return impl_typeid_recursive<First>() + BOOST_HANA_STRING(", ") + impl_typeid_recursive<Second, Rest...>();
         }
 
 
