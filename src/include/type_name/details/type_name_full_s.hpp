@@ -175,7 +175,7 @@ namespace type_name_s
 
 
         template<typename T>
-        auto impl_typeid_native()
+        std::string impl_typeid_native()
         {
             typedef typename std::remove_reference<T>::type TR;
             std::unique_ptr<char, void(*)(void*)> own
@@ -207,6 +207,7 @@ namespace type_name_s
             // will make the compiler fail (no call operator), but you can read
             // the name in the output if you squint your eyes
             //constexpr auto t = boost::hana::experimental::type_name<T>()();
+            
             std::string r =  boost::hana::hana_type_copy::type_name<T>().c_str();
             std::string r_trim = fp::trim(' ', r);
             return r_trim;
