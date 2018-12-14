@@ -91,7 +91,7 @@ namespace type_name_s
         template<typename T>
         auto impl_typeid_hana()
         {
-            return boost::hana::hana_type_copy::type_name<T>();
+            return boost::hana::hana_type_ext::type_name<T>();
         }
 
 
@@ -155,7 +155,7 @@ namespace type_name_s
        // the name in the output if you squint your eyes
        //constexpr auto t = boost::hana::experimental::type_name<T>()();
        //static_assert(internal::impl_full<T...>() , "truc");
-         static_assert(boost::hana::hana_type_copy::type_name<T>(), "truc");
+         static_assert(boost::hana::hana_type_ext::type_name<T>(), "truc");
      }
 
 } // namespace type_name

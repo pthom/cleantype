@@ -15,13 +15,13 @@
 
 
 #if defined(__clang__)
-    #define _TNS_PRETTY_FUNCTION_TYPE_PREFIX "boost::hana::hana_type_copy::detail::cstring boost::hana::hana_type_copy::detail::type_name_impl2() [T = "
+    #define _TNS_PRETTY_FUNCTION_TYPE_PREFIX "boost::hana::hana_type_ext::detail::cstring boost::hana::hana_type_ext::detail::type_name_impl2() [T = "
     #define _TNS_PRETTY_FUNCTION_TYPE_SUFFIX "]"
 #elif defined(_MSC_VER)
-    #define _TNS_PRETTY_FUNCTION_TYPE_PREFIX  "struct boost::hana::hana_type_copy::detail::cstring __cdecl boost::hana::hana_type_copy::detail::type_name_impl2<"
+    #define _TNS_PRETTY_FUNCTION_TYPE_PREFIX  "struct boost::hana::hana_type_ext::detail::cstring __cdecl boost::hana::hana_type_ext::detail::type_name_impl2<"
 #define _TNS_PRETTY_FUNCTION_TYPE_SUFFIX ">(void)"
 #else // GCC
-    #define _TNS_PRETTY_FUNCTION_TYPE_PREFIX "constexpr boost::hana::hana_type_copy::detail::cstring boost::hana::hana_type_copy::detail::type_name_impl2() [with T = "
+    #define _TNS_PRETTY_FUNCTION_TYPE_PREFIX "constexpr boost::hana::hana_type_ext::detail::cstring boost::hana::hana_type_ext::detail::type_name_impl2() [with T = "
     #define _TNS_PRETTY_FUNCTION_TYPE_SUFFIX "]"
 #endif
 
@@ -44,7 +44,7 @@
 #include <cstddef>
 #include <utility>
 #include <cstring>
-BOOST_HANA_NAMESPACE_BEGIN  namespace hana_type_copy {
+BOOST_HANA_NAMESPACE_BEGIN  namespace hana_type_ext {
     namespace detail {
         struct cstring {
             char const* ptr;
@@ -93,4 +93,4 @@ BOOST_HANA_NAMESPACE_BEGIN  namespace hana_type_copy {
             return name_cut;
         #endif
     }
-} BOOST_HANA_NAMESPACE_END // hana_type_copy
+} BOOST_HANA_NAMESPACE_END // hana_type_ext
