@@ -259,4 +259,25 @@ TEST_CASE("type_name_full_r_value_references")
           );
      }
 
- }
+}
+
+
+
+/*
+use with:
+
+ninja | \
+    gsed s/"', '"/""/g | \
+    gsed s/"\\\\'"/"'"/g | \
+    gsed -E s/"value of type 'boost::hana::string<'"/"\nHERE IS YOUR TYPE ==> "/g  | \
+    grep "HERE IS YOUR TYPE" | \
+    sed s/"'>' is not contextually convertible to 'bool'"//g | \
+    sed s/"HERE IS YOUR TYPE ==> "//g
+*/
+#if 0
+TEST_CASE("compile_type_typename")
+{
+    using T = std::vector<int>;
+    type_name_s::ERROR_full<T>();
+}
+#endif
