@@ -1,3 +1,5 @@
+#pragma once
+
 #include <boost/hana.hpp>
 #include <boost/hana/reverse.hpp>
 //#include <boost/hana/fwd/reverse.hpp>

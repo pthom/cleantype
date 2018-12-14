@@ -9,6 +9,7 @@
 #include <string>
 #include <cstdlib>
 #include <string>
+#include "type_name/details/hana_utils/hana_string_utils.hpp"
 #include <type_name/details/fp_polyfill/fp_polyfill.hpp>
 
 #include <boost/hana.hpp>
@@ -85,7 +86,9 @@ BOOST_HANA_NAMESPACE_BEGIN  namespace hana_type_copy {
         template <typename T, std::size_t ...i>
         auto type_name_impl1(std::index_sequence<i...>) {
             constexpr auto name = detail::type_name_impl2<T>();
-            return boost::hana::string<*(name.ptr + i)...>{};
+            auto r = boost::hana::string<*(name.ptr + i)...>{};
+            auto r_trim = hana_tn_utils::trim_string_space(r);
+            return r_trim;
         }
     } // end namespace detail
 
