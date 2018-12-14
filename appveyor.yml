@@ -6,7 +6,7 @@ branches:
   - master
 clone_folder: c:\projects\type_name
 image:
-- Visual Studio 2015
+# - Visual Studio 2015
 - Visual Studio 2017
 configuration:
 - Release
