@@ -5,8 +5,8 @@ project(type_name)
 option(BUILD_TESTS "Build tests." ON)
 option(BUILD_SHARED_LIBS "Build shared instead of static libraries." ON)
 
-# include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-# conan_basic_setup(TARGETS)
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup(TARGETS)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
