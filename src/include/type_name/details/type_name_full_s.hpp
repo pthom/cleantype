@@ -228,7 +228,11 @@ namespace type_name_s
         }
         template <typename First, typename Second, typename ...Rest>
         auto impl_typeid_recursive () {
-            return impl_typeid_recursive<First>() + BOOST_HANA_STRING(", ") + impl_typeid_recursive<Second, Rest...>();
+            #ifdef _TNS_CAN_CONSTEXPR
+                return impl_typeid_recursive<First>() + BOOST_HANA_STRING(", ") + impl_typeid_recursive<Second, Rest...>();
+            #else
+                return impl_typeid_recursive<First>() + std::string(", ") + impl_typeid_recursive<Second, Rest...>();
+            #endif
         }
 
 
@@ -284,7 +288,7 @@ namespace type_name_s
        // the name in the output if you squint your eyes
        //constexpr auto t = boost::hana::experimental::type_name<T>()();
        //static_assert(internal::impl_full<T...>() , "truc");
-         static_assert(boost::hana::hana_type_copy::type_name<T>(), "truc");
+         static_assert(boost::hana::hana_type_copy::type_name<T>(), "truc");      
      }
 
 } // namespace type_name
