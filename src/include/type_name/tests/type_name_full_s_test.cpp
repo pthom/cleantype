@@ -94,6 +94,10 @@ TEST_CASE("type_name_full_r_value_references")
         return { type_name_s::full<decltype(v)>(), type_name_s::full(v) };
     };
     auto require_eq_typename_pair = [](const TypenamePair & p1, const TypenamePair & p2 ) {
+        if (p1[0] != p2[0])
+            std::cout << "ARGGHHH" << std::endl;
+        if (p1[1] != p2[1])
+            std::cout << "ARGGHHH" << std::endl;
         MY_REQUIRE_EQ_STRING(p1[0], p2[0]);
         MY_REQUIRE_EQ_STRING(p1[1], p2[1]);
     };
@@ -102,7 +106,7 @@ TEST_CASE("type_name_full_r_value_references")
         // with a standard value
         char v = 5;
         require_eq_typename_pair(output_received_type(v),
-        { "char &", "char &"}
+        { "char &", "char"}
         );
     }
     // with a reference
@@ -110,7 +114,7 @@ TEST_CASE("type_name_full_r_value_references")
         char a = 5;
         char &v = a;
         require_eq_typename_pair(output_received_type(v),
-        { "char &", "char &"}
+        { "char &", "char"}
         );
     }
     // with a const reference
@@ -118,36 +122,36 @@ TEST_CASE("type_name_full_r_value_references")
         char a = 5;
         const char &v = a;
         require_eq_typename_pair(output_received_type(v),
-        { "const char &", "const char &"}
+        { "const char &", "char"}
         );
     }
     // with an r-value reference
     {
         std::string s("hello there, how are you. This is not a short string");
         require_eq_typename_pair(output_received_type(static_cast<char>(42)),
-        { "char &&", "char &" }
+        { "char &&", "char" }
         );
     }
 
 }
 
 
-// TEST_CASE("TNS_type_name_full")
-// {
-//     {
-//         char v = 5;
-//         MY_REQUIRE_EQ_STRING(
-//             TNS_type_name_full(v),
-//             "char"
-//          );
-//     }
-//     {
-//         MY_REQUIRE_EQ_STRING(
-//             TNS_type_name_full(static_cast<char>(42)),
-//             "char"
-//          );
-//     }
-// }
+ TEST_CASE("TNS_type_name_full")
+ {
+     {
+         char v = 5;
+         MY_REQUIRE_EQ_STRING(
+             TNS_type_name_full(v),
+             "char"
+          );
+     }
+     {
+         MY_REQUIRE_EQ_STRING(
+             TNS_type_name_full(static_cast<char>(42)),
+             "char"
+          );
+     }
+ }
 
 
 

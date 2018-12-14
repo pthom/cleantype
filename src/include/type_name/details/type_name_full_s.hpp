@@ -14,8 +14,8 @@
 #include <boost/hana.hpp>
 //#include <boost/hana/experimental/type_name.hpp>
 
-#define LOG_VAR(var) std::cout << "LOG_VAR " << #var << "=" << var << std::endl;
-//#define LOG_VAR(var)
+//#define LOG_VAR(var) std::cout << "LOG_VAR " << #var << "=" << var << std::endl;
+#define LOG_VAR(var)
 
 #include <boost/hana/config.hpp>
 #include <boost/hana/string.hpp>
@@ -28,10 +28,10 @@
 
 #define TYPE_NAME_PRETTY_FUNCTION_TYPE_SUFFIX "]"
 
-#if(0) //defined(__clang__)
+#if defined(__clang__)
     #define CAN_TYPENAME_CONSTEXPR
     #define hana_type_copy_constexpr constexpr
-    #define hana_type_copy_sizeof sizeof(var) - 1
+    #define hana_type_copy_sizeof(var) sizeof(var) - 1
 #else
     #define hana_type_copy_constexpr
     #define hana_type_copy_sizeof(var) strlen(var)
