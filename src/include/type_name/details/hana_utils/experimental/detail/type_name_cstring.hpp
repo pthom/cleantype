@@ -12,6 +12,7 @@ Distributed under the Boost Software License, Version 1.0.
 #include <type_name/details/hana_utils/experimental/detail/type_name_compiler_capabilities.hpp>
 #include <cstddef>
 #include <string>
+#include <cstring>
 
 namespace boost {
 namespace hana {
