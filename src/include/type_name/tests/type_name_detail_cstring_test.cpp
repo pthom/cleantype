@@ -55,12 +55,45 @@ template<typename... T>
 struct Template {
 };
 
+// template <typename T>
+// void check_matches(std::string const& re) {
+//     std::string name = hana::to<char const*>(hana::experimental::type_name<T>());
+//     std::regex regex{re};
+//     if (!std::regex_match(name, regex)) {
+//         std::cerr << "type name '" << name << "' does not match regex '" << re << "'" << std::endl;
+//         std::abort();
+//     }
+// }
+
+
 //////////// Actual tests Below
+
+// void original_test()
+// {
+//     // Make sure this can be obtained at compile-time
+//     BOOST_HANA_CONSTANT_CHECK(hana::equal(
+//         hana::experimental::type_name<void>(),
+//         BOOST_HANA_STRING("void")
+//     ));
+
+//     BOOST_HANA_CONSTANT_CHECK(hana::equal(
+//         hana::experimental::type_name<int>(),
+//         BOOST_HANA_STRING("int")
+//     ));
+
+//     // Make sure we get something reasonable
+//     check_matches<int const>("int const|const int");
+//     check_matches<int&>(R"(int\s*&)");
+//     check_matches<int const&>(R"(const\s+int\s*&|int\s+const\s*&)");
+//     check_matches<int(&)[]>(R"(int\s*\(\s*&\s*\)\s*\[\s*\])");
+//     check_matches<int(&)[10]>(R"(int\s*\(\s*&\s*\)\s*\[\s*10\s*\])");
+//     check_matches<Template<void, char const*>>(R"(Template<\s*void\s*,\s*(char const|const char)\s*\*\s*>)");
+//     check_matches<void(*)(int)>(R"(void\s*\(\s*\*\s*\)\s*\(\s*int\s*\))");
+// }
 
 TEST_CASE("type_name_detail_cstring_test_compile_time") {
     RUN_ONE_TYPE_TEST_COMPILE_TIME(void, "void");
     RUN_ONE_TYPE_TEST_COMPILE_TIME(char, "char");
-    RUN_ONE_TYPE_TEST_COMPILE_TIME(char &, "char&");
 
 
     // const tests : __PRETTY_FUNCTION__ seems to favor west-const
@@ -71,6 +104,7 @@ TEST_CASE("type_name_detail_cstring_test_compile_time") {
 
     // Test below cannot be run at compile time, because of different formatting for "*" and "&"
     // MSVC does not add space before * or &, gcc and clang do
+    //RUN_ONE_TYPE_TEST_COMPILE_TIME(char &, "char &");
     //RUN_ONE_TYPE_TEST_COMPILE_TIME(char * const, "char * const");
     //RUN_ONE_TYPE_TEST_COMPILE_TIME(char &&, "char &&");
     //RUN_ONE_TYPE_TEST_COMPILE_TIME(char *, "char *");

@@ -74,7 +74,7 @@ constexpr bool cstring_equal(cstring const & cs1, cstring const & cs2) {
 #ifdef _MSC_VER
         strncpy_s(sz, cs.length + 1, cs.ptr, cs.length);
 #else
-        strcnpy(sz, cs.ptr, cs.length);
+        strncpy(sz, cs.ptr, cs.length);
 #endif
         sz[cs.length] = '\0';
         std::string r(sz);
