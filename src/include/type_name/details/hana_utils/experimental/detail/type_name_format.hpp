@@ -144,6 +144,9 @@ inline std::string format_type(const std::string &str_type)
     r = detail::replace_tokens("& &", "&&", r);
     r = detail::replace_tokens("[ ]", "[]", r);
     r = detail::replace_tokens(" ,", ",", r);
+    r = detail::replace_tokens("__cdecl ", "", r);
+    r = detail::replace_tokens("struct ", "", r);
+    r = detail::replace_tokens("class ", "", r);
     r = detail::trim(' ', r);
     return r;
 }

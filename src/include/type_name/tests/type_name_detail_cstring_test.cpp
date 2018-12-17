@@ -112,16 +112,9 @@ TEST_CASE("type_name_detail_cstring_test_compile_time") {
     //RUN_ONE_TYPE_TEST_COMPILE_TIME(const char &, "const char &");
     //RUN_ONE_TYPE_TEST_COMPILE_TIME(const char *, "const char *");
 
-#ifndef _MSC_VER
-    RUN_ONE_TYPE_TEST_RUN_TIME(Template<char>, "Template<char>");
-#else
-    RUN_ONE_TYPE_TEST_RUN_TIME(Template<char>, "struct Template<char>");
-#endif
 }
 
 TEST_CASE("type_name_detail_cstring_test_run_time") {
-    // Those test might fail at compile time because of different type formatting across compilers
-    // (spaces before/after *, etc.)
     RUN_ONE_TYPE_TEST_RUN_TIME(char * const, "char * const");
     RUN_ONE_TYPE_TEST_RUN_TIME(char const *, "const char *");
 
@@ -130,6 +123,13 @@ TEST_CASE("type_name_detail_cstring_test_run_time") {
     RUN_ONE_TYPE_TEST_RUN_TIME(int const&, "const int &");
     RUN_ONE_TYPE_TEST_RUN_TIME(int(&)[], "int(&)[]");
     RUN_ONE_TYPE_TEST_RUN_TIME(int(&)[10], "int(&)[10]");
+    RUN_ONE_TYPE_TEST_RUN_TIME(void(*)(int), "void(*)(int)");
+
+    RUN_ONE_TYPE_TEST_RUN_TIME(Template<char>, "Template<char>");
+
+#ifndef _MSC_VER
     RUN_ONE_TYPE_TEST_RUN_TIME(Template<void COMMA char const*>, "Template<void, const char *>");
-    RUN_ONE_TYPE_TEST_RUN_TIME(void (*)(int), "void(*)(int)");
+#else
+    RUN_ONE_TYPE_TEST_RUN_TIME(Template<void COMMA char const*>, "Template<void, char const *>"); // MSVC can be east const sometimes...
+#endif
 }
