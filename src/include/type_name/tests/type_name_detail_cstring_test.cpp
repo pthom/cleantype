@@ -124,16 +124,12 @@ TEST_CASE("type_name_detail_cstring_test_run_time") {
     // (spaces before/after *, etc.)
     RUN_ONE_TYPE_TEST_RUN_TIME(char * const, "char * const");
     RUN_ONE_TYPE_TEST_RUN_TIME(char const *, "const char *");
+
+    RUN_ONE_TYPE_TEST_RUN_TIME(int const, "const int");
+    RUN_ONE_TYPE_TEST_RUN_TIME(int &, "int &");
+    RUN_ONE_TYPE_TEST_RUN_TIME(int const&, "const int &");
+    RUN_ONE_TYPE_TEST_RUN_TIME(int(&)[], "int(&)[]");
+    RUN_ONE_TYPE_TEST_RUN_TIME(int(&)[10], "int(&)[10]");
+    RUN_ONE_TYPE_TEST_RUN_TIME(Template<void COMMA char const*>, "Template<void, const char *>");
+    RUN_ONE_TYPE_TEST_RUN_TIME(void (*)(int), "void(*)(int)");
 }
-
-
-/*
-    // Make sure we get something reasonable
-    check_matches<int const>("int const|const int");
-    check_matches<int&>(R"(int\s*&)");
-    check_matches<int const&>(R"(const\s+int\s*&|int\s+const\s*&)");
-    check_matches<int(&)[]>(R"(int\s*\(\s*&\s*\)\s*\[\s*\])");
-    check_matches<int(&)[10]>(R"(int\s*\(\s*&\s*\)\s*\[\s*10\s*\])");
-    check_matches<Template<void, char const*>>(R"(Template<\s*void\s*,\s*(char const|const char)\s*\*\s*>)");
-    check_matches<void(*)(int)>(R"(void\s*\(\s*\*\s*\)\s*\(\s*int\s*\))");
-*/

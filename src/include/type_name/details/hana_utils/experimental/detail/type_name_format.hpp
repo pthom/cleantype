@@ -7,6 +7,8 @@ namespace hana {
 namespace experimental {
 namespace type_name_format {
 namespace detail {
+
+    // Revoir tout ca en fold...
     inline std::string trim(const char &trim_what, const std::string &xs)
     {
         bool stop = false;
@@ -45,6 +47,33 @@ namespace detail {
         }
         return result;
     }
+
+    inline std::string remove_spaces_after(const char token, const std::string &str)
+    {
+        std::string result;
+        bool token_before = false;
+        for (auto c : str)
+        {
+            result = result + c;
+            if ((c == ' ') && token_before)
+                result.pop_back();
+
+            if (c == token)
+                token_before = true;
+            else
+                token_before = false;
+        }
+        return result;
+    }
+
+    inline std::string remove_spaces_before_after(const char token, const std::string &str)
+    {
+        std::string result;
+        result = remove_spaces_before(token, remove_spaces_after(token, str));
+        return result;
+    }
+
+
 
     inline std::string insert_spaces_before(const char token, const std::string &str)
     {
@@ -106,10 +135,14 @@ inline std::string format_type(const std::string &str_type)
     r = detail::insert_spaces_after(',', r);
     r = detail::insert_spaces_before_after('&', r);
     r = detail::insert_spaces_before_after('*', r);
-    r = detail::insert_spaces_before_after('[', r);
+    r = detail::remove_spaces_before_after(')', r);
+    r = detail::remove_spaces_before_after('(', r);
+    r = detail::remove_spaces_before('>', r);
+    r = detail::remove_spaces_after('<', r);
     r = detail::replace_tokens("*&", "* &", r);
     r = detail::replace_tokens("&*", "& *", r);
     r = detail::replace_tokens("& &", "&&", r);
+    r = detail::replace_tokens("[ ]", "[]", r);
     r = detail::replace_tokens(" ,", ",", r);
     r = detail::trim(' ', r);
     return r;
