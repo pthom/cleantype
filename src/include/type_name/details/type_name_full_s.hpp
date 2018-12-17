@@ -13,7 +13,7 @@
 #include <type_name/details/fp_polyfill/fp_polyfill.hpp>
 
 #include <boost/hana.hpp>
-#include "type_name/details/hana_type_name_ext.hpp"
+#include "type_name/details/hana_utils/experimental/type_name.hpp"
 //#include <boost/hana/experimental/type_name.hpp>
 
 
@@ -91,7 +91,7 @@ namespace type_name_s
         template<typename T>
         auto impl_typeid_hana()
         {
-            return boost::hana::hana_type_ext::type_name<T>();
+            return boost::hana::experimental2::type_name<T>();
         }
 
 
@@ -109,7 +109,7 @@ namespace type_name_s
         }
         template <typename First, typename Second, typename ...Rest>
         auto impl_typeid_recursive () {
-            #ifdef _TNS_CAN_CONSTEXPR
+            #ifdef _HANA_TN_CAN_CONSTEXPR
                 return impl_typeid_recursive<First>() + BOOST_HANA_STRING(", ") + impl_typeid_recursive<Second, Rest...>();
             #else
                 return impl_typeid_recursive<First>() + std::string(", ") + impl_typeid_recursive<Second, Rest...>();
@@ -155,7 +155,7 @@ namespace type_name_s
        // the name in the output if you squint your eyes
        //constexpr auto t = boost::hana::experimental::type_name<T>()();
        //static_assert(internal::impl_full<T...>() , "truc");
-         static_assert(boost::hana::hana_type_ext::type_name<T>(), "truc");
+         static_assert(boost::hana::experimental2::type_name<T>(), "truc");
      }
 
 } // namespace type_name
