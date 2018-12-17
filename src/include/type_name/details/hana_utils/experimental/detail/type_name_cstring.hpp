@@ -56,7 +56,11 @@ namespace cstring_utils {
 
     inline std::string cstring_to_string(cstring const & cs) {
         char * sz = static_cast<char *>(malloc(cs.length + 1));
-        strcpy(sz, cs.ptr);
+#ifdef _MSC_VER
+        strncpy_s(sz, cs.length + 1, cs.ptr, cs.length + 1);
+#else
+        strncpy(sz, cs.ptr, cs.length + 1);
+#endif
         sz[cs.length] = '\0';
         std::string r(sz);
         free(sz);
