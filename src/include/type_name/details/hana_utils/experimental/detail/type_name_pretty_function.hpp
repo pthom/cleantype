@@ -21,13 +21,13 @@ Distributed under the Boost Software License, Version 1.0.
 
 
 #if defined(__clang__)
-    #define _HANA_TN_PRETTY_FUNCTION_TYPE_PREFIX "boost::hana::experimental::detail::cstring boost::hana::experimental::detail::type_name_impl_cstring() [T = "
+    #define _HANA_TN_PRETTY_FUNCTION_TYPE_PREFIX "boost::hana::experimental::cstring_utils::cstring boost::hana::experimental::cstring_utils::type_name_impl_cstring() [T = "
     #define _HANA_TN_PRETTY_FUNCTION_TYPE_SUFFIX "]"
 #elif defined(_MSC_VER)
-    #define _HANA_TN_PRETTY_FUNCTION_TYPE_PREFIX  "struct boost::hana::experimental::detail::cstring __cdecl boost::hana::experimental::detail::type_name_impl_cstring<"
+    #define _HANA_TN_PRETTY_FUNCTION_TYPE_PREFIX  "struct boost::hana::experimental::cstring_utils::cstring __cdecl boost::hana::experimental::cstring_utils::type_name_impl_cstring<"
 #define _HANA_TN_PRETTY_FUNCTION_TYPE_SUFFIX ">(void)"
 #elif defined(__GNUC__) || defined(__GNUG__)
-    #define _HANA_TN_PRETTY_FUNCTION_TYPE_PREFIX "constexpr boost::hana::experimental::detail::cstring boost::hana::experimental::detail::type_name_impl_cstring() [with T = "
+    #define _HANA_TN_PRETTY_FUNCTION_TYPE_PREFIX "constexpr boost::hana::experimental::cstring_utils::cstring boost::hana::experimental::cstring_utils::type_name_impl_cstring() [with T = "
     #define _HANA_TN_PRETTY_FUNCTION_TYPE_SUFFIX "]"
 #else
     #error "No support for this compiler."
