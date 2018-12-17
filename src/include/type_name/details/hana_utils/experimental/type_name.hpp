@@ -11,28 +11,28 @@ Distributed under the Boost Software License, Version 1.0.
 
 #include <boost/hana/config.hpp>
 #include <boost/hana/string.hpp>
-#include <type_name/details/hana_utils/experimental/detail/type_name.hpp>
+#include <type_name/details/hana_utils/experimental/detail/type_name_pretty_function.hpp>
 
 #include <utility>
 
 
-BOOST_HANA_NAMESPACE_BEGIN  namespace experimental2 {
-    namespace detail {
+BOOST_HANA_NAMESPACE_BEGIN  namespace experimental {
+    namespace cstring_utils {
         template <typename T, std::size_t ...i>
         auto type_name_impl(std::index_sequence<i...>) {
-            constexpr auto name = detail::type_name_impl_cstring<T>();
+            constexpr auto name = cstring_utils::type_name_impl_cstring<T>();
             auto r = boost::hana::string<*(name.ptr + i)...>{};
             return r;
         }
-    } // end namespace detail
+    } // end namespace cstring_utils
 
     template <typename T>
     auto type_name() {
         #ifdef _HANA_TN_CAN_CONSTEXPR
-            constexpr auto name = detail::type_name_impl_cstring<T>();
-            return detail::type_name_impl<T>(std::make_index_sequence<name.length>{});
+            constexpr auto name = cstring_utils::type_name_impl_cstring<T>();
+            return cstring_utils::type_name_impl<T>(std::make_index_sequence<name.length>{});
         #else
-            auto as_cstring = detail::type_name_impl_cstring<T>();
+            auto as_cstring = cstring_utils::type_name_impl_cstring<T>();
             std::string name_full = std::string(as_cstring.ptr);
             std::string name_cut = name_full.substr(0, as_cstring.length);
             return name_cut;

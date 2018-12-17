@@ -13,84 +13,17 @@
 #include <type_name/details/fp_polyfill/fp_polyfill.hpp>
 
 #include <boost/hana.hpp>
-#include "type_name/details/hana_utils/experimental/type_name.hpp"
-
+#include <type_name/details/hana_utils/experimental/type_name.hpp>
+#include <type_name/details/hana_utils/experimental/detail/type_name_format.hpp>
 
 namespace type_name_s
 {
     namespace internal
     {
-        // TODO : port to hana::string !
-        inline std::string remove_spaces_before(const char token, const std::string & str)
-        {
-            std::string result;
-            bool space_before = false;
-            for (auto c : str)
-            {
-                if ( (c == token) && space_before )
-                {
-                    result.pop_back();
-                }
-                result = result + c;
-
-                if (c == ' ')
-                    space_before = true;
-                else
-                    space_before = false;
-
-            }
-            return result;
-        }
-
-
-        // TODO : port to hana::string !
-        inline std::string insert_spaces_before(const char token, const std::string & str)
-        {
-            std::string result;
-            bool space_or_same_token_before = true;
-            for (auto c : str)
-            {
-                if ((c == token) && !(space_or_same_token_before))
-                    result = result + " ";
-                result = result + c;
-                if ((c == ' ') || (c == token))
-                    space_or_same_token_before = true;
-                else
-                    space_or_same_token_before = false;
-            }
-            return result;
-        }
-
-
-        // TODO : port to hana::string !
-        inline std::string insert_spaces_after(const char token, const std::string & str)
-        {
-            std::string result;
-            bool token_before = false;
-            for (auto c : str)
-            {
-                if (token_before && (c != ' '))
-                    result = result + ' ';
-                result = result + c;
-                token_before = (c == token);
-            }
-            return result;
-        }
-
-
-        // TODO : port to hana::string !
-        inline std::string insert_spaces_before_after(const char token, const std::string & str)
-        {
-            std::string result = insert_spaces_before(token, str);
-            result = insert_spaces_after(token, result);
-            return result;
-        }
-
-
         template<typename T>
         auto impl_typeid_hana()
         {
-            return boost::hana::experimental2::type_name<T>();
+            return boost::hana::experimental::type_name<T>();
         }
 
 
@@ -119,15 +52,8 @@ namespace type_name_s
         template <typename... T> std::string impl_full()
         {
             std::string r = impl_typeid_recursive<T...>().c_str();
-            r = insert_spaces_after(',', r);
-            r = insert_spaces_before_after('&', r);
-            r = insert_spaces_before_after('*', r);
-            r = insert_spaces_before_after('[', r);
-            r = fp::replace_tokens("*&", "* &", r);
-            r = fp::replace_tokens("&*", "& *", r);
-            r = fp::replace_tokens("& &", "&&", r);
-            r = fp::replace_tokens(" ,", ",", r);
-            return r;
+            std::string formatted = boost::hana::experimental::type_name_format::format_type(r);
+            return formatted;
         }
     } // namespace internal
 
@@ -154,7 +80,7 @@ namespace type_name_s
        // the name in the output if you squint your eyes
        //constexpr auto t = boost::hana::experimental::type_name<T>()();
        //static_assert(internal::impl_full<T...>() , "truc");
-         static_assert(boost::hana::experimental2::type_name<T>(), "truc");
+         static_assert(boost::hana::experimental::type_name<T>(), "truc");
      }
 
 } // namespace type_name
