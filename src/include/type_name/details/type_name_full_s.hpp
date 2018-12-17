@@ -14,7 +14,6 @@
 
 #include <boost/hana.hpp>
 #include "type_name/details/hana_utils/experimental/type_name.hpp"
-//#include <boost/hana/experimental/type_name.hpp>
 
 
 namespace type_name_s
