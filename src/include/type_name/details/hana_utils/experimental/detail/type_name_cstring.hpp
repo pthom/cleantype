@@ -70,11 +70,11 @@ constexpr bool cstring_equal(cstring const & cs1, cstring const & cs2) {
     }
 
     inline std::string cstring_to_string(cstring const & cs) {
-        char * sz = static_cast<char *>(malloc(cs.length + 1));
+        char * sz = static_cast<char *>(malloc(sizeof(char) * (cs.length + 1)));
 #ifdef _MSC_VER
-        strncpy_s(sz, cs.length + 1, cs.ptr, cs.length + 1);
+        strncpy_s(sz, cs.length + 1, cs.ptr, cs.length);
 #else
-        strncpy(sz, cs.ptr, cs.length + 1);
+        strcnpy(sz, cs.ptr, cs.length);
 #endif
         sz[cs.length] = '\0';
         std::string r(sz);
