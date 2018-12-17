@@ -58,7 +58,6 @@ TEST_CASE("type_name_full_test_s")
     }
     {
         // Pointer to const
- // FIXME : msvc return "const char *&" (i.e with a space)
         char a = 5;
         const char *v = &a;
         MY_REQUIRE_EQ_STRING(type_name_s::full(v),

@@ -4,55 +4,22 @@
 
 #include <cstdlib>
 #include <cstring>
-#include <string>
 
 #include <iostream>
-#define LOG_VALUE(var) std::cout << #var << " ==>" << var << "<==" << std::endl
 
 namespace hana = boost::hana;
-
-
-// namespace boost {
-// namespace hana {
-// namespace experimental {
-
-//     namespace cstring_utils {
-
-
 namespace cstring_utils = boost::hana::experimental::cstring_utils;
 
-// constexpr bool my_cstring_equal(cstring_utils::cstring const & cs1, cstring_utils::cstring const & cs2) {
-//     //constexpr std::size_t l1 = cs1.length;
-//     // if (cs1.length != cs2.length)
-//     //     return false;
 
-//     // std::size_t idx = 0;
-//     // do {
-//     //     char c1 = cs1.ptr[idx];
-//     //     char c2 = cs2.ptr[idx];
-//     //     if (c1 != c2)
-//     //         return false;
-//     //     idx++;
-//     // } while (idx < cs1.length);
-//     return true;
-// }
-
-using namespace cstring_utils;
-
-
-// void truc()
-// {
-//     constexpr cstring_utils::cstring cs1{"", 0}, cs2 {"", 0};
-//     constexpr bool b = cstring_utils::cstring_equal(cs1, cs2);
-//     static_assert(b, "");
-// }
-
-
-void assert_cstring_equal_runtime(const cstring_utils::cstring & computed, const cstring_utils::cstring & expected) {
-    bool are_equal = cstring_utils::cstring_equal(computed, expected);
+void assert_types_def_equal_runtime(const std::string & computed, const std::string & expected) {
+    bool are_equal = (computed == expected);
     if (! are_equal) {
-        LOG_VALUE(cstring_utils::cstring_to_string(computed));
-        LOG_VALUE(cstring_utils::cstring_to_string(expected));
+        std::cerr
+            << "Error in assert_cstring_equal_runtime :\n"
+            << "\tComputed:\n\t\t"
+            << computed << "\n"
+            << "\tExpected:\n\t\t"
+            << expected << "\n";
     }
     REQUIRE(are_equal);
 }
@@ -74,39 +41,60 @@ template<typename TypeDefinition>
 void run_one_type_test_run_time(const std::string & type_string_literal) {
     auto computed_type_definition =
         hana::experimental::cstring_utils::type_name_impl_cstring<TypeDefinition>();
-    auto as_string = cstring_utils::cstring_to_string(computed_type_definition);
-    auto formatted_type = hana::experimental::type_name_format::format_type(as_string);
-    REQUIRE_EQ(formatted_type, type_string_literal);
+    const std::string as_string = cstring_utils::cstring_to_string(computed_type_definition);
+    const std::string formatted_type = hana::experimental::type_name_format::format_type(as_string);
+    assert_types_def_equal_runtime(formatted_type, type_string_literal);
 }
 
-#define RUN_ONE_TYPE_TEST_COMPILE_AND_RUN_TIME(type_definition, type_string_literal)     \
-    RUN_ONE_TYPE_TEST_COMPILE_TIME(type_definition, type_string_literal)               \
+#define RUN_ONE_TYPE_TEST_RUN_TIME(type_definition, type_string_literal)                 \
     run_one_type_test_run_time<type_definition>(type_string_literal)
-    //RUN_ONE_TYPE_TEST_RUN_TIME(type_definition, , type_string_literal)
-
 
 #define COMMA ,
 
 template<typename... T>
-struct Holder {
+struct Template {
 };
 
 //////////// Actual tests Below
 
 TEST_CASE("type_name_detail_cstring_test_compile_time") {
-    RUN_ONE_TYPE_TEST_COMPILE_AND_RUN_TIME(char, "char");
-    RUN_ONE_TYPE_TEST_COMPILE_AND_RUN_TIME(char &, "char &");
-    RUN_ONE_TYPE_TEST_COMPILE_AND_RUN_TIME(char &&, "char &&");
-    RUN_ONE_TYPE_TEST_COMPILE_AND_RUN_TIME(char *, "char *");
+    RUN_ONE_TYPE_TEST_COMPILE_TIME(void, "void");
+    RUN_ONE_TYPE_TEST_COMPILE_TIME(char, "char");
+    RUN_ONE_TYPE_TEST_COMPILE_TIME(char &, "char &");
+    RUN_ONE_TYPE_TEST_COMPILE_TIME(char &&, "char &&");
+    RUN_ONE_TYPE_TEST_COMPILE_TIME(char *, "char *");
+    RUN_ONE_TYPE_TEST_COMPILE_TIME(Template<char>, "Template<char>");
+    RUN_ONE_TYPE_TEST_COMPILE_TIME(Template<char COMMA int>, "Template<char, int>");
+
+
+    // const tests : __PRETTY_FUNCTION__ seems to favor west-const
+    // although, this behavior is not very consistent. This is true for MSVC, gcc and clang.
+    // Note : on the contrary, typeid().name() is strictly east const accross compilers
+    RUN_ONE_TYPE_TEST_COMPILE_TIME(const char, "const char");
+    RUN_ONE_TYPE_TEST_COMPILE_TIME(char const, "const char");
+    RUN_ONE_TYPE_TEST_COMPILE_TIME(const char &, "const char &");
+    RUN_ONE_TYPE_TEST_COMPILE_TIME(const char *, "const char *");
+
+    // Test below cannot be run at compile time, because of different type formatting
+    // across compilers: spaces before/after *, etc.
+    //RUN_ONE_TYPE_TEST_COMPILE_TIME(char * const, "char * const");
 }
 
 TEST_CASE("type_name_detail_cstring_test_run_time") {
-    // Those test might fail at compile time because of different code conventions across compilers
-    //RUN_ONE_TYPE_TEST_RUN_TIME(char *const, "char * const");  // or "char * const"
-    // RUN_ONE_TYPE_TEST_RUN_TIME(const char *); // or "const char*"
-
-    //hana::experimental::detail::type_name_impl_cstring<Holder<char>>();
-    //RUN_ONE_TYPE_TEST_RUN_TIME(Holder<char COMMA char>);
-    //run_one_type_test_run_time<int>("int");
-    RUN_ONE_TYPE_TEST_COMPILE_TIME(int, "int");
+    // Those test might fail at compile time because of different type formatting across compilers
+    // (spaces before/after *, etc.)
+    RUN_ONE_TYPE_TEST_RUN_TIME(char * const, "char * const");
+    RUN_ONE_TYPE_TEST_RUN_TIME(char const *, "const char *");
 }
+
+
+/*
+    // Make sure we get something reasonable
+    check_matches<int const>("int const|const int");
+    check_matches<int&>(R"(int\s*&)");
+    check_matches<int const&>(R"(const\s+int\s*&|int\s+const\s*&)");
+    check_matches<int(&)[]>(R"(int\s*\(\s*&\s*\)\s*\[\s*\])");
+    check_matches<int(&)[10]>(R"(int\s*\(\s*&\s*\)\s*\[\s*10\s*\])");
+    check_matches<Template<void, char const*>>(R"(Template<\s*void\s*,\s*(char const|const char)\s*\*\s*>)");
+    check_matches<void(*)(int)>(R"(void\s*\(\s*\*\s*\)\s*\(\s*int\s*\))");
+*/

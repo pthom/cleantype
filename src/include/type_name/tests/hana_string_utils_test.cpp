@@ -35,7 +35,7 @@ TEST_CASE("reverse")
 {
     auto s = BOOST_HANA_STRING("abcdef");
     auto s2 = hana_tn_utils::reverse_boost_hana_string(s);
-    std::cout << "Reversed ==>" <<  s2.c_str() << "<==\n";
+    //std::cout << "Reversed ==>" <<  s2.c_str() << "<==\n";
 }
 
 
