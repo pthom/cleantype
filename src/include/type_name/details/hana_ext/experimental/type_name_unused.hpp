@@ -1,3 +1,4 @@
+// Note : this file is unused in this library. It is here only in order to prepare a PR to Boost.Hana.
 /*
 @file
 Defines `boost::hana::experimental::type_name`.
@@ -17,22 +18,22 @@ Distributed under the Boost Software License, Version 1.0.
 
 
 BOOST_HANA_NAMESPACE_BEGIN  namespace experimental {
-    namespace cstring_utils {
+    namespace type_name_details {
         template <typename T, std::size_t ...i>
         auto type_name_impl(std::index_sequence<i...>) {
-            constexpr auto name = cstring_utils::type_name_impl_cstring<T>();
+            constexpr auto name = type_name_details::type_name_impl_stringliteral<T>();
             auto r = boost::hana::string<*(name.ptr + i)...>{};
             return r;
         }
-    } // end namespace cstring_utils
+    } // end namespace type_name_details
 
     template <typename T>
     auto type_name() {
         #ifdef _HANA_TN_CAN_CONSTEXPR
-            constexpr auto name = cstring_utils::type_name_impl_cstring<T>();
-            return cstring_utils::type_name_impl<T>(std::make_index_sequence<name.length>{});
+            constexpr auto name = type_name_details::type_name_impl_stringliteral<T>();
+            return type_name_details::type_name_impl<T>(std::make_index_sequence<name.length>{});
         #else
-            auto as_cstring = cstring_utils::type_name_impl_cstring<T>();
+            auto as_cstring = type_name_details::type_name_impl_stringliteral<T>();
             std::string name_full = std::string(as_cstring.ptr);
             std::string name_cut = name_full.substr(0, as_cstring.length);
             return name_cut;
