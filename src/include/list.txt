@@ -1,0 +1,15 @@
+./type_name_configuration.hpp
+./type_name.hpp
+./tests/type_name_clean_test.cpp
+./tests/type_name_function_test.cpp
+./tests/type_name_full_s_test.cpp
+./tests/type_name_test.cpp
+./tests/type_name_full_test.cpp
+./details/type_name_clean.hpp
+./details/type_name_function.hpp
+./details/type_name_tree.hpp
+./details/type_name_full_s.hpp
+./details/type_name_full.hpp
+./details/type_name_lambda_generic.hpp
+./details/type_name_format_whitespace.hpp
+./details/type_name_lambda.hpp
