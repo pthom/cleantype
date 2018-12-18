@@ -5,20 +5,25 @@
 #include "doctest.h"
 #include <regex>
 #include "constype/details/constype_full.hpp"
+#include "constype/details/debug_break.hpp"
 
 //#define LOG(str) std::cout << str << std::endl
 //#define LOG_VALUE(var) std::cout << #var << " = " << var << std::endl
 
+void my_require_eq_string(const std::string & computed, const std::string & expected )
+{
 #ifdef _MSC_VER // remove __ptr64 from msvc types
-#define MY_REQUIRE_EQ_STRING(a, b) \
-{\
-    std::string a2 = fp::replace_tokens(" __ptr64", "", a);\
-    std::string b2 = fp::replace_tokens(" __ptr64", "", b);\
-    REQUIRE_EQ(a2, b2);\
-}
+    std::string computed2 = fp::replace_tokens(" __ptr64", "", computed);\
+    std::string expected2 = fp::replace_tokens(" __ptr64", "", expected);\
+    if (computed2 != expected2)
+        DEBUGBREAK;
+    REQUIRE_EQ(computed2, expected2);
 #else
-#define MY_REQUIRE_EQ_STRING(a, b) REQUIRE_EQ(a, b)
+    if (computed != expected)
+        DEBUGBREAK;
+    REQUIRE_EQ(computed, expected);
 #endif
+}
 
 
 #ifndef _MSC_VER
@@ -33,11 +38,11 @@ TEST_CASE("constype_full_test_s")
     {
         // Standard types
         char v = 5;
-        MY_REQUIRE_EQ_STRING(constype::full(v),
+        my_require_eq_string(constype::full(v),
         "char &"
         );
         // The macro will output the exact type
-        MY_REQUIRE_EQ_STRING(TN_constype_full(v),
+        my_require_eq_string(TN_constype_full(v),
         "char"
         );
     }
@@ -45,10 +50,10 @@ TEST_CASE("constype_full_test_s")
         // Reference
         char a = 5;
         char &v = a;
-        MY_REQUIRE_EQ_STRING(constype::full(v),
+        my_require_eq_string(constype::full(v),
         "char &"
         );
-        MY_REQUIRE_EQ_STRING(TN_constype_full(v),
+        my_require_eq_string(TN_constype_full(v),
         "char &"
         );
     }
@@ -56,10 +61,10 @@ TEST_CASE("constype_full_test_s")
         // Const reference
         char a = 5;
         const char &v = a;
-        MY_REQUIRE_EQ_STRING(constype::full_eastconst(v),
+        my_require_eq_string(constype::full_eastconst(v),
            "char const &"
         );
-        MY_REQUIRE_EQ_STRING(constype::apply_east_const(TN_constype_full(v)),
+        my_require_eq_string(constype::apply_east_const(TN_constype_full(v)),
             "char const &"
         );
     }
@@ -67,10 +72,10 @@ TEST_CASE("constype_full_test_s")
         // Pointer to const
         char a = 5;
         const char *v = &a;
-        MY_REQUIRE_EQ_STRING(constype::full_eastconst(v),
+        my_require_eq_string(constype::full_eastconst(v),
           "char const * &"
         );
-        MY_REQUIRE_EQ_STRING(constype::apply_east_const(TN_constype_full(v)),
+        my_require_eq_string(constype::apply_east_const(TN_constype_full(v)),
             "char const *"
         );
     }
@@ -78,20 +83,20 @@ TEST_CASE("constype_full_test_s")
         // Const pointer (but modifiable content)
         char a = 5;
         const char * v = &a;
-        MY_REQUIRE_EQ_STRING(constype::full_eastconst(v),
+        my_require_eq_string(constype::full_eastconst(v),
         "char const * &"
         );
-        MY_REQUIRE_EQ_STRING(constype::apply_east_const(TN_constype_full(v)),
+        my_require_eq_string(constype::apply_east_const(TN_constype_full(v)),
         "char const *"
         );
     }
     {
         // Volatile
         volatile char v = 5;
-        MY_REQUIRE_EQ_STRING(constype::full(v),
+        my_require_eq_string(constype::full(v),
             VOLATILE_CHAR " &"
         );
-        MY_REQUIRE_EQ_STRING(TN_constype_full(v),
+        my_require_eq_string(TN_constype_full(v),
             VOLATILE_CHAR
         );
     }
@@ -110,8 +115,8 @@ TEST_CASE("constype_full_r_value_references")
             std::cout << "ARGGHHH" << std::endl;
         if (p1[1] != p2[1])
             std::cout << "ARGGHHH" << std::endl;
-        MY_REQUIRE_EQ_STRING(p1[0], p2[0]);
-        MY_REQUIRE_EQ_STRING(p1[1], p2[1]);
+        my_require_eq_string(p1[0], p2[0]);
+        my_require_eq_string(p1[1], p2[1]);
     };
 
     {
@@ -152,13 +157,13 @@ TEST_CASE("constype_full_r_value_references")
  {
      {
          char v = 5;
-         MY_REQUIRE_EQ_STRING(
+         my_require_eq_string(
              TN_constype_full(v),
              "char"
           );
      }
      {
-         MY_REQUIRE_EQ_STRING(
+         my_require_eq_string(
              TN_constype_full(static_cast<char>(42)),
              "char"
           );
@@ -184,11 +189,11 @@ TEST_CASE("constype_full_r_value_references")
          std::cout << "pb1\n";
      if (v2 != expected)
          std::cout << "pb2\n";
-     MY_REQUIRE_EQ_STRING(
+     my_require_eq_string(
          constype::full_eastconst<Args...>(),
          expected
      );
-     MY_REQUIRE_EQ_STRING(
+     my_require_eq_string(
          TemplateClass<Args...>::full_type(),
          expected
      );
@@ -224,7 +229,7 @@ TEST_CASE("constype_full_multiple")
  template<typename... Args>
  void check_multiple_args_fromvalues(const std::string & expected, Args... args)
  {
-     MY_REQUIRE_EQ_STRING(
+     my_require_eq_string(
          constype::full(args...),
          expected
      );
@@ -233,11 +238,11 @@ TEST_CASE("constype_full_multiple")
 
 TEST_CASE("constype_full_multiple_fromvalues")
 {
-     MY_REQUIRE_EQ_STRING(
+     my_require_eq_string(
          constype::full(static_cast<char>(1)),
          "char"
      );
-     MY_REQUIRE_EQ_STRING(
+     my_require_eq_string(
          constype::full(static_cast<char>(1), static_cast<char>(1)),
          "char, char"
      );
@@ -252,7 +257,7 @@ TEST_CASE("constype_full_multiple_fromvalues")
          char &v = a;
          char &v2 = a;
          const char& c = a;
-         MY_REQUIRE_EQ_STRING(constype::full_eastconst(a, v, c, c),
+         my_require_eq_string(constype::full_eastconst(a, v, c, c),
           "char &, char &, char const &, char const &"
           );
      }
