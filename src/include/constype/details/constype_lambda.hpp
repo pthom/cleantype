@@ -3,6 +3,7 @@
 // Distributed under the Boost Software License, Version 1.0. (see LICENSE.md)
 #pragma once
 #include <constype/details/constype_clean.hpp>
+#include <constype/constype_configuration.hpp>
 
 namespace constype
 {
@@ -87,37 +88,6 @@ namespace constype
         }
 
 
-        inline std::vector<std::string> tokenize_lambda_params(const std::string & params, bool clean_params)
-        {
-            auto clean_param_if_needed = [&clean_params](const std::string & param) {
-                return clean_params ? impl_clean(param) : fp::trim(' ', param);
-            };
-
-            std::vector<std::string> result;
-            // counts < and > occurrences
-            int count = 0;
-            std::string current;
-            for (const auto c : params)
-            {
-                if (c == '<')
-                    ++count;
-                if (c == '>')
-                    --count;
-                if ( (c == ',') && (count == 0))
-                {
-                    result.push_back(clean_param_if_needed(current));
-                    current = "";
-                }
-                else
-                {
-                    current += c;
-                }
-            }
-            result.push_back(clean_param_if_needed(current));
-            return result;
-        }
-
-
         inline std::string _remove_mem_fn_surround(const std::string & mem_fn_type)
         {
             std::string result = mem_fn_type;
@@ -153,10 +123,12 @@ namespace constype
 
             // Separate params and clean them, then join them
             const std::string params_cleaned = [&](){
-                auto params_list = tokenize_lambda_params(params_str, clean_params);
+                auto params_list = tokenize_params_around_comma(params_str, clean_params);
                 std::string params_joined = fp::join(std::string(", "), params_list);
                 if (params_joined == "void")
                   params_joined = "";
+                if (constype::CleanConfiguration::GlobalConfig().force_east_const_)
+                    params_joined = constype::apply_east_const(params_joined);
                 return params_joined;
             }();
 
@@ -170,6 +142,8 @@ namespace constype
             }
 
             std::string return_type = clean_params ? impl_clean(return_str) : return_str;
+            if (constype::CleanConfiguration::GlobalConfig().force_east_const_)
+                return_type = constype::apply_east_const(return_type);
             // std::cout << "params= " << params << '\n';
             // std::cout << "return_type= " << return_type << '\n';
             return std::string("lambda: ") + "(" + params_cleaned + ")" + " -> " + return_type;

@@ -46,6 +46,10 @@ namespace constype
             { "std::basic_string<char>", "std::string" }
         };
 
+        // set this to true in order to force the results to be east const
+        // this is experimental, and can fail
+        bool force_east_const_ = false;
+
         static CleanConfiguration & GlobalConfig()
         {
             thread_local CleanConfiguration gCleanConfiguration;

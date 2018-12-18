@@ -9,15 +9,6 @@
 
 namespace constype
 {
-    namespace internal {
-        // MOVE CLEAN OPS HERE (APART FROM TREE !!!!!!!!!!!!!!!!)
-
-
-
-    } // namespace internal
-
-
-
     template <class T>
     std::string clean()
     {

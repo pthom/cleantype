@@ -5,6 +5,7 @@
 #include <string>
 #include <deque>
 #include <constype/details/constype_full.hpp>
+#include <constype/details/fp_polyfill/fp_polyfill.hpp>
 #include <constype/details/fp_polyfill/fp_additions.hpp>
 #include <constype/constype_configuration.hpp>
 #include <constype/details/stringutils.hpp>
@@ -191,10 +192,37 @@ namespace constype
         }
 
 
+        inline std::vector<std::string> tokenize_params_around_comma(const std::string & params, bool clean_params)
+        {
+            auto clean_param_if_needed = [&clean_params](const std::string & param) {
+                return clean_params ? impl_clean(param) : fp::trim(' ', param);
+            };
 
-    } // namespace internal
+            std::vector<std::string> result;
+            // counts < and > occurrences
+            int count = 0;
+            std::string current;
+            for (const auto c : params)
+            {
+                if (c == '<')
+                    ++count;
+                if (c == '>')
+                    --count;
+                if ( (c == ',') && (count == 0))
+                {
+                    result.push_back(clean_param_if_needed(current));
+                    current = "";
+                }
+                else
+                {
+                    current += c;
+                }
+            }
+            result.push_back(clean_param_if_needed(current));
+            return result;
+        }
 
-    inline std::string apply_west_const(const std::string & type_name)
+    inline std::string apply_west_const_impl(const std::string & type_name)
     {
         // Note : this implementation is by no means neither complete nor foolproof
         // It expects types that were preprocessed as inputs (spaces before * and &, etc.)
@@ -251,7 +279,7 @@ namespace constype
         return type_name;
     }
 
-    inline std::string apply_east_const(const std::string & type_name)
+    inline std::string apply_east_const_impl(const std::string & type_name)
     {
         // Note : this implementation is by no means neither complete nor foolproof
         // It expects types that were preprocessed as inputs (spaces before * and &, etc.)
@@ -273,7 +301,7 @@ namespace constype
             return r;
         }
 
-        // const T * & => T const * & 
+        // const T * & => T const * &
         if (stringutils::starts_ends_with(type_name, "const ", " * &"))
         {
             auto r = stringutils::remove_start_end(type_name, "const ", " * &");
@@ -281,7 +309,7 @@ namespace constype
             return r;
         }
 
-        // const T & => T const & 
+        // const T & => T const &
         if (stringutils::starts_ends_with(type_name, "const ", " &"))
         {
             auto r = stringutils::remove_start_end(type_name, "const ", " &");
@@ -305,7 +333,7 @@ namespace constype
             return r;
         }
 
-        // const T => T const 
+        // const T => T const
         if (stringutils::starts_with(type_name, "const "))
         {
             auto r = stringutils::remove_start(type_name, "const ");
@@ -314,6 +342,24 @@ namespace constype
         }
 
         return type_name;
+    }
+
+    } // namespace internal
+
+    inline std::string apply_west_const(const std::string & type_name)
+    {
+        std::vector<std::string> types = internal::tokenize_params_around_comma(type_name, false);
+        types = fp::transform(internal::apply_west_const_impl, types);
+        std::string r = fp::join(", ", types);
+        return r;
+    }
+
+    inline std::string apply_east_const(const std::string & type_name)
+    {
+        std::vector<std::string> types = internal::tokenize_params_around_comma(type_name, false);
+        types = fp::transform(internal::apply_east_const_impl, types);
+        std::string r = fp::join(", ", types);
+        return r;
     }
 
 

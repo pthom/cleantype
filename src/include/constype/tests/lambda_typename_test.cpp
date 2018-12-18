@@ -2,7 +2,8 @@
 // Copyright Pascal Thomet - 2018
 // Distributed under the Boost Software License, Version 1.0. (see LICENSE.md)
 #include "doctest.h"
-#include "constype/constype.hpp"
+#include <constype/constype.hpp>
+#include <constype/details/debug_break.hpp>
 #include <fplus/fplus.hpp>
 #include <functional>
 #include <map>
@@ -13,7 +14,7 @@ template<typename Lambda> void test_one_lambda(Lambda f, const std::string & exp
 {
     const std::string computed_type = TN_show_details_lambda(f);
     if (computed_type != expected_type)
-        std::cout << "Argh";
+        DEBUGBREAK;
     REQUIRE_EQ(computed_type, expected_type);
 }
 
@@ -36,8 +37,8 @@ TEST_CASE("log_type_lambda_clean")
     test_one_lambda(f, "[lambda: (int, int) -> double] f");
   }
   {
-      auto f = [](std::string const &a, const std::string & b) { return a + b; };
-      test_one_lambda(f, "[lambda: (std::string const &, std::string const &) -> std::string] f");
+      auto f = [](std::string const &a, const std::string & b) -> std::string const { return a + b; };
+      test_one_lambda(f, "[lambda: (std::string const &, std::string const &) -> std::string const] f");
   }
   {
     int c = 5;
@@ -54,12 +55,12 @@ TEST_CASE("log_type_lambda_clean")
 
 ////////////// Internal tests below
 
-TEST_CASE("tokenize_lambda_params")
+TEST_CASE("tokenize_params_around_comma")
 {
     using namespace constype::internal;
     {
         std::string params_str("int, string");
-        auto params = tokenize_lambda_params(params_str, false);
+        auto params = tokenize_params_around_comma(params_str, false);
         std::vector<std::string> expected {
             {"int"},
             {"string"}
@@ -68,7 +69,7 @@ TEST_CASE("tokenize_lambda_params")
     }
     {
         std::string params_str("int, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, double");
-        auto params = tokenize_lambda_params(params_str, false);
+        auto params = tokenize_params_around_comma(params_str, false);
         std::vector<std::string> expected {
             {"int"},
             {"std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >"},
@@ -78,7 +79,7 @@ TEST_CASE("tokenize_lambda_params")
     }
     {
         std::string params_str("int, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, double");
-        auto params = tokenize_lambda_params(params_str, true);
+        auto params = tokenize_params_around_comma(params_str, true);
         std::vector<std::string> expected {
             {"int"},
             {"std::string"},
@@ -88,13 +89,13 @@ TEST_CASE("tokenize_lambda_params")
     }
     {
         std::string params_str("");
-        auto params = tokenize_lambda_params(params_str, true);
+        auto params = tokenize_params_around_comma(params_str, true);
         std::vector<std::string> expected { "" };
         REQUIRE_EQ(params, expected);
     }
     {
         std::string params_str("int");
-        auto params = tokenize_lambda_params(params_str, true);
+        auto params = tokenize_params_around_comma(params_str, true);
         std::vector<std::string> expected {
             "int"
         };
@@ -102,7 +103,7 @@ TEST_CASE("tokenize_lambda_params")
     }
     {
         std::string params_str("const std::__1::basic_string<char> &, const std::__1::basic_string<char> &");
-        auto params = tokenize_lambda_params(params_str, true);
+        auto params = tokenize_params_around_comma(params_str, true);
         std::vector<std::string> expected {
             "const std::string &", "const std::string &"
         };

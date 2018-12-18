@@ -61,7 +61,7 @@ TEST_CASE("constype_full_test_s")
         // Const reference
         char a = 5;
         const char &v = a;
-        my_require_eq_string(constype::full_eastconst(v),
+        my_require_eq_string(constype::full(v),
            "char const &"
         );
         my_require_eq_string(constype::apply_east_const(TN_constype_full(v)),
@@ -72,7 +72,7 @@ TEST_CASE("constype_full_test_s")
         // Pointer to const
         char a = 5;
         const char *v = &a;
-        my_require_eq_string(constype::full_eastconst(v),
+        my_require_eq_string(constype::full(v),
           "char const * &"
         );
         my_require_eq_string(constype::apply_east_const(TN_constype_full(v)),
@@ -83,7 +83,7 @@ TEST_CASE("constype_full_test_s")
         // Const pointer (but modifiable content)
         char a = 5;
         const char * v = &a;
-        my_require_eq_string(constype::full_eastconst(v),
+        my_require_eq_string(constype::full(v),
         "char const * &"
         );
         my_require_eq_string(constype::apply_east_const(TN_constype_full(v)),
@@ -108,7 +108,7 @@ TEST_CASE("constype_full_r_value_references")
     using TypenamePair = std::array<std::string, 2>;
     // r-value reference tests
     auto output_received_type = [](auto && v) -> TypenamePair {
-        return { constype::full_eastconst<decltype(v)>(), constype::full_eastconst(v) };
+        return { constype::full<decltype(v)>(), constype::full(v) };
     };
     auto require_eq_typename_pair = [](const TypenamePair & p1, const TypenamePair & p2 ) {
         if (p1[0] != p2[0])
@@ -175,7 +175,7 @@ TEST_CASE("constype_full_r_value_references")
  struct TemplateClass
  {
      static std::string full_type() {
-         return constype::full_eastconst<Args...>();
+         return constype::full<Args...>();
      }
  };
 
@@ -190,7 +190,7 @@ TEST_CASE("constype_full_r_value_references")
      if (v2 != expected)
          std::cout << "pb2\n";
      my_require_eq_string(
-         constype::full_eastconst<Args...>(),
+         constype::full<Args...>(),
          expected
      );
      my_require_eq_string(
@@ -257,7 +257,7 @@ TEST_CASE("constype_full_multiple_fromvalues")
          char &v = a;
          char &v2 = a;
          const char& c = a;
-         my_require_eq_string(constype::full_eastconst(a, v, c, c),
+         my_require_eq_string(constype::full(a, v, c, c),
           "char &, char &, char const &, char const &"
           );
      }
