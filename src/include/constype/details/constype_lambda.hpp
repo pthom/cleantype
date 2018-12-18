@@ -1,7 +1,7 @@
 #pragma once
-#include <type_name/details/type_name_clean.hpp>
+#include <constype/details/constype_clean.hpp>
 
-namespace type_name
+namespace constype
 {
     namespace internal
     {
@@ -180,17 +180,17 @@ namespace type_name
 
             // auto f = [&c](int a, int b) -> double { return a + b + c; };
             // MSVC : class std::_Mem_fn<double (__thiscall <lambda_1d102738ade82cc35233c841173ca72c>::*)(int,int)const >
-            // clang: std::__1::__mem_fn<double (type_name::_DOCTEST_ANON_FUNC_2()::$_1::*)(int, int) const>
+            // clang: std::__1::__mem_fn<double (constype::_DOCTEST_ANON_FUNC_2()::$_1::*)(int, int) const>
             // MSVC : double (__thiscall <lambda_1d102738ade82cc35233c841173ca72c>::*)(int,int)const
 
             //auto f = [](int a, int b)  { return std::pair<int, int>(a, b); };
-            //clang: std::__1::__mem_fn<std::__1::pair<int, int> (type_name::_DOCTEST_ANON_FUNC_2()::$_1::*)(int, int) const>
-            //clang: std::__1::pair<int, int> (type_name::_DOCTEST_ANON_FUNC_2()::$_1::*)(int, int) const
+            //clang: std::__1::__mem_fn<std::__1::pair<int, int> (constype::_DOCTEST_ANON_FUNC_2()::$_1::*)(int, int) const>
+            //clang: std::__1::pair<int, int> (constype::_DOCTEST_ANON_FUNC_2()::$_1::*)(int, int) const
 
-            //clang: std::__1::pair<int, int> (type_name::_DOCTEST_ANON_FUNC_2()::$_1::*)(int, int) const
+            //clang: std::__1::pair<int, int> (constype::_DOCTEST_ANON_FUNC_2()::$_1::*)(int, int) const
 
             auto as_mem_fn = std::mem_fn( & decltype(fn)::operator() );
-            std::string mem_fn_type = TN_type_name_full(as_mem_fn);
+            std::string mem_fn_type = TN_constype_full(as_mem_fn);
             return _mem_fn_to_lambda_type(mem_fn_type, clean_params);
         }
 
@@ -214,14 +214,14 @@ namespace type_name
     // Start of public API
     //////////////////////////////
 
-    // * `type_name::lambda_clean<LambdaFn>(LambdaFn fn)` is a function that will return a string containing
+    // * `constype::lambda_clean<LambdaFn>(LambdaFn fn)` is a function that will return a string containing
     //    the readable signature of a lambda (non generic)
     template <typename LambdaFn> std::string lambda_clean(LambdaFn fn);
-    // * `type_name::lambda_clean<LambdaFn>(LambdaFn fn)` is a function that will return a string containing
+    // * `constype::lambda_clean<LambdaFn>(LambdaFn fn)` is a function that will return a string containing
     //    the full signature of a lambda (non generic)
     template <typename LambdaFn> std::string lambda_clean(LambdaFn fn);
 
-} // namespace type_name
+} // namespace constype
 
-#define TN_show_details_lambda(f) std::string("[") + type_name::lambda_clean(f) + "] " + #f
-#define TN_show_details_lambda_full(f) std::string("[") + type_name::lambda_full(f) + "] " + #f
+#define TN_show_details_lambda(f) std::string("[") + constype::lambda_clean(f) + "] " + #f
+#define TN_show_details_lambda_full(f) std::string("[") + constype::lambda_full(f) + "] " + #f

@@ -1,5 +1,5 @@
 #include "doctest.h"
-#include <type_name/type_name.hpp>
+#include <constype/constype.hpp>
 #include <fplus/fplus.hpp>
 #include <functional>
 #include <map>
@@ -18,7 +18,7 @@ TEST_CASE("lambda_generic_clean")
     {
         auto f = [](auto i) { return 2 * i; };
         REQUIRE_EQ(
-            type_name::lambda_generic_clean<int>(f),
+            constype::lambda_generic_clean<int>(f),
             "lambda: (int) -> int"
         );
     }
@@ -28,7 +28,7 @@ TEST_CASE("lambda_generic_clean")
             return fplus::pairs_to_map_grouped( fplus::overlapping_pairs_cyclic(range) );
         };
         REQUIRE_EQ(
-            type_name::lambda_generic_clean<int>(f),
+            constype::lambda_generic_clean<int>(f),
             "lambda: (int) -> std::map<int, std::vector<int>>"
         );
     }
@@ -37,7 +37,7 @@ TEST_CASE("lambda_generic_clean")
             return a + b;
         };
         REQUIRE_EQ(
-            type_name::lambda_generic_clean<int, char>(f),
+            constype::lambda_generic_clean<int, char>(f),
             "lambda: (int, char) -> int"
         );
     }

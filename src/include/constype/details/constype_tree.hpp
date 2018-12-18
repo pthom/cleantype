@@ -1,11 +1,11 @@
 #pragma once
 #include <string>
 #include <deque>
-#include <type_name/details/type_name_full.hpp>
-#include <type_name/details/fp_polyfill/fp_additions.hpp>
-#include <type_name/type_name_configuration.hpp>
+#include <constype/details/constype_full.hpp>
+#include <constype/details/fp_polyfill/fp_additions.hpp>
+#include <constype/constype_configuration.hpp>
 
-namespace type_name
+namespace constype
 {
 
     namespace internal
@@ -52,7 +52,7 @@ namespace type_name
             std::function<bool(const code_pair &)> is_node_desirable =
                 [](const code_pair &code_pair) {
                     const std::vector<std::string> undesirable_nodes =
-                        type_name::CleanConfiguration::GlobalConfig().undesirable_type_nodes_;
+                        constype::CleanConfiguration::GlobalConfig().undesirable_type_nodes_;
                     bool found =
                         std::find(undesirable_nodes.begin(), undesirable_nodes.end(), fp::trim(' ', code_pair.lhs)) != undesirable_nodes.end();
                     return !found;
@@ -88,7 +88,7 @@ namespace type_name
         {
             return perform_suppressions(
                 typ_name,
-                type_name::CleanConfiguration::GlobalConfig().suppress_extra_namespaces_);
+                constype::CleanConfiguration::GlobalConfig().suppress_extra_namespaces_);
         }
 
 
@@ -96,21 +96,21 @@ namespace type_name
         {
             return perform_suppressions(
                 typ_name,
-                type_name::CleanConfiguration::GlobalConfig().suppress_extract_struct_class_);
+                constype::CleanConfiguration::GlobalConfig().suppress_extract_struct_class_);
         }
 
         inline std::string remove_custom(const std::string & typ_name)
         {
             return perform_suppressions(
                 typ_name,
-                type_name::CleanConfiguration::GlobalConfig().suppress_custom_);
+                constype::CleanConfiguration::GlobalConfig().suppress_custom_);
         }
 
 
         inline std::string perform_std_replacements(const std::string & typ_name)
         {
             return perform_replacements(typ_name,
-                type_name::CleanConfiguration::GlobalConfig().replacements_after_undesirable_node_extractions
+                constype::CleanConfiguration::GlobalConfig().replacements_after_undesirable_node_extractions
             );
         }
 
@@ -189,4 +189,4 @@ namespace type_name
 
     } // namespace internal
 
-} // namespace type_name
+} // namespace constype

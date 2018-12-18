@@ -1,11 +1,11 @@
 #pragma once
 #include <string>
 #include <deque>
-#include "type_name/details/type_name_full.hpp"
-#include "type_name/details/type_name_tree.hpp"
-#include "type_name/details/fp_polyfill/fp_additions.hpp"
+#include "constype/details/constype_full.hpp"
+#include "constype/details/constype_tree.hpp"
+#include "constype/details/fp_polyfill/fp_additions.hpp"
 
-namespace type_name
+namespace constype
 {
 
     template <class T>
@@ -35,19 +35,19 @@ namespace type_name
         return clean<T>() + " = " + fp::show(v);
     }
 
-} // namespace type_name
+} // namespace constype
 
 
-#define TN_type_name_clean(var) type_name::clean<decltype(var)>()
+#define TN_constype_clean(var) constype::clean<decltype(var)>()
 
 
 #define TN_show_details(var) \
-        std::string("[") + TN_type_name_clean(var) + "] " + #var \
+        std::string("[") + TN_constype_clean(var) + "] " + #var \
         + " = " \
         + fp::show(var)
 
 
 #define TN_show_details_cont(var) \
-        std::string("[") + TN_type_name_clean(var) + "] " + #var \
+        std::string("[") + TN_constype_clean(var) + "] " + #var \
         + " = " \
         + fp::show_cont(var)

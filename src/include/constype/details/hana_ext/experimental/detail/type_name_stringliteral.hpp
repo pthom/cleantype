@@ -9,7 +9,7 @@ Distributed under the Boost Software License, Version 1.0.
 #ifndef BOOST_HANA_EXPERIMENTAL_DETAIL_TYPE_NAME_CSTRING_HPP
 #define BOOST_HANA_EXPERIMENTAL_DETAIL_TYPE_NAME_CSTRING_HPP
 
-#include <type_name/details/hana_ext/experimental/detail/type_name_compiler_capabilities.hpp>
+#include <constype/details/hana_ext/experimental/detail/type_name_compiler_capabilities.hpp>
 #include <cstddef>
 #include <string>
 #include <cstring>

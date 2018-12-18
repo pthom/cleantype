@@ -1,5 +1,5 @@
 #include "doctest.h"
-#include "type_name/type_name.hpp"
+#include "constype/constype.hpp"
 #include <fplus/fplus.hpp>
 #include <functional>
 #include <map>
@@ -51,7 +51,7 @@ TEST_CASE("log_type_lambda_clean")
 
 TEST_CASE("tokenize_lambda_params")
 {
-    using namespace type_name::internal;
+    using namespace constype::internal;
     {
         std::string params_str("int, string");
         auto params = tokenize_lambda_params(params_str, false);
@@ -101,7 +101,7 @@ TEST_CASE("tokenize_lambda_params")
 TEST_CASE("extract_parenthesis_content_at_end")
 {
     std::string input = "ABC(DEF)(GHI)KLM";
-    auto r = type_name::internal::extract_parenthesis_content_at_end(input);
+    auto r = constype::internal::extract_parenthesis_content_at_end(input);
     REQUIRE_EQ(r.parenthesis_content, "GHI");
     REQUIRE_EQ(r.remaining_at_start, "ABC(DEF)");
     REQUIRE(r.success);
@@ -113,13 +113,13 @@ TEST_CASE("_mem_fn_to_lambda_type")
     {
         std::string memfn_type = "class std::_Mem_fn<struct std::pair<int,double> (__thiscall <lambda_e15113958de8c2368f6f706484d8ddc7>::*)(int,int)const >";
         std::string expected = "lambda: (int, int) -> std::pair<int, double>";
-        auto computed = type_name::internal::_mem_fn_to_lambda_type(memfn_type, true);
+        auto computed = constype::internal::_mem_fn_to_lambda_type(memfn_type, true);
         REQUIRE_EQ(computed, expected);
     }
     {
         std::string memfn_type = "std::__1::__mem_fn<std::__1::map<int, std::__1::vector<int, std::__1::allocator<int>>, std::__1::less<int>, std::__1::allocator<std::__1::pair<int const, std::__1::vector<int, std::__1::allocator<int>>>>>(_DOCTEST_ANON_FUNC_2()::$_5:: *)(int)const>";
         std::string expected = "lambda: (int) -> std::map<int, std::vector<int>>";
-        auto computed = type_name::internal::_mem_fn_to_lambda_type(memfn_type, true);
+        auto computed = constype::internal::_mem_fn_to_lambda_type(memfn_type, true);
         REQUIRE_EQ(computed, expected);
     }
 }

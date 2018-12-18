@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-namespace type_name {
+namespace constype {
 namespace internal {
 
     // Revoir tout ca en fold...
@@ -148,4 +148,4 @@ inline std::string format_whitespace(const std::string &str_type)
     return r;
 }
 
-} // namespace type_name
+} // namespace constype

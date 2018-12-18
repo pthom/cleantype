@@ -33,4 +33,4 @@ enable_testing()
 include_directories(${CMAKE_SOURCE_DIR}/third_party/FunctionalPlus/include)
 include_directories(${CMAKE_SOURCE_DIR}/src/include)
 
-add_subdirectory(src/include/type_name/tests)
+add_subdirectory(src/include/constype/tests)

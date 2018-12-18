@@ -1,6 +1,6 @@
 /*
 #include "doctest.h"
-#include "type_name/type_name.hpp"
+#include "constype/constype.hpp"
 
 #define LOG(str) std::cout << str << std::endl
 #define LOG_VALUE(var) std::cout << #var << " = " << var << std::endl
@@ -16,18 +16,18 @@
 #define MY_REQUIRE_EQ_STRING(a, b) REQUIRE_EQ(a, b)
 #endif
 
-TEST_CASE("type_name_full_test")
+TEST_CASE("constype_full_test")
 {
     {
         // Standard types
         char v = 5;
-        // The function type_name::full will add a reference
+        // The function constype::full will add a reference
         // (since the arg is passed by universal reference (&&))
-        MY_REQUIRE_EQ_STRING(type_name::full(v),
+        MY_REQUIRE_EQ_STRING(constype::full(v),
         "char &"
         );
         // The macro will output the exact type
-        MY_REQUIRE_EQ_STRING(TN_type_name_full(v),
+        MY_REQUIRE_EQ_STRING(TN_constype_full(v),
         "char"
         );
     }
@@ -35,10 +35,10 @@ TEST_CASE("type_name_full_test")
         // Reference
         char a = 5;
         char &v = a;
-        MY_REQUIRE_EQ_STRING(type_name::full(v),
+        MY_REQUIRE_EQ_STRING(constype::full(v),
         "char &"
         );
-        MY_REQUIRE_EQ_STRING(TN_type_name_full(v),
+        MY_REQUIRE_EQ_STRING(TN_constype_full(v),
         "char &"
         );
     }
@@ -46,10 +46,10 @@ TEST_CASE("type_name_full_test")
         // Const reference
         char a = 5;
         const char &v = a;
-        MY_REQUIRE_EQ_STRING(type_name::full(v),
+        MY_REQUIRE_EQ_STRING(constype::full(v),
         "char const &"
         );
-        MY_REQUIRE_EQ_STRING(TN_type_name_full(v),
+        MY_REQUIRE_EQ_STRING(TN_constype_full(v),
         "char const &"
         );
     }
@@ -58,10 +58,10 @@ TEST_CASE("type_name_full_test")
  // FIXME : msvc return "char const *&" (i.e with a space)
         char a = 5;
         const char *v = &a;
-        MY_REQUIRE_EQ_STRING(type_name::full(v),
+        MY_REQUIRE_EQ_STRING(constype::full(v),
         "char const * &"
         );
-        MY_REQUIRE_EQ_STRING(TN_type_name_full(v),
+        MY_REQUIRE_EQ_STRING(TN_constype_full(v),
         "char const *"
         );
     }
@@ -69,32 +69,32 @@ TEST_CASE("type_name_full_test")
         // Const pointer (but modifiable content)
         char a = 5;
         char * const v = &a;
-        MY_REQUIRE_EQ_STRING(type_name::full(v),
+        MY_REQUIRE_EQ_STRING(constype::full(v),
         "char * const &"
         );
-        MY_REQUIRE_EQ_STRING(TN_type_name_full(v),
+        MY_REQUIRE_EQ_STRING(TN_constype_full(v),
         "char * const"
         );
     }
     {
         // Volatile
         volatile char v = 5;
-        MY_REQUIRE_EQ_STRING(type_name::full(v),
+        MY_REQUIRE_EQ_STRING(constype::full(v),
         "char volatile &"
         );
-        MY_REQUIRE_EQ_STRING(TN_type_name_full(v),
+        MY_REQUIRE_EQ_STRING(TN_constype_full(v),
         "char volatile"
         );
     }
 }
 
 
-TEST_CASE("type_name_full_r_value_references")
+TEST_CASE("constype_full_r_value_references")
 {
     using TypenamePair = std::array<std::string, 2>;
     // r-value reference tests
     auto output_received_type = [](auto && v) -> TypenamePair {
-        return { type_name::full<decltype(v)>(), type_name::full(v) };
+        return { constype::full<decltype(v)>(), constype::full(v) };
     };
     auto require_eq_typename_pair = [](const TypenamePair & p1, const TypenamePair & p2 ) {
         MY_REQUIRE_EQ_STRING(p1[0], p2[0]);
@@ -135,18 +135,18 @@ TEST_CASE("type_name_full_r_value_references")
 }
 
 
-TEST_CASE("TN_type_name_full")
+TEST_CASE("TN_constype_full")
 {
     {
         char v = 5;
         MY_REQUIRE_EQ_STRING(
-            TN_type_name_full(v),
+            TN_constype_full(v),
             "char"
          );
     }
     {
         MY_REQUIRE_EQ_STRING(
-            TN_type_name_full(static_cast<char>(42)),
+            TN_constype_full(static_cast<char>(42)),
             "char"
          );
     }
@@ -157,7 +157,7 @@ template<typename... Args>
 struct TemplateClass
 {
     static std::string full_type() {
-        return type_name::full<Args...>();
+        return constype::full<Args...>();
     }
 };
 
@@ -166,7 +166,7 @@ template<typename... Args>
 void check_multiple_args(const std::string & expected)
 {
     MY_REQUIRE_EQ_STRING(
-        type_name::full<Args...>(),
+        constype::full<Args...>(),
         expected
     );
     MY_REQUIRE_EQ_STRING(
@@ -176,7 +176,7 @@ void check_multiple_args(const std::string & expected)
 }
 
 
-TEST_CASE("type_name_full_multiple")
+TEST_CASE("constype_full_multiple")
 {
     check_multiple_args<
          char, char const>(
@@ -205,26 +205,26 @@ template<typename... Args>
 void check_multiple_args_fromvalues(const std::string & expected, Args... args)
 {
     MY_REQUIRE_EQ_STRING(
-        type_name::full(args...),
+        constype::full(args...),
         expected
     );
 }
 
 
-TEST_CASE("type_name_full_multiple_fromvalues")
+TEST_CASE("constype_full_multiple_fromvalues")
 {
     MY_REQUIRE_EQ_STRING(
-        type_name::full(static_cast<char>(1)),
+        constype::full(static_cast<char>(1)),
         "char"
     );
     MY_REQUIRE_EQ_STRING(
-        type_name::full(static_cast<char>(1), static_cast<char>(1)),
+        constype::full(static_cast<char>(1), static_cast<char>(1)),
         "char, char"
     );
-    std::string tst = type_name::full(static_cast<char>(1), "hello");
+    std::string tst = constype::full(static_cast<char>(1), "hello");
 #ifndef _MSC_VER // msvc emits "char, char const[6] const &"
     MY_REQUIRE_EQ_STRING(
-        type_name::full(static_cast<char>(1), "hello"),
+        constype::full(static_cast<char>(1), "hello"),
         "char, char[6] const &"
     );
 #endif
@@ -239,7 +239,7 @@ TEST_CASE("type_name_full_multiple_fromvalues")
         char &v = a;
         char &v2 = a;
         char const& c = a;
-        // MY_REQUIRE_EQ_STRING(type_name::full(1, 2, c),
+        // MY_REQUIRE_EQ_STRING(constype::full(1, 2, c),
         // "char, char, char const&" --> "char, char, char" !!!
         // );
     }

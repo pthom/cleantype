@@ -9,13 +9,13 @@
 #include <string>
 #include <cstdlib>
 #include <string>
-#include <type_name/details/fp_polyfill/fp_polyfill.hpp>
+#include <constype/details/fp_polyfill/fp_polyfill.hpp>
 
-#include <type_name/details/hana_ext/experimental/detail/type_name_pretty_function.hpp>
-#include <type_name/details/type_name_format_whitespace.hpp>
-#include <type_name/details/type_name_tree.hpp>
+#include <constype/details/hana_ext/experimental/detail/type_name_pretty_function.hpp>
+#include <constype/details/constype_format_whitespace.hpp>
+#include <constype/details/constype_tree.hpp>
 
-namespace type_name_s
+namespace constype_s
 {
     using stringliteral = boost::hana::experimental::type_name_details::stringliteral;
 
@@ -51,12 +51,12 @@ namespace type_name_s
             // (Step 3)
             std::string type_definition;
             {
-                auto code_pair_tree_ = type_name::internal::parse_template_tree(type_in_tupletypeholder);
+                auto code_pair_tree_ = constype::internal::parse_template_tree(type_in_tupletypeholder);
                 assert(code_pair_tree_.children_.size() > 0);
-                type_definition = type_name::internal::type_children_to_string(code_pair_tree_);
+                type_definition = constype::internal::type_children_to_string(code_pair_tree_);
             }
 
-            std::string formatted = type_name::format_whitespace(type_definition);
+            std::string formatted = constype::format_whitespace(type_definition);
             return formatted;
         }
     } // namespace internal
@@ -64,7 +64,7 @@ namespace type_name_s
 
     template <typename... T>
     std::string full () {
-        return type_name_s::internal::impl_full<T...>();
+        return constype_s::internal::impl_full<T...>();
     }
 
 
@@ -82,24 +82,24 @@ namespace type_name_s
      void ERROR_full() {
        // will make the compiler fail (no call operator), but you can read
        // the name in the output if you squint your eyes
-       //constexpr auto t = boost::hana::experimental::type_name<T>()();
+       //constexpr auto t = boost::hana::experimental::constype<T>()();
        //static_assert(internal::impl_full<T...>() , "truc");
 
          // TODO !!!!
-         //static_assert(boost::hana::experimental::type_name<T>(), "truc");
+         //static_assert(boost::hana::experimental::constype<T>(), "truc");
      }
 
-} // namespace type_name
+} // namespace constype
 
 
-#define TNS_type_name_full(var) type_name_s::full<decltype(var)>()
+#define TNS_constype_full(var) constype_s::full<decltype(var)>()
 
 #define TNS_show_details_full(var) \
-        std::string("[") + TNS_type_name_full(var) + "] " + #var \
+        std::string("[") + TNS_constype_full(var) + "] " + #var \
         + " = " \
         + fp::show(var)
 
 #define TNS_show_details_full_cont(var) \
-        std::string("[") + TN_type_name_full(var) + "] " + #var \
+        std::string("[") + TN_constype_full(var) + "] " + #var \
         + " = " \
         + fp::show_cont(var)

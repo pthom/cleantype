@@ -9,10 +9,10 @@
 #include <string>
 #include <cstdlib>
 #include <string>
-#include <type_name/details/type_name_format_whitespace.hpp>
-#include <type_name/details/fp_polyfill/fp_polyfill.hpp>
+#include <constype/details/constype_format_whitespace.hpp>
+#include <constype/details/fp_polyfill/fp_polyfill.hpp>
 
-namespace type_name
+namespace constype
 {
     namespace internal
     {
@@ -39,7 +39,7 @@ namespace type_name
             else if (std::is_rvalue_reference<T>::value)
                 r += "&&";
 
-            r = type_name::format_whitespace(r);
+            r = constype::format_whitespace(r);
             return r;
         }
     } // namespace internal
@@ -70,17 +70,17 @@ namespace type_name
     template <typename T> std::string show_details_full(T && v) {
         return std::string("[") + full<T>() + "]" + " = " + fp::show(v);
     }
-} // namespace type_name
+} // namespace constype
 
 
-#define TN_type_name_full(var) type_name::full<decltype(var)>()
+#define TN_constype_full(var) constype::full<decltype(var)>()
 
 #define TN_show_details_full(var) \
-        std::string("[") + TN_type_name_full(var) + "] " + #var \
+        std::string("[") + TN_constype_full(var) + "] " + #var \
         + " = " \
         + fp::show(var)
 
 #define TN_show_details_full_cont(var) \
-        std::string("[") + TN_type_name_full(var) + "] " + #var \
+        std::string("[") + TN_constype_full(var) + "] " + #var \
         + " = " \
         + fp::show_cont(var)

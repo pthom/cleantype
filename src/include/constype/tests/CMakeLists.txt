@@ -1,18 +1,18 @@
 
-file(GLOB_RECURSE cpp_files ${CMAKE_SOURCE_DIR}/src/include/type_name/tests/*.cpp)
-file(GLOB_RECURSE hpp_files ${CMAKE_SOURCE_DIR}/src/include/type_name/*.hpp)
+file(GLOB_RECURSE cpp_files ${CMAKE_SOURCE_DIR}/src/include/constype/tests/*.cpp)
+file(GLOB_RECURSE hpp_files ${CMAKE_SOURCE_DIR}/src/include/constype/*.hpp)
 
 set(files ${cpp_files} ${hpp_files})
 
-add_executable(typename_test ${files})
-add_test(NAME typename_test COMMAND typename_test)
+add_executable(constype_test ${files})
+add_test(NAME constype_test COMMAND constype_test)
 message("doctest_INCLUDES=${doctest_INCLUDES}")
-target_include_directories(typename_test PRIVATE ${doctest_INCLUDES})
-target_link_libraries(typename_test PRIVATE CONAN_PKG::boost)
+target_include_directories(constype_test PRIVATE ${doctest_INCLUDES})
+target_link_libraries(constype_test PRIVATE CONAN_PKG::boost)
 
 if (MSVC)
-    target_compile_options(typename_test PRIVATE /std:c++latest)
-    target_compile_definitions(typename_test PRIVATE
+    target_compile_options(constype_test PRIVATE /std:c++latest)
+    target_compile_definitions(constype_test PRIVATE
         -D_SILENCE_CXX17_IS_LITERAL_TYPE_DEPRECATION_WARNING
         -D_SILENCE_CXX17_RESULT_OF_DEPRECATION_WARNING
         )
