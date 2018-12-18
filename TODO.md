@@ -14,19 +14,25 @@
     * [X] Types multiples par wrap dans Template Holder ?
     * [X] full_s : compile time tests
     * [ ] west_const -> east_const
-    * [ ] suppr typename, replace by type_name_s
-    * [ ] interact / clean
-        * [ ] prog version inline
-        * [ ] make version inline pour binder
+    * [X] suppr typename, replace by type_name_s
+    * [X] retest lambda and 4 params types (was an issue, should not be anymore) : see constype_full_multiple_fromvalues
+    * [ ] clean : check issues with multiple types (why parameter packs...)
+    * [ ] Compile time types log
+        * [ ] CMake / detection boost
+        * [ ] interact / clean
+            * [ ] prog version inline
+            * [ ] make version inline pour binder
 
 * [ ] Passer le code en east const
 * [ ] includes avec <>
 * [ ] classer fonctions string dans stringutils
+* [?] constype or ConsType ?
 * [X] Trouver un bon nom pour la librairie : consistent type "constype"
  * [X] Change name
  * [ ] Add copyright
 
 * [ ] string_tree : delete, only lhr_rhs
+* [ ] fplus : remove include (i.e backport show_cont & co)
 
 * [ ] Doc
     * [ ] Mention look for help?
