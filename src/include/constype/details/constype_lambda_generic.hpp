@@ -25,7 +25,7 @@ namespace constype
             // auto as_mem_fn = std::mem_fn(
             //     & GenericLambda::template operator()<Args...> );
 
-            std::string mem_fn_type = constype::full < decltype(as_mem_fn) >();
+            std::string mem_fn_type = constype::internal::_impl_typeid_hana_no_holder<decltype(as_mem_fn)>();
             std::string final_type = constype::internal::_mem_fn_to_lambda_type(mem_fn_type, clean_type);
             return final_type;
         }

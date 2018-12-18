@@ -193,7 +193,7 @@ namespace constype
             //clang: std::__1::pair<int, int> (constype::_DOCTEST_ANON_FUNC_2()::$_1::*)(int, int) const
 
             auto as_mem_fn = std::mem_fn( & decltype(fn)::operator() );
-            std::string mem_fn_type = TN_constype_full(as_mem_fn);
+            std::string mem_fn_type = constype::internal::_impl_typeid_hana_no_holder<decltype(as_mem_fn)>();
             return _mem_fn_to_lambda_type(mem_fn_type, clean_params);
         }
 

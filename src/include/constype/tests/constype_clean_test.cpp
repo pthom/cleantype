@@ -86,9 +86,9 @@ TEST_CASE("clean_typename_from_string")
     make_one_test(
         "std::pair < std::vector< std::string > >",
         "std::pair<std::vector<std::string>>");
-    //make_one_test(
-    //    "const int",
-    //    "int const"); // compilers prefer east const and never emit west const type info !
+    make_one_test(
+        "const std::__1::basic_string<char> &",
+        "const std::string &");
     make_one_test(
         "int&",
         "int &");
@@ -108,6 +108,8 @@ void compare_type_full_to_repr(const std::string & type_full, const std::string 
 {
     std::string type_clean = constype::internal::impl_clean(type_full);
     std::string expected_repr2 = fp::replace_tokens(" COMMA ", ", ", expected_repr);
+    if (type_clean != expected_repr2)
+        std::cout << "Ah";
     REQUIRE_EQ(type_clean, expected_repr2);
 }
 
@@ -124,7 +126,7 @@ void impl_test_clean_type(const std::string & expectedRepr, T value)
     { \
     type_definition value = type_definition();  \
     impl_test_clean_type<type_definition>( #type_definition, value ); \
-    impl_test_clean_type<type_definition const &>(#type_definition" const &", value); \
+    impl_test_clean_type<type_definition const &>("const " #type_definition " &", value); \
     }
 
 #define COMMA ,
@@ -176,8 +178,8 @@ TEST_CASE("clean_pack")
         ,                "std::string, std::vector<int>"
     );
     REQUIRE_EQ(
-         constype::clean<std::string, std::vector<int> const &, int const &>()
-        ,                "std::string, std::vector<int> const &, int const &"
+         constype::clean<std::string, const std::vector<int> &, int const &>()
+        ,               "std::string, const std::vector<int> &, const int &"
     );
 }
 

@@ -12,6 +12,8 @@
 template<typename Lambda> void test_one_lambda(Lambda f, const std::string & expected_type)
 {
     const std::string computed_type = TN_show_details_lambda(f);
+    if (computed_type != expected_type)
+        std::cout << "Argh";
     REQUIRE_EQ(computed_type, expected_type);
 }
 
@@ -35,7 +37,7 @@ TEST_CASE("log_type_lambda_clean")
   }
   {
       auto f = [](std::string const &a, const std::string & b) { return a + b; };
-      test_one_lambda(f, "[lambda: (std::string const &, std::string const &) -> std::string] f");
+      test_one_lambda(f, "[lambda: (const std::string &, const std::string &) -> std::string] f");
   }
   {
     int c = 5;
@@ -45,7 +47,7 @@ TEST_CASE("log_type_lambda_clean")
   {
     std::string prefix = "a-";
     auto f = [&prefix](const std::string &s) { return prefix + s; };
-    test_one_lambda(f, "[lambda: (std::string const &) -> std::string] f");
+    test_one_lambda(f, "[lambda: (const std::string &) -> std::string] f");
   }
 }
 
@@ -58,45 +60,52 @@ TEST_CASE("tokenize_lambda_params")
     {
         std::string params_str("int, string");
         auto params = tokenize_lambda_params(params_str, false);
-        std::vector<std::string> expected {{
+        std::vector<std::string> expected {
             {"int"},
             {"string"}
-        }};
+        };
         REQUIRE_EQ(params, expected);
     }
     {
         std::string params_str("int, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, double");
         auto params = tokenize_lambda_params(params_str, false);
-        std::vector<std::string> expected {{
+        std::vector<std::string> expected {
             {"int"},
             {"std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >"},
             {"double"},
-        }};
+        };
         REQUIRE_EQ(params, expected);
     }
     {
         std::string params_str("int, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, double");
         auto params = tokenize_lambda_params(params_str, true);
-        std::vector<std::string> expected {{
+        std::vector<std::string> expected {
             {"int"},
             {"std::string"},
             {"double"},
-        }};
+        };
         REQUIRE_EQ(params, expected);
     }
     {
         std::string params_str("");
         auto params = tokenize_lambda_params(params_str, true);
-        std::vector<std::string> expected {{
-        }};
+        std::vector<std::string> expected { "" };
         REQUIRE_EQ(params, expected);
     }
     {
         std::string params_str("int");
         auto params = tokenize_lambda_params(params_str, true);
-        std::vector<std::string> expected {{
+        std::vector<std::string> expected {
             "int"
-        }};
+        };
+        REQUIRE_EQ(params, expected);
+    }
+    {
+        std::string params_str("const std::__1::basic_string<char> &, const std::__1::basic_string<char> &");
+        auto params = tokenize_lambda_params(params_str, true);
+        std::vector<std::string> expected {
+            "const std::string &", "const std::string &"
+        };
         REQUIRE_EQ(params, expected);
     }
 }
@@ -124,5 +133,12 @@ TEST_CASE("_mem_fn_to_lambda_type")
         std::string expected = "lambda: (int) -> std::map<int, std::vector<int>>";
         auto computed = constype::internal::_mem_fn_to_lambda_type(memfn_type, true);
         REQUIRE_EQ(computed, expected);
+    }
+    {
+        // PERAVE                                                                  \/ !!!
+//        std::string memfn_type = "std::__1::__mem_fn<std::__1::basic_string<char, char> ((lambda at ../src/include/constype/tests/lambda_typename_test.cpp:37:16):: *)(const std::__1::basic_string &, const std::__1::basic_string<char> &)const>";
+//        std::string expected = "lambda: (const std::string &, const std::string &) -> std::string";
+//        auto computed = constype::internal::_mem_fn_to_lambda_type(memfn_type, true);
+//        REQUIRE_EQ(computed, expected);
     }
 }

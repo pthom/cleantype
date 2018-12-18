@@ -12,74 +12,109 @@
 #include <string>
 #include <cstdlib>
 #include <string>
-#include <constype/details/constype_format_whitespace.hpp>
 #include <constype/details/fp_polyfill/fp_polyfill.hpp>
+
+#include <constype/details/hana_ext/experimental/detail/type_name_pretty_function.hpp>
+#include <constype/details/constype_format_whitespace.hpp>
+#include <constype/details/constype_tree.hpp>
 
 namespace constype
 {
+    using stringliteral = boost::hana::experimental::type_name_details::stringliteral;
+
     namespace internal
     {
-        template <class T> std::string impl_full()
-        {
-            typedef typename std::remove_reference<T>::type TR;
-            std::unique_ptr<char, void(*)(void*)> own
-                (
-        #ifndef _MSC_VER
-                        abi::__cxa_demangle(typeid(TR).name(), nullptr,
-                                                nullptr, nullptr),
-        #else
-                        nullptr,
-        #endif
-                        std::free
-                );
-            std::string r = own != nullptr ? own.get() : typeid(TR).name();
-            if (std::is_const<TR>::value)
-                r =  r + " const";
-            if (std::is_volatile<TR>::value)
-                r = r + " volatile" ;
-            if (std::is_lvalue_reference<T>::value)
-                r += "&";
-            else if (std::is_rvalue_reference<T>::value)
-                r += "&&";
+        // Trick in order to skip having to deal the tedious syntax of parameter packs
+        template<typename... T> struct TupleTypeHolder{
+        };
 
-            r = constype::format_whitespace(r);
-            return r;
+
+        template<typename T>
+        constexpr stringliteral _impl_typeid_hana_no_holder_literal()
+        {
+            return boost::hana::experimental::type_name_details::type_name_impl_stringliteral<T>();
+        }
+
+        template<typename T>
+        std::string _impl_typeid_hana_no_holder()
+        {
+            return boost::hana::experimental::type_name_details::stringliteral_to_string(
+                _impl_typeid_hana_no_holder_literal<T>()
+            );
+        }
+
+
+        template<typename... T>
+        constexpr stringliteral _impl_typeid_hana()
+        {
+            return boost::hana::experimental::type_name_details::type_name_impl_stringliteral< TupleTypeHolder<T...> >();
+        }
+
+
+        template<typename... T>
+        stringliteral impl_typeid()
+        {
+            return _impl_typeid_hana<T...>();
+        }
+
+
+        inline std::string extract_type_from_tupletypeholder(const std::string & typ_name)
+        {
+            auto code_pair_tree_ = constype::internal::parse_template_tree(typ_name);
+            assert(code_pair_tree_.children_.size() > 0);
+            std::string extracted_type = constype::internal::type_children_to_string(code_pair_tree_);
+            return extracted_type;
+        }
+
+
+        template <typename... T> std::string impl_full()
+        {
+            stringliteral type_sl_in_tupletypeholder  = impl_typeid<T...>();
+            std::string type_in_tupletypeholder =
+                boost::hana::experimental::type_name_details::stringliteral_to_string(type_sl_in_tupletypeholder);
+
+            std::string type_definition = extract_type_from_tupletypeholder(type_in_tupletypeholder);
+
+            std::string formatted = constype::format_whitespace(type_definition);
+            return formatted;
         }
     } // namespace internal
 
 
-    template <typename T>
+    template <typename... T>
     std::string full () {
-        return internal::impl_full<T>();
-    }
-    template <typename First, typename Second, typename ...Rest>
-    std::string full () {
-        return internal::impl_full<First>()+ ", " + full<Second, Rest...>();
+        return constype::internal::impl_full<T...>();
     }
 
 
-    template <typename T> std::string full(T && v) {
-        return internal::impl_full<T>();
-    }
-    template <typename First, typename Second, typename ...Rest>
-    std::string full(First && first, Second && second, Rest... rest) {
-        return internal::impl_full<First>() + ", " + full<Second, Rest...>(
-            std::forward<Second>(second),
-            std::forward<Rest>(rest)...
-        );
+    template <typename... T> std::string full(T... v) {
+        return internal::impl_full<T...>();
     }
 
 
     template <typename T> std::string show_details_full(T && v) {
         return std::string("[") + full<T>() + "]" + " = " + fp::show(v);
     }
+
+
+     template<typename... T>
+     void ERROR_full() {
+       // will make the compiler fail (no call operator), but you can read
+       // the name in the output if you squint your eyes
+       constexpr auto t = internal::impl_typeid<T...>()();
+       static_assert(internal::impl_full<T...>() , "truc");
+
+         // TODO !!!!
+         //static_assert(boost::hana::experimental::constype<T>(), "truc");
+     }
+
 } // namespace constype
 
 
 #define TN_constype_full(var) constype::full<decltype(var)>()
 
 #define TN_show_details_full(var) \
-        std::string("[") + TN_constype_full(var) + "] " + #var \
+        std::string("[") + TNS_constype_full(var) + "] " + #var \
         + " = " \
         + fp::show(var)
 
