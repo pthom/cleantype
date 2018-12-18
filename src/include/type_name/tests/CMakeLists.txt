@@ -18,6 +18,6 @@ if (MSVC)
         )
 endif()
 
-add_executable(type_name_cstring_test ../details/hana_ext/experimental/detail/test/type_name_cstring_test.cpp)
+add_executable(type_name_stringliteral_test ../details/hana_ext/experimental/detail/test/type_name_stringliteral_test.cpp)
 
 source_group(TREE ${CMAKE_SOURCE_DIR}/src/include/ FILES ${files})
