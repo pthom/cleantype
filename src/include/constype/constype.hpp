@@ -1,3 +1,6 @@
+// This file is part of ConsType : Consistent Type names for C++
+// Copyright Pascal Thomet - 2018
+// Distributed under the Boost Software License, Version 1.0. (see LICENSE.md)
 #pragma once
 #include <constype/constype_configuration.hpp>
 #include <constype/details/constype_full.hpp>
