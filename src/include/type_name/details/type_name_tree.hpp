@@ -169,8 +169,6 @@ namespace type_name
 
         inline std::string impl_clean(const std::string & typ_name)
         {
-            if (typ_name.size() > 5)
-                std::cout << "Observe !";
             std::string typ_name_trimmed = fp::trim(' ', typ_name);
 
             std::string typ_namecleaned = remove_struct_class(

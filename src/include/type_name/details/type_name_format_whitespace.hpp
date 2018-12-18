@@ -140,6 +140,7 @@ inline std::string format_whitespace(const std::string &str_type)
     r = internal::replace_tokens("& &", "&&", r);
     r = internal::replace_tokens("[ ]", "[]", r);
     r = internal::replace_tokens(" ,", ",", r);
+    r = internal::replace_tokens("  ", " ", r);
     r = internal::replace_tokens("__cdecl ", "", r);
     r = internal::replace_tokens("struct ", "", r);
     r = internal::replace_tokens("class ", "", r);

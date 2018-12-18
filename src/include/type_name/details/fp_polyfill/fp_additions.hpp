@@ -217,6 +217,28 @@ void tree_transform_leafs_breadth_first_inplace(Transformer_T transformer, tree<
 }
 
 
+template<typename T>
+std::string show_tree_children(const std::vector<tree<T>> & children,
+    const tree_separators & separators,
+    const show_tree_lhs_rhs_options & show_tree_lhs_rhs_options_,
+    int level = 0)
+{
+    std::vector<std::string> children_strs =
+            fp_incompat::transform_vector<std::string>([=](const tree<T> &vv) -> std::string {
+            return show_tree_lhs_rhs(vv, separators, show_tree_lhs_rhs_options_, level + 1);
+        },
+        children);
+
+    const std::string siblings_separator =
+        show_tree_lhs_rhs_options_.add_space_between_siblings ?
+          show(separators.separate_siblings) + " "
+        : show(separators.separate_siblings);
+
+    std::string children_str = join(siblings_separator, children_strs);
+    return children_str;
+}
+
+
 template <typename T>
 std::string show_tree_lhs_rhs(
     const tree<T> &v,
@@ -242,17 +264,7 @@ std::string show_tree_lhs_rhs(
         if (show_tree_lhs_rhs_options_.add_new_lines)
             result += "\n";
 
-        std::vector<std::string> children_strs =
-            fp_incompat::transform_vector<std::string>([=](const tree<T> &vv) -> std::string {
-            return show_tree_lhs_rhs(vv, separators, show_tree_lhs_rhs_options_, level + 1);
-        },
-                v.children_);
-
-        const std::string siblings_separator =
-            show_tree_lhs_rhs_options_.add_space_between_siblings ?
-            show(separators.separate_siblings) + " "
-            : show(separators.separate_siblings);
-        std::string children_str = join(siblings_separator, children_strs);
+        std::string children_str = show_tree_children(v.children_, separators, show_tree_lhs_rhs_options_, level);
 
         result += children_str;
 

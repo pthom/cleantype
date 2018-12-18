@@ -190,3 +190,11 @@ TEST_CASE("clean_multiple_args")
         ,                "std::string, std::vector<int> *, int"
     );
 }
+
+TEST_CASE("impl_clean")
+{
+    std::string typ_name = "std::__1::map<int, std::__1::vector<int, std::__1::allocator<int>>, std::__1::less<int>, std::__1::allocator<std::__1::pair<int const, std::__1::vector<int, std::__1::allocator<int>>>>>";
+    std::string type_cleaned = type_name::internal::impl_clean(typ_name);
+    std::string expected = "std::map<int, std::vector<int>>";
+    REQUIRE_EQ(type_cleaned, expected);
+}
