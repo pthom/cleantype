@@ -113,6 +113,13 @@ inline std::string trim(const char & trim_what, const std::string & xs)
     return out;
 }
 
+inline std::string trim_whitespace(const std::string & s)
+{
+    std::string r = trim(' ', s);
+    r = trim('\t', r);
+    r = trim('\n', r);
+    return r;
+}
 
 // TO REDO
 template <typename T>

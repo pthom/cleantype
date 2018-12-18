@@ -4,12 +4,19 @@
 #pragma once
 #include <string>
 #include <deque>
-#include "constype/details/constype_full.hpp"
-#include "constype/details/constype_tree.hpp"
-#include "constype/details/fp_polyfill/fp_additions.hpp"
+#include <constype/details/constype_full.hpp>
+#include <constype/details/constype_clean_impl.hpp>
 
 namespace constype
 {
+    namespace internal {
+        // MOVE CLEAN OPS HERE (APART FROM TREE !!!!!!!!!!!!!!!!)
+
+
+
+    } // namespace internal
+
+
 
     template <class T>
     std::string clean()

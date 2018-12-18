@@ -16,7 +16,7 @@
 
 #include <constype/details/hana_ext/experimental/detail/type_name_pretty_function.hpp>
 #include <constype/details/constype_format_whitespace.hpp>
-#include <constype/details/constype_tree.hpp>
+#include <constype/details/constype_clean_impl.hpp>
 
 namespace constype
 {
@@ -86,9 +86,21 @@ namespace constype
         return constype::internal::impl_full<T...>();
     }
 
+    template <typename... T>
+    std::string full_eastconst() {
+        std::string s = full<T...>();
+        std::string r = constype::apply_east_const(s);
+        return r;
+    }
+
 
     template <typename... T> std::string full(T&&... v) {
         return internal::impl_full<T...>();
+    }
+
+    template <typename... T>
+    std::string full_eastconst(T&&... v) {
+        return full_eastconst<T...>();
     }
 
 

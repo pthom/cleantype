@@ -7,6 +7,7 @@
 #include <constype/details/constype_full.hpp>
 #include <constype/details/fp_polyfill/fp_additions.hpp>
 #include <constype/constype_configuration.hpp>
+#include <constype/details/stringutils.hpp>
 
 namespace constype
 {
@@ -190,6 +191,130 @@ namespace constype
         }
 
 
+
     } // namespace internal
+
+    inline std::string apply_west_const(const std::string & type_name)
+    {
+        // Note : this implementation is by no means neither complete nor foolproof
+        // It expects types that were preprocessed as inputs (spaces before * and &, etc.)
+        // For a more complete implementation, a BNF grammar parse would probably be required
+        //
+        // By default, constype this transformation is not applied (only for the unit tests)
+        namespace stringutils = constype::stringutils;
+
+        if (type_name.empty())
+            return "";
+        if (stringutils::starts_with(type_name, "const"))
+            return type_name;
+
+        // T const * const => const T * const
+        if (stringutils::ends_with(type_name, " const * const"))
+        {
+            auto r = stringutils::remove_end(type_name, " const * const") + " * const";
+            r = "const " + r;
+            return r;
+        }
+
+        // T const * & => const T * &
+        if (stringutils::ends_with(type_name, " const * &"))
+        {
+            auto r = stringutils::remove_end(type_name, " const * &") + " * &";
+            r = "const " + r;
+            return r;
+        }
+
+        // T const & => const T &
+        if (stringutils::ends_with(type_name, " const &"))
+        {
+            auto r = stringutils::remove_end(type_name, " const &") + " &";
+            r = "const " + r;
+            return r;
+        }
+
+        // T const * => const * T
+        if (stringutils::ends_with(type_name, " const *"))
+        {
+            auto r = stringutils::remove_end(type_name, " const *") + " *";
+            r = "const " + r;
+            return r;
+        }
+
+        // T const => const T
+        if (stringutils::ends_with(type_name, " const"))
+        {
+            auto r = stringutils::remove_end(type_name, " const");
+            r = "const " + r;
+            return r;
+        }
+
+        return type_name;
+    }
+
+    inline std::string apply_east_const(const std::string & type_name)
+    {
+        // Note : this implementation is by no means neither complete nor foolproof
+        // It expects types that were preprocessed as inputs (spaces before * and &, etc.)
+        // For a more complete implementation, a BNF grammar parse would probably be required
+        //
+        // By default, constype this transformation is not applied (only for the unit tests)
+        namespace stringutils = constype::stringutils;
+
+        if (type_name.empty())
+            return "";
+        if (stringutils::ends_with(type_name, "const") && (!stringutils::starts_with(type_name, "const ")))
+            return type_name;
+
+        // const T * const => T const * const
+        if (stringutils::starts_ends_with(type_name, "const ", " * const"))
+        {
+            auto r = stringutils::remove_start_end(type_name, "const ", " * const");
+            r = r + " const * const";
+            return r;
+        }
+
+        // const T * & => T const * & 
+        if (stringutils::starts_ends_with(type_name, "const ", " * &"))
+        {
+            auto r = stringutils::remove_start_end(type_name, "const ", " * &");
+            r = r + " const * &";
+            return r;
+        }
+
+        // const T & => T const & 
+        if (stringutils::starts_ends_with(type_name, "const ", " &"))
+        {
+            auto r = stringutils::remove_start_end(type_name, "const ", " &");
+            r = r + " const &";
+            return r;
+        }
+
+        // const T * => T const *
+        if (stringutils::starts_ends_with(type_name, "const ", " *"))
+        {
+            auto r = stringutils::remove_start_end(type_name, "const ", " *");
+            r = r + " const *";
+            return r;
+        }
+
+        // const * T => T const *
+        if (stringutils::starts_with(type_name, "const * "))
+        {
+            auto r = stringutils::remove_start(type_name, "const * ");
+            r = r + " const *";
+            return r;
+        }
+
+        // const T => T const 
+        if (stringutils::starts_with(type_name, "const "))
+        {
+            auto r = stringutils::remove_start(type_name, "const ");
+            r = r + " const";
+            return r;
+        }
+
+        return type_name;
+    }
+
 
 } // namespace constype

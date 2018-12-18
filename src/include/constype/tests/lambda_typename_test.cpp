@@ -37,7 +37,7 @@ TEST_CASE("log_type_lambda_clean")
   }
   {
       auto f = [](std::string const &a, const std::string & b) { return a + b; };
-      test_one_lambda(f, "[lambda: (const std::string &, const std::string &) -> std::string] f");
+      test_one_lambda(f, "[lambda: (std::string const &, std::string const &) -> std::string] f");
   }
   {
     int c = 5;
@@ -47,7 +47,7 @@ TEST_CASE("log_type_lambda_clean")
   {
     std::string prefix = "a-";
     auto f = [&prefix](const std::string &s) { return prefix + s; };
-    test_one_lambda(f, "[lambda: (const std::string &) -> std::string] f");
+    test_one_lambda(f, "[lambda: (std::string const &) -> std::string] f");
   }
 }
 

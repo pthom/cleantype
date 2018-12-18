@@ -13,11 +13,15 @@
         * [ ] tenter PR dans branche hana_pr_typename
     * [X] Types multiples par wrap dans Template Holder ?
     * [X] full_s : compile time tests
+    * [ ] west_const -> east_const
     * [ ] suppr typename, replace by type_name_s
     * [ ] interact / clean
         * [ ] prog version inline
         * [ ] make version inline pour binder
 
+* [ ] Passer le code en east const
+* [ ] includes avec <>
+* [ ] classer fonctions string dans stringutils
 * [X] Trouver un bon nom pour la librairie : consistent type "constype"
  * [X] Change name
  * [ ] Add copyright

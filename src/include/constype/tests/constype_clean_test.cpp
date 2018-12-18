@@ -107,11 +107,129 @@ TEST_CASE("clean_typename_from_string")
 void compare_type_full_to_repr(const std::string & type_full, const std::string &expected_repr)
 {
     std::string type_clean = constype::internal::impl_clean(type_full);
+    std::string type_west = constype::apply_east_const(type_clean);
     std::string expected_repr2 = fp::replace_tokens(" COMMA ", ", ", expected_repr);
-    if (type_clean != expected_repr2)
+    if (type_west != expected_repr2)
         std::cout << "Ah";
-    REQUIRE_EQ(type_clean, expected_repr2);
+    REQUIRE_EQ(type_west, expected_repr2);
 }
+
+
+TEST_CASE("apply_west_const")
+{
+    auto make_one_test = make_test_string_transform(constype::apply_west_const);
+
+    // T => T
+    make_one_test(
+        "T",
+        "T");
+    // T * => T *
+    make_one_test(
+        "T *",
+        "T *");
+    make_one_test(
+        "T * &",
+        "T * &");
+
+    // T const => const T
+    make_one_test(
+        "T const",
+        "const T");
+    make_one_test(
+        "const T",
+        "const T");
+
+    // T const & => const T &
+    make_one_test(
+        "T const &",
+        "const T &");
+    make_one_test(
+        "const T &",
+        "const T &");
+
+    // T const * => const * T
+    make_one_test(
+        "T const *",
+        "const T *");
+    make_one_test(
+        "const T *",
+        "const T *");
+
+    // T const * const => const T * const
+    make_one_test(
+        "T const * const",
+        "const T * const");
+    make_one_test(
+        "const T * const",
+        "const T * const");
+
+    // T const * & => const T * &
+    make_one_test(
+        "T const * &",
+        "const T * &");
+    make_one_test(
+        "const T * &",
+        "const T * &");
+}
+
+
+TEST_CASE("apply_east_const")
+{
+    auto make_one_test = make_test_string_transform(constype::apply_east_const);
+
+    // T => T
+    make_one_test(
+        "T",
+        "T");
+    // T * => T *
+    make_one_test(
+        "T *",
+        "T *");
+    make_one_test(
+        "T * &",
+        "T * &");
+
+    // const T => T const
+    make_one_test(
+        "T const",
+        "T const");
+    make_one_test(
+        "const T",
+        "T const");
+
+    // const T & => T const &
+    make_one_test(
+        "T const &",
+        "T const &");
+    make_one_test(
+        "const T &",
+        "T const &");
+
+    // const * T => T const *
+    make_one_test(
+        "T const *",
+        "T const *");
+    make_one_test(
+        "const T *",
+        "T const *");
+
+    // const T * const => T const * const
+    make_one_test(
+        "T const * const",
+        "T const * const");
+    make_one_test(
+        "const T * const",
+        "T const * const");
+
+    // const T * & => T const * &
+    make_one_test(
+        "T const * &",
+        "T const * &");
+    make_one_test(
+        "const T * &",
+        "T const * &");
+}
+
 
 
 template<typename T>
@@ -126,7 +244,7 @@ void impl_test_clean_type(const std::string & expectedRepr, T value)
     { \
     type_definition value = type_definition();  \
     impl_test_clean_type<type_definition>( #type_definition, value ); \
-    impl_test_clean_type<type_definition const &>("const " #type_definition " &", value); \
+    impl_test_clean_type<type_definition const &>(#type_definition " const &", value); \
     }
 
 #define COMMA ,
@@ -177,10 +295,12 @@ TEST_CASE("clean_pack")
          constype::clean<std::string, std::vector<int>>()
         ,                "std::string, std::vector<int>"
     );
+#ifndef _MSC_VER // MSVC provides a mix of west and east const, which it difficult to test
     REQUIRE_EQ(
          constype::clean<std::string, const std::vector<int> &, int const &>()
         ,               "std::string, const std::vector<int> &, const int &"
     );
+#endif
 }
 
 TEST_CASE("clean_multiple_args")
