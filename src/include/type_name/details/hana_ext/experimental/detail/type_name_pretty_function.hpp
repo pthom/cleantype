@@ -21,13 +21,13 @@ Distributed under the Boost Software License, Version 1.0.
 
 
 #if defined(__clang__)
-    #define _HANA_TN_PRETTY_FUNCTION_TYPE_PREFIX "boost::hana::experimental::cstring_utils::cstring boost::hana::experimental::cstring_utils::type_name_impl_cstring() [T = "
+    #define _HANA_TN_PRETTY_FUNCTION_TYPE_PREFIX "boost::hana::experimental::cstring_utils::string_literal boost::hana::experimental::cstring_utils::type_name_impl_cstring() [T = "
     #define _HANA_TN_PRETTY_FUNCTION_TYPE_SUFFIX "]"
 #elif defined(_MSC_VER)
-    #define _HANA_TN_PRETTY_FUNCTION_TYPE_PREFIX  "struct boost::hana::experimental::cstring_utils::cstring __cdecl boost::hana::experimental::cstring_utils::type_name_impl_cstring<"
+    #define _HANA_TN_PRETTY_FUNCTION_TYPE_PREFIX  "struct boost::hana::experimental::cstring_utils::string_literal __cdecl boost::hana::experimental::cstring_utils::type_name_impl_cstring<"
 #define _HANA_TN_PRETTY_FUNCTION_TYPE_SUFFIX ">(void)"
 #elif defined(__GNUC__) || defined(__GNUG__)
-    #define _HANA_TN_PRETTY_FUNCTION_TYPE_PREFIX "constexpr boost::hana::experimental::cstring_utils::cstring boost::hana::experimental::cstring_utils::type_name_impl_cstring() [with T = "
+    #define _HANA_TN_PRETTY_FUNCTION_TYPE_PREFIX "constexpr boost::hana::experimental::cstring_utils::string_literal boost::hana::experimental::cstring_utils::type_name_impl_cstring() [with T = "
     #define _HANA_TN_PRETTY_FUNCTION_TYPE_SUFFIX "]"
 #else
     #error "No support for this compiler."
@@ -41,7 +41,7 @@ namespace experimental {
     namespace cstring_utils {
 
         template <typename T>
-        constexpr cstring type_name_impl_cstring() {
+        constexpr string_literal type_name_impl_cstring() {
             _HANA_TN_CONSTEXPR_IF_POSSIBLE char const* pretty_function = _HANA_TN__PRETTY_FUNCTION__;
             _HANA_TN_CONSTEXPR_IF_POSSIBLE std::size_t total_size = _HANA_SIZEOF_OR_STRLEN(_HANA_TN__PRETTY_FUNCTION__);
             _HANA_TN_CONSTEXPR_IF_POSSIBLE std::size_t prefix_size = _HANA_SIZEOF_OR_STRLEN(_HANA_TN_PRETTY_FUNCTION_TYPE_PREFIX);

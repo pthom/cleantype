@@ -29,7 +29,7 @@ struct Template {
 
 template <typename T>
 void check_matches(std::string const& re) {
-    cstring_utils::cstring name_cs = cstring_utils::type_name_impl_cstring<T>();
+    cstring_utils::string_literal name_cs = cstring_utils::type_name_impl_cstring<T>();
     std::string name = cstring_utils::cstring_to_string(name_cs);
     std::regex regex{re};
     if (!std::regex_match(name, regex)) {

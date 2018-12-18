@@ -19,13 +19,13 @@ namespace hana {
 namespace experimental {
 namespace cstring_utils {
 
-    struct cstring {
+    struct string_literal {
         char const* ptr;
         std::size_t length;
     };
 
 
-#define _HANA_TN_MAKE_CSTRING(string_literal) cstring { string_literal, _HANA_SIZEOF_OR_STRLEN(string_literal);
+#define _HANA_TN_MAKE_CSTRING(str_literal) string_literal { str_literal, _HANA_SIZEOF_OR_STRLEN(str_literal);
 
 
     constexpr std::size_t constexpr_strlen(char const * s) {
@@ -35,7 +35,7 @@ namespace cstring_utils {
         return r;
     }
 
-    constexpr bool cstring_equal(cstring const & cs1, cstring const & cs2) {
+    constexpr bool cstring_equal(string_literal const & cs1, string_literal const & cs2) {
         if (cs1.length != cs2.length)
             return false;
 
@@ -50,12 +50,12 @@ namespace cstring_utils {
         return true;
     }
 
-    constexpr bool cstring_equal_literal(cstring const & cs1, char const * literal) {
-        cstring cs2 { literal, constexpr_strlen(literal) };
+    constexpr bool cstring_equal_literal(string_literal const & cs1, char const * literal) {
+        string_literal cs2 { literal, constexpr_strlen(literal) };
         return cstring_equal(cs1, cs2);
     }
 
-    inline std::string cstring_to_string(cstring const & cs) {
+    inline std::string cstring_to_string(string_literal const & cs) {
         char * sz = static_cast<char *>(malloc(sizeof(char) * (cs.length + 1)));
 #ifdef _MSC_VER
         strncpy_s(sz, cs.length + 1, cs.ptr, cs.length);
