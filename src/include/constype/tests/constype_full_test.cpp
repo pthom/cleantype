@@ -238,13 +238,6 @@ TEST_CASE("constype_full_multiple_fromvalues")
          constype::full(static_cast<char>(1), static_cast<char>(1)),
          "char, char"
      );
-     std::string tst = constype::full(static_cast<char>(1), "hello");
- #ifndef _MSC_VER // msvc emits "char, const char[6] const &"
-     MY_REQUIRE_EQ_STRING(
-         constype::full(static_cast<char>(1), "hello"),
-         "char, char const(&)[6]"
-     );
- #endif
      {
          // Three params and perfect forwarding -> fail !
          // This fails because it is on the third param
