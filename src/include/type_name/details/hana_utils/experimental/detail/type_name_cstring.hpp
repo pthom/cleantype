@@ -35,35 +35,20 @@ namespace cstring_utils {
         return r;
     }
 
-constexpr bool cstring_equal(cstring const & cs1, cstring const & cs2) {
-    if (cs1.length != cs2.length)
-        return false;
-
-    std::size_t idx = 0;
-    do {
-        char c1 = cs1.ptr[idx];
-        char c2 = cs2.ptr[idx];
-        if (c1 != c2)
+    constexpr bool cstring_equal(cstring const & cs1, cstring const & cs2) {
+        if (cs1.length != cs2.length)
             return false;
-        idx++;
-    } while (idx < cs1.length);
-    return true;
-}
 
-    // constexpr bool cstring_equal(cstring const & cs1, cstring const & cs2) {
-    //     if (cs1.length != cs2.length)
-    //         return false;
-
-    //     std::size_t idx = 0;
-    //     do {
-    //         char c1 = cs1.ptr[idx];
-    //         char c2 = cs2.ptr[idx];
-    //         if (c1 != c2)
-    //             return false;
-    //         idx++;
-    //     } while (idx < cs1.length);
-    //     return true;
-    // }
+        std::size_t idx = 0;
+        do {
+            char c1 = cs1.ptr[idx];
+            char c2 = cs2.ptr[idx];
+            if (c1 != c2)
+                return false;
+            idx++;
+        } while (idx < cs1.length);
+        return true;
+    }
 
     constexpr bool cstring_equal_literal(cstring const & cs1, char const * literal) {
         cstring cs2 { literal, constexpr_strlen(literal) };
