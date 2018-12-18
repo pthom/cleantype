@@ -31,7 +31,7 @@ TEST_CASE("constype_full_test_s")
         // Standard types
         char v = 5;
         MY_REQUIRE_EQ_STRING(constype::full(v),
-        "char"
+        "char &"
         );
         // The macro will output the exact type
         MY_REQUIRE_EQ_STRING(TN_constype_full(v),
@@ -43,7 +43,7 @@ TEST_CASE("constype_full_test_s")
         char a = 5;
         char &v = a;
         MY_REQUIRE_EQ_STRING(constype::full(v),
-        "char"
+        "char &"
         );
         MY_REQUIRE_EQ_STRING(TN_constype_full(v),
         "char &"
@@ -54,7 +54,7 @@ TEST_CASE("constype_full_test_s")
         char a = 5;
         const char &v = a;
         MY_REQUIRE_EQ_STRING(constype::full(v),
-        "char"
+        "const char &"
         );
         MY_REQUIRE_EQ_STRING(TN_constype_full(v),
         "const char &"
@@ -65,7 +65,7 @@ TEST_CASE("constype_full_test_s")
         char a = 5;
         const char *v = &a;
         MY_REQUIRE_EQ_STRING(constype::full(v),
-        "const char *"
+        "const char * &"
         );
         MY_REQUIRE_EQ_STRING(TN_constype_full(v),
         "const char *"
@@ -76,7 +76,7 @@ TEST_CASE("constype_full_test_s")
         char a = 5;
         char * const v = &a;
         MY_REQUIRE_EQ_STRING(constype::full(v),
-        "char *"
+        "char * const &"
         );
         MY_REQUIRE_EQ_STRING(TN_constype_full(v),
         "char * const"
@@ -86,7 +86,7 @@ TEST_CASE("constype_full_test_s")
         // Volatile
         volatile char v = 5;
         MY_REQUIRE_EQ_STRING(constype::full(v),
-        "char"
+        "volatile char &"
         );
         MY_REQUIRE_EQ_STRING(TN_constype_full(v),
         "volatile char"
@@ -115,7 +115,7 @@ TEST_CASE("constype_full_r_value_references")
         // with a standard value
         char v = 5;
         require_eq_typename_pair(output_received_type(v),
-        { "char &", "char"}
+        { "char &", "char &"}
         );
     }
     // with a reference
@@ -123,7 +123,7 @@ TEST_CASE("constype_full_r_value_references")
         char a = 5;
         char &v = a;
         require_eq_typename_pair(output_received_type(v),
-        { "char &", "char"}
+        { "char &", "char &"}
         );
     }
     // with a const reference
@@ -131,14 +131,14 @@ TEST_CASE("constype_full_r_value_references")
         char a = 5;
         const char &v = a;
         require_eq_typename_pair(output_received_type(v),
-        { "const char &", "char"}
+        { "const char &", "const char &"}
         );
     }
     // with an r-value reference
     {
         std::string s("hello there, how are you. This is not a short string");
         require_eq_typename_pair(output_received_type(static_cast<char>(42)),
-        { "char &&", "char" }
+        { "char &&", "char &" }
         );
     }
 
@@ -242,7 +242,7 @@ TEST_CASE("constype_full_multiple_fromvalues")
  #ifndef _MSC_VER // msvc emits "char, const char[6] const &"
      MY_REQUIRE_EQ_STRING(
          constype::full(static_cast<char>(1), "hello"),
-         "char, const char *"
+         "char, char const(&)[6]"
      );
  #endif
      {
@@ -256,8 +256,8 @@ TEST_CASE("constype_full_multiple_fromvalues")
          char &v = a;
          char &v2 = a;
          const char& c = a;
-          MY_REQUIRE_EQ_STRING(constype::full('0', '0', c),
-          "char, char, char" //--> "char, char, char" !!!
+         MY_REQUIRE_EQ_STRING(constype::full(a, v, c, c),
+          "char &, char &, const char &, const char &"
           );
      }
 }

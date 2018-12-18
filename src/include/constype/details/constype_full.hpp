@@ -87,7 +87,7 @@ namespace constype
     }
 
 
-    template <typename... T> std::string full(T... v) {
+    template <typename... T> std::string full(T&&... v) {
         return internal::impl_full<T...>();
     }
 
