@@ -9,12 +9,11 @@
 #include <string>
 #include <cstdlib>
 #include <string>
-#include "type_name/details/hana_utils/hana_string_utils.hpp"
 #include <type_name/details/fp_polyfill/fp_polyfill.hpp>
 
 #include <boost/hana.hpp>
-#include <type_name/details/hana_utils/experimental/type_name.hpp>
-#include <type_name/details/hana_utils/experimental/detail/type_name_format.hpp>
+#include <type_name/details/hana_ext/experimental/type_name.hpp>
+#include <type_name/details/type_name_format_whitespace.hpp>
 
 namespace type_name_s
 {
@@ -52,7 +51,7 @@ namespace type_name_s
         template <typename... T> std::string impl_full()
         {
             std::string r = impl_typeid_recursive<T...>().c_str();
-            std::string formatted = boost::hana::experimental::type_name_format::format_type(r);
+            std::string formatted = type_name::format_whitespace(r);
             return formatted;
         }
     } // namespace internal

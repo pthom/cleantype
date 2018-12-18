@@ -12,10 +12,12 @@ target_link_libraries(typename_test PRIVATE CONAN_PKG::boost)
 
 if (MSVC)
     target_compile_options(typename_test PRIVATE /std:c++latest)
-    target_compile_definitions(typename_test PRIVATE 
-        -D_SILENCE_CXX17_IS_LITERAL_TYPE_DEPRECATION_WARNING 
+    target_compile_definitions(typename_test PRIVATE
+        -D_SILENCE_CXX17_IS_LITERAL_TYPE_DEPRECATION_WARNING
         -D_SILENCE_CXX17_RESULT_OF_DEPRECATION_WARNING
         )
 endif()
+
+add_executable(type_name_cstring_test ../details/hana_ext/experimental/detail/test/type_name_cstring_test.cpp)
 
 source_group(TREE ${CMAKE_SOURCE_DIR}/src/include/ FILES ${files})
