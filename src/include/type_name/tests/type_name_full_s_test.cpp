@@ -1,4 +1,5 @@
 #include "doctest.h"
+#include <regex>
 #include "type_name/details/type_name_full_s.hpp"
 
 //#define LOG(str) std::cout << str << std::endl
@@ -257,10 +258,36 @@ TEST_CASE("type_name_full_r_value_references")
           "char, char, char" //--> "char, char, char" !!!
           );
      }
+}
 
+template<typename... T>
+struct Template {
+};
+
+
+template <typename T>
+void check_matches(std::string const& re) {
+    std::string name = type_name_s::full<T>();
+    std::regex regex{re};
+    bool flag_regex_match = std::regex_match(name, regex);
+    if (!flag_regex_match) {
+        std::cerr << "type name '" << name << "' does not match regex '" << re << "'" << std::endl;
+    }
+    REQUIRE(flag_regex_match);
 }
 
 
+TEST_CASE("type_name_full_regex")
+{
+    // Make sure we get something reasonable
+    check_matches<int const>("int const|const int");
+    check_matches<int&>(R"(int\s*&)");
+    check_matches<int const&>(R"(const\s+int\s*&|int\s+const\s*&)");
+    check_matches<int(&)[]>(R"(int\s*\(\s*&\s*\)\s*\[\s*\])");
+    check_matches<int(&)[10]>(R"(int\s*\(\s*&\s*\)\s*\[\s*10\s*\])");
+    check_matches<Template<void, char const*>>(R"(Template<\s*void\s*,\s*(char const|const char)\s*\*\s*>)");
+    check_matches<void(*)(int)>(R"(void\s*\(\s*\*\s*\)\s*\(\s*int\s*\))");
+}
 
 /*
 use with:
