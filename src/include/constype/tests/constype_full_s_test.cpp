@@ -160,7 +160,6 @@ TEST_CASE("constype_full_r_value_references")
  }
 
 
-
  template<typename... Args>
  struct TemplateClass
  {
@@ -294,8 +293,8 @@ TEST_CASE("constype_full_regex")
 #define RUN_ONE_TYPE_TEST_COMPILE_TIME(type_definition, type_string_literal)                     \
         {                                                                                        \
             constexpr auto computed =                                                            \
-                constype_s::internal::_impl_typeid_hana<type_definition>();                     \
-            static_assert( boost::hana::experimental::constype_details::stringliteral_equal_sz( \
+                constype_s::internal::_impl_typeid_hana<type_definition>();                      \
+            static_assert( boost::hana::experimental::type_name_details::stringliteral_equal_sz( \
                     computed, type_string_literal),                                              \
                 "RUN_ONE_TYPE_TEST_COMPILE_TIME error");                                         \
         }
