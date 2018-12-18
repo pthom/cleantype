@@ -28,14 +28,14 @@ namespace type_name_details {
 #define _HANA_TN_MAKE_STRINGLITERAL(str_literal) stringliteral { str_literal, _HANA_SIZEOF_OR_STRLEN(str_literal);
 
 
-    constexpr std::size_t constexpr_strlen(char const * s) {
+    inline constexpr std::size_t constexpr_strlen(char const * s) {
         std::size_t r = 0;
         while(*s++ != '\0')
             r++;
         return r;
     }
 
-    constexpr bool stringliteral_equal(stringliteral const & cs1, stringliteral const & cs2) {
+    inline constexpr bool stringliteral_equal(stringliteral const & cs1, stringliteral const & cs2) {
         if (cs1.length != cs2.length)
             return false;
 
@@ -50,7 +50,7 @@ namespace type_name_details {
         return true;
     }
 
-    constexpr bool stringliteral_equal_sz(stringliteral const & cs1, char const * literal) {
+    inline constexpr bool stringliteral_equal_sz(stringliteral const & cs1, char const * literal) {
         stringliteral cs2 { literal, constexpr_strlen(literal) };
         return stringliteral_equal(cs1, cs2);
     }

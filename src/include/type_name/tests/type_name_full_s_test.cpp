@@ -289,6 +289,33 @@ TEST_CASE("type_name_full_regex")
     check_matches<void(*)(int)>(R"(void\s*\(\s*\*\s*\)\s*\(\s*int\s*\))");
 }
 
+
+#ifdef _HANA_TN_CAN_CONSTEXPR
+#define RUN_ONE_TYPE_TEST_COMPILE_TIME(type_definition, type_string_literal)                     \
+        {                                                                                        \
+            constexpr auto computed =                                                            \
+                type_name_s::internal::_impl_typeid_hana<type_definition>();                     \
+            static_assert( boost::hana::experimental::type_name_details::stringliteral_equal_sz( \
+                    computed, type_string_literal),                                              \
+                "RUN_ONE_TYPE_TEST_COMPILE_TIME error");                                         \
+        }
+#else
+#define RUN_ONE_TYPE_TEST_COMPILE_TIME(type_definition, type_string_literal)
+#endif
+
+
+void compile_time_tests() {
+    RUN_ONE_TYPE_TEST_COMPILE_TIME(void, "type_name_s::internal::TupleTypeHolder<void>");
+    RUN_ONE_TYPE_TEST_COMPILE_TIME(char, "type_name_s::internal::TupleTypeHolder<char>");
+
+    // __PRETTY_FUNCTION__ seems to favor west-const (this is true for MSVC, GCC and Clang)
+    // on the contrary, typeid().name() is strictly east const accross all compilers
+    // (Does this really need to be tested ?)
+    RUN_ONE_TYPE_TEST_COMPILE_TIME(const char, "type_name_s::internal::TupleTypeHolder<const char>");
+    RUN_ONE_TYPE_TEST_COMPILE_TIME(char const, "type_name_s::internal::TupleTypeHolder<const char>");
+}
+
+
 /*
 use with:
 

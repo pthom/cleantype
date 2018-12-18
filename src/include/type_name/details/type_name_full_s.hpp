@@ -27,7 +27,7 @@ namespace type_name_s
         };
 
         template<typename... T>
-        stringliteral _impl_typeid_hana()
+        constexpr stringliteral _impl_typeid_hana()
         {
             // Trick in order to skip having to deal the tedious syntax of parameter packs
             // (Step 2)

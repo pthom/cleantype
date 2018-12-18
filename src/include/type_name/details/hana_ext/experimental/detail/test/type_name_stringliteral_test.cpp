@@ -15,7 +15,7 @@ namespace type_name_details = boost::hana::experimental::type_name_details;
             constexpr auto computed =                                                            \
                 type_name_details::type_name_impl_stringliteral<type_definition>();                        \
             static_assert( type_name_details::stringliteral_equal_sz(computed, type_string_literal),  \
-                "STATIC_ASSERT_CSTRING_EQUAL error");                                            \
+                "RUN_ONE_TYPE_TEST_COMPILE_TIME error");                                            \
         }
 #else
     #define RUN_ONE_TYPE_TEST_COMPILE_TIME(type_definition, type_string_literal)
