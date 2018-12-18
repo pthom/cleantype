@@ -1,23 +1,37 @@
+// Cave 48 / 3eme sous sol
+// M. Hubuile
+// 0652150221
+// 9h
+//
 
-* [X] template <class T> std::string full(T)
-    * [X] doc
-* [X] <Args...> template <typename... Args> std::string full()
-    * [X] doc
+* [ ]  type_name_s :
+    * [ ] hana
+        * [X] pas de doctest, main only
+        * [X] pas de format
+        * [X] test / regex
+        * [X] recup test dans full_s
+        * [ ] tenter PR dans branche hana_pr_typename
+    * [X] Types multiples par wrap dans Template Holder ?
+    * [X] full_s : compile time tests
+    * [ ] suppr typename, replace by type_name_s
+    * [ ] interact / clean
+        * [ ] prog version inline
+        * [ ] make version inline pour binder
+
+* [X] Trouver un bon nom pour la librairie : consistent type "constype"
+ * [X] Change name
+ * [ ] Add copyright
+
+* [ ] string_tree : delete, only lhr_rhs
 
 * [ ] Doc
-    * [X] Script deploy(bash function)
-    * [X] Mention beta
     * [ ] Mention look for help?
     * [ ] Article ?
     * [ ] Insertion dans ClingRepl ?
-
-* [X] Windows build fails
-    * [X] Investigate / Windows build issue
-
-* [X] make replacements customizable
-* [X] Make macros prefix configurable / impossible => switched to TN_
-
-
+    * [ ] Mention hana & ctti
+    * [ ] Version compile time
+        * [ ] Outil de compil
+        * [ ] Outil de clean post compil
 
 Bugs
     * [ ] type function / several params
