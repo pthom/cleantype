@@ -17,15 +17,15 @@ Distributed under the Boost Software License, Version 1.0.
 namespace boost {
 namespace hana {
 namespace experimental {
-namespace cstring_utils {
+namespace type_name_details {
 
-    struct string_literal {
+    struct stringliteral {
         char const* ptr;
         std::size_t length;
     };
 
 
-#define _HANA_TN_MAKE_CSTRING(str_literal) string_literal { str_literal, _HANA_SIZEOF_OR_STRLEN(str_literal);
+#define _HANA_TN_MAKE_STRINGLITERAL(str_literal) stringliteral { str_literal, _HANA_SIZEOF_OR_STRLEN(str_literal);
 
 
     constexpr std::size_t constexpr_strlen(char const * s) {
@@ -35,7 +35,7 @@ namespace cstring_utils {
         return r;
     }
 
-    constexpr bool cstring_equal(string_literal const & cs1, string_literal const & cs2) {
+    constexpr bool stringliteral_equal(stringliteral const & cs1, stringliteral const & cs2) {
         if (cs1.length != cs2.length)
             return false;
 
@@ -50,12 +50,12 @@ namespace cstring_utils {
         return true;
     }
 
-    constexpr bool cstring_equal_literal(string_literal const & cs1, char const * literal) {
-        string_literal cs2 { literal, constexpr_strlen(literal) };
-        return cstring_equal(cs1, cs2);
+    constexpr bool stringliteral_equal_sz(stringliteral const & cs1, char const * literal) {
+        stringliteral cs2 { literal, constexpr_strlen(literal) };
+        return stringliteral_equal(cs1, cs2);
     }
 
-    inline std::string cstring_to_string(string_literal const & cs) {
+    inline std::string stringliteral_to_string(stringliteral const & cs) {
         char * sz = static_cast<char *>(malloc(sizeof(char) * (cs.length + 1)));
 #ifdef _MSC_VER
         strncpy_s(sz, cs.length + 1, cs.ptr, cs.length);
@@ -68,7 +68,7 @@ namespace cstring_utils {
         return r;
     }
 
-} // namespace cstring_utils
+} // namespace type_name_details
 } // namespace experimental
 } // namespace hana
 } // namespace boost

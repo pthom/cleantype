@@ -6,15 +6,15 @@
 
 #include <iostream>
 
-namespace cstring_utils = boost::hana::experimental::cstring_utils;
+namespace type_name_details = boost::hana::experimental::type_name_details;
 
 
 #ifdef _HANA_TN_CAN_CONSTEXPR
     #define RUN_ONE_TYPE_TEST_COMPILE_TIME(type_definition, type_string_literal)                 \
         {                                                                                        \
             constexpr auto computed =                                                            \
-                cstring_utils::type_name_impl_cstring<type_definition>();                        \
-            static_assert( cstring_utils::cstring_equal_literal(computed, type_string_literal),  \
+                type_name_details::type_name_impl_stringliteral<type_definition>();                        \
+            static_assert( type_name_details::stringliteral_equal_sz(computed, type_string_literal),  \
                 "STATIC_ASSERT_CSTRING_EQUAL error");                                            \
         }
 #else
@@ -29,8 +29,8 @@ struct Template {
 
 template <typename T>
 void check_matches(std::string const& re) {
-    cstring_utils::string_literal name_cs = cstring_utils::type_name_impl_cstring<T>();
-    std::string name = cstring_utils::cstring_to_string(name_cs);
+    type_name_details::stringliteral name_cs = type_name_details::type_name_impl_stringliteral<T>();
+    std::string name = type_name_details::stringliteral_to_string(name_cs);
     std::regex regex{re};
     if (!std::regex_match(name, regex)) {
         std::cerr << "type name '" << name << "' does not match regex '" << re << "'" << std::endl;
