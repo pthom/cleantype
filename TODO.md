@@ -13,26 +13,27 @@
         * [ ] tenter PR dans branche hana_pr_typename
     * [X] Types multiples par wrap dans Template Holder ?
     * [X] full_s : compile time tests
-    * [ ] west_const -> east_const
+    * [X] west_const -> east_const
     * [X] suppr typename, replace by type_name_s
     * [X] retest lambda and 4 params types (was an issue, should not be anymore) : see constype_full_multiple_fromvalues
-    * [ ] clean : check issues with multiple types (why parameter packs...)
+    * [X] clean : check issues with multiple types (why parameter packs...)
     * [ ] Compile time types log
         * [ ] CMake / detection boost
         * [ ] interact / clean
             * [ ] prog version inline
             * [ ] make version inline pour binder
 
-* [ ] Passer le code en east const
-* [ ] includes avec <>
-* [ ] classer fonctions string dans stringutils
+* [X] Passer le code en east const
+* [X] includes avec <>
+* [X] classer fonctions string dans stringutils
 * [?] constype or ConsType ?
-* [X] Trouver un bon nom pour la librairie : consistent type "constype"
- * [X] Change name
- * [ ] Add copyright
+
+* [X] Change name lib : clean type ?
+ * [X] Change copyright messsage & add one empty line
 
 * [ ] string_tree : delete, only lhr_rhs
 * [ ] fplus : remove include (i.e backport show_cont & co)
+* [ ] Nettoyage code
 
 * [ ] Doc
     * [ ] Mention look for help?
@@ -47,7 +48,6 @@ Bugs
     * [ ] type function / several params
     * [ ] Windows : disabled type function
     * [ ] lambda composed gcc ?
-    * bug / 3rd param (forget this ?!)
 
 
 * Check references: (same, and for compile time)
