@@ -3,9 +3,9 @@
 // Distributed under the Boost Software License, Version 1.0. (see LICENSE.md)
 #pragma once
 
-#include <constype/constype.hpp>
+#include <cleantype/cleantype.hpp>
 
-namespace constype
+namespace cleantype
 {
     namespace internal
     {
@@ -25,8 +25,8 @@ namespace constype
             // auto as_mem_fn = std::mem_fn(
             //     & GenericLambda::template operator()<Args...> );
 
-            std::string mem_fn_type = constype::internal::_impl_typeid_hana_no_holder<decltype(as_mem_fn)>();
-            std::string final_type = constype::internal::_mem_fn_to_lambda_type(mem_fn_type, clean_type);
+            std::string mem_fn_type = cleantype::internal::_impl_typeid_hana_no_holder<decltype(as_mem_fn)>();
+            std::string final_type = cleantype::internal::_mem_fn_to_lambda_type(mem_fn_type, clean_type);
             return final_type;
         }
 
@@ -51,11 +51,11 @@ namespace constype
     template <typename... Args, typename GenericLambda> std::string lambda_generic_clean(GenericLambda fn);
     template <typename... Args, typename GenericLambda> std::string lambda_generic_full(GenericLambda fn);
 
-} // namespace constype
+} // namespace cleantype
 
 // TN_type_lamda_generic_fromparams_
-#define TN_type_lamda_generic_fromparams_1(fn, arg1) constype::lambda_generic_clean<decltype(arg1)>(fn)
-#define TN_type_lamda_generic_fromparams_2(fn, arg1, arg2) constype::lambda_generic_clean<decltype(arg1), decltype(arg2)>(fn)
-#define TN_type_lamda_generic_fromparams_3(fn, arg1, arg2, arg3) constype::lambda_generic_clean<decltype(arg1), decltype(arg2), decltype(arg3)>(fn)
-#define TN_type_lamda_generic_fromparams_4(fn, arg1, arg2, arg3, arg4) constype::lambda_generic_clean<decltype(arg1), decltype(arg2), decltype(arg3), decltype(arg4)>(fn)
-#define TN_type_lamda_generic_fromparams_5(fn, arg1, arg2, arg3, arg4, arg5) constype::lambda_generic_clean<decltype(arg1), decltype(arg2), decltype(arg3), decltype(arg4), decltype(arg5)>(fn)
+#define TN_type_lamda_generic_fromparams_1(fn, arg1) cleantype::lambda_generic_clean<decltype(arg1)>(fn)
+#define TN_type_lamda_generic_fromparams_2(fn, arg1, arg2) cleantype::lambda_generic_clean<decltype(arg1), decltype(arg2)>(fn)
+#define TN_type_lamda_generic_fromparams_3(fn, arg1, arg2, arg3) cleantype::lambda_generic_clean<decltype(arg1), decltype(arg2), decltype(arg3)>(fn)
+#define TN_type_lamda_generic_fromparams_4(fn, arg1, arg2, arg3, arg4) cleantype::lambda_generic_clean<decltype(arg1), decltype(arg2), decltype(arg3), decltype(arg4)>(fn)
+#define TN_type_lamda_generic_fromparams_5(fn, arg1, arg2, arg3, arg4, arg5) cleantype::lambda_generic_clean<decltype(arg1), decltype(arg2), decltype(arg3), decltype(arg4), decltype(arg5)>(fn)

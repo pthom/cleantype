@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-namespace constype
+namespace cleantype
 {
 namespace stringutils
 {

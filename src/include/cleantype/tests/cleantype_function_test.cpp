@@ -3,7 +3,7 @@
 // Distributed under the Boost Software License, Version 1.0. (see LICENSE.md)
 #include "doctest.h"
 #include <vector>
-#include <constype/constype.hpp>
+#include <cleantype/cleantype.hpp>
 
 
 

@@ -4,13 +4,13 @@
 #pragma once
 #include <string>
 #include <deque>
-#include <constype/details/constype_full.hpp>
-#include <constype/details/fp_polyfill/fp_polyfill.hpp>
-#include <constype/details/fp_polyfill/fp_additions.hpp>
-#include <constype/constype_configuration.hpp>
-#include <constype/details/stringutils.hpp>
+#include <cleantype/details/cleantype_full.hpp>
+#include <cleantype/details/fp_polyfill/fp_polyfill.hpp>
+#include <cleantype/details/fp_polyfill/fp_additions.hpp>
+#include <cleantype/cleantype_configuration.hpp>
+#include <cleantype/details/stringutils.hpp>
 
-namespace constype
+namespace cleantype
 {
 
     namespace internal
@@ -91,7 +91,7 @@ namespace constype
             std::function<bool(const code_pair &)> is_node_desirable =
                 [](const code_pair &code_pair) {
                     const std::vector<std::string> undesirable_nodes =
-                        constype::CleanConfiguration::GlobalConfig().undesirable_type_nodes_;
+                        cleantype::CleanConfiguration::GlobalConfig().undesirable_type_nodes_;
                     bool found =
                         std::find(undesirable_nodes.begin(), undesirable_nodes.end(), fp::trim(' ', code_pair.lhs)) != undesirable_nodes.end();
                     return !found;
@@ -127,7 +127,7 @@ namespace constype
         {
             return perform_suppressions(
                 typ_name,
-                constype::CleanConfiguration::GlobalConfig().suppress_extra_namespaces_);
+                cleantype::CleanConfiguration::GlobalConfig().suppress_extra_namespaces_);
         }
 
 
@@ -135,21 +135,21 @@ namespace constype
         {
             return perform_suppressions(
                 typ_name,
-                constype::CleanConfiguration::GlobalConfig().suppress_extract_struct_class_);
+                cleantype::CleanConfiguration::GlobalConfig().suppress_extract_struct_class_);
         }
 
         inline std::string remove_custom(std::string const & typ_name)
         {
             return perform_suppressions(
                 typ_name,
-                constype::CleanConfiguration::GlobalConfig().suppress_custom_);
+                cleantype::CleanConfiguration::GlobalConfig().suppress_custom_);
         }
 
 
         inline std::string perform_std_replacements(std::string const & typ_name)
         {
             return perform_replacements(typ_name,
-                constype::CleanConfiguration::GlobalConfig().replacements_after_undesirable_node_extractions
+                cleantype::CleanConfiguration::GlobalConfig().replacements_after_undesirable_node_extractions
             );
         }
 
@@ -240,8 +240,8 @@ namespace constype
             // It expects types that were preprocessed as inputs (spaces before * and &, etc.)
             // For a more complete implementation, a BNF grammar parse would probably be required
             //
-            // By default, constype this transformation is not applied (only for the unit tests)
-            namespace stringutils = constype::stringutils;
+            // By default, cleantype this transformation is not applied (only for the unit tests)
+            namespace stringutils = cleantype::stringutils;
 
             if (type_name.empty())
                 return "";
@@ -319,4 +319,4 @@ namespace constype
     }
 
 
-} // namespace constype
+} // namespace cleantype

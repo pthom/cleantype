@@ -4,8 +4,8 @@
 
 #include "doctest.h"
 #include <regex>
-#include <constype/details/constype_full.hpp>
-#include <constype/details/debug_break.hpp>
+#include <cleantype/details/cleantype_full.hpp>
+#include <cleantype/details/debug_break.hpp>
 
 //#define LOG(str) std::cout << str << std::endl
 //#define LOG_VALUE(var) std::cout << #var << " = " << var << std::endl
@@ -33,16 +33,16 @@ void my_require_eq_string(std::string const & computed, std::string const & expe
 #endif
 
 
-TEST_CASE("constype_full_test_s")
+TEST_CASE("cleantype_full_test_s")
 {
     {
         // Standard types
         char v = 5;
-        my_require_eq_string(constype::full(v),
+        my_require_eq_string(cleantype::full(v),
         "char &"
         );
         // The macro will output the exact type
-        my_require_eq_string(TN_constype_full(v),
+        my_require_eq_string(TN_cleantype_full(v),
         "char"
         );
     }
@@ -50,10 +50,10 @@ TEST_CASE("constype_full_test_s")
         // Reference
         char a = 5;
         char &v = a;
-        my_require_eq_string(constype::full(v),
+        my_require_eq_string(cleantype::full(v),
         "char &"
         );
-        my_require_eq_string(TN_constype_full(v),
+        my_require_eq_string(TN_cleantype_full(v),
         "char &"
         );
     }
@@ -61,10 +61,10 @@ TEST_CASE("constype_full_test_s")
         // Const reference
         char a = 5;
         const char &v = a;
-        my_require_eq_string(constype::full(v),
+        my_require_eq_string(cleantype::full(v),
            "char const &"
         );
-        my_require_eq_string(constype::apply_east_const(TN_constype_full(v)),
+        my_require_eq_string(cleantype::apply_east_const(TN_cleantype_full(v)),
             "char const &"
         );
     }
@@ -72,10 +72,10 @@ TEST_CASE("constype_full_test_s")
         // Pointer to const
         char a = 5;
         const char *v = &a;
-        my_require_eq_string(constype::full(v),
+        my_require_eq_string(cleantype::full(v),
           "char const * &"
         );
-        my_require_eq_string(constype::apply_east_const(TN_constype_full(v)),
+        my_require_eq_string(cleantype::apply_east_const(TN_cleantype_full(v)),
             "char const *"
         );
     }
@@ -83,32 +83,32 @@ TEST_CASE("constype_full_test_s")
         // Const pointer (but modifiable content)
         char a = 5;
         const char * v = &a;
-        my_require_eq_string(constype::full(v),
+        my_require_eq_string(cleantype::full(v),
         "char const * &"
         );
-        my_require_eq_string(constype::apply_east_const(TN_constype_full(v)),
+        my_require_eq_string(cleantype::apply_east_const(TN_cleantype_full(v)),
         "char const *"
         );
     }
     {
         // Volatile
         volatile char v = 5;
-        my_require_eq_string(constype::full(v),
+        my_require_eq_string(cleantype::full(v),
             VOLATILE_CHAR " &"
         );
-        my_require_eq_string(TN_constype_full(v),
+        my_require_eq_string(TN_cleantype_full(v),
             VOLATILE_CHAR
         );
     }
 }
 
 
-TEST_CASE("constype_full_r_value_references")
+TEST_CASE("cleantype_full_r_value_references")
 {
     using TypenamePair = std::array<std::string, 2>;
     // r-value reference tests
     auto output_received_type = [](auto && v) -> TypenamePair {
-        return { constype::full<decltype(v)>(), constype::full(v) };
+        return { cleantype::full<decltype(v)>(), cleantype::full(v) };
     };
     auto require_eq_typename_pair = [](const TypenamePair & p1, const TypenamePair & p2 ) {
         if (p1[0] != p2[0])
@@ -153,18 +153,18 @@ TEST_CASE("constype_full_r_value_references")
 }
 
 
- TEST_CASE("TN_constype_full")
+ TEST_CASE("TN_cleantype_full")
  {
      {
          char v = 5;
          my_require_eq_string(
-             TN_constype_full(v),
+             TN_cleantype_full(v),
              "char"
           );
      }
      {
          my_require_eq_string(
-             TN_constype_full(static_cast<char>(42)),
+             TN_cleantype_full(static_cast<char>(42)),
              "char"
           );
      }
@@ -175,7 +175,7 @@ TEST_CASE("constype_full_r_value_references")
  struct TemplateClass
  {
      static std::string full_type() {
-         return constype::full<Args...>();
+         return cleantype::full<Args...>();
      }
  };
 
@@ -183,14 +183,14 @@ TEST_CASE("constype_full_r_value_references")
  template<typename... Args>
  void check_multiple_args(std::string const & expected)
  {
-     auto v1 = constype::full<Args...>();
+     auto v1 = cleantype::full<Args...>();
      auto v2 = TemplateClass<Args...>::full_type();
      if (v1 != expected)
          std::cout << "pb1\n";
      if (v2 != expected)
          std::cout << "pb2\n";
      my_require_eq_string(
-         constype::full<Args...>(),
+         cleantype::full<Args...>(),
          expected
      );
      my_require_eq_string(
@@ -201,7 +201,7 @@ TEST_CASE("constype_full_r_value_references")
 
 
 
-TEST_CASE("constype_full_multiple")
+TEST_CASE("cleantype_full_multiple")
 {
      check_multiple_args<
           char, const char >(
@@ -230,20 +230,20 @@ TEST_CASE("constype_full_multiple")
  void check_multiple_args_fromvalues(std::string const & expected, Args... args)
  {
      my_require_eq_string(
-         constype::full(args...),
+         cleantype::full(args...),
          expected
      );
  }
 
 
-TEST_CASE("constype_full_multiple_fromvalues")
+TEST_CASE("cleantype_full_multiple_fromvalues")
 {
      my_require_eq_string(
-         constype::full(static_cast<char>(1)),
+         cleantype::full(static_cast<char>(1)),
          "char"
      );
      my_require_eq_string(
-         constype::full(static_cast<char>(1), static_cast<char>(1)),
+         cleantype::full(static_cast<char>(1), static_cast<char>(1)),
          "char, char"
      );
      {
@@ -257,7 +257,7 @@ TEST_CASE("constype_full_multiple_fromvalues")
          char &v = a;
          char &v2 = a;
          const char& c = a;
-         my_require_eq_string(constype::full(a, v, c, c),
+         my_require_eq_string(cleantype::full(a, v, c, c),
           "char &, char &, char const &, char const &"
           );
      }
@@ -270,7 +270,7 @@ struct Template {
 
 template <typename T>
 void check_matches(std::string const & re) {
-    std::string name = constype::full<T>();
+    std::string name = cleantype::full<T>();
     std::regex regex{re};
     bool flag_regex_match = std::regex_match(name, regex);
     if (!flag_regex_match) {
@@ -280,7 +280,7 @@ void check_matches(std::string const & re) {
 }
 
 
-TEST_CASE("constype_full_regex")
+TEST_CASE("cleantype_full_regex")
 {
     // Make sure we get something reasonable
     check_matches<int const>("int const|const int");
@@ -299,7 +299,7 @@ TEST_CASE("constype_full_regex")
 #define RUN_ONE_TYPE_TEST_COMPILE_TIME(type_definition, type_string_literal)                     \
         {                                                                                        \
             constexpr auto computed =                                                            \
-                constype::internal::_impl_typeid_hana<type_definition>();                        \
+                cleantype::internal::_impl_typeid_hana<type_definition>();                        \
             static_assert( boost::hana::experimental::type_name_details::stringliteral_equal_sz( \
                     computed, type_string_literal),                                              \
                 "RUN_ONE_TYPE_TEST_COMPILE_TIME error");                                         \
@@ -312,7 +312,7 @@ TEST_CASE("constype_full_regex")
 #define RUN_ONE_TYPE_TEST_RUN_TIME(type_definition, type_string_literal)                         \
         {                                                                                        \
             auto computed =                                                                      \
-                constype::internal::_impl_typeid_hana<type_definition>();                        \
+                cleantype::internal::_impl_typeid_hana<type_definition>();                        \
             auto computed_s = boost::hana::experimental::type_name_details::  \
                 stringliteral_to_string(computed); \
             std::cout << "computed:"<< computed_s << std::endl; \
@@ -321,14 +321,14 @@ TEST_CASE("constype_full_regex")
 
 
 void compile_time_tests() {
-    RUN_ONE_TYPE_TEST_RUN_TIME(void, "constype::internal::TupleTypeHolder<void>");
-    RUN_ONE_TYPE_TEST_RUN_TIME(char, "constype::internal::TupleTypeHolder<char>");
+    RUN_ONE_TYPE_TEST_RUN_TIME(void, "cleantype::internal::TupleTypeHolder<void>");
+    RUN_ONE_TYPE_TEST_RUN_TIME(char, "cleantype::internal::TupleTypeHolder<char>");
 
     // __PRETTY_FUNCTION__ seems to favor west-const (this is true for MSVC, GCC and Clang)
     // on the contrary, typeid().name() is strictly east const accross all compilers
     // (Does this really need to be tested ?)
-    RUN_ONE_TYPE_TEST_RUN_TIME(const char, "constype::internal::TupleTypeHolder<const char>");
-    RUN_ONE_TYPE_TEST_RUN_TIME(char const, "constype::internal::TupleTypeHolder<const char>");
+    RUN_ONE_TYPE_TEST_RUN_TIME(const char, "cleantype::internal::TupleTypeHolder<const char>");
+    RUN_ONE_TYPE_TEST_RUN_TIME(char const, "cleantype::internal::TupleTypeHolder<const char>");
 }
 
 
@@ -347,6 +347,6 @@ ninja | \
 TEST_CASE("compile_type_typename")
 {
     using T = std::vector<int>;
-    constype::ERROR_full<T>();
+    cleantype::ERROR_full<T>();
 }
 #endif

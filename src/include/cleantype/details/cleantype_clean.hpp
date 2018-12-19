@@ -4,10 +4,10 @@
 #pragma once
 #include <string>
 #include <deque>
-#include <constype/details/constype_full.hpp>
-#include <constype/details/constype_clean_impl.hpp>
+#include <cleantype/details/cleantype_full.hpp>
+#include <cleantype/details/cleantype_clean_impl.hpp>
 
-namespace constype
+namespace cleantype
 {
     template <typename... T>
     std::string clean()
@@ -23,19 +23,19 @@ namespace constype
         return clean<T>() + " = " + fp::show(v);
     }
 
-} // namespace constype
+} // namespace cleantype
 
 
-#define TN_constype_clean(var) constype::clean<decltype(var)>()
+#define TN_cleantype_clean(var) cleantype::clean<decltype(var)>()
 
 
 #define TN_show_details(var) \
-        std::string("[") + TN_constype_clean(var) + "] " + #var \
+        std::string("[") + TN_cleantype_clean(var) + "] " + #var \
         + " = " \
         + fp::show(var)
 
 
 #define TN_show_details_cont(var) \
-        std::string("[") + TN_constype_clean(var) + "] " + #var \
+        std::string("[") + TN_cleantype_clean(var) + "] " + #var \
         + " = " \
         + fp::show_cont(var)

@@ -12,14 +12,14 @@
 #include <string>
 #include <cstdlib>
 #include <string>
-#include <constype/details/fp_polyfill/fp_polyfill.hpp>
+#include <cleantype/details/fp_polyfill/fp_polyfill.hpp>
 
-#include <constype/details/hana_ext/experimental/detail/type_name_pretty_function.hpp>
-#include <constype/details/constype_format_whitespace.hpp>
-#include <constype/details/constype_clean_impl.hpp>
-#include <constype/constype_configuration.hpp>
+#include <cleantype/details/hana_ext/experimental/detail/type_name_pretty_function.hpp>
+#include <cleantype/details/cleantype_format_whitespace.hpp>
+#include <cleantype/details/cleantype_clean_impl.hpp>
+#include <cleantype/cleantype_configuration.hpp>
 
-namespace constype
+namespace cleantype
 {
     using stringliteral = boost::hana::experimental::type_name_details::stringliteral;
 
@@ -61,9 +61,9 @@ namespace constype
 
         inline std::string extract_type_from_tupletypeholder(std::string const & typ_name)
         {
-            auto code_pair_tree_ = constype::internal::parse_template_tree(typ_name);
+            auto code_pair_tree_ = cleantype::internal::parse_template_tree(typ_name);
             assert(code_pair_tree_.children_.size() > 0);
-            std::string extracted_type = constype::internal::type_children_to_string(code_pair_tree_);
+            std::string extracted_type = cleantype::internal::type_children_to_string(code_pair_tree_);
             return extracted_type;
         }
 
@@ -76,10 +76,10 @@ namespace constype
 
             std::string type_definition = extract_type_from_tupletypeholder(type_in_tupletypeholder);
 
-            std::string formatted = constype::format_whitespace(type_definition);
+            std::string formatted = cleantype::format_whitespace(type_definition);
 
             if (CleanConfiguration::GlobalConfig().force_east_const_)
-                formatted = constype::apply_east_const(formatted);
+                formatted = cleantype::apply_east_const(formatted);
 
             return formatted;
         }
@@ -110,20 +110,20 @@ namespace constype
        static_assert(internal::impl_full<T...>() , "truc");
 
          // TODO !!!!
-         //static_assert(boost::hana::experimental::constype<T>(), "truc");
+         //static_assert(boost::hana::experimental::cleantype<T>(), "truc");
      }
 
-} // namespace constype
+} // namespace cleantype
 
 
-#define TN_constype_full(var) constype::full<decltype(var)>()
+#define TN_cleantype_full(var) cleantype::full<decltype(var)>()
 
 #define TN_show_details_full(var) \
-        std::string("[") + TNS_constype_full(var) + "] " + #var \
+        std::string("[") + TNS_cleantype_full(var) + "] " + #var \
         + " = " \
         + fp::show(var)
 
 #define TN_show_details_full_cont(var) \
-        std::string("[") + TN_constype_full(var) + "] " + #var \
+        std::string("[") + TN_cleantype_full(var) + "] " + #var \
         + " = " \
         + fp::show_cont(var)

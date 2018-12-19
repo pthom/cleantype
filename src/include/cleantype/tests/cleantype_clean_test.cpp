@@ -2,8 +2,8 @@
 // Copyright Pascal Thomet - 2018
 // Distributed under the Boost Software License, Version 1.0. (see LICENSE.md)
 #include "doctest.h"
-#include <constype/constype.hpp>
-#include <constype/details/debug_break.hpp>
+#include <cleantype/cleantype.hpp>
+#include <cleantype/details/debug_break.hpp>
 #include <fplus/fplus.hpp>
 #include <functional>
 #include <map>
@@ -72,7 +72,7 @@ TEST_CASE("clean_from_values")
     char d = 42;
     std::vector<std::string> ee;
     const auto &e  = ee;
-    auto computed = constype::clean(a, b, c, d, e);
+    auto computed = cleantype::clean(a, b, c, d, e);
     auto expected = std::string("int &, int const &, int const * const &, char &, std::vector<std::string> const &");
     std::cout << computed << std::endl;
     std::cout << expected << std::endl;
@@ -82,7 +82,7 @@ TEST_CASE("clean_from_values")
 
 TEST_CASE("clean_typename_from_string")
 {
-    auto make_one_test = make_test_string_transform(constype::internal::impl_clean_several_types);
+    auto make_one_test = make_test_string_transform(cleantype::internal::impl_clean_several_types);
     make_one_test(
         "  int   ",
         "int");
@@ -124,8 +124,8 @@ TEST_CASE("clean_typename_from_string")
 
 void compare_type_full_to_repr(std::string const & type_full, std::string const &expected_repr)
 {
-    std::string type_clean = constype::internal::impl_clean_several_types(type_full);
-    std::string type_west = constype::apply_east_const(type_clean);
+    std::string type_clean = cleantype::internal::impl_clean_several_types(type_full);
+    std::string type_west = cleantype::apply_east_const(type_clean);
     std::string expected_repr2 = fp::replace_tokens(" COMMA ", ", ", expected_repr);
     if (type_west != expected_repr2)
         std::cout << "Ah";
@@ -135,7 +135,7 @@ void compare_type_full_to_repr(std::string const & type_full, std::string const 
 
 TEST_CASE("apply_east_const")
 {
-    auto make_one_test = make_test_string_transform(constype::apply_east_const);
+    auto make_one_test = make_test_string_transform(cleantype::apply_east_const);
 
     // T => T
     make_one_test(
@@ -200,7 +200,7 @@ TEST_CASE("apply_east_const")
 template<typename T>
 void impl_test_clean_type(std::string const & expectedRepr, T value)
 {
-    std::string type_full = TN_constype_full(value);
+    std::string type_full = TN_cleantype_full(value);
     compare_type_full_to_repr(type_full, expectedRepr);
 }
 
@@ -228,15 +228,15 @@ TEST_CASE("clean_typename_from_type")
 TEST_CASE("clean_pack")
 {
     REQUIRE_EQ(
-         constype::clean<std::string>()
+         cleantype::clean<std::string>()
         ,                "std::string"
     );
     REQUIRE_EQ(
-         constype::clean<std::string, std::vector<int>>()
+         cleantype::clean<std::string, std::vector<int>>()
         ,                "std::string, std::vector<int>"
     );
     REQUIRE_EQ(
-         constype::clean<std::string, const std::vector<int> &, int const &, int &&>()
+         cleantype::clean<std::string, const std::vector<int> &, int const &, int &&>()
         ,               "std::string, std::vector<int> const &, int const &, int &&"
     );
 }
@@ -244,12 +244,12 @@ TEST_CASE("clean_pack")
 TEST_CASE("clean_multiple_args")
 {
     REQUIRE_EQ(
-         constype::clean(std::string("ah"), 1)
+         cleantype::clean(std::string("ah"), 1)
         ,                "std::string, int"
     );
     std::vector<int> v;
     REQUIRE_EQ(
-         constype::clean(std::string("ah"), &v, 1)
+         cleantype::clean(std::string("ah"), &v, 1)
         ,                "std::string, std::vector<int> *, int"
     );
 }
@@ -257,7 +257,7 @@ TEST_CASE("clean_multiple_args")
 TEST_CASE("impl_clean")
 {
     std::string typ_name = "std::__1::map<int, std::__1::vector<int, std::__1::allocator<int>>, std::__1::less<int>, std::__1::allocator<std::__1::pair<int const, std::__1::vector<int, std::__1::allocator<int>>>>>";
-    std::string type_cleaned = constype::internal::impl_clean_several_types(typ_name);
+    std::string type_cleaned = cleantype::internal::impl_clean_several_types(typ_name);
     std::string expected = "std::map<int, std::vector<int>>";
     REQUIRE_EQ(type_cleaned, expected);
 }

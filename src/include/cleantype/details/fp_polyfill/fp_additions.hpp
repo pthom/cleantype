@@ -11,8 +11,8 @@
 #include <algorithm>
 #include <functional>
 
-#include <constype/details/fp_polyfill/fp_polyfill.hpp>
-#include <constype/details/fp_polyfill/fp_incompat.hpp>
+#include <cleantype/details/fp_polyfill/fp_polyfill.hpp>
+#include <cleantype/details/fp_polyfill/fp_incompat.hpp>
 
 
 // Additions to fplus

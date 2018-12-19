@@ -4,7 +4,7 @@
 #pragma once
 #include <string>
 
-namespace constype {
+namespace cleantype {
 namespace internal {
 
     // Revoir tout ca en fold...
@@ -151,4 +151,4 @@ inline std::string format_whitespace(std::string const & str_type)
     return r;
 }
 
-} // namespace constype
+} // namespace cleantype

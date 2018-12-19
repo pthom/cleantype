@@ -2,40 +2,40 @@
 // Copyright Pascal Thomet - 2018
 // Distributed under the Boost Software License, Version 1.0. (see LICENSE.md)
 #pragma once
-#include <constype/constype_configuration.hpp>
-#include <constype/details/constype_full.hpp>
-#include <constype/details/constype_clean.hpp>
-#include <constype/details/constype_lambda.hpp>
-#include <constype/details/constype_lambda_generic.hpp>
-#include <constype/details/constype_function.hpp>
+#include <cleantype/cleantype_configuration.hpp>
+#include <cleantype/details/cleantype_full.hpp>
+#include <cleantype/details/cleantype_clean.hpp>
+#include <cleantype/details/cleantype_lambda.hpp>
+#include <cleantype/details/cleantype_lambda_generic.hpp>
+#include <cleantype/details/cleantype_function.hpp>
 
 
-namespace constype
+namespace cleantype
 {
     /////////////////////////
     // full types
     /////////////////////////
 
-    // * `constype::full<T...>()` is a function that will return a string containing
+    // * `cleantype::full<T...>()` is a function that will return a string containing
     //    the full type. It also works with packs of types.
-    //    Use it with `constype::full<decltype(var)>()`
+    //    Use it with `cleantype::full<decltype(var)>()`
     //    Note:
     //      * It will add a reference by default so that
-    //         int v = 5; constype::full(v) will return "int&"
-    //         => use the macro TN_constype_full() if you want to avoid this
+    //         int v = 5; cleantype::full(v) will return "int&"
+    //         => use the macro TN_cleantype_full() if you want to avoid this
 
-    // * `constype::full<T...>(t...)` is a an easier version, using an instance of the type.
+    // * `cleantype::full<T...>(t...)` is a an easier version, using an instance of the type.
     //    Notes:
     //      * It will add a reference by default so that
-    //         int v = 5; constype::full(v) will return "int&"
-    //         => use the macro TN_constype_full() if you want to avoid this
+    //         int v = 5; cleantype::full(v) will return "int&"
+    //         => use the macro TN_cleantype_full() if you want to avoid this
     //      * It is not able to output correctly r-value references
-    //          For this, use `constype::full<decltype(var)>()`
+    //          For this, use `cleantype::full<decltype(var)>()`
 
-    // * `constype::show_details_full(T && v)` is a function that will return a string containing
+    // * `cleantype::show_details_full(T && v)` is a function that will return a string containing
     //    the full type of a variable, as well as its content
 
-    // * `TN_constype_full(var)` is a macro that will also return the full type,
+    // * `TN_cleantype_full(var)` is a macro that will also return the full type,
     //    but, it is able to also correctly display rvalue reference types.
 
     // *  `TN_show_details_full(var)` is a macro that will return a string containing the name,
@@ -50,26 +50,26 @@ namespace constype
     // readable types
     /////////////////////////
 
-    // * `constype::clean<T...>()` is a function that will return a string containing
+    // * `cleantype::clean<T...>()` is a function that will return a string containing
     //    a readable type, for a given type or pack of types
-    //    Use it with `constype::clean<decltype(var)>()`
+    //    Use it with `cleantype::clean<decltype(var)>()`
     //    Note:
     //      * It will add a reference by default so that
-    //         int v = 5; constype::clean(v) will return "int&"
-    //         => use the macro TN_constype_clean() if you want to avoid this
+    //         int v = 5; cleantype::clean(v) will return "int&"
+    //         => use the macro TN_cleantype_clean() if you want to avoid this
 
-    // * `constype::clean<T...>(t...)` is a an easier version, using an instance of the type.
+    // * `cleantype::clean<T...>(t...)` is a an easier version, using an instance of the type.
     //    Notes:
     //      * It will add a reference by default so that
-    //         int v = 5; constype::clean(v) will return "int&"
-    //         => use the macro TN_constype_clean() if you want to avoid this
+    //         int v = 5; cleantype::clean(v) will return "int&"
+    //         => use the macro TN_cleantype_clean() if you want to avoid this
     //      * It is not able to output correctly r-value references
-    //          For this, use `constype::clean<decltype(var)>()`
+    //          For this, use `cleantype::clean<decltype(var)>()`
 
-    // * `constype::show_details(T && v)` is a function that will return a string containing
+    // * `cleantype::show_details(T && v)` is a function that will return a string containing
     //    the readable type of a variable, as well as its content
 
-    // * `TN_constype_clean(var)` is a macro that will also return the full type,
+    // * `TN_cleantype_clean(var)` is a macro that will also return the full type,
     //    but, it is able to also correctly display rvalue reference types.
 
     // *  `TN_show_details(var)` is a macro that will return a string containing the name,
@@ -84,10 +84,10 @@ namespace constype
     // lambdas (non generic)
     /////////////////////////
 
-    // * `constype::lambda_clean<LambdaFn>(LambdaFn fn)` is a function that will return a string containing
+    // * `cleantype::lambda_clean<LambdaFn>(LambdaFn fn)` is a function that will return a string containing
     //    the readable signature of a lambda (non generic)
     template <typename LambdaFn> std::string lambda_clean(LambdaFn fn);
-    // * `constype::lambda_clean<LambdaFn>(LambdaFn fn)` is a function that will return a string containing
+    // * `cleantype::lambda_clean<LambdaFn>(LambdaFn fn)` is a function that will return a string containing
     //    the full signature of a lambda (non generic)
     template <typename LambdaFn> std::string lambda_clean(LambdaFn fn);
 
@@ -100,16 +100,16 @@ namespace constype
     /////////////////////////
     // lambdas ( generic)
     /////////////////////////
-    // * `constype::lambda_generic_clean<Args...>(LambdaFn fn)` is a function that will return a string containing
+    // * `cleantype::lambda_generic_clean<Args...>(LambdaFn fn)` is a function that will return a string containing
     //    the readable signature of a generic lambda.
     // You will need to specify the type of the auto parameters
     // Example:
     //    auto f = [](auto x, auto y) { return x + y; };
-    //    std::cout << constype::lambda_generic_clean<int, char>(f) << std::endl;
+    //    std::cout << cleantype::lambda_generic_clean<int, char>(f) << std::endl;
     //     ==>   lambda: (int, char) -> int
     template <typename... Args, typename GenericLambda> std::string lambda_generic_clean(GenericLambda fn);
 
-    // * `constype::lambda_generic_full<Args...>(LambdaFn fn)` is a function that will return a string containing
+    // * `cleantype::lambda_generic_full<Args...>(LambdaFn fn)` is a function that will return a string containing
     //    the full signature of a generic lambda.
     template <typename... Args, typename GenericLambda> std::string lambda_generic_full(GenericLambda fn);
 

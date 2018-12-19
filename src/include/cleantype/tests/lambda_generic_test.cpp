@@ -2,7 +2,7 @@
 // Copyright Pascal Thomet - 2018
 // Distributed under the Boost Software License, Version 1.0. (see LICENSE.md)
 #include "doctest.h"
-#include <constype/constype.hpp>
+#include <cleantype/cleantype.hpp>
 #include <fplus/fplus.hpp>
 #include <functional>
 #include <map>
@@ -21,7 +21,7 @@ TEST_CASE("lambda_generic_clean")
     {
         auto f = [](auto i) { return 2 * i; };
         REQUIRE_EQ(
-            constype::lambda_generic_clean<int>(f),
+            cleantype::lambda_generic_clean<int>(f),
             "lambda: (int) -> int"
         );
     }
@@ -31,7 +31,7 @@ TEST_CASE("lambda_generic_clean")
             return fplus::pairs_to_map_grouped( fplus::overlapping_pairs_cyclic(range) );
         };
         REQUIRE_EQ(
-            constype::lambda_generic_clean<int>(f),
+            cleantype::lambda_generic_clean<int>(f),
             "lambda: (int) -> std::map<int, std::vector<int>>"
         );
     }
@@ -40,7 +40,7 @@ TEST_CASE("lambda_generic_clean")
             return a + b;
         };
         REQUIRE_EQ(
-            constype::lambda_generic_clean<int, char>(f),
+            cleantype::lambda_generic_clean<int, char>(f),
             "lambda: (int, char) -> int"
         );
     }
