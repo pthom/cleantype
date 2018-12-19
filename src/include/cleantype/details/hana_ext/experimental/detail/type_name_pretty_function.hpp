@@ -25,7 +25,7 @@ Distributed under the Boost Software License, Version 1.0.
     #define _HANA_TN_PRETTY_FUNCTION_TYPE_SUFFIX "]"
 #elif defined(_MSC_VER)
     #define _HANA_TN_PRETTY_FUNCTION_TYPE_PREFIX  "struct boost::hana::experimental::type_name_details::stringliteral __cdecl boost::hana::experimental::type_name_details::type_name_impl_stringliteral<"
-#define _HANA_TN_PRETTY_FUNCTION_TYPE_SUFFIX ">(void)"
+    #define _HANA_TN_PRETTY_FUNCTION_TYPE_SUFFIX ">(void)"
 #elif defined(__GNUC__) || defined(__GNUG__)
     #define _HANA_TN_PRETTY_FUNCTION_TYPE_PREFIX "constexpr boost::hana::experimental::type_name_details::stringliteral boost::hana::experimental::type_name_details::type_name_impl_stringliteral() [with T = "
     #define _HANA_TN_PRETTY_FUNCTION_TYPE_SUFFIX "]"
