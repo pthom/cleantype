@@ -9,28 +9,15 @@
 
 namespace constype
 {
-    template <class T>
+    template <typename... T>
     std::string clean()
     {
-        return internal::impl_clean( internal::impl_full<T>() );
-    }
-    template <typename First, typename Second, typename ...Rest>
-    std::string clean () {
-        return internal::impl_clean( internal::impl_full<First>() ) + ", " + clean<Second, Rest...>();
+        return internal::impl_clean_several_types(internal::impl_full<T...>());
     }
 
-
-    template <typename T> std::string clean(T && v) {
-        return internal::impl_clean( internal::impl_full<T>() );
+    template <typename... T> std::string clean(T&&... v) {
+        return clean<T...>();
     }
-    template <typename First, typename Second, typename ...Rest>
-    std::string clean(First && first, Second && second, Rest... rest) {
-        return internal::impl_clean( internal::impl_full<First>() ) + ", " + clean<Second, Rest...>(
-            std::forward<Second>(second),
-            std::forward<Rest>(rest)...
-        );
-    }
-
 
     template <class T> std::string show_details(T && v) {
         return clean<T>() + " = " + fp::show(v);

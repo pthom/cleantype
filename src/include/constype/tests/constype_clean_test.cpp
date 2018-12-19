@@ -61,10 +61,25 @@ auto make_test_string_transform(Transform f)
 }
 
 
+TEST_CASE("clean_from_values")
+{
+    int a = 3;
+    int const & b = a;
+    int const * const c = &a;
+    char d = 42;
+    std::vector<std::string> ee;
+    const auto &e  = ee;
+    auto computed = constype::clean(a, b, c, d, e);
+    auto expected = std::string("int &, int const &, int const * const &, char &, std::vector<std::string> const &");
+    std::cout << computed << std::endl;
+    std::cout << expected << std::endl;
+    REQUIRE_EQ(computed, expected);
+}
+
 
 TEST_CASE("clean_typename_from_string")
 {
-    auto make_one_test = make_test_string_transform(constype::internal::impl_clean);
+    auto make_one_test = make_test_string_transform(constype::internal::impl_clean_several_types);
     make_one_test(
         "  int   ",
         "int");
@@ -106,70 +121,12 @@ TEST_CASE("clean_typename_from_string")
 
 void compare_type_full_to_repr(const std::string & type_full, const std::string &expected_repr)
 {
-    std::string type_clean = constype::internal::impl_clean(type_full);
+    std::string type_clean = constype::internal::impl_clean_several_types(type_full);
     std::string type_west = constype::apply_east_const(type_clean);
     std::string expected_repr2 = fp::replace_tokens(" COMMA ", ", ", expected_repr);
     if (type_west != expected_repr2)
         std::cout << "Ah";
     REQUIRE_EQ(type_west, expected_repr2);
-}
-
-
-TEST_CASE("apply_west_const")
-{
-    auto make_one_test = make_test_string_transform(constype::apply_west_const);
-
-    // T => T
-    make_one_test(
-        "T",
-        "T");
-    // T * => T *
-    make_one_test(
-        "T *",
-        "T *");
-    make_one_test(
-        "T * &",
-        "T * &");
-
-    // T const => const T
-    make_one_test(
-        "T const",
-        "const T");
-    make_one_test(
-        "const T",
-        "const T");
-
-    // T const & => const T &
-    make_one_test(
-        "T const &",
-        "const T &");
-    make_one_test(
-        "const T &",
-        "const T &");
-
-    // T const * => const * T
-    make_one_test(
-        "T const *",
-        "const T *");
-    make_one_test(
-        "const T *",
-        "const T *");
-
-    // T const * const => const T * const
-    make_one_test(
-        "T const * const",
-        "const T * const");
-    make_one_test(
-        "const T * const",
-        "const T * const");
-
-    // T const * & => const T * &
-    make_one_test(
-        "T const * &",
-        "const T * &");
-    make_one_test(
-        "const T * &",
-        "const T * &");
 }
 
 
@@ -228,6 +185,11 @@ TEST_CASE("apply_east_const")
     make_one_test(
         "const T * &",
         "T const * &");
+
+    // const T * const & => T const * const &
+    make_one_test(
+            "const int * const &",
+            "int const * const &");
 }
 
 
@@ -257,31 +219,6 @@ TEST_CASE("clean_typename_from_type")
     test_clean_type__defaultcontructible(std::deque<std::pair<std::string COMMA std::map<int COMMA int>>>);
     test_clean_type__defaultcontructible(std::set<int>);
     test_clean_type__defaultcontructible(std::list<std::string>);
-
-    //{
-   //    const std::vector<std::pair<std::string, int>> v;
-   //    //const auto &&vv = std::move(v);
-   //    std::string type_full = TN_constype_full(v);
-   //    std::string type_clean = constype::clean(type_full);
-   //    LOG(type_full);
-   //    LOG(type_clean);
-   //}
-   //{
-   //    std::cout << "\n";
-   //    const std::vector<std::pair<std::string, int>> v;
-   //    const auto &&vv = std::move(v);
-   //    std::string type_full = TN_constype_full(vv);
-   //    std::string type_clean = constype::clean(type_full);
-   //}
-
-   //{
-   //    std::cout << "\n";
-   //    auto f = [](const std::vector<std::string> &v, int a) {
-   //        return v.size() + a;
-   //    };
-   //    std::string type_full = TN_constype_full(f);
-   //    std::string type_clean = constype::clean(type_full);
-   //}
 }
 
 
@@ -295,12 +232,10 @@ TEST_CASE("clean_pack")
          constype::clean<std::string, std::vector<int>>()
         ,                "std::string, std::vector<int>"
     );
-#ifndef _MSC_VER // MSVC provides a mix of west and east const, which it difficult to test
     REQUIRE_EQ(
-         constype::clean<std::string, const std::vector<int> &, int const &>()
-        ,               "std::string, const std::vector<int> &, const int &"
+         constype::clean<std::string, const std::vector<int> &, int const &, int &&>()
+        ,               "std::string, std::vector<int> const &, int const &, int &&"
     );
-#endif
 }
 
 TEST_CASE("clean_multiple_args")
@@ -319,7 +254,7 @@ TEST_CASE("clean_multiple_args")
 TEST_CASE("impl_clean")
 {
     std::string typ_name = "std::__1::map<int, std::__1::vector<int, std::__1::allocator<int>>, std::__1::less<int>, std::__1::allocator<std::__1::pair<int const, std::__1::vector<int, std::__1::allocator<int>>>>>";
-    std::string type_cleaned = constype::internal::impl_clean(typ_name);
+    std::string type_cleaned = constype::internal::impl_clean_several_types(typ_name);
     std::string expected = "std::map<int, std::vector<int>>";
     REQUIRE_EQ(type_cleaned, expected);
 }

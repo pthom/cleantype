@@ -15,6 +15,40 @@ namespace constype
 
     namespace internal
     {
+        std::string impl_clean_one_type(const std::string & typ_name);
+
+
+        inline std::vector<std::string> tokenize_params_around_comma(const std::string & params, bool clean_params)
+        {
+            auto clean_param_if_needed = [&clean_params](const std::string & param) {
+                return clean_params ? impl_clean_one_type(param) : fp::trim(' ', param);
+            };
+
+            std::vector<std::string> result;
+            // counts < and > occurrences
+            int count = 0;
+            std::string current;
+            for (const auto c : params)
+            {
+                if (c == '<')
+                    ++count;
+                if (c == '>')
+                    --count;
+                if ( (c == ',') && (count == 0))
+                {
+                    result.push_back(clean_param_if_needed(current));
+                    current = "";
+                }
+                else
+                {
+                    current += c;
+                }
+            }
+            result.push_back(clean_param_if_needed(current));
+            return result;
+        }
+
+
         // lhs / rhs explanation :
         // for example in "std::vector<int> const &",
         // - lhs = "std::vector"
@@ -172,7 +206,7 @@ namespace constype
         }
 
 
-        inline std::string impl_clean(const std::string & typ_name)
+        inline std::string impl_clean_one_type(const std::string & typ_name)
         {
             std::string typ_name_trimmed = fp::trim(' ', typ_name);
 
@@ -192,167 +226,89 @@ namespace constype
         }
 
 
-        inline std::vector<std::string> tokenize_params_around_comma(const std::string & params, bool clean_params)
+        inline std::string impl_clean_several_types(const std::string & type_names)
         {
-            auto clean_param_if_needed = [&clean_params](const std::string & param) {
-                return clean_params ? impl_clean(param) : fp::trim(' ', param);
-            };
+            std::vector<std::string> types = tokenize_params_around_comma(type_names, true);
+            std::string r = fp::join(", ", types);
+            return r;
+        }
 
-            std::vector<std::string> result;
-            // counts < and > occurrences
-            int count = 0;
-            std::string current;
-            for (const auto c : params)
+
+        inline std::string apply_east_const_impl(const std::string & type_name)
+        {
+            // Note : this implementation is by no means neither complete nor foolproof
+            // It expects types that were preprocessed as inputs (spaces before * and &, etc.)
+            // For a more complete implementation, a BNF grammar parse would probably be required
+            //
+            // By default, constype this transformation is not applied (only for the unit tests)
+            namespace stringutils = constype::stringutils;
+
+            if (type_name.empty())
+                return "";
+            if (stringutils::ends_with(type_name, "const") && (!stringutils::starts_with(type_name, "const ")))
+                return type_name;
+
+            // const T * const => T const * const
+            if (stringutils::starts_ends_with(type_name, "const ", " * const"))
             {
-                if (c == '<')
-                    ++count;
-                if (c == '>')
-                    --count;
-                if ( (c == ',') && (count == 0))
-                {
-                    result.push_back(clean_param_if_needed(current));
-                    current = "";
-                }
-                else
-                {
-                    current += c;
-                }
+                auto r = stringutils::remove_start_end(type_name, "const ", " * const");
+                r = r + " const * const";
+                return r;
             }
-            result.push_back(clean_param_if_needed(current));
-            return result;
-        }
 
-    inline std::string apply_west_const_impl(const std::string & type_name)
-    {
-        // Note : this implementation is by no means neither complete nor foolproof
-        // It expects types that were preprocessed as inputs (spaces before * and &, etc.)
-        // For a more complete implementation, a BNF grammar parse would probably be required
-        //
-        // By default, constype this transformation is not applied (only for the unit tests)
-        namespace stringutils = constype::stringutils;
+            // const T * const & => T const * const &
+            if (stringutils::starts_ends_with(type_name, "const ", " * const &"))
+            {
+                auto r = stringutils::remove_start_end(type_name, "const ", " * const &");
+                r = r + " const * const &";
+                return r;
+            }
 
-        if (type_name.empty())
-            return "";
-        if (stringutils::starts_with(type_name, "const"))
+
+            // const T * & => T const * &
+            if (stringutils::starts_ends_with(type_name, "const ", " * &"))
+            {
+                auto r = stringutils::remove_start_end(type_name, "const ", " * &");
+                r = r + " const * &";
+                return r;
+            }
+
+            // const T & => T const &
+            if (stringutils::starts_ends_with(type_name, "const ", " &"))
+            {
+                auto r = stringutils::remove_start_end(type_name, "const ", " &");
+                r = r + " const &";
+                return r;
+            }
+
+            // const T * => T const *
+            if (stringutils::starts_ends_with(type_name, "const ", " *"))
+            {
+                auto r = stringutils::remove_start_end(type_name, "const ", " *");
+                r = r + " const *";
+                return r;
+            }
+
+            // const * T => T const *
+            if (stringutils::starts_with(type_name, "const * "))
+            {
+                auto r = stringutils::remove_start(type_name, "const * ");
+                r = r + " const *";
+                return r;
+            }
+
+            // const T => T const
+            if (stringutils::starts_with(type_name, "const "))
+            {
+                auto r = stringutils::remove_start(type_name, "const ");
+                r = r + " const";
+                return r;
+            }
+
             return type_name;
-
-        // T const * const => const T * const
-        if (stringutils::ends_with(type_name, " const * const"))
-        {
-            auto r = stringutils::remove_end(type_name, " const * const") + " * const";
-            r = "const " + r;
-            return r;
         }
-
-        // T const * & => const T * &
-        if (stringutils::ends_with(type_name, " const * &"))
-        {
-            auto r = stringutils::remove_end(type_name, " const * &") + " * &";
-            r = "const " + r;
-            return r;
-        }
-
-        // T const & => const T &
-        if (stringutils::ends_with(type_name, " const &"))
-        {
-            auto r = stringutils::remove_end(type_name, " const &") + " &";
-            r = "const " + r;
-            return r;
-        }
-
-        // T const * => const * T
-        if (stringutils::ends_with(type_name, " const *"))
-        {
-            auto r = stringutils::remove_end(type_name, " const *") + " *";
-            r = "const " + r;
-            return r;
-        }
-
-        // T const => const T
-        if (stringutils::ends_with(type_name, " const"))
-        {
-            auto r = stringutils::remove_end(type_name, " const");
-            r = "const " + r;
-            return r;
-        }
-
-        return type_name;
-    }
-
-    inline std::string apply_east_const_impl(const std::string & type_name)
-    {
-        // Note : this implementation is by no means neither complete nor foolproof
-        // It expects types that were preprocessed as inputs (spaces before * and &, etc.)
-        // For a more complete implementation, a BNF grammar parse would probably be required
-        //
-        // By default, constype this transformation is not applied (only for the unit tests)
-        namespace stringutils = constype::stringutils;
-
-        if (type_name.empty())
-            return "";
-        if (stringutils::ends_with(type_name, "const") && (!stringutils::starts_with(type_name, "const ")))
-            return type_name;
-
-        // const T * const => T const * const
-        if (stringutils::starts_ends_with(type_name, "const ", " * const"))
-        {
-            auto r = stringutils::remove_start_end(type_name, "const ", " * const");
-            r = r + " const * const";
-            return r;
-        }
-
-        // const T * & => T const * &
-        if (stringutils::starts_ends_with(type_name, "const ", " * &"))
-        {
-            auto r = stringutils::remove_start_end(type_name, "const ", " * &");
-            r = r + " const * &";
-            return r;
-        }
-
-        // const T & => T const &
-        if (stringutils::starts_ends_with(type_name, "const ", " &"))
-        {
-            auto r = stringutils::remove_start_end(type_name, "const ", " &");
-            r = r + " const &";
-            return r;
-        }
-
-        // const T * => T const *
-        if (stringutils::starts_ends_with(type_name, "const ", " *"))
-        {
-            auto r = stringutils::remove_start_end(type_name, "const ", " *");
-            r = r + " const *";
-            return r;
-        }
-
-        // const * T => T const *
-        if (stringutils::starts_with(type_name, "const * "))
-        {
-            auto r = stringutils::remove_start(type_name, "const * ");
-            r = r + " const *";
-            return r;
-        }
-
-        // const T => T const
-        if (stringutils::starts_with(type_name, "const "))
-        {
-            auto r = stringutils::remove_start(type_name, "const ");
-            r = r + " const";
-            return r;
-        }
-
-        return type_name;
-    }
 
     } // namespace internal
-
-    inline std::string apply_west_const(const std::string & type_name)
-    {
-        std::vector<std::string> types = internal::tokenize_params_around_comma(type_name, false);
-        types = fp::transform(internal::apply_west_const_impl, types);
-        std::string r = fp::join(", ", types);
-        return r;
-    }
 
     inline std::string apply_east_const(const std::string & type_name)
     {

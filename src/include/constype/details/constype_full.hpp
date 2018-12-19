@@ -77,6 +77,10 @@ namespace constype
             std::string type_definition = extract_type_from_tupletypeholder(type_in_tupletypeholder);
 
             std::string formatted = constype::format_whitespace(type_definition);
+
+            if (CleanConfiguration::GlobalConfig().force_east_const_)
+                formatted = constype::apply_east_const(formatted);
+
             return formatted;
         }
     } // namespace internal
@@ -84,10 +88,7 @@ namespace constype
 
     template <typename... T>
     std::string full () {
-        std::string s = internal::impl_full<T...>();
-        if (CleanConfiguration::GlobalConfig().force_east_const_)
-            s = constype::apply_east_const(s);
-        return s;
+        return internal::impl_full<T...>();
     }
 
 
