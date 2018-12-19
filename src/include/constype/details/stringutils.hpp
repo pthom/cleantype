@@ -11,39 +11,39 @@ namespace constype
 {
 namespace stringutils
 {
-    inline bool ends_with(const std::string & value, const std::string & ending)
+    inline bool ends_with(std::string const & value, std::string const & ending)
     {
-        if (ending.size() > value.size()) 
+        if (ending.size() > value.size())
             return false;
         return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
     }
 
-    inline bool starts_with(const std::string & value, const std::string & start)
+    inline bool starts_with(std::string const & value, std::string const & start)
     {
         return ( value.find(start) == 0);
     }
 
-    inline bool starts_ends_with(const std::string & value, const std::string & start, const std::string & end)
+    inline bool starts_ends_with(std::string const & value, std::string const & start, std::string const & end)
     {
         return (starts_with(value, start) && ends_with(value, end));
     }
 
 
-    inline std::string remove_end(const std::string & value, const std::string & ending)
+    inline std::string remove_end(std::string const & value, std::string const & ending)
     {
         assert(ends_with(value, ending));
         std::string r = value.substr(0, value.size() - ending.size());
         return r;
     }
 
-    inline std::string remove_start(const std::string & value, const std::string & start)
+    inline std::string remove_start(std::string const & value, std::string const & start)
     {
         assert(starts_with(value, start));
         std::string r = value.substr(start.size(), value.size() - start.size());
         return r;
     }
 
-    inline std::string remove_start_end(const std::string & value, const std::string & start, const std::string & end)
+    inline std::string remove_start_end(std::string const & value, std::string const & start, std::string const & end)
     {
         std::string r = remove_start(value, start);
         r = remove_end(r, end);

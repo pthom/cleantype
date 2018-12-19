@@ -54,7 +54,7 @@ struct show_tree_lhs_rhs_options
 
 
 inline lhs_rhs_tree parse_lhs_rhs_tree(
-    const std::string &s,
+    std::string const &s,
     const tree_separators & separators,
     bool remove_space_after_tok,
     bool remove_space
@@ -124,7 +124,7 @@ inline lhs_rhs_tree parse_lhs_rhs_tree(
 
 
 inline string_tree parse_string_tree(
-    const std::string &s,
+    std::string const &s,
     const tree_separators & separators,
     bool remove_space_after_tok,
     bool remove_space)

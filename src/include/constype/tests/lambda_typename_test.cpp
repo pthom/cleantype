@@ -10,7 +10,7 @@
 
 #define LOG(str) std::cout << str << std::endl
 
-template<typename Lambda> void test_one_lambda(Lambda f, const std::string & expected_type)
+template<typename Lambda> void test_one_lambda(Lambda f, std::string const & expected_type)
 {
     const std::string computed_type = TN_show_details_lambda(f);
     if (computed_type != expected_type)
@@ -37,7 +37,7 @@ TEST_CASE("log_type_lambda_clean")
     test_one_lambda(f, "[lambda: (int, int) -> double] f");
   }
   {
-      auto f = [](std::string const &a, const std::string & b) -> std::string const { return a + b; };
+      auto f = [](std::string const &a, std::string const & b) -> std::string const { return a + b; };
       test_one_lambda(f, "[lambda: (std::string const &, std::string const &) -> std::string const] f");
   }
   {
@@ -47,7 +47,7 @@ TEST_CASE("log_type_lambda_clean")
   }
   {
     std::string prefix = "a-";
-    auto f = [&prefix](const std::string &s) { return prefix + s; };
+    auto f = [&prefix](std::string const &s) { return prefix + s; };
     test_one_lambda(f, "[lambda: (std::string const &) -> std::string] f");
   }
 }
@@ -102,10 +102,10 @@ TEST_CASE("tokenize_params_around_comma")
         REQUIRE_EQ(params, expected);
     }
     {
-        std::string params_str("const std::__1::basic_string<char> &, const std::__1::basic_string<char> &");
+        std::string params_str("std::__1::basic_string<char> const &, std::__1::basic_string<char> const &");
         auto params = tokenize_params_around_comma(params_str, true);
         std::vector<std::string> expected {
-            "const std::string &", "const std::string &"
+            "std::string const &", "std::string const &"
         };
         REQUIRE_EQ(params, expected);
     }
@@ -138,7 +138,7 @@ TEST_CASE("_mem_fn_to_lambda_type")
     {
         // PERAVE                                                                  \/ !!!
 //        std::string memfn_type = "std::__1::__mem_fn<std::__1::basic_string<char, char> ((lambda at ../src/include/constype/tests/lambda_typename_test.cpp:37:16):: *)(const std::__1::basic_string &, const std::__1::basic_string<char> &)const>";
-//        std::string expected = "lambda: (const std::string &, const std::string &) -> std::string";
+//        std::string expected = "lambda: (std::string const &, std::string const &) -> std::string";
 //        auto computed = constype::internal::_mem_fn_to_lambda_type(memfn_type, true);
 //        REQUIRE_EQ(computed, expected);
     }

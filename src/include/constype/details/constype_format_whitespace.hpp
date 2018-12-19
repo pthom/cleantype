@@ -8,7 +8,7 @@ namespace constype {
 namespace internal {
 
     // Revoir tout ca en fold...
-    inline std::string trim(const char &trim_what, const std::string &xs)
+    inline std::string trim(char const & trim_what, std::string const & xs)
     {
         bool stop = false;
         std::string out;
@@ -27,7 +27,7 @@ namespace internal {
         return out;
     }
 
-    inline std::string remove_spaces_before(const char token, const std::string &str)
+    inline std::string remove_spaces_before(const char token, std::string const & str)
     {
         std::string result;
         bool space_before = false;
@@ -47,7 +47,7 @@ namespace internal {
         return result;
     }
 
-    inline std::string remove_spaces_after(const char token, const std::string &str)
+    inline std::string remove_spaces_after(const char token, std::string const & str)
     {
         std::string result;
         bool token_before = false;
@@ -65,7 +65,7 @@ namespace internal {
         return result;
     }
 
-    inline std::string remove_spaces_before_after(const char token, const std::string &str)
+    inline std::string remove_spaces_before_after(const char token, std::string const & str)
     {
         std::string result;
         result = remove_spaces_before(token, remove_spaces_after(token, str));
@@ -74,7 +74,7 @@ namespace internal {
 
 
 
-    inline std::string insert_spaces_before(const char token, const std::string &str)
+    inline std::string insert_spaces_before(const char token, std::string const & str)
     {
         std::string result;
         bool space_or_same_token_before = true;
@@ -91,7 +91,7 @@ namespace internal {
         return result;
     }
 
-    inline std::string insert_spaces_after(const char token, const std::string &str)
+    inline std::string insert_spaces_after(const char token, std::string const & str)
     {
         std::string result;
         bool token_before = false;
@@ -105,14 +105,14 @@ namespace internal {
         return result;
     }
 
-    inline std::string insert_spaces_before_after(const char token, const std::string &str)
+    inline std::string insert_spaces_before_after(const char token, std::string const & str)
     {
         std::string result = insert_spaces_before(token, str);
         result = insert_spaces_after(token, result);
         return result;
     }
 
-    inline std::string replace_tokens(const std::string& from, const std::string& to, const std::string& xs) {
+    inline std::string replace_tokens(std::string const & from, const std::string& to, std::string const & xs) {
         if(from.empty())
             return xs;
         std::string out = xs;
@@ -128,7 +128,7 @@ namespace internal {
 } // namespace internal
 
 
-inline std::string format_whitespace(const std::string &str_type)
+inline std::string format_whitespace(std::string const & str_type)
 {
     std::string r = str_type;
     r = internal::insert_spaces_after(',', r);

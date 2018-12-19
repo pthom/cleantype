@@ -9,7 +9,7 @@ namespace constype
 {
     namespace internal
     {
-        inline std::string remove_outer_parenthesis(const std::string & s)
+        inline std::string remove_outer_parenthesis(std::string const & s)
         {
             assert(s.size() >= 2 );
             assert(s.front() =='(');
@@ -34,7 +34,7 @@ namespace constype
 
 
         // Returns { remaining_at_start = "ABC", parenthesis_content="GHI", success = true }
-        inline extract_parenthesis_content_at_end_result extract_parenthesis_content_at_end(const std::string & str)
+        inline extract_parenthesis_content_at_end_result extract_parenthesis_content_at_end(std::string const & str)
         {
             // Example :
             //  "ABC(DEF)(GHI)KLM"
@@ -88,7 +88,7 @@ namespace constype
         }
 
 
-        inline std::string _remove_mem_fn_surround(const std::string & mem_fn_type)
+        inline std::string _remove_mem_fn_surround(std::string const & mem_fn_type)
         {
             std::string result = mem_fn_type;
             // Suppress mem_fn< at the start
@@ -107,7 +107,7 @@ namespace constype
         }
 
 
-        inline std::string _mem_fn_to_lambda_type(const std::string & mem_fn_type, bool clean_params)
+        inline std::string _mem_fn_to_lambda_type(std::string const & mem_fn_type, bool clean_params)
         {
             const std::string lambda_full_type = _remove_mem_fn_surround(mem_fn_type);
             // std::cout << lambda_full_type << std::endl;

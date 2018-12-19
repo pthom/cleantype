@@ -10,7 +10,7 @@
 //#define LOG(str) std::cout << str << std::endl
 //#define LOG_VALUE(var) std::cout << #var << " = " << var << std::endl
 
-void my_require_eq_string(const std::string & computed, const std::string & expected )
+void my_require_eq_string(std::string const & computed, std::string const & expected )
 {
 #ifdef _MSC_VER // remove __ptr64 from msvc types
     std::string computed2 = fp::replace_tokens(" __ptr64", "", computed);\
@@ -181,7 +181,7 @@ TEST_CASE("constype_full_r_value_references")
 
 
  template<typename... Args>
- void check_multiple_args(const std::string & expected)
+ void check_multiple_args(std::string const & expected)
  {
      auto v1 = constype::full<Args...>();
      auto v2 = TemplateClass<Args...>::full_type();
@@ -227,7 +227,7 @@ TEST_CASE("constype_full_multiple")
 
 
  template<typename... Args>
- void check_multiple_args_fromvalues(const std::string & expected, Args... args)
+ void check_multiple_args_fromvalues(std::string const & expected, Args... args)
  {
      my_require_eq_string(
          constype::full(args...),
@@ -269,7 +269,7 @@ struct Template {
 
 
 template <typename T>
-void check_matches(std::string const& re) {
+void check_matches(std::string const & re) {
     std::string name = constype::full<T>();
     std::regex regex{re};
     bool flag_regex_match = std::regex_match(name, regex);

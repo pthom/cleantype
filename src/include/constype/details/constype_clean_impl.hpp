@@ -15,12 +15,12 @@ namespace constype
 
     namespace internal
     {
-        std::string impl_clean_one_type(const std::string & typ_name);
+        std::string impl_clean_one_type(std::string const & typ_name);
 
 
-        inline std::vector<std::string> tokenize_params_around_comma(const std::string & params, bool clean_params)
+        inline std::vector<std::string> tokenize_params_around_comma(std::string const & params, bool clean_params)
         {
-            auto clean_param_if_needed = [&clean_params](const std::string & param) {
+            auto clean_param_if_needed = [&clean_params](std::string const & param) {
                 return clean_params ? impl_clean_one_type(param) : fp::trim(' ', param);
             };
 
@@ -80,13 +80,13 @@ namespace constype
         }
 
 
-        inline code_pair_tree parse_template_tree(const std::string &s)
+        inline code_pair_tree parse_template_tree(std::string const &s)
         {
             return parse_lhs_rhs_tree(s, make_template_tree_separators(), false, false);
         }
 
 
-        inline code_pair_tree filter_undesirable_template_leafs(const code_pair_tree &xs)
+        inline code_pair_tree filter_undesirable_template_leafs(code_pair_tree const &xs)
         {
             std::function<bool(const code_pair &)> is_node_desirable =
                 [](const code_pair &code_pair) {
@@ -102,8 +102,8 @@ namespace constype
         }
 
         inline std::string perform_suppressions(
-            const std::string & typ_name,
-            const std::vector<std::string> suppressions)
+            std::string const & typ_name,
+            std::vector<std::string> const & suppressions)
         {
             std::string result = typ_name;
             for (const auto &v : suppressions)
@@ -113,8 +113,8 @@ namespace constype
 
 
         inline std::string perform_replacements(
-            const std::string & typ_name,
-            const std::vector<std::array<std::string, 2>> replacements)
+            std::string const & typ_name,
+            std::vector<std::array<std::string, 2>> const & replacements)
         {
             std::string result = typ_name;
             for (const auto &r : replacements)
@@ -123,7 +123,7 @@ namespace constype
         }
 
 
-        inline std::string remove_extra_namespaces(const std::string & typ_name)
+        inline std::string remove_extra_namespaces(std::string const & typ_name)
         {
             return perform_suppressions(
                 typ_name,
@@ -131,14 +131,14 @@ namespace constype
         }
 
 
-        inline std::string remove_struct_class(const std::string & typ_name)
+        inline std::string remove_struct_class(std::string const & typ_name)
         {
             return perform_suppressions(
                 typ_name,
                 constype::CleanConfiguration::GlobalConfig().suppress_extract_struct_class_);
         }
 
-        inline std::string remove_custom(const std::string & typ_name)
+        inline std::string remove_custom(std::string const & typ_name)
         {
             return perform_suppressions(
                 typ_name,
@@ -146,7 +146,7 @@ namespace constype
         }
 
 
-        inline std::string perform_std_replacements(const std::string & typ_name)
+        inline std::string perform_std_replacements(std::string const & typ_name)
         {
             return perform_replacements(typ_name,
                 constype::CleanConfiguration::GlobalConfig().replacements_after_undesirable_node_extractions
@@ -154,7 +154,7 @@ namespace constype
         }
 
 
-        inline std::vector<std::string> _split_string(const std::string& s, char delimiter)
+        inline std::vector<std::string> _split_string(std::string const & s, char delimiter)
         {
             std::vector<std::string> tokens;
             std::string token;
@@ -172,7 +172,7 @@ namespace constype
         }
 
 
-        inline std::string add_space_before_ref(const std::string & typ_name)
+        inline std::string add_space_before_ref(std::string const & typ_name)
         {
             std::string result = "";
             bool space_or_ref_before = false;
@@ -188,7 +188,7 @@ namespace constype
         }
 
 
-        inline std::string type_children_to_string(const code_pair_tree & xs)
+        inline std::string type_children_to_string(code_pair_tree const & xs)
         {
             return fp::fp_add::show_tree_children(
                     xs.children_,
@@ -197,7 +197,7 @@ namespace constype
         }
 
 
-        inline std::string code_pair_tree_to_string(const code_pair_tree & xs)
+        inline std::string code_pair_tree_to_string(code_pair_tree const & xs)
         {
             return fp::fp_add::show_tree_lhs_rhs(
                     xs,
@@ -206,7 +206,7 @@ namespace constype
         }
 
 
-        inline std::string impl_clean_one_type(const std::string & typ_name)
+        inline std::string impl_clean_one_type(std::string const & typ_name)
         {
             std::string typ_name_trimmed = fp::trim(' ', typ_name);
 
@@ -226,7 +226,7 @@ namespace constype
         }
 
 
-        inline std::string impl_clean_several_types(const std::string & type_names)
+        inline std::string impl_clean_several_types(std::string const & type_names)
         {
             std::vector<std::string> types = tokenize_params_around_comma(type_names, true);
             std::string r = fp::join(", ", types);
@@ -234,7 +234,7 @@ namespace constype
         }
 
 
-        inline std::string apply_east_const_impl(const std::string & type_name)
+        inline std::string apply_east_const_impl(std::string const & type_name)
         {
             // Note : this implementation is by no means neither complete nor foolproof
             // It expects types that were preprocessed as inputs (spaces before * and &, etc.)
@@ -310,7 +310,7 @@ namespace constype
 
     } // namespace internal
 
-    inline std::string apply_east_const(const std::string & type_name)
+    inline std::string apply_east_const(std::string const & type_name)
     {
         std::vector<std::string> types = internal::tokenize_params_around_comma(type_name, false);
         types = fp::transform(internal::apply_east_const_impl, types);

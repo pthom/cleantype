@@ -18,7 +18,7 @@ namespace constype
             };
         };
 
-        inline std::string lambda_to_fn(const std::string & s)
+        inline std::string lambda_to_fn(std::string const & s)
         {
             return fp::replace_tokens("lambda: ", "function: ", s);
         }

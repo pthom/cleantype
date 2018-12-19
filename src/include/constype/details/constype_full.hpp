@@ -59,7 +59,7 @@ namespace constype
         }
 
 
-        inline std::string extract_type_from_tupletypeholder(const std::string & typ_name)
+        inline std::string extract_type_from_tupletypeholder(std::string const & typ_name)
         {
             auto code_pair_tree_ = constype::internal::parse_template_tree(typ_name);
             assert(code_pair_tree_.children_.size() > 0);

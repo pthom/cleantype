@@ -3,6 +3,7 @@
 // Distributed under the Boost Software License, Version 1.0. (see LICENSE.md)
 #include "doctest.h"
 #include <constype/constype.hpp>
+#include <constype/details/debug_break.hpp>
 #include <fplus/fplus.hpp>
 #include <functional>
 #include <map>
@@ -54,8 +55,10 @@ TEST_CASE("TN_show_details")
 template<typename Transform>
 auto make_test_string_transform(Transform f)
 {
-    return [f](const std::string & input, const std::string & expected_output) {
+    return [f](std::string const & input, std::string const & expected_output) {
         std::string computed_output = f(input);
+        if (computed_output != expected_output )
+            std::cout << "Mince";
         REQUIRE_EQ(computed_output, expected_output);
     };
 }
@@ -102,8 +105,8 @@ TEST_CASE("clean_typename_from_string")
         "std::pair < std::vector< std::string > >",
         "std::pair<std::vector<std::string>>");
     make_one_test(
-        "const std::__1::basic_string<char> &",
-        "const std::string &");
+        "std::__1::basic_string<char> const &",
+        "std::string const &");
     make_one_test(
         "int&",
         "int &");
@@ -119,7 +122,7 @@ TEST_CASE("clean_typename_from_string")
 }
 
 
-void compare_type_full_to_repr(const std::string & type_full, const std::string &expected_repr)
+void compare_type_full_to_repr(std::string const & type_full, std::string const &expected_repr)
 {
     std::string type_clean = constype::internal::impl_clean_several_types(type_full);
     std::string type_west = constype::apply_east_const(type_clean);
@@ -195,7 +198,7 @@ TEST_CASE("apply_east_const")
 
 
 template<typename T>
-void impl_test_clean_type(const std::string & expectedRepr, T value)
+void impl_test_clean_type(std::string const & expectedRepr, T value)
 {
     std::string type_full = TN_constype_full(value);
     compare_type_full_to_repr(type_full, expectedRepr);

@@ -52,7 +52,7 @@ std::vector<T> keep_if(F f, const std::vector<T>& xs) {
 
 
 // this is a simplified version of fplus::join that accepts only strings
-inline std::string join(const std::string & separator, const std::vector<std::string> & xs)
+inline std::string join(std::string const & separator, const std::vector<std::string> & xs)
 {
     std::string out;
     for (size_t idx = 0; idx < xs.size(); idx++)
@@ -63,7 +63,7 @@ inline std::string join(const std::string & separator, const std::vector<std::st
     }
     return out;
 }
-inline std::string join(const std::string & separator, const std::deque<std::string> & xs)
+inline std::string join(std::string const & separator, const std::deque<std::string> & xs)
 {
     std::string out;
     for (size_t idx = 0; idx < xs.size(); idx++)
@@ -95,7 +95,7 @@ std::vector<T> trim(const T & trim_what, const std::vector<T> & xs)
     return out;
 }
 
-inline std::string trim(const char & trim_what, const std::string & xs)
+inline std::string trim(const char & trim_what, std::string const & xs)
 {
     bool stop = false;
     std::string out;
@@ -113,7 +113,7 @@ inline std::string trim(const char & trim_what, const std::string & xs)
     return out;
 }
 
-inline std::string trim_whitespace(const std::string & s)
+inline std::string trim_whitespace(std::string const & s)
 {
     std::string r = trim(' ', s);
     r = trim('\t', r);
