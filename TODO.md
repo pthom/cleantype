@@ -4,21 +4,24 @@
 // 9h
 //
 
-* [ ]  type_name_s :
+* [X]  type_name_s :
     * [ ] hana
         * [X] pas de doctest, main only
         * [X] pas de format
         * [X] test / regex
         * [X] recup test dans full_s
         * [ ] tenter PR dans branche hana_pr_typename
+        * [ ] le code principal doit fonctionner sans hana, donc sans namespace hana
+                -> faire dupl...
     * [X] Types multiples par wrap dans Template Holder ?
     * [X] full_s : compile time tests
     * [X] west_const -> east_const
     * [X] suppr typename, replace by type_name_s
-    * [X] retest lambda and 4 params types (was an issue, should not be anymore) : see constype_full_multiple_fromvalues
+    * [X] retest lambda and 4 params types (was an issue, should not be anymore) : see cleantype_full_multiple_fromvalues
     * [X] clean : check issues with multiple types (why parameter packs...)
     * [ ] Compile time types log
         * [ ] CMake / detection boost
+        * [ ] Header separe pour inclusion hana
         * [ ] interact / clean
             * [ ] prog version inline
             * [ ] make version inline pour binder
@@ -26,10 +29,17 @@
 * [X] Passer le code en east const
 * [X] includes avec <>
 * [X] classer fonctions string dans stringutils
-* [?] constype or ConsType ?
+* [?] cleantype or ConsType ?
 
 * [X] Change name lib : clean type ?
- * [X] Change copyright messsage & add one empty line
+ * [ ] Change copyright messsage & add one empty line
+ * [ ] Change macro names
+
+* [ ] Compiler log decipherer
+    * [ ] clang
+    * [ ] gcc
+    * [ ] interact progressive ou utiliser tee ?
+
 
 * [ ] string_tree : delete, only lhr_rhs
 * [ ] fplus : remove include (i.e backport show_cont & co)
