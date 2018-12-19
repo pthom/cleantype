@@ -14,7 +14,7 @@
 #include <string>
 #include <cleantype/details/fp_polyfill/fp_polyfill.hpp>
 
-#include <cleantype/details/hana_ext/experimental/detail/type_name_pretty_function.hpp>
+#include <cleantype/details/hana_type_name/type_name_pretty_function.hpp>
 #include <cleantype/details/cleantype_format_whitespace.hpp>
 #include <cleantype/details/cleantype_clean_impl.hpp>
 #include <cleantype/cleantype_configuration.hpp>
