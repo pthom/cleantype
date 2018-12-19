@@ -4,8 +4,8 @@
 
 #include "doctest.h"
 #include <regex>
-#include "constype/details/constype_full.hpp"
-#include "constype/details/debug_break.hpp"
+#include <constype/details/constype_full.hpp>
+#include <constype/details/debug_break.hpp>
 
 //#define LOG(str) std::cout << str << std::endl
 //#define LOG_VALUE(var) std::cout << #var << " = " << var << std::endl
