@@ -43,7 +43,8 @@ namespace cleantype
         using StringReplace = std::array<std::string, 2>;
         std::vector<StringReplace> replacements_after_undesirable_node_extractions =
         {
-            { "std::basic_string<char>", "std::string" }
+            { "std::basic_string<char>", "std::string" },
+            { "basic_string<_CharT, _Traits, _Allocator>", "std::string"}
         };
 
         // set this to true in order to force the results to be east const

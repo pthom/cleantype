@@ -1,4 +1,5 @@
 #include <cleantype/cleantype_compile_time.hpp>
+#include <cleantype/details/fp_polyfill/fp_polyfill.hpp>
 #include <map>
 #include <vector>
 #include <string>
@@ -18,7 +19,7 @@ auto my_spurious_lambda = [](int a, int b)
 int main()
 {
     auto c = my_spurious_lambda(40, 2);
-    TN_ERROR_full_var(c);
+    //TN_ERROR_full_var(c);
     //cleantype::ERROR_full<decltype(c)>();
 }
 
