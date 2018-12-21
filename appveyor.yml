@@ -41,10 +41,8 @@ before_build:
     git submodule update
     mkdir build
     cd build
-    conan install .. --build=missing
     cmake --version
-    cmake .. -G %generator%
-
+    cmake ..  -DCLEANTYPE_ALL_OPTIONS=ON -G %generator%
 build:
   project: c:\projects\cleantype\build\cleantype.sln
   verbosity: minimal
