@@ -30,9 +30,9 @@ inline std::string repeat(std::size_t n, const std::string& xs)
 }
 
 // this is a simplified version of fplus::transform that accepts only vectors
-template <typename F, typename T>
-std::vector<T> transform(F f, const std::vector<T>& xs) {
-    std::vector <T> out;
+template <typename F, typename T, typename U = T >
+std::vector<U> transform(F f, const std::vector<T>& xs) {
+    std::vector <U> out;
     for (const auto & x : xs)
         out.push_back(f(x));
     return out;
@@ -124,7 +124,7 @@ inline std::string trim_whitespace(std::string const & s)
 
 // TO REDO
 template <typename T>
-std::string show(T & v)
+std::string show(const T & v)
 {
     return fplus::show(v);
 }
@@ -194,6 +194,37 @@ std::vector<T> keep_if(Pred pred, std::vector<T> && xs)
     for (const auto & v : xs)
         if (pred(v))
             r.push_back(v);
+    return r;
+}
+
+template<typename T>
+std::vector<T> numbers(const T start, const T end)
+{
+    std::vector<T> r;
+    T v = start;
+    while (v < end)
+        r.push_back(v++);
+    return r;
+}
+
+template<typename T>
+std::vector<T> numbers(const T end)
+{
+    return numbers<T>( static_cast<T>(0), end);
+}
+
+
+template <typename T, typename U>
+std::vector<std::pair<T, U>> zip(
+    const std::vector<T> & xs, const std::vector<U> & ys)
+{
+    std::vector<std::pair<T, U>> r;
+
+    auto len = std::min( xs.size(), ys.size() );
+    for (std::size_t idx = 0; idx < len; idx++)
+    {
+        r.push_back( { xs[idx], ys[idx] } );
+    }
     return r;
 }
 

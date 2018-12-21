@@ -19,7 +19,12 @@
         * [ ] Header separe pour inclusion hana
         * [ ] interact / clean
             * [ ] prog version inline
+            * [ ] command line options / clean
+            * [ ] On peut extraire le nom de la variable recherche en regardant
+            le log du compilateur quelques lignes plus bas,
+            apres la ligne se finissant par "requested here"
             * [ ] make version inline pour binder
+    * [ ] utiliser fplus pour de bon
 
 * [X] Passer le code en east const
 * [X] includes avec <>
