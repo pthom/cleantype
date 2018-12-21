@@ -18,15 +18,28 @@
         * [X] CMake / detection boost
         * [X] Header separe pour inclusion hana
         * [ ] interact / clean
-            * [ ] prog version inline
-            * [ ] clean code
-            * [ ] doc
-            * [ ] test unitaire avec output / avec erreur reelle
+            * [X] prog version inline
             * [X] command line options / clean
-            * [X] On peut extraire le nom de la variable recherche en regardant
-            le log du compilateur quelques lignes plus bas,
-            apres la ligne se finissant par "requested here"
-            * [ ] make version inline pour binder
+            * [X] On peut extraire le nom de la variable recherche en regardant quelques lignes plus bas,
+
+
+    * [ ] decipherer
+        * [ ] rename
+        * [ ] install
+        * [ ] clean code
+        * [ ] doc
+        * [ ] test unitaire avec output / avec erreur reelle
+        * [ ] make version inline pour binder
+
+    * [ ] truc-type-compiletime
+        * [ ] rename
+        * [ ] install
+        * [ ] clean code
+        * [ ] doc
+        * [ ] test unitaire avec output / avec erreur reelle
+        * [ ] make version inline pour binder
+
+
     * [ ] utiliser fplus pour de bon ?
 
     * [X] Compiler log decipherer
@@ -42,7 +55,7 @@
 * [?] cleantype or ConsType ?
 
 * [X] Change name lib : clean type ?
-    * [ ] Change copyright messsage & add one empty line
+    * [X] Change copyright messsage & add one empty line
     * [ ] Change macro names
 
 * [ ] string_tree : delete, only lhr_rhs
