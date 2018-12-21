@@ -32,6 +32,4 @@ if (CLEANTYPE_BUILD_TESTS)
   add_subdirectory(src/include/cleantype/tests)
 endif()
 
-if (CLEANTYPE_COMPILETIME)
-  add_subdirectory(src/include/cleantype/compile_time)
-endif()
+add_subdirectory(src/include/cleantype/compile_time)
