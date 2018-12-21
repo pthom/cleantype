@@ -21,6 +21,15 @@ namespace fp
 namespace fp_add
 {
 
+template<typename T> 
+std::vector<T> take_at_idxs(const std::vector<T> & xs, const std::vector<size_t> & indexes)
+{
+    std::vector<T> r;
+    for (auto idx : indexes)
+        r.push_back(xs[idx]);
+    return r;
+}
+
 struct lhs_rhs
 {
     std::string lhs;

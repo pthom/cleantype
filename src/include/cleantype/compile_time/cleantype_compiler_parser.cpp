@@ -1,5 +1,7 @@
+#include <sstream>
 #include <boost/optional.hpp>
 #include <cleantype/details/fp_polyfill/fp_polyfill.hpp>
+#include <cleantype/details/fp_polyfill/fp_additions.hpp>
 #include <cleantype/cleantype.hpp>
 #include <cleantype/cleantype_compile_time.hpp>
 #include <cleantype/details/stringutils.hpp>
@@ -8,8 +10,68 @@
 
 using Strings = std::vector<std::string>;
 using String = std::string;
+using LineNumbers = std::vector<std::size_t>;
 using NumberedLine = std::pair<std::size_t, String>;
 using NumberedLines = std::vector<NumberedLine>;
+
+
+struct CompilerOutputParseConfig
+{
+    String compiler_error_extract_before_type;
+    std::size_t nb_skip_lines_after_extract;
+    String start_marker;
+    String end_marker;
+    String compiler_error_extract_at_call_site;
+};
+
+#if defined(__clang__)
+CompilerOutputParseConfig MakeCompilerOutputParseConfig()
+{
+    CompilerOutputParseConfig r;
+    r.compiler_error_extract_before_type = _CLEANTYPE_COMPILETIME_MARKER;
+    r.nb_skip_lines_after_extract = 0;
+    r.start_marker = "boost::hana::string<'";
+    r.end_marker = ">' ";
+    r.compiler_error_extract_at_call_site = ": note: in instantiation of function template specialization 'cleantype::ERROR_full";
+    return r;
+}
+#elif defined(_MSC_VER)
+CompilerOutputParseConfig MakeCompilerOutputParseConfig()
+{
+    CompilerOutputParseConfig r;
+    r.compiler_error_extract_before_type = _CLEANTYPE_COMPILETIME_MARKER;
+    r.nb_skip_lines_after_extract = 3;
+    r.start_marker = "boost::hana::string<";
+    r.end_marker = "> &";
+    r.compiler_error_extract_at_call_site = ": note: see reference to function template instantiation ";
+    return r;
+}
+#else
+#error("Unsupported compiler")
+#endif
+
+
+auto config = MakeCompilerOutputParseConfig();
+
+String parse_compiler_type(const String & s)
+{
+#if defined(__clang__)
+    // example input: 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'm', 'a', 'p', '<', 'i', 'n', 't', ',', ' ', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'v', 'e', 'c', 't', 'o', 'r', '<', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'b', 'a', 's', 'i', 'c', '_', 's', 't', 'r', 'i', 'n', 'g', '<', 'c', 'h', 'a', 'r', '>', ',', ' ', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'a', 'l', 'l', 'o', 'c', 'a', 't', 'o', 'r', '<', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'b', 'a', 's', 'i', 'c', '_', 's', 't', 'r', 'i', 'n', 'g', '<', 'c', 'h', 'a', 'r', '>', ' ', '>', ' ', '>', ',', ' ', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'l', 'e', 's', 's', '<', 'i', 'n', 't', '>', ',', ' ', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'a', 'l', 'l', 'o', 'c', 'a', 't', 'o', 'r', '<', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'p', 'a', 'i', 'r', '<', 'c', 'o', 'n', 's', 't', ' ', 'i', 'n', 't', ',', ' ', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'v', 'e', 'c', 't', 'o', 'r', '<', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'b', 'a', 's', 'i', 'c', '_', 's', 't', 'r', 'i', 'n', 'g', '<', 'c', 'h', 'a', 'r', '>', ',', ' ', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'a', 'l', 'l', 'o', 'c', 'a', 't', 'o', 'r', '<', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'b', 'a', 's', 'i', 'c', '_', 's', 't', 'r', 'i', 'n', 'g', '<', 'c', 'h', 'a', 'r', '>', ' ', '>', ' ', '>', ' ', '>', ' ', '>', ' ', '>'
+    String parsed = fp::replace_tokens("', '", "", s);
+    return parsed;
+#elif defined(_MSC_VER)
+    // example input: 99,108,97,115,115,32,115,116,100,58,58,98,97,115,105,99,95,115,116,114,105,110,103,60,99,104,97,114,44,115,116,114,117,99,116,32,115,116,100,58,58,99,104,97,114,95,116,114,97,105,116,115,60,99,104,97,114,62,44,99,108,97,115,115,32,115,116,100,58,58,97,108,108,111,99,97,116,111,114,60,99,104,97,114,62,32,62
+    Strings numbers = cleantype::internal::_split_string(s, ',');
+    std::vector<unsigned char> chars;
+    for (const auto &str_number : numbers)
+        chars.push_back(static_cast<unsigned char>(atoi(str_number.c_str())));
+    std::stringstream ss;
+    for (auto c : chars)
+        ss << c;
+    return ss.str();
+#endif
+}
+
 
 boost::optional<String> extract_content_between_markers(
     const std::string & start_marker,
@@ -35,96 +97,87 @@ boost::optional<String> extract_content_between_markers(
     return r;
 }
 
+
+
 String extract_type_from_compiler_line( // can throw runtime_error !
     const String & compiler_line
     )
 {
-    const String start_marker = "boost::hana::string<'";
-    const String end_marker = "'>' ";
-    auto line_extract = extract_content_between_markers(start_marker, end_marker, compiler_line);
+    auto line_extract = extract_content_between_markers(config.start_marker, config.end_marker, compiler_line);
     if ( ! line_extract.is_initialized()) {
         std::cerr << "extract_type_from_compiler_line : failure !\n";
         throw(std::runtime_error("extract_type_from_compiler_line : failure !"));
     }
 
-    auto type_full = fp::replace_tokens("', '", "", line_extract.get());
+    auto type_full = parse_compiler_type(line_extract.get());
 
     return type_full;
 }
 
-bool does_compiler_line_match_marker(const NumberedLine & compiler_line)
-{
-    return compiler_line.second.find(_CLEANTYPE_COMPILETIME_MARKER) != String::npos;
-}
 
 std::string extract_call_site_after_type(
-    const NumberedLines & compiler_output,
+    const Strings & compiler_lines,
     std::size_t line_idx
     )
 {
-    /*
-    // Example of an error output (clang)
-../src/include/cleantype/cleantype_compile_time.hpp:38:8: error: type 'boost::hana::string<'s', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'm', 'a', 'p', '<', 'i', 'n', 't', ',', ' ', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'v', 'e', 'c', 't', 'o', 'r', '<', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'b', 'a', 's', 'i', 'c', '_', 's', 't', 'r', 'i', 'n', 'g', '<', 'c', 'h', 'a', 'r', '>', ',', ' ', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'a', 'l', 'l', 'o', 'c', 'a', 't', 'o', 'r', '<', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'b', 'a', 's', 'i', 'c', '_', 's', 't', 'r', 'i', 'n', 'g', '<', 'c', 'h', 'a', 'r', '>', ' ', '>', ' ', '>', ',', ' ', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'l', 'e', 's', 's', '<', 'i', 'n', 't', '>', ',', ' ', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'a', 'l', 'l', 'o', 'c', 'a', 't', 'o', 'r', '<', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'p', 'a', 'i', 'r', '<', 'c', 'o', 'n', 's', 't', ' ', 'i', 'n', 't', ',', ' ', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'v', 'e', 'c', 't', 'o', 'r', '<', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'b', 'a', 's', 'i', 'c', '_', 's', 't', 'r', 'i', 'n', 'g', '<', 'c', 'h', 'a', 'r', '>', ',', ' ', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'a', 'l', 'l', 'o', 'c', 'a', 't', 'o', 'r', '<', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'b', 'a', 's', 'i', 'c', '_', 's', 't', 'r', 'i', 'n', 'g', '<', 'c', 'h', 'a', 'r', '>', ' ', '>', ' ', '>', ' ', '>', ' ', '>', ' ', '>'>' does not provide a call operator
-       intentional_error(); // your type can be deciphered via : make 2>&1 | cleantype_compiler_parser [-c | --clean]
-       ^~~~~~~~~~~~~~~~~
-../src/include/cleantype/compile_time/example/cleantype_compile_time_example.cpp:8:16: note: in instantiation of function template specialization 'cleantype::ERROR_full<std::__1::map<int, std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > >, std::__1::less<int>, std::__1::allocator<std::__1::pair<const int, std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > > > > > >' requested here
-    cleantype::ERROR_full<std::map<int, std::vector<std::string>>>();
-               ^
-    */
-    while(line_idx < compiler_output.size() )
+    while(line_idx < compiler_lines.size() )
     {
-        String line = compiler_output[line_idx].second;
-        if ( cleantype::stringutils::ends_with(line, "requested here") )
+        String line = compiler_lines[line_idx];
+        auto idx = line.find(config.compiler_error_extract_at_call_site);
+        if ( idx != std::string::npos )
         {
-            String clang_error_start = ": note: in instantiation of ";
-            auto idx_end_extract = line.find(clang_error_start);
-            if (idx_end_extract != std::string::npos)
-            {
-                String call_site = line.substr(0, idx_end_extract);
-                if (line_idx < compiler_output.size() - 2)
-                    call_site = call_site + "\n==>" + compiler_output[line_idx + 1].second;
-                return call_site;
-            }
+            String call_site = line.substr(0, idx);
+            return call_site;
         }
         line_idx++;
     }
     return "";
 }
 
+
+bool does_compiler_line_match_error_extract_before_type(const NumberedLine & compiler_line)
+{
+    return compiler_line.second.find(config.compiler_error_extract_before_type) != String::npos;
+}
+
+
 String extract_types_from_compiler_output(const String & compiler_output, bool flag_clean)
 {
-    Strings lines = cleantype::internal::_split_string(compiler_output, '\n');
-    NumberedLines numbered_compiler_output = fp::zip( fp::numbers(lines.size()), lines );
-    NumberedLines lines_with_types = fp::keep_if(does_compiler_line_match_marker, numbered_compiler_output);
+    Strings compiler_lines = cleantype::internal::_split_string(compiler_output, '\n');
+    NumberedLines numbered_compiler_output = fp::zip( fp::numbers(compiler_lines.size()), compiler_lines);
 
-    NumberedLines extracted_types = fp::transform(
-        [flag_clean](const NumberedLine & nl) -> NumberedLine {
-            String type_def = extract_type_from_compiler_line(nl.second);
-            if (flag_clean)
-                type_def = cleantype::internal::impl_clean_several_types(type_def);
-            return { nl.first, type_def };
-        },
-        lines_with_types);
+    NumberedLines lines_before_types = fp::keep_if(does_compiler_line_match_error_extract_before_type, numbered_compiler_output);
+    LineNumbers lines_numbers_before_types = fp::unzip(lines_before_types).first;
+    LineNumbers lines_numbers_at_types = fp::transform(
+        [&](const std::size_t & line_number) { 
+            return line_number + config.nb_skip_lines_after_extract;
+        }, 
+        lines_numbers_before_types);
+    Strings lines_with_types = fp::fp_add::take_at_idxs(compiler_lines, lines_numbers_at_types);
+    Strings types_full = fp::transform(extract_type_from_compiler_line, lines_with_types);
+    Strings types_clean;
+    if (flag_clean)
+        types_clean = fp::transform(cleantype::internal::impl_clean_several_types, types_full);
+    else
+        types_clean = types_full;
+    
+    Strings call_sites;
+    {
+        auto extract_call_site = [&](const std::size_t & line_number) {
+            return extract_call_site_after_type(compiler_lines, line_number);
+        };
+        call_sites = fp::transform<decltype(extract_call_site), std::size_t, String> (extract_call_site, lines_numbers_at_types);
+    }
 
-    NumberedLines extracted_types_with_call_site = fp::transform(
-        [&](const NumberedLine & nl) -> NumberedLine {
-            String type_with_call_site = nl.second + "\n\tat "
-            + extract_call_site_after_type(numbered_compiler_output, nl.first);
-            return { nl.first, type_with_call_site };
-        },
-        extracted_types);
+    std::size_t nb_types = lines_numbers_at_types.size();
+    Strings output;
+    for (auto i : fp::numbers(nb_types))
+    {
+        String s = types_clean[i] + "\n\tat: " + call_sites[i] + " (Compiler line #" + fp::show(lines_numbers_at_types[i]) + ")";
+        output.push_back(s);
+    }
 
-    auto show_type_with_call_site = [](const NumberedLine & nl) -> String {
-        return "compiler output line #" + fp::show(nl.first + 1) + ":\n"
-                + nl.second;
-    };
-
-    Strings show_extracted_types_with_call_site =
-        fp::transform<decltype(show_type_with_call_site), NumberedLine, String>(
-            show_type_with_call_site,
-            extracted_types_with_call_site);
-
-    return fp::join("\n\n", show_extracted_types_with_call_site);
+    return fp::join("\n\n", output);
 }
 
 int main(int argc, char ** argv)

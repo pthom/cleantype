@@ -245,6 +245,21 @@ std::vector<std::pair<T, U>> zip(
     return r;
 }
 
+
+template <typename T, typename U>
+std::pair<std::vector<T>, std::vector<U>> unzip(
+    const std::vector<std::pair<T, U>> & xs)
+{
+    std::pair<std::vector<T>, std::vector<U>> r;
+    for (const auto & v : xs)
+    {
+        r.first.push_back(v.first);
+        r.second.push_back(v.second);
+    }
+    return r;
+}
+
+
 inline std::string to_upper_case(const std::string & xs)
 {
     std::string r = xs;
