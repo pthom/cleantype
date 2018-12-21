@@ -32,5 +32,5 @@ int main()
     auto v = my_spurious_lambda(1, 2);
     auto v2 = my_spurious_lambda2(v, 3);
 
-    auto v3 = fp::transform(my_spurious_lambda3, v2);
+    //auto v3 = fp::transform(my_spurious_lambda3, v2);
 }

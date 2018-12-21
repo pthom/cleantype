@@ -188,20 +188,29 @@ std::function<void()> interact(F f)
     };
 }
 
-template <typename F>
-std::function<void()> interact_by_line(F f)
+
+template <typename F, typename InputStream, typename OutputStream>
+std::function<void()> interact_by_line(F f, InputStream & is, OutputStream & os)
 {
-    return [f]() -> void
+    return [f, &is, &os]() -> void
     {
         std::string line;
-        while( ! std::cin.eof())
+        while (!is.eof())
         {
-            std::getline(std::cin, line);
+            std::getline(is, line);
             std::string out = f(line);
-            std::cout << out << "\n";
+            os << out << "\n";
         }
     };
 }
+
+template <typename F>
+std::function<void()> interact_by_line(F f)
+{
+    return interact_by_line(f, std::cin, std::cout);
+}
+
+
 
 
 template <typename T, typename Pred>
