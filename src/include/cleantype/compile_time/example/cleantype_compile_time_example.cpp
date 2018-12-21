@@ -10,6 +10,11 @@ auto my_spurious_lambda = [](int a, int b)
     return r;
 };
 
+// Usage
+// WINDOWS : 
+//            cmake --build . | bin\cleantype_compiler_parser.exe -c
+// Clang:
+//            cmake --build . | ./cleantype_compiler_parser.exe -c
 int main()
 {
     auto c = my_spurious_lambda(40, 2);

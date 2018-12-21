@@ -49,7 +49,7 @@ namespace cleantype
 
 
 #ifdef _MSC_VER
-#define _CLEANTYPE_OUTPUT(T) cleantype::compile_time_internal::string_to_char_tuple(cleantype::compile_time_type_name<T...>())
+#define _CLEANTYPE_OUTPUT(T) cleantype::compile_time_internal::string_to_char_tuple(cleantype::compile_time_type_name<T>())
 #else
 #define _CLEANTYPE_OUTPUT(T) decltype(cleantype::compile_time_type_name<T...>())
 #endif
