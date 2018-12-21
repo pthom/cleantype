@@ -10,6 +10,7 @@ if (CLEANTYPE_COMPILETIME)
     add_executable(ct_compiler_typeinfo ct_compiler_typeinfo.cpp)
     clean_type_set_target_option(ct_compiler_typeinfo)
     add_hana_include(ct_compiler_typeinfo)
+    install(TARGETS ct_compiler_typeinfo DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 
     add_executable(ct_compiler_typeinfo_example example/ct_compiler_typeinfo_example.cpp)
     clean_type_set_target_option(ct_compiler_typeinfo_example)
