@@ -15,16 +15,25 @@
     * [X] clean : check issues with multiple types (why parameter packs...)
     * [ ] impl_clean_several_types -> publier dans API (et renommer)
     * [ ] Compile time types log
-        * [ ] CMake / detection boost
-        * [ ] Header separe pour inclusion hana
+        * [-] CMake / detection boost
+        * [X] Header separe pour inclusion hana
         * [ ] interact / clean
             * [ ] prog version inline
-            * [ ] command line options / clean
-            * [ ] On peut extraire le nom de la variable recherche en regardant
+            * [ ] clean code
+            * [ ] doc
+            * [ ] test unitaire avec output / avec erreur reelle
+            * [X] command line options / clean
+            * [X] On peut extraire le nom de la variable recherche en regardant
             le log du compilateur quelques lignes plus bas,
             apres la ligne se finissant par "requested here"
             * [ ] make version inline pour binder
     * [ ] utiliser fplus pour de bon
+
+    * [ ] Compiler log decipherer
+        * [ ] clang
+        * [ ] gcc
+        * [ ] interact progressive ou utiliser tee ?
+
 
 * [X] Passer le code en east const
 * [X] includes avec <>
@@ -35,10 +44,6 @@
  * [ ] Change copyright messsage & add one empty line
  * [ ] Change macro names
 
-* [ ] Compiler log decipherer
-    * [ ] clang
-    * [ ] gcc
-    * [ ] interact progressive ou utiliser tee ?
 
 
 * [ ] string_tree : delete, only lhr_rhs
