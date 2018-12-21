@@ -5,14 +5,14 @@ function(add_main_tests)
     set(files ${cpp_files} ${hpp_files})
 
     set(doctest_INCLUDES ${CMAKE_SOURCE_DIR}/third_party/doctest/doctest)
-    enable_testing()
 
     add_executable(cleantype_test ${files})
     target_include_directories(cleantype_test PRIVATE ${doctest_INCLUDES})
     clean_type_set_target_option(cleantype_test)
     source_group(TREE ${CMAKE_SOURCE_DIR}/src/include/ FILES ${files})
+
     add_test(NAME cleantype_test COMMAND cleantype_test)
-endfunction()
+    endfunction()
 
 add_main_tests()
 add_executable(type_name_stringliteral_test ../details/hana_type_name/test/type_name_stringliteral_test.cpp)

@@ -1,5 +1,6 @@
 # We don't care about the language here, except that setting
 # language: cpp will override our CC and CXX env variables below
+# and we do not want that !
 language: Ruby
 
 dist: trusty
@@ -7,6 +8,9 @@ sudo: required
 
 matrix:
     include:
+    ##############
+    # GCC
+    ##############
     - os: linux
       compiler: gcc
       env: GCC_VERSION=8
@@ -44,6 +48,9 @@ matrix:
           sources: ['ubuntu-toolchain-r-test']
           packages: ['g++-5']
 
+    ##############
+    # CLANG
+    ##############
     - os: linux
       compiler: clang
       env: CLANG_VERSION=7
@@ -63,39 +70,49 @@ matrix:
           sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-6.0']
           packages: ['clang-6.0', 'g++-6']
 
+    ##############
+    # OSX / APPLECLANG
+    ##############
     - os: osx
       osx_image: xcode10
-      env: OSX=1
+      env:
+        - CXX=clang
+        - OSX=1
+
     - os: osx
       osx_image: xcode9.4
-      env: OSX=1
+      env:
+        - CXX=clang
+        - OSX=1
+
 
 before_install:
+  - echo "Before install"
   - |
     git submodule init
     git submodule update
-  - |
+  # - |
     # if [ "$LIBCXX" == "On" ]; then
     #   ./cmake/install_libcxx.sh
     #   export CXXFLAGS="-stdlib=libc++"
     # fi
+  - |
     if [ "${CLANG_VERSION}" == "7" ]; then
       export CXXFLAGS="-stdlib=libc++"
     fi
   - |
     sudo pip install conan --upgrade
-    sudo pip install conan_package_tools
     conan user
 
 
 install:
   - mkdir -p build && cd build
-  - ../scripts/build/cmake_all_options.sh
+  - conan install ..
 
 script:
-  - |
-    which $CXX
-    $CXX --version
-    cmake --version
-    cmake --build . --config Release -- -j4
-    ctest -C Release --output-on-failure
+  - which $CXX
+  - $CXX --version
+  - cmake --version
+  - cmake .. -DCLEANTYPE_ALL_OPTIONS=ON
+  - cmake --build . --config Release -- -j4
+  - ctest -C Release --output-on-failure

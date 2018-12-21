@@ -1,4 +1,4 @@
-this_script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-src_dir=$this_script_dir/../..
+DIR="$(dirname "$(readlink -f "$0")")" # readlink on linux (brew install coreutils on mac)
+src_dir=$DIR/../..
 
-cmake $src_dir -GNinja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+cmake $src_dir -GNinja

@@ -39,14 +39,14 @@ before_build:
     conan --version
     git submodule init
     git submodule update
+
+build_script:
+- cmd: |-
     mkdir build
     cd build
     cmake --version
     cmake ..  -DCLEANTYPE_ALL_OPTIONS=ON -G %generator%
-build:
-  project: c:\projects\cleantype\build\cleantype.sln
-  verbosity: minimal
-  parallel: true
+    cmake --build . --target ALL_BUILD --config Release
 
 test_script:
   - ps: cd c:\projects\cleantype\build

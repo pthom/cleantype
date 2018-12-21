@@ -14,4 +14,7 @@ RUN $install_scripts/install_miniconda.sh
 
 RUN /srv/conda/bin/pip install --upgrade pip && /srv/conda/bin/pip install conan
 
+ADD install_scripts/install_clang.sh $install_scripts/install_clang.sh
+RUN $install_scripts/install_clang.sh
+
 WORKDIR /sources_docker
