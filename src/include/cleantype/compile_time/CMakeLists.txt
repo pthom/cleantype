@@ -1,5 +1,3 @@
-find_package(Boost REQUIRED)
-
 function(clean_type_set_target_option target)
     if (MSVC)
         target_compile_options(${target} PRIVATE /std:c++latest)
@@ -11,12 +9,16 @@ function(clean_type_set_target_option target)
     target_include_directories(${target} PRIVATE ${CMAKE_SOURCE_DIR}/src/include)
 endfunction()
 
-function(clean_type_set_target_option_compile_time target)
-    target_compile_definitions(${target} PRIVATE -DCLEANTYPE_COMPILETIME)
-    target_include_directories(${target} PRIVATE ${boost_INCLUDE_DIRS})
-endfunction()
 
 if (CLEANTYPE_COMPILETIME)
+
+    function(clean_type_set_target_option_compile_time target)
+        target_compile_definitions(${target} PRIVATE -DCLEANTYPE_COMPILETIME)
+        target_include_directories(${target} PRIVATE ${boost_INCLUDE_DIRS})
+    endfunction()
+
+    find_package(Boost REQUIRED)
+
     add_executable(cleantype_compile_time_example example/cleantype_compile_time_example.cpp)
     clean_type_set_target_option(cleantype_compile_time_example)
     clean_type_set_target_option_compile_time(cleantype_compile_time_example)
@@ -28,8 +30,6 @@ endif()
 
 add_executable(cleantype_decipher_example example/cleantype_decipher_example.cpp)
 clean_type_set_target_option(cleantype_decipher_example)
-clean_type_set_target_option_compile_time(cleantype_decipher_example)
 
 add_executable(cleantype_decipherer cleantype_decipherer.cpp)
 clean_type_set_target_option(cleantype_decipherer)
-clean_type_set_target_option_compile_time(cleantype_decipherer)

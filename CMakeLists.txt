@@ -4,11 +4,33 @@ project(cleantype)
 
 option(CLEANTYPE_BUILD_TESTS "Build tests." ON)
 option(CLEANTYPE_COMPILETIME "Compile time type info (require Boost.Hana)." OFF)
+option(CLEANTYPE_USE_CONAN "Find deps (Boost) using conan." OFF)
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup(TARGETS)
+option(CLEANTYPE_ALL_OPTIONS "Use conan / build tests / build compile time" OFF)
+
+if (CLEANTYPE_ALL_OPTIONS)
+  set(CLEANTYPE_BUILD_TESTS ON)
+  set(CLEANTYPE_COMPILETIME ON)
+  set(CLEANTYPE_USE_CONAN ON)
+endif()
+
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+if (CLEANTYPE_USE_CONAN)
+  execute_process(
+    COMMAND conan install ${CMAKE_SOURCE_DIR}
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    RESULT_VARIABLE conan_result
+  )
+  if(NOT "${conan_result}" STREQUAL "0")
+        message(FATAL_ERROR "Fatal error when running 'conan install ${CMAKE_SOURCE_DIR}'")
+  endif()
+
+  include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+  conan_basic_setup(TARGETS)
+endif()
+
 
 find_program(CCACHE_FOUND ccache)
 if(CCACHE_FOUND)
