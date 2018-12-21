@@ -19,7 +19,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 if (CLEANTYPE_USE_CONAN)
   execute_process(
-    COMMAND conan install ${CMAKE_SOURCE_DIR}
+    COMMAND conan install ${CMAKE_SOURCE_DIR} --build=missing
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     RESULT_VARIABLE conan_result
   )

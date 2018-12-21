@@ -1,11 +1,11 @@
 * [X]  type_name_s :
-    * [ ] hana
+    * [X] hana
         * [X] pas de doctest, main only
         * [X] pas de format
         * [X] test / regex
         * [X] recup test dans full_s
         * [-] tenter PR dans branche hana_pr_typename
-        * [ ] le code principal doit fonctionner sans hana, donc sans namespace hana
+        * [X] le code principal doit fonctionner sans hana, donc sans namespace hana
                 -> faire dupl...
     * [X] Types multiples par wrap dans Template Holder ?
     * [X] full_s : compile time tests
@@ -15,7 +15,7 @@
     * [X] clean : check issues with multiple types (why parameter packs...)
     * [X] impl_clean_several_types -> publier dans API (et renommer)
     * [ ] Compile time types log
-        * [-] CMake / detection boost
+        * [X] CMake / detection boost
         * [X] Header separe pour inclusion hana
         * [ ] interact / clean
             * [ ] prog version inline
@@ -27,13 +27,13 @@
             le log du compilateur quelques lignes plus bas,
             apres la ligne se finissant par "requested here"
             * [ ] make version inline pour binder
-    * [ ] utiliser fplus pour de bon
+    * [ ] utiliser fplus pour de bon ?
 
     * [X] Compiler log decipherer
         * [X] clang
         * [X] msvc
-        * [ ] gcc
-        * [ ] interact progressive ou utiliser tee ?
+        * [X] gcc
+        * [X] interact progressive ou utiliser tee ?
 
 
 * [X] Passer le code en east const
@@ -42,10 +42,8 @@
 * [?] cleantype or ConsType ?
 
 * [X] Change name lib : clean type ?
- * [ ] Change copyright messsage & add one empty line
- * [ ] Change macro names
-
-
+    * [ ] Change copyright messsage & add one empty line
+    * [ ] Change macro names
 
 * [ ] string_tree : delete, only lhr_rhs
 * [ ] fplus : remove include (i.e backport show_cont & co)
