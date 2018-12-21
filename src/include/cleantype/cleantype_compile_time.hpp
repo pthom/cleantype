@@ -45,12 +45,12 @@ namespace cleantype
 #ifdef _MSC_VER
 #define _CLEANTYPE_INTENTIONAL_ERROR(T) string_to_char_tuple(compile_time_type_name<T...>())
 #else
-#define _CLEANTYPE_INTENTIONAL_ERROR(T) compile_time_type_name<T...>()
+#define _CLEANTYPE_INTENTIONAL_ERROR(T) decltype(compile_time_type_name<T...>())
 #endif
 
     template<typename... T>
     void ERROR_full() {
-       static_assert( is_integral<_CLEANTYPE_INTENTIONAL_ERROR(T) >() ); // your type can be deciphered via : make 2>&1 | cleantype_compiler_parser [-c | --clean]
+       static_assert( std::is_integral<_CLEANTYPE_INTENTIONAL_ERROR(T) >(), "" ); // your type can be deciphered via : make 2>&1 | cleantype_compiler_parser [-c | --clean]
     }
 
 #if defined(__clang__)
