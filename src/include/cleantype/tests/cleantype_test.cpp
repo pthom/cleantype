@@ -7,4 +7,3 @@
 #include <functional>
 #include <map>
 
-#define LOG(str) std::cout << str << std::endl

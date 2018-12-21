@@ -135,11 +135,4 @@ TEST_CASE("_mem_fn_to_lambda_type")
         auto computed = cleantype::internal::_mem_fn_to_lambda_type(memfn_type, true);
         REQUIRE_EQ(computed, expected);
     }
-    {
-        // PERAVE                                                                  \/ !!!
-//        std::string memfn_type = "std::__1::__mem_fn<std::__1::basic_string<char, char> ((lambda at ../src/include/cleantype/tests/lambda_typename_test.cpp:37:16):: *)(const std::__1::basic_string &, const std::__1::basic_string<char> &)const>";
-//        std::string expected = "lambda: (std::string const &, std::string const &) -> std::string";
-//        auto computed = cleantype::internal::_mem_fn_to_lambda_type(memfn_type, true);
-//        REQUIRE_EQ(computed, expected);
-    }
 }

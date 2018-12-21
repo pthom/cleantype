@@ -247,12 +247,6 @@ TEST_CASE("cleantype_full_multiple_fromvalues")
          "char, char"
      );
      {
-         // Three params and perfect forwarding -> fail !
-         // This fails because it is on the third param
-         // See possible leads:
-         // http://www.cplusplus.com/reference/tuple/forward_as_tuple/
-         // +
-         // https://stackoverflow.com/questions/1198260/iterate-over-tuple
          char a = 5;
          char &v = a;
          char &v2 = a;
@@ -299,7 +293,7 @@ TEST_CASE("cleantype_full_regex")
 #define RUN_ONE_TYPE_TEST_COMPILE_TIME(type_definition, type_string_literal)                     \
         {                                                                                        \
             constexpr auto computed =                                                            \
-                cleantype::internal::_impl_typeid_hana<type_definition>();                        \
+                cleantype::internal::_impl_typeid_hana<type_definition>();                       \
             static_assert( boost::hana::experimental::type_name_details::stringliteral_equal_sz( \
                     computed, type_string_literal),                                              \
                 "RUN_ONE_TYPE_TEST_COMPILE_TIME error");                                         \
@@ -312,11 +306,11 @@ TEST_CASE("cleantype_full_regex")
 #define RUN_ONE_TYPE_TEST_RUN_TIME(type_definition, type_string_literal)                         \
         {                                                                                        \
             auto computed =                                                                      \
-                cleantype::internal::_impl_typeid_hana<type_definition>();                        \
-            auto computed_s = boost::hana::experimental::type_name_details::  \
-                stringliteral_to_string(computed); \
-            std::cout << "computed:"<< computed_s << std::endl; \
-            REQUIRE_EQ( computed_s, type_string_literal);                                              \
+                cleantype::internal::_impl_typeid_hana<type_definition>();                       \
+            auto computed_s = boost::hana::experimental::type_name_details::                     \
+                stringliteral_to_string(computed);                                               \
+            std::cout << "computed:"<< computed_s << std::endl;                                  \
+            REQUIRE_EQ( computed_s, type_string_literal);                                        \
         }
 
 
@@ -331,22 +325,3 @@ void compile_time_tests() {
     RUN_ONE_TYPE_TEST_RUN_TIME(char const, "cleantype::internal::TupleTypeHolder<const char>");
 }
 
-
-/*
-use with:
-
-ninja | \
-    gsed s/"', '"/""/g | \
-    gsed s/"\\\\'"/"'"/g | \
-    gsed -E s/"value of type 'boost::hana::string<'"/"\nHERE IS YOUR TYPE ==> "/g  | \
-    grep "HERE IS YOUR TYPE" | \
-    sed s/"'>' is not contextually convertible to 'bool'"//g | \
-    sed s/"HERE IS YOUR TYPE ==> "//g
-*/
-#if 0
-TEST_CASE("compile_type_typename")
-{
-    using T = std::vector<int>;
-    cleantype::ERROR_full<T>();
-}
-#endif
