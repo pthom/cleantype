@@ -3,7 +3,7 @@
 #include <cleantype/details/fp_polyfill/fp_polyfill.hpp>
 #include <cleantype/details/fp_polyfill/fp_additions.hpp>
 #include <cleantype/cleantype.hpp>
-#include <cleantype/cleantype_compiler_typeinfo.hpp>
+#include <cleantype/cleantype_compiler_typename.hpp>
 #include <cleantype/details/stringutils.hpp>
 
 #define LOG_VALUE(var) std::cout << #var << " ==>" << var << "<==\n";
@@ -30,9 +30,9 @@ struct CompilerOutputParseConfig
 CompilerOutputParseConfig MakeCompilerOutputParseConfig()
 {
     CompilerOutputParseConfig r;
-    r.compiler_error_extract_before_type = "cleantype/cleantype_compile_time.hpp:59";
+    r.compiler_error_extract_before_type = "cleantype/cleantype_compiler_typename.hpp:59";
     r.nb_skip_lines_after_extract = 0;
-    r.start_marker = "IntentionalError<decltype(cleantype::compile_time_type_name<";
+    r.start_marker = "IntentionalError<decltype(cleantype::compiler_typename<";
     r.end_marker = ">())>()'";
     r.compiler_error_extract_at_call_site = " note: in instantiation of function template specialization 'cleantype";
     r.nb_lines_after_call_site = 2;
@@ -42,7 +42,7 @@ CompilerOutputParseConfig MakeCompilerOutputParseConfig()
 CompilerOutputParseConfig MakeCompilerOutputParseConfig()
 {
     CompilerOutputParseConfig r;
-    r.compiler_error_extract_before_type = "cleantype_compile_time.hpp(33)";
+    r.compiler_error_extract_before_type = "cleantype_compiler_typename.hpp(33)";
     r.nb_skip_lines_after_extract = 3;
     r.start_marker = "boost::hana::string<";
     r.end_marker = "> &";

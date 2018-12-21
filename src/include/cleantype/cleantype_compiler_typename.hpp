@@ -37,7 +37,7 @@ namespace cleantype
     }
 
     template <typename T>
-    auto compile_time_type_name() {
+    auto compiler_typename() {
             constexpr auto name = boost::hana::experimental::type_name_details::type_name_impl_stringliteral<T>();
             return compile_time_internal::type_name_impl<T>(std::make_index_sequence<name.length>{});
         }
@@ -49,9 +49,9 @@ namespace cleantype
 
 
 #ifdef _MSC_VER
-#define _CLEANTYPE_OUTPUT(T) cleantype::compile_time_internal::string_to_char_tuple(cleantype::compile_time_type_name<T...>())
+#define _CLEANTYPE_OUTPUT(T) cleantype::compile_time_internal::string_to_char_tuple(cleantype::compiler_typename<T...>())
 #else
-#define _CLEANTYPE_OUTPUT(T) decltype(cleantype::compile_time_type_name<T...>())
+#define _CLEANTYPE_OUTPUT(T) decltype(cleantype::compiler_typename<T...>())
 #endif
 
     template<typename... T>

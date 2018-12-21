@@ -24,16 +24,16 @@
 
 
     * [ ] decipherer
-        * [ ] rename
-        * [ ] install
+        * [X] rename
+        * [X] install
         * [ ] clean code
         * [ ] doc
         * [ ] test unitaire avec output / avec erreur reelle
         * [ ] make version inline pour binder
 
     * [ ] truc-type-compiletime
-        * [ ] rename
-        * [ ] install
+        * [X] rename
+        * [X] install
         * [ ] clean code
         * [ ] doc
         * [ ] test unitaire avec output / avec erreur reelle
