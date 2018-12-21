@@ -36,13 +36,13 @@ std::map<std::string, int>
 
 MSVC example session (in a msdos console, not a git bash console):
 
-> cmake --build . 2>&1 | bin\cleantype_compiler_parser.exe -c
+> cmake --build . | bin\cleantype_compiler_parser.exe -c
 std::map<std::string, int>
         at:   F:\dvp\OpenSource\type_name\src\include\cleantype\compile_time\example\cleantype_compile_time_example.cpp(16)
         Compiler line #188
 
 F:\dvp\OpenSource\type_name\build> cmake --build . | bin\cleantype_compiler_parser.exe -c
 std::map<std::string, int>
-        at:   F:\dvp\OpenSource\type_name\src\include\cleantype\compile_time\example\cleantype_compile_time_example.cpp(16)
+        at:   F:\dvp\OpenSource\type_name\src\include\cleantype\compile_time\example\cleantype_compile_time_example.cpp(21)
         Compiler line #188
 */
