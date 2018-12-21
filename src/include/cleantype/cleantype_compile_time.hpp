@@ -22,6 +22,18 @@ namespace cleantype
                     type_name_impl_stringliteral<T>();
             return boost::hana::string<*(name.ptr + i)...>{};
         }
+
+        auto string_to_char_tuple = [](auto s)
+        {
+            auto my_add = [](auto xs, auto ys) {
+                auto ys_t = boost::hana::make_tuple(ys);
+                auto r = boost::hana::flatten(boost::hana::make_tuple(xs, ys_t));
+                return r;
+            };
+            auto r = boost::hana::fold_left(s, boost::hana::make_tuple(), my_add); // MSVC MARKER
+            return r;
+        };
+
     }
 
     template <typename T>
@@ -31,19 +43,9 @@ namespace cleantype
         }
 
 
-    auto string_to_char_tuple = [](auto s)
-    {
-        auto my_add = [](auto xs, auto ys) {
-            auto ys_t = boost::hana::make_tuple(ys);
-            auto r = boost::hana::flatten(boost::hana::make_tuple(xs, ys_t));
-            return r;
-        };
-        auto r = boost::hana::fold_left(s, boost::hana::make_tuple(), my_add); // MSVC MARKER
-        return r;
-    };
 
 #ifdef _MSC_VER
-#define _CLEANTYPE_INTENTIONAL_ERROR(T) string_to_char_tuple(compile_time_type_name<T...>())
+#define _CLEANTYPE_INTENTIONAL_ERROR(T) cleantype::compile_time_internal::string_to_char_tuple(cleantype::compile_time_type_name<T...>())
 #else
 #define _CLEANTYPE_INTENTIONAL_ERROR(T) decltype(compile_time_type_name<T...>())
 #endif
@@ -53,10 +55,12 @@ namespace cleantype
        static_assert( std::is_integral<_CLEANTYPE_INTENTIONAL_ERROR(T) >(), "" ); // your type can be deciphered via : make 2>&1 | cleantype_compiler_parser [-c | --clean]
     }
 
+#define TN_ERROR_full(T) static_assert( std::is_integral<_CLEANTYPE_INTENTIONAL_ERROR(T) >(), "" );
+
 #if defined(__clang__)
 #define _CLEANTYPE_COMPILETIME_MARKER "cleantype/cleantype_compile_time.hpp:38"
 #elif defined(_MSC_VER)
-#define _CLEANTYPE_COMPILETIME_MARKER "cleantype_compile_time.hpp(42)" // A revoir, car c'est en fait 2 lignes apres "cleantype_compile_time.hpp(42)"
+#define _CLEANTYPE_COMPILETIME_MARKER "cleantype_compile_time.hpp(33)"
 #else
 #error("Compiler not supported")
 #endif
