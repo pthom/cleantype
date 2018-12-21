@@ -5,6 +5,6 @@
 
 int main()
 {
-    //cleantype::ERROR_full<std::map<int, std::vector<std::string>>>();
+    cleantype::ERROR_full<std::map<int, std::vector<std::string>>>();
     return 0;
 }

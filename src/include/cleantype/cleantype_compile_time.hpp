@@ -33,10 +33,12 @@ namespace cleantype
     void ERROR_full() {
        // will make the compiler fail (no call operator), but you can read
        // the name in the output if you squint your eyes
-       auto t = compile_time_type_name<T...>()(); // This line number should be noted inside _CLEANTYPE_COMPILETIME_MARKER
+       // The line number of the instruction below should be noted inside _CLEANTYPE_COMPILETIME_MARKER
+       auto intentional_error = compile_time_type_name<T...>();
+       intentional_error(); // your type can be deciphered via : make 2>&1 | cleantype_compiler_parser [-c | --clean]
     }
 
-#define _CLEANTYPE_COMPILETIME_MARKER "cleantype/cleantype_compile_time.hpp:36"
+#define _CLEANTYPE_COMPILETIME_MARKER "cleantype/cleantype_compile_time.hpp:38"
 
 }
 
