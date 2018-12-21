@@ -6,7 +6,7 @@
 
 #include <string>
 #include <vector>
-
+#include <iostream>
 #include <fplus/fplus.hpp> // REMOVE ME !!!
 
 namespace fp
@@ -63,6 +63,7 @@ inline std::string join(std::string const & separator, const std::vector<std::st
     }
     return out;
 }
+
 inline std::string join(std::string const & separator, const std::deque<std::string> & xs)
 {
     std::string out;
@@ -174,4 +175,26 @@ inline std::string replace_tokens(const std::string& from, const std::string& to
     }
     return out;
 }
+
+template <typename F>
+std::function<void()> interact(F f)
+{
+    return [f]() -> void
+    {
+        std::cout << f(std::string(
+            std::istreambuf_iterator<char>(std::cin.rdbuf()),
+            std::istreambuf_iterator<char>()));
+    };
+}
+
+template <typename T, typename Pred>
+std::vector<T> keep_if(Pred pred, std::vector<T> && xs)
+{
+    std::vector<T> r;
+    for (const auto & v : xs)
+        if (pred(v))
+            r.push_back(v);
+    return r;
+}
+
 }

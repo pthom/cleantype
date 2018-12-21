@@ -154,17 +154,6 @@ namespace cleantype
         }
 
 
-        inline std::vector<std::string> _split_string(std::string const & s, char delimiter)
-        {
-            std::vector<std::string> tokens;
-            std::string token;
-            std::istringstream tokenStream(s);
-            while (std::getline(tokenStream, token, delimiter))
-                tokens.push_back(token);
-            return tokens;
-        }
-
-
         inline void trim_spaces_inplace(code_pair & xs_io)
         {
             xs_io.lhs = fp::trim(' ', xs_io.lhs);
@@ -308,6 +297,17 @@ namespace cleantype
             return type_name;
         }
 
+        inline std::vector<std::string> _split_string(std::string const & s, char delimiter)
+        {
+            std::vector<std::string> tokens;
+            std::string token;
+            std::istringstream tokenStream(s);
+            while (std::getline(tokenStream, token, delimiter))
+                tokens.push_back(token);
+            return tokens;
+        }
+
+
     } // namespace internal
 
     inline std::string apply_east_const(std::string const & type_name)
@@ -317,6 +317,7 @@ namespace cleantype
         std::string r = fp::join(", ", types);
         return r;
     }
+
 
 
 } // namespace cleantype

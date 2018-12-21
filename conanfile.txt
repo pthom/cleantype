@@ -3,5 +3,6 @@ boost/1.68.0@conan/stable
 
 [generators]
 cmake
+cmake_find_package
 
 [options]

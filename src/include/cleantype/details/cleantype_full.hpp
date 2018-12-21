@@ -101,18 +101,6 @@ namespace cleantype
         return std::string("[") + full<T>() + "]" + " = " + fp::show(v);
     }
 
-
-     template<typename... T>
-     void ERROR_full() {
-       // will make the compiler fail (no call operator), but you can read
-       // the name in the output if you squint your eyes
-       constexpr auto t = internal::impl_typeid<T...>()();
-       static_assert(internal::impl_full<T...>() , "truc");
-
-         // TODO !!!!
-         //static_assert(boost::hana::experimental::cleantype<T>(), "truc");
-     }
-
 } // namespace cleantype
 
 

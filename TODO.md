@@ -1,16 +1,10 @@
-// Cave 48 / 3eme sous sol
-// M. Hubuile
-// 0652150221
-// 9h
-//
-
 * [X]  type_name_s :
     * [ ] hana
         * [X] pas de doctest, main only
         * [X] pas de format
         * [X] test / regex
         * [X] recup test dans full_s
-        * [ ] tenter PR dans branche hana_pr_typename
+        * [-] tenter PR dans branche hana_pr_typename
         * [ ] le code principal doit fonctionner sans hana, donc sans namespace hana
                 -> faire dupl...
     * [X] Types multiples par wrap dans Template Holder ?
@@ -19,6 +13,7 @@
     * [X] suppr typename, replace by type_name_s
     * [X] retest lambda and 4 params types (was an issue, should not be anymore) : see cleantype_full_multiple_fromvalues
     * [X] clean : check issues with multiple types (why parameter packs...)
+    * [ ] impl_clean_several_types -> publier dans API (et renommer)
     * [ ] Compile time types log
         * [ ] CMake / detection boost
         * [ ] Header separe pour inclusion hana
@@ -58,6 +53,8 @@ Bugs
     * [ ] type function / several params
     * [ ] Windows : disabled type function
     * [ ] lambda composed gcc ?
+
+* [ ] hana notebooks based on examples?
 
 
 * Check references: (same, and for compile time)

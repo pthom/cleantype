@@ -2,8 +2,8 @@ cmake_minimum_required (VERSION 3.8.1)
 
 project(cleantype)
 
-option(BUILD_TESTS "Build tests." ON)
-option(BUILD_SHARED_LIBS "Build shared instead of static libraries." ON)
+option(CLEANTYPE_BUILD_TESTS "Build tests." ON)
+option(CLEANTYPE_COMPILETIME "Compile time type info (require Boost.Hana)." OFF)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS)
@@ -21,11 +21,6 @@ add_definitions("-std=c++14")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR} ${CMAKE_MODULE_PATH})
 
-# add cmake-init utilities (unused for the moment)
-# set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/cmake_init)
-# include(Findclang_tidy)
-# include(ClangTidy)
-
 # Enable tests via cmake_register_test and doctest
 set(doctest_INCLUDES ${CMAKE_SOURCE_DIR}/third_party/doctest/doctest)
 enable_testing()
@@ -33,4 +28,10 @@ enable_testing()
 include_directories(${CMAKE_SOURCE_DIR}/third_party/FunctionalPlus/include)
 include_directories(${CMAKE_SOURCE_DIR}/src/include)
 
-add_subdirectory(src/include/cleantype/tests)
+if (CLEANTYPE_BUILD_TESTS)
+  add_subdirectory(src/include/cleantype/tests)
+endif()
+
+if (CLEANTYPE_COMPILETIME)
+  add_subdirectory(src/include/cleantype/compile_time)
+endif()

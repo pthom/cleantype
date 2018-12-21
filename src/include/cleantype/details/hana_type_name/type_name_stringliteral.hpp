@@ -56,16 +56,7 @@ namespace type_name_details {
     }
 
     inline std::string stringliteral_to_string(stringliteral const & cs) {
-        char * sz = static_cast<char *>(malloc(sizeof(char) * (cs.length + 1)));
-#ifdef _MSC_VER
-        strncpy_s(sz, cs.length + 1, cs.ptr, cs.length);
-#else
-        strncpy(sz, cs.ptr, cs.length);
-#endif
-        sz[cs.length] = '\0';
-        std::string r(sz);
-        free(sz);
-        return r;
+        return std::string(cs.ptr, cs.length);
     }
 
 } // namespace type_name_details

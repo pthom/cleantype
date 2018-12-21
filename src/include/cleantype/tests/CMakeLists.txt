@@ -1,4 +1,3 @@
-
 file(GLOB_RECURSE cpp_files ${CMAKE_SOURCE_DIR}/src/include/cleantype/tests/*.cpp)
 file(GLOB_RECURSE hpp_files ${CMAKE_SOURCE_DIR}/src/include/cleantype/*.hpp)
 
@@ -8,7 +7,6 @@ add_executable(cleantype_test ${files})
 add_test(NAME cleantype_test COMMAND cleantype_test)
 message("doctest_INCLUDES=${doctest_INCLUDES}")
 target_include_directories(cleantype_test PRIVATE ${doctest_INCLUDES})
-target_link_libraries(cleantype_test PRIVATE CONAN_PKG::boost)
 
 if (MSVC)
     target_compile_options(cleantype_test PRIVATE /std:c++latest)
