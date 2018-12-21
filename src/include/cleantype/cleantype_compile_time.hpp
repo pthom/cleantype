@@ -49,7 +49,7 @@ namespace cleantype
 
 
 #ifdef _MSC_VER
-#define _CLEANTYPE_OUTPUT(T) cleantype::compile_time_internal::string_to_char_tuple(cleantype::compile_time_type_name<T>())
+#define _CLEANTYPE_OUTPUT(T) cleantype::compile_time_internal::string_to_char_tuple(cleantype::compile_time_type_name<T...>())
 #else
 #define _CLEANTYPE_OUTPUT(T) decltype(cleantype::compile_time_type_name<T...>())
 #endif
@@ -61,10 +61,11 @@ namespace cleantype
 
 #ifdef _MSC_VER
 #define TN_ERROR_full(T) static_assert( std::is_integral<_CLEANTYPE_OUTPUT(T) >(), "" );
+#define TN_ERROR_full_var(var) static_assert( std::is_integral<_CLEANTYPE_OUTPUT( decltype(var) ) >(), "" );
 #else
 #define TN_ERROR_full(T) cleantype::ERROR_full<T>();
-#endif
 #define TN_ERROR_full_var(var) cleantype::ERROR_full<decltype(var)>();
+#endif
 
 }
 
