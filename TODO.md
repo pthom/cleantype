@@ -13,7 +13,7 @@
     * [X] suppr typename, replace by type_name_s
     * [X] retest lambda and 4 params types (was an issue, should not be anymore) : see cleantype_full_multiple_fromvalues
     * [X] clean : check issues with multiple types (why parameter packs...)
-    * [ ] impl_clean_several_types -> publier dans API (et renommer)
+    * [X] impl_clean_several_types -> publier dans API (et renommer)
     * [ ] Compile time types log
         * [-] CMake / detection boost
         * [X] Header separe pour inclusion hana
@@ -29,8 +29,9 @@
             * [ ] make version inline pour binder
     * [ ] utiliser fplus pour de bon
 
-    * [ ] Compiler log decipherer
-        * [ ] clang
+    * [X] Compiler log decipherer
+        * [X] clang
+        * [X] msvc
         * [ ] gcc
         * [ ] interact progressive ou utiliser tee ?
 

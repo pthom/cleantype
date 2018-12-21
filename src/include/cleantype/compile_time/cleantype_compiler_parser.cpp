@@ -163,7 +163,7 @@ String extract_types_from_compiler_output(const String & compiler_output, bool f
     Strings types_full = fp::transform(extract_type_from_compiler_line, lines_with_types);
     Strings types_clean;
     if (flag_clean)
-        types_clean = fp::transform(cleantype::internal::impl_clean_several_types, types_full);
+        types_clean = fp::transform(cleantype::clean_typestring, types_full);
     else
         types_clean = types_full;
 

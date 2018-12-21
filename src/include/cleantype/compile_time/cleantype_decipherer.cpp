@@ -61,8 +61,8 @@ std::string decipher_line(const std::string & compiler_line)
     std::string compiler_line_cut = msvc_remove_false_open_template(compiler_line);
     bool needs_decipher = need_decipher_line(compiler_line_cut);
     if (needs_decipher)
-        //return std::string("PROCESSED\n") + cleantype::internal::impl_clean_several_types(compiler_line_cut) + "\n\n";
-        return cleantype::internal::impl_clean_several_types(compiler_line_cut);
+        //return std::string("PROCESSED\n") + cleantype::clean_typestring(compiler_line_cut) + "\n\n";
+        return cleantype::clean_typestring(compiler_line_cut);
     else
         //return std::string("BARE\n") + compiler_line + "\n\n";
         return compiler_line;

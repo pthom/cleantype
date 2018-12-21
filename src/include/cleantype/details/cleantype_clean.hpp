@@ -9,10 +9,15 @@
 
 namespace cleantype
 {
+    inline std::string clean_typestring(const std::string & type_names)
+    {
+        return internal::impl_clean_several_types(type_names);
+    }
+
     template <typename... T>
     std::string clean()
     {
-        return internal::impl_clean_several_types(internal::impl_full<T...>());
+        return clean_typestring(internal::impl_full<T...>());
     }
 
     template <typename... T> std::string clean(T&&... v) {
