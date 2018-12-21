@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 #include <fplus/fplus.hpp> // REMOVE ME !!!
 
 namespace fp
@@ -187,6 +188,22 @@ std::function<void()> interact(F f)
     };
 }
 
+template <typename F>
+std::function<void()> interact_by_line(F f)
+{
+    return [f]() -> void
+    {
+        std::string line;
+        while( ! std::cin.eof())
+        {
+            std::getline(std::cin, line);
+            std::string out = f(line);
+            std::cout << out << "\n";
+        }
+    };
+}
+
+
 template <typename T, typename Pred>
 std::vector<T> keep_if(Pred pred, std::vector<T> && xs)
 {
@@ -225,6 +242,20 @@ std::vector<std::pair<T, U>> zip(
     {
         r.push_back( { xs[idx], ys[idx] } );
     }
+    return r;
+}
+
+inline std::string to_upper_case(const std::string & xs)
+{
+    std::string r = xs;
+    std::transform(r.begin(), r.end(), r.begin(), ::toupper);
+    return r;
+}
+
+inline std::string to_lower_case(const std::string & xs)
+{
+    std::string r = xs;
+    std::transform(r.begin(), r.end(), r.begin(), ::tolower);
     return r;
 }
 
