@@ -2,24 +2,25 @@
 #include <cleantype/cleantype.hpp>
 #include <sstream>
 
-
-std::string msvc_error_log = R"(
-)";
-
-std::pair<int, int> count_templates(const std::string & compiler_line)
+struct template_count
 {
-    std::pair<int, int> r;
+    int nb_open_close = 0;
+    int nb_remaining_open = 0;
+};
+template_count count_templates(const std::string & compiler_line)
+{
+    template_count r;
     for (auto c : compiler_line)
     {
         if (c == '<')
         {
-            r.first++;
-            r.second++;
+            r.nb_open_close++;
+            r.nb_remaining_open++;
         }
         if (c == '>')
         {
-            r.first++;
-            r.second--;
+            r.nb_open_close++;
+            r.nb_remaining_open--;
         }
     }
     return r;
@@ -28,20 +29,18 @@ std::pair<int, int> count_templates(const std::string & compiler_line)
 bool need_decipher_line(const std::string & compiler_line)
 {
     auto r = count_templates(compiler_line);
-    int total_open_close = r.first;
-    int running_total = r.second;
 
-    if (running_total != 0)
+    if (r.nb_remaining_open != 0)
         return false;
-    return (total_open_close >= 2);
+    return (r.nb_open_close >= 2);
 }
 
 std::string msvc_remove_false_open_template(const std::string & compiler_line)
 {
 #ifdef _MSC_VER
-    // msvc compile lines start with a >
+    // msvc compile lines start with a false opening template (">") => we skip it
     // example :
-    // 1>F:\dvp\OpenSource\type_name\src\include\cleantype/details/fp_polyfill/fp_polyfill.hpp(38): n
+    // 1>F:\dvp\OpenSource\type_name\src\include\cleantype/details/fp_polyfill/fp_polyfill.hpp(38): ...
 
     auto idx = compiler_line.find(">");
     if ((idx != std::string::npos) && (idx < 5))
@@ -75,7 +74,9 @@ int main()
 
     // Debug version
     //{
-    //    std::istringstream is(msvc_error_log);
+    //    std::string error_log = R"(
+    //    )";
+    //    std::istringstream is(error_log);
     //    auto prog = fp::interact_by_line(decipher_line, is, std::cout);
     //}
 
