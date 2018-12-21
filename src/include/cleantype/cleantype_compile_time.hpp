@@ -64,6 +64,7 @@ namespace cleantype
 #else
 #define TN_ERROR_full(T) cleantype::ERROR_full<T>();
 #endif
+#define TN_ERROR_full_var(var) cleantype::ERROR_full<decltype(var)>();
 
 }
 

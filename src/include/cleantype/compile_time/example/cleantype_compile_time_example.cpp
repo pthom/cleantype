@@ -18,7 +18,7 @@ auto my_spurious_lambda = [](int a, int b)
 int main()
 {
     auto c = my_spurious_lambda(40, 2);
-    TN_ERROR_full( decltype(c) );
+    TN_ERROR_full_var(c);
     //cleantype::ERROR_full<decltype(c)>();
 }
 
