@@ -6,6 +6,23 @@ Distributed under the Boost Software License, Version 1.0.
 (See accompanying file LICENSE.md or copy at http://boost.org/LICENSE_1_0.txt)
  */
 
+/*
+This folder contains is a proposed extension
+to [Boost.Hana](http://boostorg.github.io/hana/)'s[experimental type_name]
+
+The original version was experimental, and limited to Clang.
+This version:
+* adds complete support for MSVC
+* adds partial support for GCC (runtime only)
+* offers compiler capabilities detection
+* runs out of the box with or without boost
+
+This extension is being studied :
+see PR  https://github.com/boostorg/hana/pull/432
+which originates from the author of this project (Pascal Thomet).
+*/
+
+
 #ifndef BOOST_HANA_EXPERIMENTAL_DETAIL_TYPE_NAME_PRERRY_FUNCTION_HPP
 #define BOOST_HANA_EXPERIMENTAL_DETAIL_TYPE_NAME_PRERRY_FUNCTION_HPP
 
