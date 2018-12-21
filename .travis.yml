@@ -90,8 +90,7 @@ before_install:
 
 install:
   - mkdir -p build && cd build
-  - conan install .. --build=missing
-  - cmake ..
+  - ../scripts/build/cmake_all_options.sh
 
 script:
   - |

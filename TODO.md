@@ -1,26 +1,69 @@
+* [X]  type_name_s :
+    * [X] hana
+        * [X] pas de doctest, main only
+        * [X] pas de format
+        * [X] test / regex
+        * [X] recup test dans full_s
+        * [-] tenter PR dans branche hana_pr_typename
+        * [X] le code principal doit fonctionner sans hana, donc sans namespace hana
+                -> faire dupl...
+    * [X] Types multiples par wrap dans Template Holder ?
+    * [X] full_s : compile time tests
+    * [X] west_const -> east_const
+    * [X] suppr typename, replace by type_name_s
+    * [X] retest lambda and 4 params types (was an issue, should not be anymore) : see cleantype_full_multiple_fromvalues
+    * [X] clean : check issues with multiple types (why parameter packs...)
+    * [X] impl_clean_several_types -> publier dans API (et renommer)
+    * [ ] Compile time types log
+        * [X] CMake / detection boost
+        * [X] Header separe pour inclusion hana
+        * [ ] interact / clean
+            * [ ] prog version inline
+            * [ ] clean code
+            * [ ] doc
+            * [ ] test unitaire avec output / avec erreur reelle
+            * [X] command line options / clean
+            * [X] On peut extraire le nom de la variable recherche en regardant
+            le log du compilateur quelques lignes plus bas,
+            apres la ligne se finissant par "requested here"
+            * [ ] make version inline pour binder
+    * [ ] utiliser fplus pour de bon ?
 
-* [ ] fplus
-   * [ ] polyfill show_cont / remove include
-     * [ ] is show_cont really needed ? Test and remove / adjust doc if needed 
-        ==> it is needed for unknwon containers only
-        * [ ] implem show_cont and show for vector, set, deque, map, etc
-   * [ ] string_tree is not needed -> remove dupl
-   * [ ] post suggestion / additions
-* [ ] code-ballads
-   * [ ] Blog wordpress ?
+    * [X] Compiler log decipherer
+        * [X] clang
+        * [X] msvc
+        * [X] gcc
+        * [X] interact progressive ou utiliser tee ?
+
+
+* [X] Passer le code en east const
+* [X] includes avec <>
+* [X] classer fonctions string dans stringutils
+* [?] cleantype or ConsType ?
+
+* [X] Change name lib : clean type ?
+    * [ ] Change copyright messsage & add one empty line
+    * [ ] Change macro names
+
+* [ ] string_tree : delete, only lhr_rhs
+* [ ] fplus : remove include (i.e backport show_cont & co)
+* [ ] Nettoyage code
+
 * [ ] Doc
-    * [ ] Remove zoo qualifiers (or shorten it)
-    * [ ] Add remarks / boost::hana & ctti
     * [ ] Mention look for help?
     * [ ] Article ?
     * [ ] Insertion dans ClingRepl ?
-
+    * [ ] Mention hana & ctti
+    * [ ] Version compile time
+        * [ ] Outil de compil
+        * [ ] Outil de clean post compil
 
 Bugs
     * [ ] type function / several params
     * [ ] Windows : disabled type function
     * [ ] lambda composed gcc ?
-    * bug / 3rd param (forget this ?!)
+
+* [ ] hana notebooks based on examples?
 
 
 * Check references: (same, and for compile time)

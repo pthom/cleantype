@@ -4,9 +4,9 @@ version: '{build}'
 branches:
   only:
   - master
-clone_folder: c:\projects\type_name
+clone_folder: c:\projects\cleantype
 image:
-- Visual Studio 2015
+# - Visual Studio 2015
 - Visual Studio 2017
 configuration:
 - Release
@@ -41,17 +41,15 @@ before_build:
     git submodule update
     mkdir build
     cd build
-    conan install .. --build=missing
     cmake --version
-    cmake .. -G %generator%
-
+    cmake ..  -DCLEANTYPE_ALL_OPTIONS=ON -G %generator%
 build:
-  project: c:\projects\type_name\build\type_name.sln
+  project: c:\projects\cleantype\build\cleantype.sln
   verbosity: minimal
   parallel: true
 
 test_script:
-  - ps: cd c:\projects\type_name\build
+  - ps: cd c:\projects\cleantype\build
   - ctest -C Release --output-on-failure
 
 only_commits:
