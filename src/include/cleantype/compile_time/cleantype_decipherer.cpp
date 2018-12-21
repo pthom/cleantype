@@ -36,7 +36,7 @@ bool need_decipher_line(const std::string & compiler_line)
     return (total_open_close >= 2);
 }
 
-std::string msvc_remove_false_open_template(const std::string & compiler_line) 
+std::string msvc_remove_false_open_template(const std::string & compiler_line)
 {
 #ifdef _MSC_VER
     // msvc compile lines start with a >
@@ -218,9 +218,6 @@ ninja: build stopped: subcommand failed.
 
 
 
-
-
-/*
 
 /*
 
