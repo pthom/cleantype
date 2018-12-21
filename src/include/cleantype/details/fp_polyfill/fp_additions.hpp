@@ -1,4 +1,4 @@
-// This file is part of ConsType : Consistent Type names for C++
+// This file is part of cleantype: Clean Types for C++
 // Copyright Pascal Thomet - 2018
 // Distributed under the Boost Software License, Version 1.0. (see LICENSE.md)
 #pragma once
@@ -21,7 +21,7 @@ namespace fp
 namespace fp_add
 {
 
-template<typename T> 
+template<typename T>
 std::vector<T> take_at_idxs(const std::vector<T> & xs, const std::vector<size_t> & indexes)
 {
     std::vector<T> r;
