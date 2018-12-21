@@ -20,8 +20,11 @@ endif()
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 if (CLEANTYPE_USE_CONAN)
+  if (APPLE)
+    set(conan_compiler_option -s compiler=apple-clang)
+  endif()
   execute_process(
-    COMMAND conan install ${CMAKE_SOURCE_DIR} --build=missing
+    COMMAND conan install ${CMAKE_SOURCE_DIR} --build=missing ${conan_compiler_option}
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     RESULT_VARIABLE conan_result
   )
