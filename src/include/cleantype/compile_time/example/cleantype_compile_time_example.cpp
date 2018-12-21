@@ -3,9 +3,16 @@
 #include <vector>
 #include <string>
 
+auto my_spurious_lambda = [](int a, int b)
+{
+    std::map<std::string, int> r;
+    r[ fp::show(a) ] = b;
+    return r;
+};
+
 int main()
 {
-    //cleantype::ERROR_full<std::map<int, std::vector<std::string>>>();
-    using T = std::map<int, std::vector<std::string>>;
-    //TN_ERROR_full(T);
+    auto c = my_spurious_lambda(40, 2);
+    TN_ERROR_full( decltype(c) );
+    //cleantype::ERROR_full<decltype(c)>();
 }

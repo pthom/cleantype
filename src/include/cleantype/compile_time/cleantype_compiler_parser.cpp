@@ -22,28 +22,32 @@ struct CompilerOutputParseConfig
     String start_marker;
     String end_marker;
     String compiler_error_extract_at_call_site;
+    std::size_t nb_lines_after_call_site;
 };
+
 
 #if defined(__clang__)
 CompilerOutputParseConfig MakeCompilerOutputParseConfig()
 {
     CompilerOutputParseConfig r;
-    r.compiler_error_extract_before_type = _CLEANTYPE_COMPILETIME_MARKER;
+    r.compiler_error_extract_before_type = "cleantype/cleantype_compile_time.hpp:59";
     r.nb_skip_lines_after_extract = 0;
-    r.start_marker = "boost::hana::string<'";
-    r.end_marker = ">' ";
-    r.compiler_error_extract_at_call_site = ": note: in instantiation of function template specialization 'cleantype::ERROR_full";
+    r.start_marker = "IntentionalError<decltype(cleantype::compile_time_type_name<";
+    r.end_marker = ">())>()'";
+    r.compiler_error_extract_at_call_site = " note: in instantiation of function template specialization 'cleantype";
+    r.nb_lines_after_call_site = 2;
     return r;
 }
 #elif defined(_MSC_VER)
 CompilerOutputParseConfig MakeCompilerOutputParseConfig()
 {
     CompilerOutputParseConfig r;
-    r.compiler_error_extract_before_type = _CLEANTYPE_COMPILETIME_MARKER;
+    r.compiler_error_extract_before_type = "cleantype_compile_time.hpp(33)";
     r.nb_skip_lines_after_extract = 3;
     r.start_marker = "boost::hana::string<";
     r.end_marker = "> &";
     r.compiler_error_extract_at_call_site = ": note: see reference to function template instantiation ";
+    r.nb_lines_after_call_site = 0;
     return r;
 }
 #else
@@ -127,6 +131,8 @@ std::string extract_call_site_after_type(
         if ( idx != std::string::npos )
         {
             String call_site = line.substr(0, idx);
+            for (auto i : fp::numbers(config.nb_lines_after_call_site))
+                call_site = call_site + "\n" + compiler_lines[line_idx + i + 1];
             return call_site;
         }
         line_idx++;
@@ -149,9 +155,9 @@ String extract_types_from_compiler_output(const String & compiler_output, bool f
     NumberedLines lines_before_types = fp::keep_if(does_compiler_line_match_error_extract_before_type, numbered_compiler_output);
     LineNumbers lines_numbers_before_types = fp::unzip(lines_before_types).first;
     LineNumbers lines_numbers_at_types = fp::transform(
-        [&](const std::size_t & line_number) { 
+        [&](const std::size_t & line_number) {
             return line_number + config.nb_skip_lines_after_extract;
-        }, 
+        },
         lines_numbers_before_types);
     Strings lines_with_types = fp::fp_add::take_at_idxs(compiler_lines, lines_numbers_at_types);
     Strings types_full = fp::transform(extract_type_from_compiler_line, lines_with_types);
@@ -160,7 +166,7 @@ String extract_types_from_compiler_output(const String & compiler_output, bool f
         types_clean = fp::transform(cleantype::internal::impl_clean_several_types, types_full);
     else
         types_clean = types_full;
-    
+
     Strings call_sites;
     {
         auto extract_call_site = [&](const std::size_t & line_number) {
@@ -173,7 +179,7 @@ String extract_types_from_compiler_output(const String & compiler_output, bool f
     Strings output;
     for (auto i : fp::numbers(nb_types))
     {
-        String s = types_clean[i] + "\n\tat: " + call_sites[i] + " (Compiler line #" + fp::show(lines_numbers_at_types[i]) + ")";
+        String s = types_clean[i] + "\n\tat: " + call_sites[i] + "\n\tCompiler line #" + fp::show(lines_numbers_at_types[i]);
         output.push_back(s);
     }
 

@@ -1,36 +1,22 @@
-MAKE:
-In file included from /dvp/OpenSource/Cling_Repl_Demo/external/type_name/src/include/cleantype/compile_time/example/cleantype_compile_time_example.cpp:1:
-/dvp/OpenSource/Cling_Repl_Demo/external/type_name/src/include/cleantype/cleantype_compile_time.hpp:38:17: error: type 'boost::hana::string<'s', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'm', 'a', 'p', '<', 'i', 'n', 't', ',', ' ', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'v', 'e', 'c', 't', 'o', 'r', '<', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'b', 'a', 's', 'i', 'c', '_', 's', 't', 'r', 'i', 'n', 'g', '<', 'c', 'h', 'a', 'r', '>', ',', ' ', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'a', 'l', 'l', 'o', 'c', 'a', 't', 'o', 'r', '<', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'b', 'a', 's', 'i', 'c', '_', 's', 't', 'r', 'i', 'n', 'g', '<', 'c', 'h', 'a', 'r', '>', ' ', '>', ' ', '>', ',', ' ', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'l', 'e', 's', 's', '<', 'i', 'n', 't', '>', ',', ' ', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'a', 'l', 'l', 'o', 'c', 'a', 't', 'o', 'r', '<', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'p', 'a', 'i', 'r', '<', 'c', 'o', 'n', 's', 't', ' ', 'i', 'n', 't', ',', ' ', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'v', 'e', 'c', 't', 'o', 'r', '<', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'b', 'a', 's', 'i', 'c', '_', 's', 't', 'r', 'i', 'n', 'g', '<', 'c', 'h', 'a', 'r', '>', ',', ' ', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'a', 'l', 'l', 'o', 'c', 'a', 't', 'o', 'r', '<', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'b', 'a', 's', 'i', 'c', '_', 's', 't', 'r', 'i', 'n', 'g', '<', 'c', 'h', 'a', 'r', '>', ' ', '>', ' ', '>', ' ', '>', ' ', '>', ' ', '>'>' does not provide a call operator
-       auto t = compile_time_type_name<T...>()(); // decipher type via : make 2>&1 | cleantype_compiler_parser [-clean]
-                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/dvp/OpenSource/Cling_Repl_Demo/external/type_name/src/include/cleantype/compile_time/example/cleantype_compile_time_example.cpp:8:16: note: in instantiation of function template specialization 'cleantype::ERROR_full<std::__1::map<int, std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > >, std::__1::less<int>, std::__1::allocator<std::__1::pair<const int, std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > > > > > >' requested here
-    cleantype::ERROR_full<std::map<int, std::vector<std::string>>>();
-               ^
-1 error generated.
-make[2]: *** [src/include/cleantype/compile_time/CMakeFiles/cleantype_compile_time_example.dir/example/cleantype_compile_time_example.cpp.o] Error 1
-make[1]: *** [src/include/cleantype/compile_time/CMakeFiles/cleantype_compile_time_example.dir/all] Error 2
-make: *** [all] Error 2
-
-NINJA:
-[11/14] Building CXX object src/include/cleantype/compile_time/CMakeFiles/cleantype_compile_time_example.dir/example/cleantype_compile_time_example.cpp.o
+CLANG:
+[1/2] Building CXX object src/include/cleantype/compile_time/CMakeFiles/cleantype_compile_time_example.dir/example/cleantype_compile_time_example.cpp.o
 FAILED: src/include/cleantype/compile_time/CMakeFiles/cleantype_compile_time_example.dir/example/cleantype_compile_time_example.cpp.o
 ccache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  -DCLEANTYPE_COMPILETIME -I../third_party/FunctionalPlus/include -I../src/include -I/Users/pascal/.conan/data/boost/1.68.0/conan/stable/package/411d816e9b8d6cb0bb1ef6e5be8b2a94b8b17c04/include -std=c++14 -MD -MT src/include/cleantype/compile_time/CMakeFiles/cleantype_compile_time_example.dir/example/cleantype_compile_time_example.cpp.o -MF src/include/cleantype/compile_time/CMakeFiles/cleantype_compile_time_example.dir/example/cleantype_compile_time_example.cpp.o.d -o src/include/cleantype/compile_time/CMakeFiles/cleantype_compile_time_example.dir/example/cleantype_compile_time_example.cpp.o -c ../src/include/cleantype/compile_time/example/cleantype_compile_time_example.cpp
 In file included from ../src/include/cleantype/compile_time/example/cleantype_compile_time_example.cpp:1:
-../src/include/cleantype/cleantype_compile_time.hpp:38:8: error: type 'boost::hana::string<'s', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'm', 'a', 'p', '<', 'i', 'n', 't', ',', ' ', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'v', 'e', 'c', 't', 'o', 'r', '<', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'b', 'a', 's', 'i', 'c', '_', 's', 't', 'r', 'i', 'n', 'g', '<', 'c', 'h', 'a', 'r', '>', ',', ' ', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'a', 'l', 'l', 'o', 'c', 'a', 't', 'o', 'r', '<', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'b', 'a', 's', 'i', 'c', '_', 's', 't', 'r', 'i', 'n', 'g', '<', 'c', 'h', 'a', 'r', '>', ' ', '>', ' ', '>', ',', ' ', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'l', 'e', 's', 's', '<', 'i', 'n', 't', '>', ',', ' ', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'a', 'l', 'l', 'o', 'c', 'a', 't', 'o', 'r', '<', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'p', 'a', 'i', 'r', '<', 'c', 'o', 'n', 's', 't', ' ', 'i', 'n', 't', ',', ' ', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'v', 'e', 'c', 't', 'o', 'r', '<', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'b', 'a', 's', 'i', 'c', '_', 's', 't', 'r', 'i', 'n', 'g', '<', 'c', 'h', 'a', 'r', '>', ',', ' ', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'a', 'l', 'l', 'o', 'c', 'a', 't', 'o', 'r', '<', 's', 't', 'd', ':', ':', '_', '_', '1', ':', ':', 'b', 'a', 's', 'i', 'c', '_', 's', 't', 'r', 'i', 'n', 'g', '<', 'c', 'h', 'a', 'r', '>', ' ', '>', ' ', '>', ' ', '>', ' ', '>', ' ', '>'>' does not provide a call operator
-       intentional_error(); // your type can be deciphered via : make 2>&1 | cleantype_compiler_parser [-c | --clean]
-       ^~~~~~~~~~~~~~~~~
-../src/include/cleantype/compile_time/example/cleantype_compile_time_example.cpp:8:16: note: in instantiation of function template specialization 'cleantype::ERROR_full<std::__1::map<int, std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > >, std::__1::less<int>, std::__1::allocator<std::__1::pair<const int, std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > > > > > >' requested here
-    cleantype::ERROR_full<std::map<int, std::vector<std::string>>>();
+../src/include/cleantype/cleantype_compile_time.hpp:59:8: error: static_assert failed due to requirement 'IntentionalError<decltype(cleantype::compile_time_type_name<std::__1::map<std::__1::basic_string<char>, int, std::__1::less<std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<const std::__1::basic_string<char>, int> > > >())>()' ""
+       static_assert( IntentionalError<_CLEANTYPE_OUTPUT(T) >(), "" ); // your type can be deciphered via : make 2>&1 | cleantype_compiler_parser [-c | --clean]
+       ^              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../src/include/cleantype/compile_time/example/cleantype_compile_time_example.cpp:17:16: note: in instantiation of function template specialization 'cleantype::ERROR_full<std::__1::map<std::__1::basic_string<char>, int, std::__1::less<std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<const std::__1::basic_string<char>, int> > > >' requested here
+    cleantype::ERROR_full<decltype(c)>();
                ^
 1 error generated.
-[12/14] Building CXX object src/include/cleantype/compile_time/CMakeFiles/cleantype_compiler_parser.dir/cleantype_compiler_parser.cpp.o
 ninja: build stopped: subcommand failed.
 
 MSVC
 1>------ Build started: Project: cleantype_compile_time_example, Configuration: Debug x64 ------
 2>------ Build started: Project: cleantype_compiler_parser, Configuration: Debug x64 ------
 3>------ Skipped Build: Project: RUN_TESTS, Configuration: Debug x64 ------
-3>Project not selected to build for this solution configuration 
+3>Project not selected to build for this solution configuration
 2>cleantype_compiler_parser.cpp
 2>CL : warning : the native Microsoft compiler is not supported due to lack of proper C++14 support.
 2>CL : warning : Your compiler doesn't provide C++14 or higher capabilities. Try adding the compiler flag '-std=c++14' or '-std=c++1y'.
@@ -215,5 +201,5 @@ MSVC
 1>F:\dvp\OpenSource\type_name\src\include\cleantype/cleantype_compile_time.hpp(53): error C2059: syntax error: ')'
 1>Done building project "cleantype_compile_time_example.vcxproj" -- FAILED.
 4>------ Skipped Build: Project: ALL_BUILD, Configuration: Debug x64 ------
-4>Project not selected to build for this solution configuration 
+4>Project not selected to build for this solution configuration
 ========== Build: 1 succeeded, 1 failed, 3 up-to-date, 2 skipped ==========

@@ -42,27 +42,27 @@ namespace cleantype
             return compile_time_internal::type_name_impl<T>(std::make_index_sequence<name.length>{});
         }
 
+    template<typename... T> constexpr bool IntentionalError()
+    {
+        return false;
+    };
 
 
 #ifdef _MSC_VER
-#define _CLEANTYPE_INTENTIONAL_ERROR(T) cleantype::compile_time_internal::string_to_char_tuple(cleantype::compile_time_type_name<T...>())
+#define _CLEANTYPE_OUTPUT(T) cleantype::compile_time_internal::string_to_char_tuple(cleantype::compile_time_type_name<T...>())
 #else
-#define _CLEANTYPE_INTENTIONAL_ERROR(T) decltype(compile_time_type_name<T...>())
+#define _CLEANTYPE_OUTPUT(T) decltype(cleantype::compile_time_type_name<T...>())
 #endif
 
     template<typename... T>
     void ERROR_full() {
-       static_assert( std::is_integral<_CLEANTYPE_INTENTIONAL_ERROR(T) >(), "" ); // your type can be deciphered via : make 2>&1 | cleantype_compiler_parser [-c | --clean]
+       static_assert( IntentionalError<_CLEANTYPE_OUTPUT(T) >(), "" ); // your type can be deciphered via : make 2>&1 | cleantype_compiler_parser [-c | --clean]
     }
 
-#define TN_ERROR_full(T) static_assert( std::is_integral<_CLEANTYPE_INTENTIONAL_ERROR(T) >(), "" );
-
-#if defined(__clang__)
-#define _CLEANTYPE_COMPILETIME_MARKER "cleantype/cleantype_compile_time.hpp:38"
-#elif defined(_MSC_VER)
-#define _CLEANTYPE_COMPILETIME_MARKER "cleantype_compile_time.hpp(33)"
+#ifdef _MSC_VER
+#define TN_ERROR_full(T) static_assert( std::is_integral<_CLEANTYPE_OUTPUT(T) >(), "" );
 #else
-#error("Compiler not supported")
+#define TN_ERROR_full(T) cleantype::ERROR_full<T>();
 #endif
 
 }
