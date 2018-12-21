@@ -3,7 +3,7 @@
 #include <cleantype/details/fp_polyfill/fp_polyfill.hpp>
 #include <cleantype/details/fp_polyfill/fp_additions.hpp>
 #include <cleantype/cleantype.hpp>
-#include <cleantype/cleantype_compile_time.hpp>
+#include <cleantype/cleantype_compiler_typeinfo.hpp>
 #include <cleantype/details/stringutils.hpp>
 
 #define LOG_VALUE(var) std::cout << #var << " ==>" << var << "<==\n";

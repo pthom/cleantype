@@ -5,6 +5,7 @@ project(cleantype)
 option(CLEANTYPE_BUILD_TESTS "Build tests." ON)
 option(CLEANTYPE_COMPILETIME "Compile time type info (require Boost.Hana)." OFF)
 option(CLEANTYPE_USE_CONAN "Find deps (Boost) using conan." OFF)
+option(CLEANTYPE_BUILD_TOOLS "Build tools (ct_compiler_decipher and ct_compiler_typeinfo)." OFF)
 
 option(CLEANTYPE_ALL_OPTIONS "Use conan / build tests / build compile time" OFF)
 
@@ -12,6 +13,7 @@ if (CLEANTYPE_ALL_OPTIONS)
   set(CLEANTYPE_BUILD_TESTS ON)
   set(CLEANTYPE_COMPILETIME ON)
   set(CLEANTYPE_USE_CONAN ON)
+  set(CLEANTYPE_BUILD_TOOLS ON)
 endif()
 
 
@@ -43,15 +45,24 @@ add_definitions("-std=c++14")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR} ${CMAKE_MODULE_PATH})
 
-# Enable tests via cmake_register_test and doctest
-set(doctest_INCLUDES ${CMAKE_SOURCE_DIR}/third_party/doctest/doctest)
-enable_testing()
+function(clean_type_set_target_option target)
+    if (MSVC)
+        target_compile_options(${target} PRIVATE /std:c++latest)
+        target_compile_definitions(${target} PRIVATE
+            -D_SILENCE_CXX17_IS_LITERAL_TYPE_DEPRECATION_WARNING
+            -D_SILENCE_CXX17_RESULT_OF_DEPRECATION_WARNING
+            )
+    endif()
+    target_include_directories(${target} PRIVATE ${CMAKE_SOURCE_DIR}/src/include)
+    target_include_directories(${target} PRIVATE ${CMAKE_SOURCE_DIR}/third_party/FunctionalPlus/include)
 
-include_directories(${CMAKE_SOURCE_DIR}/third_party/FunctionalPlus/include)
-include_directories(${CMAKE_SOURCE_DIR}/src/include)
+endfunction()
 
 if (CLEANTYPE_BUILD_TESTS)
   add_subdirectory(src/include/cleantype/tests)
 endif()
 
-add_subdirectory(src/include/cleantype/compile_time)
+if (CLEANTYPE_BUILD_TOOLS)
+  add_subdirectory(src/tools/ct_compiler_decipher)
+  add_subdirectory(src/tools/ct_compiler_typeinfo)
+endif()

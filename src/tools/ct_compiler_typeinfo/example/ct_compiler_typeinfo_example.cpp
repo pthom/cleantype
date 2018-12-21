@@ -1,4 +1,4 @@
-#include <cleantype/cleantype_compile_time.hpp>
+#include <cleantype/cleantype_compiler_typeinfo.hpp>
 #include <cleantype/details/fp_polyfill/fp_polyfill.hpp>
 #include <map>
 #include <vector>

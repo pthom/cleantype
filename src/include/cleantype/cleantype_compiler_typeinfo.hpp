@@ -6,7 +6,7 @@
 #include <cleantype/cleantype.hpp>
 #include <cleantype/details/hana_type_name/type_name_pretty_function.hpp>
 
-#if defined(CLEANTYPE_COMPILETIME) && defined(_HANA_TN_CAN_CONSTEXPR)
+#if defined(_HANA_TN_CAN_CONSTEXPR)
 
 #include <boost/hana.hpp>
 #include <boost/hana/string.hpp>
@@ -69,4 +69,4 @@ namespace cleantype
 
 }
 
-#endif // #if defined(CLEANTYPE_COMPILETIME) && defined(_HANA_TN_CAN_CONSTEXPR)
+#endif // #if defined(_HANA_TN_CAN_CONSTEXPR)

@@ -1,0 +1,5 @@
+add_executable(ct_compiler_decipher_example example/ct_compiler_decipher_example.cpp)
+clean_type_set_target_option(ct_compiler_decipher_example)
+
+add_executable(ct_compiler_decipher ct_compiler_decipher.cpp)
+clean_type_set_target_option(ct_compiler_decipher)
