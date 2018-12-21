@@ -27,22 +27,16 @@ int main()
 
 Clang example session:
 
-> ninja 2>&1 | ./cleantype_compiler_parser -c
+> ninja| ./cleantype_compiler_parser -c
 std::map<std::string, int>
 	at: ../src/include/cleantype/compile_time/example/cleantype_compile_time_example.cpp:21:5:
-    TN_ERROR_full( decltype(c) );
+    TN_ERROR_full_var(c);
     ^
 	Compiler line #4
-
 MSVC example session (in a msdos console, not a git bash console):
 
 > cmake --build . | bin\cleantype_compiler_parser.exe -c
 std::map<std::string, int>
         at:   F:\dvp\OpenSource\type_name\src\include\cleantype\compile_time\example\cleantype_compile_time_example.cpp(16)
-        Compiler line #188
-
-F:\dvp\OpenSource\type_name\build> cmake --build . | bin\cleantype_compiler_parser.exe -c
-std::map<std::string, int>
-        at:   F:\dvp\OpenSource\type_name\src\include\cleantype\compile_time\example\cleantype_compile_time_example.cpp(21)
-        Compiler line #188
+        Compiler line #196
 */
