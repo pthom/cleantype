@@ -115,3 +115,7 @@ namespace cleantype
         std::string("[") + TN_cleantype_full(var) + "] " + #var \
         + " = " \
         + fp::show_cont(var)
+
+
+#define TN_compiler_log_var_type(var) { var.IntentionalError = 42; }
+#define TN_compiler_log_type(T) { T::IntentionalError = 42; }
