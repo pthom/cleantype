@@ -12,17 +12,17 @@
     * [X] west_const -> east_const
     * [X] suppr typename, replace by type_name_s
     * [X] retest lambda and 4 params types (was an issue, should not be anymore) : see cleantype_full_multiple_fromvalues
+    * [X] Change macro names
     * [X] clean : check issues with multiple types (why parameter packs...)
     * [X] impl_clean_several_types -> publier dans API (et renommer)
-    * [ ] Compile time types log
+    * [X] Compile time types log
         * [X] CMake / detection boost
         * [X] Header separe pour inclusion hana
-        * [ ] interact / clean
+        * [X] interact / clean
             * [X] prog version inline
             * [X] command line options / clean
             * [X] On peut extraire le nom de la variable recherche en regardant quelques lignes plus bas,
 
-    * [ ] Change macro names
 
 
     * [ ] decipherer
