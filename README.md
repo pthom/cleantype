@@ -20,18 +20,14 @@
 
 # `cleantype` : Readable C++ Types and Lambda signatures / Compiler Decipherer
 
-`cleantype`is a small header only library which offer a *consistent naming scheme accross compilers*, at *run-time* and *compile-time*. It can also output the *signature of lambda* functions.
+`cleantype`is a small header only library which offer *readable* type names, with a *consistent naming scheme accross compilers*, at *run-time* and *compile-time*. It can also output the *signature of lambda* functions.
 
-The included tool `ct_compiler_decipher` simplifies the template noise in your compiler output : just pipe ( `|` ) your build tool to it.
+The included tool `ct_compiler_decipher` simplifies the template noise in your compiler output : just ` "|" (pipe)` your build tool to it.
 
-It can be seeen as a developper friendly `typeid` alternative.
-
-<!--
-![Build Status Travis](https://travis-ci.org/pthom/cleantype.svg?branch=master)
-![Build Status AppVeyor](https://ci.appveyor.com/api/projects/status/github/pthom/cleantype)
--->
-
+It can be seeen as a developper friendly `typeid` alternative, and as a tool for those who are tired by the template noise in the compiler output.
    
+
+#### Comparison to typeid.name()
 
 In C++, [typeid.name()](https://en.cppreference.com/w/cpp/language/typeid) is able to display the type of variables.
 However it has several limitations:
@@ -49,9 +45,13 @@ This library tries to overcomes some of these limitations. It is composed mainly
 Note: this library is heavily [tested](https://github.com/pthom/cleantype/tree/master/src/include/cleantype/tests), with clang, gcc and msvc. However, it should be considered alpha state.
 
 # Installation and usage
-`cleantype`is a small header only library, so you just need to clone it and add it to your path.
+
+* `cleantype`is a small header only library, so you just need to clone it and add it to your path.
 
 Then, include [cleantype/cleantype.hpp](src/include/cleantype/cleantype.hpp) (this file includes a comprehensive API doc)
+
+* `ct_compiler_decipher` is comprised of a single c++ file. It's compilation can be done via `make`
+or via `$(CXX) -Isrc/include -Ithird_party/FunctionalPlus/include --std=c++14 src/tools/ct_compiler_decipher/ct_compiler_decipher.cpp -o ct_compiler_decipher`
 
 # About this manual
 
@@ -222,27 +222,28 @@ You can customize the suppressions and replacements inside [cleantype/cleantype_
 
 
 ```c++
-run_show(     cleantype::full(v)                         )
-run_show(     cleantype::full<decltype(v)>()             )
-run_show(     cleantype::show_details_full(v)            )
-run_show(     CT_cleantype_full(v)                       )
-run_show(     CT_show_details_full(v)                    )
+auto w = my_range(10);
+run_show(     cleantype::full(w)                         )
+run_show(     cleantype::full<decltype(w)>()             )
+run_show(     cleantype::show_details_full(w)            )
+run_show(     CT_cleantype_full(w)                       )
+run_show(     CT_show_details_full(w)                    )
 ```
 
-    cleantype::full(v)
+    cleantype::full(w)
     std::__cxx11::list<int, std::allocator<int> > &
     
-    cleantype::full<decltype(v)>()
+    cleantype::full<decltype(w)>()
     std::__cxx11::list<int, std::allocator<int> >
     
-    cleantype::show_details_full(v)
-    [std::__cxx11::list<int, std::allocator<int> > &] = [1, 2, 3, 4, 5]
+    cleantype::show_details_full(w)
+    [std::__cxx11::list<int, std::allocator<int> > &] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     
-    CT_cleantype_full(v)
+    CT_cleantype_full(w)
     std::__cxx11::list<int, std::allocator<int> >
     
-    CT_show_details_full(v)
-    [std::__cxx11::list<int, std::allocator<int> >] v = [1, 2, 3, 4, 5]
+    CT_show_details_full(w)
+    [std::__cxx11::list<int, std::allocator<int> >] w = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     
 
 
@@ -285,6 +286,119 @@ run_show(     CT_show_details_full_cont(my_map)               )
     CT_show_details_full_cont(my_map)
     [std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<const std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int> > >] my_map = [(a, 1), (b, 2), (c, 3)]
     
+
+
+# Decipher compiler output and identify types and compile time
+
+* `ct_compiler_decipher` is a tool that deciphers the compiler output and makes it more readable, especially when there are lots of templates
+* `CT_compiler_log_type(T)` is a macro that will create an intentional compiler error whose intent is to display the type name of T. You can use it in conjunction with "ct_compiler_decipher".
+* `CT_compiler_log_var_type` is a macro that will create an intentional compiler error whose intent is to display the type name of the variable var. You can use it in conjunction with "ct_compiler_decipher".
+
+## Decipher the compiler output
+
+#### Build `ct_compiler_decipher`
+First let's build ct_compiler_decipher : it is composed of unique cpp file, so that it's compilation is extremely easy
+
+
+```c++
+#include "build_ct_tools.cpp"
+make_ct_compiler_decipher();
+```
+
+    make 2>&1
+    g++ -Isrc/include -Ithird_party/FunctionalPlus/include --std=c++14 src/tools/ct_compiler_decipher/ct_compiler_decipher.cpp -o ct_compiler_decipher
+
+
+#### Sample code with an error for which we want to deciher the compiler output
+The code below is intentionally bad, in order to get the compiler to spit incomprehensible template errors. Do not even try to make sense out of it :-)
+
+
+```c++
+std::string code =
+R"CODE(
+ #include <fplus/fplus.hpp>
+ #include <string>
+ #include <map>
+ #include <vector>
+
+auto my_spurious_lambda = [](int a, int b) {
+    std::map<std::string, int> r1;
+    std::vector<decltype(r1)> r2;
+    for (std::size_t i = 0; i < b; i++) r2.push_back(r1);
+    auto add_one = [](auto x) { return x + 1; };
+    auto r3 = fplus::transform(add_one, r2);
+    return r3;
+};
+
+int main() { auto v = my_spurious_lambda(1, 3); }
+
+)CODE";
+```
+
+#### Compile and decipher
+Let's compile it with the default compiler. Below, we only show the begining of the compiler output (it is followed by around 90 similar lines).
+
+
+```c++
+compile_code__extract(code);
+```
+
+    clang++ --std=c++14 -c code.cpp -Iinclude -o a.out 2>&1 | head -3 2>&1
+    code.cpp:10:42: error: invalid operands to binary expression ('std::map<std::__cxx11::basic_string<char>, int, std::less<std::__cxx11::basic_string<char> >, std::allocator<std::pair<const std::__cxx11::basic_string<char>, int> > >' and 'int')
+        auto add_one = [](auto x) { return x + 1; };
+                                           ~ ^ ~
+
+
+Let's commpile it and pipe the compiler output to `ct_compiler_decipher`:
+```bash
+clang++ --std=c++14 -c code.cpp -Iinclude -o a.out 2>&1 | ct_compiler_decipher
+```
+
+
+```c++
+compile_code_decipher__extract(code);
+```
+
+    clang++ --std=c++14 -c code.cpp -Iinclude -o a.out 2>&1 | ct_compiler_decipher | head -3 2>&1
+    code.cpp:10:42: error: invalid operands to binary expression ('std::map<std::string, int> ' and 'int')
+        auto add_one = [](auto x) { return x + 1; };
+                                           ~ ^ ~
+
+
+## Identify types names at compile time, with clean names
+
+Sometimes it is easier to be able to identify a type at compile time. This is especially true, if the code in question is run long after the application start.
+
+In this case, the macros `CT_compiler_log_type(T)` and `CT_compiler_log_var_type` come handy. They  will create an intentional compiler error whose intent is to display the type name of the variable var. You can use them in conjunction with "ct_compiler_decipher".
+
+See an example below:
+
+
+```c++
+std::string code2 =
+R"CODE(
+ #include <cleantype/cleantype.hpp>
+ #include <fplus/fplus.hpp>
+ 
+ auto mystery_lambda = [](int end) {    
+    return fplus::overlapping_pairs_cyclic( fplus::numbers(0, end) );
+ };
+ int main() {
+    auto v = mystery_lambda(10);
+    CT_compiler_log_var_type(v); // Here we ask the compiler to give us the type of v
+ }
+)CODE";
+```
+
+
+```c++
+compile_code_decipher__extract(code2);
+```
+
+    clang++ --std=c++14 -c code.cpp -Iinclude -o a.out 2>&1 | ct_compiler_decipher | head -3 2>&1
+    code.cpp:10:5: error: no member named 'IntentionalError' in 'std::vector<std::pair<int, int>> '
+        CT_compiler_log_var_type(v); // Here we ask the compiler to give us the type of v
+        ^                        ~
 
 
 # Identify the signature of non generic lambdas
@@ -335,7 +449,7 @@ If we try to get the type of this lambda via `CT_cleantype_full`, we do not get 
 std::cout << cleantype::full<decltype(mystery_lambda)>();
 ```
 
-    (lambda at input_line_19:4:23)
+    (lambda at input_line_26:4:23)
 
 This is because "mystery_lambda" is actually a instance of a hidden class. We are actually looking for the signature of the operator() of this class. `type_lambda_clean` is able to extract the type of this operator and to display it in a readable way.
 
