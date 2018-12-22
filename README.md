@@ -1,7 +1,9 @@
 
-# `cleantype` a developper friendly `typeid` header only alternative
-*readable*, *run-time* and *compile-time* types for C++ variables and ¨*lambdas*, 
-with a *consistent naming scheme accross compilers*
+# `cleantype` : readable C++ types & compilers decipherer
+
+`cleantype`is a developper friendly `typeid` header only alternative which offer a *consistent naming scheme accross compilers*, at *run-time* and *compile-time*. It can also output the *signature of lambda* functions.
+
+The included tool `ct_compiler_decipher` simplifies the template noise in your compiler output : just pipe ( `|` ) your build tool to it.
 
 <!--
 ![Build Status Travis](https://travis-ci.org/pthom/cleantype.svg?branch=master)
