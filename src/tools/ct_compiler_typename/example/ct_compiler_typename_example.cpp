@@ -11,6 +11,19 @@ auto my_spurious_lambda = [](int a, int b)
     return r;
 };
 
+template<typename... T>
+void ShowType()
+{
+#ifdef _MSC_VER
+    static_assert(false, "Here is the type");
+#else
+    static_assert(T() +1 == std::string("42"), "Here is the type");
+#endif
+}
+
+#define CompilerLogVarType(var) ShowType<decltype(var)>();
+#define CompilerLogType(T) ShowType<T>();
+
 // Usage
 // WINDOWS :
 //            cmake --build . | bin\cleantype_compiler_parser.exe -c
@@ -19,8 +32,25 @@ auto my_spurious_lambda = [](int a, int b)
 int main()
 {
     auto c = my_spurious_lambda(40, 2);
-    TN_ERROR_full_var(c);
+    //TN_ERROR_full_var(c);
     //cleantype::ERROR_full<decltype(c)>();
+
+    // MSVC
+    {
+        // CompilerLogVarType(c); // OK
+        // ShowType<decltype(c)>(); // OK
+        // CompilerLogType(decltype(c)); // OK
+    }
+
+    auto s = BOOST_HANA_STRING("hello");
+
+    std::map<int, std::vector<std::string>> v;
+    //s++;
+    //RefuseAlways<decltype(s)>();
+    //CompilerLogVarType(s);
+    //CompilerLogVarType(v);
+
+
 }
 
 
