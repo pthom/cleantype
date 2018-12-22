@@ -113,7 +113,7 @@ namespace cleantype
     //    the full signature of a generic lambda.
     template <typename... Args, typename GenericLambda> std::string lambda_generic_full(GenericLambda fn);
 
-    // *  `CT_type_lamda_generic_fromparams_XXX(lambda, arg1, arg2, ...)` is a macro that will return a string containing the
+    // *  `CT_type_lambda_generic_fromparams_XXX(lambda, arg1, arg2, ...)` is a macro that will return a string containing the
     //     signature of a generic lambda where you do not specify the args type, instead you give example of these types.
     //     (XXX is the number of params of the lambda, and can vary from 1 to 5).
 

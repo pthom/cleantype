@@ -12,11 +12,11 @@
     </td>
     <td>
         Try this online!
-        <a href="https://mybinder.org/v2/gh/pthom/cleantype/master?filepath=notebooks%2Fcleantype%2Fcleantype.ipynb"> 
-            <img src="https://mybinder.org/badge_logo.svg" /> 
+        <a href="https://mybinder.org/v2/gh/pthom/cleantype/master?filepath=notebooks%2Fcleantype%2Fcleantype.ipynb">
+            <img src="https://mybinder.org/badge_logo.svg" />
         </a>
     </tr>
-</table> 
+</table>
 
 # `cleantype` : Readable C++ Types and Lambda signatures / Compiler Decipherer
 
@@ -25,7 +25,7 @@
 The included tool `ct_compiler_decipher` simplifies the template noise in your compiler output : just ` "|" (pipe)` your build tool to it.
 
 It can be seeen as a developper friendly `typeid` alternative, and as a tool for those who are tired by the template noise in the compiler output.
-   
+
 
 #### Motivation
 
@@ -54,9 +54,9 @@ or via `$(CXX) -Isrc/include -Ithird_party/FunctionalPlus/include --std=c++14 sr
 
 # About this manual
 
-This manual is written using [cling](https://root.cern.ch/cling), [xeus cling](https://xeus-cling.readthedocs.io/en/latest/) and [jupyter notebook](https://jupyter.org/). Cling enables a Read-Eval-Print-Loop (REPL) development mode with C++. This approach benefits a lot from having a good type introspection, which is the aim of this library. 
+This manual is written using [cling](https://root.cern.ch/cling), [xeus cling](https://xeus-cling.readthedocs.io/en/latest/) and [jupyter notebook](https://jupyter.org/). Cling enables a Read-Eval-Print-Loop (REPL) development mode with C++. This approach benefits a lot from having a good type introspection, which is the aim of this library.
 
-The code that you read in this manual is real live code that can be executed inside jupyter notebook. 
+The code that you read in this manual is real live code that can be executed inside jupyter notebook.
 You can try it directly inside [binder](https://mybinder.org/) : click on the "launch binder" at the top of this page.<br/>
 Notes:
 * Beware, it require about 2 minutes to load; but then you will be able to run the code live from your browser!
@@ -73,7 +73,7 @@ The "#pragma cling add_include_path" is specific to cling. Beside this, everythi
 #include <cleantype/cleantype.hpp>
 
 // The includes below are not required, they are just used for the purpose of this manual
-#include <future> 
+#include <future>
 #include <numeric>
 #include <fplus/fplus.hpp>
 ```
@@ -90,12 +90,12 @@ The "#pragma cling add_include_path" is specific to cling. Beside this, everythi
 
 # Friendly type names for variables (clean type, name and value)
 
- ## Readable type names 
-                 
+ ## Readable type names
+
 * `cleantype::clean<T...>()` is a function that will return a string containing
    a readable type, for a given type or pack of types
    Use it with "cleantype::clean<decltype(var)>()"<br/>
-   Note: It will add a reference by default so that "int v = 5; cleantype::clean(v)" will return "int&". 
+   Note: It will add a reference by default so that "int v = 5; cleantype::clean(v)" will return "int&".
    Use the macro CT_cleantype_clean() if you want to avoid this
 
 * `cleantype::clean<T...>(t...)` is a an easier version, using an instance of the type.<br/>
@@ -141,19 +141,19 @@ run_show(     CT_show_details(v)                    )
 
     cleantype::clean(v)
     std::list<int> &
-    
+
     cleantype::clean<decltype(v)>()
     std::list<int>
-    
+
     cleantype::show_details(v)
     std::list<int> & = [1, 2, 3, 4, 5]
-    
+
     CT_cleantype_clean(v)
     std::list<int>
-    
+
     CT_show_details(v)
     [std::list<int>] v = [1, 2, 3, 4, 5]
-    
+
 
 
 ### Example with rvalue references
@@ -193,7 +193,7 @@ You can customize the suppressions and replacements inside [cleantype/cleantype_
 ## Full type names
 * `cleantype::full<T...>()` is a function that will return a string containing
    the full type. It also works with packs of types. Use it with "cleantype::full<decltype(var)>()"<br/>
-   It will add a reference by default so that "int v = 5; cleantype::full(v)" will return "int&". 
+   It will add a reference by default so that "int v = 5; cleantype::full(v)" will return "int&".
    Use the macro CT_cleantype_full() if you want to avoid this
 
 * `cleantype::full<T...>(t...)` is a an easier version, using an instance of the type.<br/>
@@ -231,19 +231,19 @@ run_show(     CT_show_details_full(w)                    )
 
     cleantype::full(w)
     std::__cxx11::list<int, std::allocator<int> > &
-    
+
     cleantype::full<decltype(w)>()
     std::__cxx11::list<int, std::allocator<int> >
-    
+
     cleantype::show_details_full(w)
     [std::__cxx11::list<int, std::allocator<int> > &] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    
+
     CT_cleantype_full(w)
     std::__cxx11::list<int, std::allocator<int> >
-    
+
     CT_show_details_full(w)
     [std::__cxx11::list<int, std::allocator<int> >] w = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    
+
 
 
 ### Full type versus readable type :
@@ -258,10 +258,10 @@ run_show(     cleantype::show_details(my_set)                    )
 
     cleantype::show_details_full(my_set)
     [std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > &] = [Hello, There]
-    
+
     cleantype::show_details(my_set)
     std::set<std::string> & = [Hello, There]
-    
+
 
 
 ## Display the content of complex containers
@@ -281,10 +281,10 @@ run_show(     CT_show_details_full_cont(my_map)               )
 
     CT_show_details_cont(my_map)
     [std::map<std::string, int>] my_map = [(a, 1), (b, 2), (c, 3)]
-    
+
     CT_show_details_full_cont(my_map)
     [std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<const std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int> > >] my_map = [(a, 1), (b, 2), (c, 3)]
-    
+
 
 
 # Decipher compiler output and identify types and compile time
@@ -378,8 +378,8 @@ std::string code2 =
 R"CODE(
  #include <cleantype/cleantype.hpp>
  #include <fplus/fplus.hpp>
- 
- auto mystery_lambda = [](int end) {    
+
+ auto mystery_lambda = [](int end) {
     return fplus::overlapping_pairs_cyclic( fplus::numbers(0, end) );
  };
  int main() {
@@ -411,7 +411,7 @@ compile_code_decipher__extract(code2);
 
 ### Note about constexpr type names:
 
-The basic idea of having compile time type name is to use `__PRETTY_FUNCTION__` as a way to get the type name in a constexpr way. The original idea comes from the [ctti library](https://github.com/Manu343726/ctti), and is also used inside Boost.Hana's [experimental/type_name.hpp](https://github.com/boostorg/hana/blob/master/include/boost/hana/experimental/type_name.hpp). 
+The basic idea of having compile time type name is to use `__PRETTY_FUNCTION__` as a way to get the type name in a constexpr way. The original idea comes from the [ctti library](https://github.com/Manu343726/ctti), and is also used inside Boost.Hana's [experimental/type_name.hpp](https://github.com/boostorg/hana/blob/master/include/boost/hana/experimental/type_name.hpp).
 
 This project goes beyond what was done in these projects, by adding a support for gcc and msvc (only clang was supported originaly).
 
@@ -437,7 +437,7 @@ It is not alway easy to guess the return type of lambda. See the lambda below fo
 ```c++
 int start = 5;
 // what is the return type of this lambda ?
-auto mystery_lambda = [&start](int end) {    
+auto mystery_lambda = [&start](int end) {
     return fplus::overlapping_pairs_cyclic( fplus::numbers(start, end) );
 };;
 ```
@@ -451,10 +451,10 @@ run_show(            CT_show_details_lambda(mystery_lambda)           );
 
     cleantype::lambda_clean(mystery_lambda)
     lambda: (int) -> std::vector<std::pair<int, int>>
-    
+
     CT_show_details_lambda(mystery_lambda)
     [lambda: (int) -> std::vector<std::pair<int, int>>] mystery_lambda
-    
+
 
 
 
@@ -476,7 +476,7 @@ This is because "mystery_lambda" is actually a instance of a hidden class. We ar
    the readable signature of a generic lambda. You will need to specify the type of the auto parameters
 * `cleantype::lambda_generic_full<Args...>(LambdaFn fn)` is a function that will return a string containing
    the full signature of a generic lambda.
-*  `CT_type_lamda_generic_fromparams_XXX(lambda, arg1, arg2, ...)` is a macro that will return a string containing the
+*  `CT_type_lambda_generic_fromparams_XXX(lambda, arg1, arg2, ...)` is a macro that will return a string containing the
     signature of a generic lambda where you do not specify the args type, instead you give example of these types.
     (XXX is the number of params of the lambda, and can vary from 1 to 5).
 
@@ -487,7 +487,7 @@ Note: this is an advanced feature, and it might fail on certain compilers, such 
 
 ```c++
 auto add = [](auto a, auto b) {
-    return a + b; 
+    return a + b;
 };;
 ```
 
@@ -503,12 +503,12 @@ std::cout << cleantype::lambda_generic_clean<int, double>(add) << std::endl;
     lambda: (int, double) -> double
 
 
-It can also be done by providing some example parameters : use `CT_type_lamda_generic_fromparams_XXX`, where X is the number of parameters of the lambda.
+It can also be done by providing some example parameters : use `CT_type_lambda_generic_fromparams_XXX`, where X is the number of parameters of the lambda.
 
 
 ```c++
 // extract the lambda type using example params
-std::cout << CT_type_lamda_generic_fromparams_2(add, 1u, -2);
+std::cout << CT_type_lambda_generic_fromparams_2(add, 1u, -2);
 ```
 
     lambda: (unsigned int, int) -> unsigned int
@@ -528,7 +528,7 @@ auto auto_fonction(int b) {
 ```
 
 # The zoo of type qualifiers
-`cleantype`handles quite well `const`, `volatile`, references (`&`), rvalue references (`&&`), and pointers (`*`). See below a demonstration 
+`cleantype`handles quite well `const`, `volatile`, references (`&`), rvalue references (`&&`), and pointers (`*`). See below a demonstration
 
 
 ```c++
@@ -549,14 +549,14 @@ auto foo = [](auto && x) {
 
 ```c++
 {
-    int a = 5;  
+    int a = 5;
     test_call_foo(a, "Calling with an int lvalue (transformed to a ref by the call)");
-    
-    int const &  b = a; 
+
+    int const &  b = a;
     test_call_foo(b, "Calling with a const lvalue reference");
-    
+
     test_call_foo(42, "Calling with an rvalue reference");
-    
+
     int * const c = &a;
     test_call_foo(c, "Calling with a const pointer");
 
@@ -565,8 +565,8 @@ auto foo = [](auto && x) {
 
     int volatile vol = 42;
     test_call_foo(vol, "Calling with a volatile int");
-    
-    int const e = 5;  
+
+    int const e = 5;
     test_call_foo(e, "Calling with a const");
 
 }
@@ -576,105 +576,103 @@ auto foo = [](auto && x) {
     Bare variable (before the call)
     cleantype::clean<decltype(a)>()
     int
-    
+
     CT_cleantype_clean(a)
     int
-    
+
     Now inside foo (pass by universal reference)
     CT_cleantype_clean(x)
     int &
-    
+
     cleantype::clean<decltype(x)>()
     int &
-    
+
      *********** Calling with a const lvalue reference ***********
     Bare variable (before the call)
     cleantype::clean<decltype(b)>()
     const int &
-    
+
     CT_cleantype_clean(b)
     const int &
-    
+
     Now inside foo (pass by universal reference)
     CT_cleantype_clean(x)
     const int &
-    
+
     cleantype::clean<decltype(x)>()
     const int &
-    
+
      *********** Calling with an rvalue reference ***********
     Bare variable (before the call)
     cleantype::clean<decltype(42)>()
     int
-    
+
     CT_cleantype_clean(42)
     int
-    
+
     Now inside foo (pass by universal reference)
     CT_cleantype_clean(x)
     int &&
-    
+
     cleantype::clean<decltype(x)>()
     int &&
-    
+
      *********** Calling with a const pointer ***********
     Bare variable (before the call)
     cleantype::clean<decltype(c)>()
     int * const
-    
+
     CT_cleantype_clean(c)
     int * const
-    
+
     Now inside foo (pass by universal reference)
     CT_cleantype_clean(x)
     int * const &
-    
+
     cleantype::clean<decltype(x)>()
     int * const &
-    
+
      *********** Calling with a pointer to const ***********
     Bare variable (before the call)
     cleantype::clean<decltype(d)>()
     const int *
-    
+
     CT_cleantype_clean(d)
     const int *
-    
+
     Now inside foo (pass by universal reference)
     CT_cleantype_clean(x)
     const int * &
-    
+
     cleantype::clean<decltype(x)>()
     const int * &
-    
+
      *********** Calling with a volatile int ***********
     Bare variable (before the call)
     cleantype::clean<decltype(vol)>()
     volatile int
-    
+
     CT_cleantype_clean(vol)
     volatile int
-    
+
     Now inside foo (pass by universal reference)
     CT_cleantype_clean(x)
     volatile int &
-    
+
     cleantype::clean<decltype(x)>()
     volatile int &
-    
+
      *********** Calling with a const ***********
     Bare variable (before the call)
     cleantype::clean<decltype(e)>()
     const int
-    
+
     CT_cleantype_clean(e)
     const int
-    
+
     Now inside foo (pass by universal reference)
     CT_cleantype_clean(x)
     const int &
-    
+
     cleantype::clean<decltype(x)>()
     const int &
-    
-

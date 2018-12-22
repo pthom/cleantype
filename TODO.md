@@ -32,6 +32,8 @@
         * [ ] Remove zoo qualifiers
 
 
+    * [ ] Configuration via pref file ?
+
     * [ ] utiliser fplus pour de bon ?
 
     * [X] Compiler log decipherer
@@ -60,8 +62,6 @@
     * [ ] Mention hana & ctti
     * [ ] Better doc / config
 
-Config
-    * [ ] Read from file?
 
 
 Bugs
