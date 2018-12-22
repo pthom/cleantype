@@ -155,6 +155,22 @@ run_show(     CT_show_details(v)                    )
     
 
 
+### Example with rvalue references
+Fix this !
+
+
+```c++
+{
+    auto foo = [](auto && v){
+        std::cout << CT_show_details(v);
+    };;
+    int a = 1;
+    foo(a);
+}
+```
+
+    [int &] v = 1
+
 ### Examples with arguments pack
 
 
