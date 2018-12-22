@@ -5,7 +5,10 @@ import subprocess
 print("ct_compiler_typename_unit_test.py")
 
 cmd = "cmake --build . --target ct_compiler_typename_example 2>&1"
-result_raw = subprocess.check_output(cmd, shell=True)
+try:
+    result_raw = subprocess.check_output(cmd, shell=True)
+except:
+    pass
 raw_compiler_output = result_raw.decode("utf-8")
 print("************************************************************************************")
 print("************************************************************************************")
