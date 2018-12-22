@@ -22,6 +22,8 @@
             * [X] command line options / clean
             * [X] On peut extraire le nom de la variable recherche en regardant quelques lignes plus bas,
 
+    * [ ] Change macro names
+
 
     * [ ] decipherer
         * [X] rename
@@ -29,15 +31,6 @@
         * [X] clean code
         * [ ] doc
         * [N] test unitaire avec output / avec erreur reelle
-        * [ ] make version inline pour binder
-
-    * [ ] truc-type-compiletime
-        * [X] rename
-        * [X] install
-        * [X] clean code
-        * [ ] doc
-        * [ ] test unitaire avec output / avec erreur reelle
-            * [ ] test unitaire MSVC
         * [ ] make version inline pour binder
 
 
@@ -57,7 +50,6 @@
 
 * [X] Change name lib : clean type ?
     * [X] Change copyright messsage & add one empty line
-    * [ ] Change macro names
 
 * [ ] string_tree : delete, only lhr_rhs
 * [ ] fplus : remove include (i.e backport show_cont & co)
@@ -68,9 +60,6 @@
     * [ ] Article ?
     * [ ] Insertion dans ClingRepl ?
     * [ ] Mention hana & ctti
-    * [ ] Version compile time
-        * [ ] Outil de compil
-        * [ ] Outil de clean post compil
 
 Bugs
     * [ ] type function / several params

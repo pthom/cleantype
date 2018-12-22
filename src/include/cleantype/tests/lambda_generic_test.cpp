@@ -52,19 +52,19 @@ TEST_CASE("lambda_generic_1_to_5_params")
     {
         auto f = [](auto i) { return 2 * i; };
         REQUIRE_EQ(
-            TN_type_lamda_generic_fromparams_1(f, 1),
+            CT_type_lamda_generic_fromparams_1(f, 1),
             "lambda: (int) -> int");
     }
     {
         auto f = [](auto i, auto j) { return 2 * i + j; };
         REQUIRE_EQ(
-            TN_type_lamda_generic_fromparams_2(f, 1, 1),
+            CT_type_lamda_generic_fromparams_2(f, 1, 1),
             "lambda: (int, int) -> int");
     }
     {
         auto f = [](auto i, auto j, auto k) { return 2 * i + j + 3 * k; };
         REQUIRE_EQ(
-            TN_type_lamda_generic_fromparams_3(f, 1, 1, 1),
+            CT_type_lamda_generic_fromparams_3(f, 1, 1, 1),
             "lambda: (int, int, int) -> int");
     }
 }
@@ -81,7 +81,7 @@ TEST_CASE("lambda_generic_composition")
 
     {
         REQUIRE_EQ(
-            TN_type_lamda_generic_fromparams_1(lambda_composed, 1),
+            CT_type_lamda_generic_fromparams_1(lambda_composed, 1),
             "lambda: (int &&) -> int"
         );
     }
@@ -90,7 +90,7 @@ TEST_CASE("lambda_generic_composition")
         auto local_lambda_generic = [](int a) { return a * 2; };
         auto local_lambda_composed = fplus::fwd::compose(local_lambda_std, local_lambda_generic);
         REQUIRE_EQ(
-            TN_type_lamda_generic_fromparams_1(local_lambda_composed, 1),
+            CT_type_lamda_generic_fromparams_1(local_lambda_composed, 1),
             "lambda: (int &&) -> int"
         );
     }

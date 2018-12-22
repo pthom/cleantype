@@ -10,19 +10,19 @@
 
 #define LOG(str) std::cout << str << std::endl
 
-TEST_CASE("TN_show_details")
+TEST_CASE("CT_show_details")
 {
   {
     int a = 1;
-    REQUIRE_EQ(TN_show_details(a), "[int] a = 1");
+    REQUIRE_EQ(CT_show_details(a), "[int] a = 1");
   }
   {
     std::string s("hello");
-    REQUIRE_EQ(TN_show_details(s), "[std::string] s = hello");
+    REQUIRE_EQ(CT_show_details(s), "[std::string] s = hello");
   }
   {
     std::vector<int> v{ { 1, 2, 3, 4, 5 } };
-    REQUIRE_EQ(TN_show_details(v), "[std::vector<int>] v = [1, 2, 3, 4, 5]");
+    REQUIRE_EQ(CT_show_details(v), "[std::vector<int>] v = [1, 2, 3, 4, 5]");
   }
   {
     std::map<std::string, int> v{ {
@@ -30,8 +30,8 @@ TEST_CASE("TN_show_details")
       { "b", 2 },
       { "c", 3 }
       } };
-    auto t = TN_show_details_cont(v);
-    REQUIRE_EQ(TN_show_details_cont(v), "[std::map<std::string, int>] v = [(a, 1), (b, 2), (c, 3)]");
+    auto t = CT_show_details_cont(v);
+    REQUIRE_EQ(CT_show_details_cont(v), "[std::map<std::string, int>] v = [(a, 1), (b, 2), (c, 3)]");
   }
   {
     std::vector<std::string> v{ {
@@ -39,7 +39,7 @@ TEST_CASE("TN_show_details")
       { "b" },
       { "c" }
       } };
-    REQUIRE_EQ(TN_show_details(v), "[std::vector<std::string>] v = [a, b, c]");
+    REQUIRE_EQ(CT_show_details(v), "[std::vector<std::string>] v = [a, b, c]");
   }
   {
     std::set<std::string> v{ {
@@ -47,7 +47,7 @@ TEST_CASE("TN_show_details")
       { "b" },
       { "c" }
       } };
-    REQUIRE_EQ(TN_show_details(v), "[std::set<std::string>] v = [a, b, c]");
+    REQUIRE_EQ(CT_show_details(v), "[std::set<std::string>] v = [a, b, c]");
   }
 }
 
@@ -200,7 +200,7 @@ TEST_CASE("apply_east_const")
 template<typename T>
 void impl_test_clean_type(std::string const & expectedRepr, T value)
 {
-    std::string type_full = TN_cleantype_full(value);
+    std::string type_full = CT_cleantype_full(value);
     compare_type_full_to_repr(type_full, expectedRepr);
 }
 

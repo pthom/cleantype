@@ -200,5 +200,5 @@ namespace cleantype
 
 } // namespace cleantype
 
-#define TN_show_details_lambda(f) std::string("[") + cleantype::lambda_clean(f) + "] " + #f
-#define TN_show_details_lambda_full(f) std::string("[") + cleantype::lambda_full(f) + "] " + #f
+#define CT_show_details_lambda(f) std::string("[") + cleantype::lambda_clean(f) + "] " + #f
+#define CT_show_details_lambda_full(f) std::string("[") + cleantype::lambda_full(f) + "] " + #f

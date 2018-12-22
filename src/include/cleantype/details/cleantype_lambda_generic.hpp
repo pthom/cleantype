@@ -53,9 +53,9 @@ namespace cleantype
 
 } // namespace cleantype
 
-// TN_type_lamda_generic_fromparams_
-#define TN_type_lamda_generic_fromparams_1(fn, arg1) cleantype::lambda_generic_clean<decltype(arg1)>(fn)
-#define TN_type_lamda_generic_fromparams_2(fn, arg1, arg2) cleantype::lambda_generic_clean<decltype(arg1), decltype(arg2)>(fn)
-#define TN_type_lamda_generic_fromparams_3(fn, arg1, arg2, arg3) cleantype::lambda_generic_clean<decltype(arg1), decltype(arg2), decltype(arg3)>(fn)
-#define TN_type_lamda_generic_fromparams_4(fn, arg1, arg2, arg3, arg4) cleantype::lambda_generic_clean<decltype(arg1), decltype(arg2), decltype(arg3), decltype(arg4)>(fn)
-#define TN_type_lamda_generic_fromparams_5(fn, arg1, arg2, arg3, arg4, arg5) cleantype::lambda_generic_clean<decltype(arg1), decltype(arg2), decltype(arg3), decltype(arg4), decltype(arg5)>(fn)
+// CT_type_lamda_generic_fromparams_
+#define CT_type_lamda_generic_fromparams_1(fn, arg1) cleantype::lambda_generic_clean<decltype(arg1)>(fn)
+#define CT_type_lamda_generic_fromparams_2(fn, arg1, arg2) cleantype::lambda_generic_clean<decltype(arg1), decltype(arg2)>(fn)
+#define CT_type_lamda_generic_fromparams_3(fn, arg1, arg2, arg3) cleantype::lambda_generic_clean<decltype(arg1), decltype(arg2), decltype(arg3)>(fn)
+#define CT_type_lamda_generic_fromparams_4(fn, arg1, arg2, arg3, arg4) cleantype::lambda_generic_clean<decltype(arg1), decltype(arg2), decltype(arg3), decltype(arg4)>(fn)
+#define CT_type_lamda_generic_fromparams_5(fn, arg1, arg2, arg3, arg4, arg5) cleantype::lambda_generic_clean<decltype(arg1), decltype(arg2), decltype(arg3), decltype(arg4), decltype(arg5)>(fn)

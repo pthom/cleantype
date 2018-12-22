@@ -22,27 +22,27 @@ namespace cleantype
     //    Note:
     //      * It will add a reference by default so that
     //         int v = 5; cleantype::full(v) will return "int&"
-    //         => use the macro TN_cleantype_full() if you want to avoid this
+    //         => use the macro CT_cleantype_full() if you want to avoid this
 
     // * `cleantype::full<T...>(t...)` is a an easier version, using an instance of the type.
     //    Notes:
     //      * It will add a reference by default so that
     //         int v = 5; cleantype::full(v) will return "int&"
-    //         => use the macro TN_cleantype_full() if you want to avoid this
+    //         => use the macro CT_cleantype_full() if you want to avoid this
     //      * It is not able to output correctly r-value references
     //          For this, use `cleantype::full<decltype(var)>()`
 
     // * `cleantype::show_details_full(T && v)` is a function that will return a string containing
     //    the full type of a variable, as well as its content
 
-    // * `TN_cleantype_full(var)` is a macro that will also return the full type,
+    // * `CT_cleantype_full(var)` is a macro that will also return the full type,
     //    but, it is able to also correctly display rvalue reference types.
 
-    // *  `TN_show_details_full(var)` is a macro that will return a string containing the name,
+    // *  `CT_show_details_full(var)` is a macro that will return a string containing the name,
     //    type and content of a variable (in this case, the underlying type of 'var'
     //    has to have an 'ostream & operator<<')
 
-    // * `TN_show_details_full_cont` is a version of TN_show_details_full for complex containers
+    // * `CT_show_details_full_cont` is a version of CT_show_details_full for complex containers
     //    like "std::map". "cont" stands for "container".
 
 
@@ -56,27 +56,27 @@ namespace cleantype
     //    Note:
     //      * It will add a reference by default so that
     //         int v = 5; cleantype::clean(v) will return "int&"
-    //         => use the macro TN_cleantype_clean() if you want to avoid this
+    //         => use the macro CT_cleantype_clean() if you want to avoid this
 
     // * `cleantype::clean<T...>(t...)` is a an easier version, using an instance of the type.
     //    Notes:
     //      * It will add a reference by default so that
     //         int v = 5; cleantype::clean(v) will return "int&"
-    //         => use the macro TN_cleantype_clean() if you want to avoid this
+    //         => use the macro CT_cleantype_clean() if you want to avoid this
     //      * It is not able to output correctly r-value references
     //          For this, use `cleantype::clean<decltype(var)>()`
 
     // * `cleantype::show_details(T && v)` is a function that will return a string containing
     //    the readable type of a variable, as well as its content
 
-    // * `TN_cleantype_clean(var)` is a macro that will also return the full type,
+    // * `CT_cleantype_clean(var)` is a macro that will also return the full type,
     //    but, it is able to also correctly display rvalue reference types.
 
-    // *  `TN_show_details(var)` is a macro that will return a string containing the name,
+    // *  `CT_show_details(var)` is a macro that will return a string containing the name,
     //    type and content of a variable (in this case, the underlying type of 'var'
     //    has to have an 'ostream & operator<<')
 
-    // * `TN_show_details_cont` (macro) is a version of TN_show_details for complex containers
+    // * `CT_show_details_cont` (macro) is a version of CT_show_details for complex containers
     //    like "std::map". "cont" stands for "container".
 
 
@@ -91,10 +91,10 @@ namespace cleantype
     //    the full signature of a lambda (non generic)
     template <typename LambdaFn> std::string lambda_clean(LambdaFn fn);
 
-    // *  `TN_show_details_lambda(var)` is a macro that will return a string containing the
+    // *  `CT_show_details_lambda(var)` is a macro that will return a string containing the
     //    readable signature of a lambda and its name
 
-    // *  `TN_show_details_lambda_full(var)` is a macro that will return a string containing the
+    // *  `CT_show_details_lambda_full(var)` is a macro that will return a string containing the
     //    full signature of a lambda and its name
 
     /////////////////////////
@@ -113,7 +113,7 @@ namespace cleantype
     //    the full signature of a generic lambda.
     template <typename... Args, typename GenericLambda> std::string lambda_generic_full(GenericLambda fn);
 
-    // *  `TN_type_lamda_generic_fromparams_XXX(lambda, arg1, arg2, ...)` is a macro that will return a string containing the
+    // *  `CT_type_lamda_generic_fromparams_XXX(lambda, arg1, arg2, ...)` is a macro that will return a string containing the
     //     signature of a generic lambda where you do not specify the args type, instead you give example of these types.
     //     (XXX is the number of params of the lambda, and can vary from 1 to 5).
 

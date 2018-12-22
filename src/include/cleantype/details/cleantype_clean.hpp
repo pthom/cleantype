@@ -31,16 +31,16 @@ namespace cleantype
 } // namespace cleantype
 
 
-#define TN_cleantype_clean(var) cleantype::clean<decltype(var)>()
+#define CT_cleantype_clean(var) cleantype::clean<decltype(var)>()
 
 
-#define TN_show_details(var) \
-        std::string("[") + TN_cleantype_clean(var) + "] " + #var \
+#define CT_show_details(var) \
+        std::string("[") + CT_cleantype_clean(var) + "] " + #var \
         + " = " \
         + fp::show(var)
 
 
-#define TN_show_details_cont(var) \
-        std::string("[") + TN_cleantype_clean(var) + "] " + #var \
+#define CT_show_details_cont(var) \
+        std::string("[") + CT_cleantype_clean(var) + "] " + #var \
         + " = " \
         + fp::show_cont(var)

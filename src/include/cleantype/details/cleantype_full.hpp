@@ -104,18 +104,18 @@ namespace cleantype
 } // namespace cleantype
 
 
-#define TN_cleantype_full(var) cleantype::full<decltype(var)>()
+#define CT_cleantype_full(var) cleantype::full<decltype(var)>()
 
-#define TN_show_details_full(var) \
+#define CT_show_details_full(var) \
         std::string("[") + TNS_cleantype_full(var) + "] " + #var \
         + " = " \
         + fp::show(var)
 
-#define TN_show_details_full_cont(var) \
-        std::string("[") + TN_cleantype_full(var) + "] " + #var \
+#define CT_show_details_full_cont(var) \
+        std::string("[") + CT_cleantype_full(var) + "] " + #var \
         + " = " \
         + fp::show_cont(var)
 
 
-#define TN_compiler_log_var_type(var) { var.IntentionalError = 42; }
-#define TN_compiler_log_type(T) { T::IntentionalError = 42; }
+#define CT_compiler_log_var_type(var) { var.IntentionalError = 42; }
+#define CT_compiler_log_type(T) { T::IntentionalError = 42; }

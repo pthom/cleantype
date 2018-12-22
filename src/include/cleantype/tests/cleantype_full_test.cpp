@@ -42,7 +42,7 @@ TEST_CASE("cleantype_full_test_s")
         "char &"
         );
         // The macro will output the exact type
-        my_require_eq_string(TN_cleantype_full(v),
+        my_require_eq_string(CT_cleantype_full(v),
         "char"
         );
     }
@@ -53,7 +53,7 @@ TEST_CASE("cleantype_full_test_s")
         my_require_eq_string(cleantype::full(v),
         "char &"
         );
-        my_require_eq_string(TN_cleantype_full(v),
+        my_require_eq_string(CT_cleantype_full(v),
         "char &"
         );
     }
@@ -64,7 +64,7 @@ TEST_CASE("cleantype_full_test_s")
         my_require_eq_string(cleantype::full(v),
            "char const &"
         );
-        my_require_eq_string(cleantype::apply_east_const(TN_cleantype_full(v)),
+        my_require_eq_string(cleantype::apply_east_const(CT_cleantype_full(v)),
             "char const &"
         );
     }
@@ -75,7 +75,7 @@ TEST_CASE("cleantype_full_test_s")
         my_require_eq_string(cleantype::full(v),
           "char const * &"
         );
-        my_require_eq_string(cleantype::apply_east_const(TN_cleantype_full(v)),
+        my_require_eq_string(cleantype::apply_east_const(CT_cleantype_full(v)),
             "char const *"
         );
     }
@@ -86,7 +86,7 @@ TEST_CASE("cleantype_full_test_s")
         my_require_eq_string(cleantype::full(v),
         "char const * &"
         );
-        my_require_eq_string(cleantype::apply_east_const(TN_cleantype_full(v)),
+        my_require_eq_string(cleantype::apply_east_const(CT_cleantype_full(v)),
         "char const *"
         );
     }
@@ -96,7 +96,7 @@ TEST_CASE("cleantype_full_test_s")
         my_require_eq_string(cleantype::full(v),
             VOLATILE_CHAR " &"
         );
-        my_require_eq_string(TN_cleantype_full(v),
+        my_require_eq_string(CT_cleantype_full(v),
             VOLATILE_CHAR
         );
     }
@@ -153,18 +153,18 @@ TEST_CASE("cleantype_full_r_value_references")
 }
 
 
- TEST_CASE("TN_cleantype_full")
+ TEST_CASE("CT_cleantype_full")
  {
      {
          char v = 5;
          my_require_eq_string(
-             TN_cleantype_full(v),
+             CT_cleantype_full(v),
              "char"
           );
      }
      {
          my_require_eq_string(
-             TN_cleantype_full(static_cast<char>(42)),
+             CT_cleantype_full(static_cast<char>(42)),
              "char"
           );
      }
@@ -289,7 +289,7 @@ TEST_CASE("cleantype_full_regex")
 }
 
 
-#ifdef _HANA_TN_CAN_CONSTEXPR
+#ifdef _HANA_CT_CAN_CONSTEXPR
 #define RUN_ONE_TYPE_TEST_COMPILE_TIME(type_definition, type_string_literal)                     \
         {                                                                                        \
             constexpr auto computed =                                                            \
@@ -324,4 +324,3 @@ void compile_time_tests() {
     RUN_ONE_TYPE_TEST_RUN_TIME(const char, "cleantype::internal::TupleTypeHolder<const char>");
     RUN_ONE_TYPE_TEST_RUN_TIME(char const, "cleantype::internal::TupleTypeHolder<const char>");
 }
-

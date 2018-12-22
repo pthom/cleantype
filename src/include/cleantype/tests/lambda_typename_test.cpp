@@ -12,7 +12,7 @@
 
 template<typename Lambda> void test_one_lambda(Lambda f, std::string const & expected_type)
 {
-    const std::string computed_type = TN_show_details_lambda(f);
+    const std::string computed_type = CT_show_details_lambda(f);
     if (computed_type != expected_type)
         DEBUGBREAK;
     REQUIRE_EQ(computed_type, expected_type);
@@ -24,11 +24,11 @@ TEST_CASE("log_type_lambda_clean")
 {
   {
     auto f = []() { std::cout << "Hello"; };
-    REQUIRE_EQ(TN_show_details_lambda(f), "[lambda: () -> void] f");
+    REQUIRE_EQ(CT_show_details_lambda(f), "[lambda: () -> void] f");
   }
   {
     auto f = []() { return 42u; };
-    auto s = TN_show_details_lambda(f);
+    auto s = CT_show_details_lambda(f);
     test_one_lambda(f, "[lambda: () -> unsigned int] f");
   }
   {
