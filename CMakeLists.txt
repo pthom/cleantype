@@ -21,14 +21,14 @@ enable_testing()
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 if (CLEANTYPE_USE_CONAN)
-  execute_process(
-    COMMAND conan install ${CMAKE_SOURCE_DIR} --build=missing ${conan_compiler_option}
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    RESULT_VARIABLE conan_result
-  )
-  if(NOT "${conan_result}" STREQUAL "0")
-        message(FATAL_ERROR "Fatal error when running 'conan install ${CMAKE_SOURCE_DIR}'")
-  endif()
+  # execute_process(
+  #   COMMAND conan install ${CMAKE_SOURCE_DIR} --build=missing ${conan_compiler_option}
+  #   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+  #   RESULT_VARIABLE conan_result
+  # )
+  # if(NOT "${conan_result}" STREQUAL "0")
+  #       message(FATAL_ERROR "Fatal error when running 'conan install ${CMAKE_SOURCE_DIR}'")
+  # endif()
   include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
   conan_basic_setup(TARGETS)
 endif()
@@ -57,6 +57,9 @@ function(clean_type_set_target_option target)
     target_include_directories(${target} PRIVATE ${CMAKE_SOURCE_DIR}/third_party/FunctionalPlus/include)
     if (APPLE)
       target_link_libraries(${target} PRIVATE c++)
+    endif()
+    if (UNIX)
+      target_link_libraries(${target} PRIVATE stdc++ m)
     endif()
 endfunction()
 
