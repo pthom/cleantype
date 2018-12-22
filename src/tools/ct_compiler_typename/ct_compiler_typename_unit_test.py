@@ -5,8 +5,8 @@ import subprocess
 print("ct_compiler_typename_unit_test.py")
 
 cmd = "cmake --build . --target ct_compiler_typename_example 2>&1 | ct_compiler_typename -c"
-result = subprocess.run(cmd, capture_output=True, shell=True)
-parsed_compiler_output = result.stdout.decode("utf-8")
+result = subprocess.check_output(cmd, shell=True)
+parsed_compiler_output = result.decode("utf-8")
 print("parsed_compiler_output=\n{}".format(parsed_compiler_output))
 
 lines = parsed_compiler_output.split("\n")
