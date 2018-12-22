@@ -24,10 +24,6 @@
             * [X] On peut extraire le nom de la variable recherche en regardant quelques lignes plus bas,
 
 
-    * [ ] rvalue references broken ! (update doc also)
-    * [ ] binder : error: 'cleantype/cleantype.hpp' file not found
-    https://hub.mybinder.org/user/pthom-cleantype-dgflqbw4/notebooks/notebooks/cleantype/cleantype.ipynb
-
     * [ ] Notebook Doc
         * [ ] decipherer build tool
         * [ ] decipherer
