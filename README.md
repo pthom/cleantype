@@ -15,13 +15,13 @@ It can be seeen as a developper friendly `typeid` alternative.
 <table>
     <tr>
       <td>
-        Travis <img src="https://travis-ci.org/pthom/cleantype.svg?branch=master" />
+        Travis <a href="https://travis-ci.org/pthom/cleantype/"> <img src="https://travis-ci.org/pthom/cleantype.svg?branch=master" /> </a>
      </td>
      <td>
-        Windows <img src="https://ci.appveyor.com/api/projects/status/s6wmhg5q9l69w7aq/branch/master?svg=true" />
+        Windows <a href="https://ci.appveyor.com/project/pthom/cleantype"> <img src="https://ci.appveyor.com/api/projects/status/s6wmhg5q9l69w7aq/branch/master?svg=true" /> </a>
     </td>
      <td>
-        License <img src="https://img.shields.io/badge/license-boost%201.0-blue.svg" />
+        License <a href="https://www.boost.org/LICENSE_1_0.txt"> <img src="https://img.shields.io/badge/license-boost%201.0-blue.svg" /> </a>
     </td>
     <td>
         Try this online!
