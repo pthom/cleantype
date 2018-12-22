@@ -27,22 +27,21 @@ The included tool `ct_compiler_decipher` simplifies the template noise in your c
 It can be seeen as a developper friendly `typeid` alternative, and as a tool for those who are tired by the template noise in the compiler output.
    
 
-#### Comparison to typeid.name()
+#### Motivation
 
 In C++, [typeid.name()](https://en.cppreference.com/w/cpp/language/typeid) is able to display the type of variables.
-However it has several limitations:
-
-* `const`, `volatile`, `&&`qualifiers are ignored
-* if cannot identify the signature of lambdas functions
-+ it cannot identify the return type of a function with an auto specifier
-* the returned name if often unreadable : for example `std::set<std::string>` becomes
+However it has several limitations: `const`, `volatile`, `&&`qualifiers are ignored; it cannot identify the signature of lambdas function, and last but not least, the returned name if often unreadable : for example `std::set<std::string>` becomes
  ````
  std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >
  ````
 
 This library tries to overcomes some of these limitations. It is composed mainly of C++11 / C++14 functions. It also contains some macros in order to be able to display rvalue reference type, as well as variables names. Macros are prepended with a suffix 'm_'.
 
-Note: this library is heavily [tested](https://github.com/pthom/cleantype/tree/master/src/include/cleantype/tests), with clang, gcc and msvc. However, it should be considered alpha state.
+The returned types names should be similar accross compilers.
+
+#### Status
+
+Note: this library is heavily [tested](https://github.com/pthom/cleantype/tree/master/src/include/cleantype/tests), with clang, gcc and msvc. However, it should be considered *alpha* state.
 
 # Installation and usage
 
@@ -399,6 +398,24 @@ compile_code_decipher__extract(code2);
     code.cpp:10:5: error: no member named 'IntentionalError' in 'std::vector<std::pair<int, int>> '
         CT_compiler_log_var_type(v); // Here we ask the compiler to give us the type of v
         ^                        ~
+
+
+# constexpr Compile time type names
+
+### Get the typename as a Boost.Hana string
+
+* `cleantype::full_compiletime<T>()` will give you the full name of a type in the form of a Boost.Hana string.
+
+**Note:** For this, you need to manually include "cleantype/cleantype_compiler_typename.hpp", and to have boost in your include path. The rest of the library (including ct_compiler_decipherer) can be compiled in a standalone way.
+
+
+### Note about constexpr type names:
+
+The basic idea of having compile time type name is to use `__PRETTY_FUNCTION__` as a way to get the type name in a constexpr way. The original idea comes from the [ctti library](https://github.com/Manu343726/ctti), and is also used inside Boost.Hana's [experimental/type_name.hpp](https://github.com/boostorg/hana/blob/master/include/boost/hana/experimental/type_name.hpp). 
+
+This project goes beyond what was done in these projects, by adding a support for gcc and msvc (only clang was supported originaly).
+
+Based on the work done during the development of this librayr, a [Pull Request](https://github.com/boostorg/hana/pull/432) was posted to Boost.Hana. It proposes to include the support of MSVC and GCC for boost/hana/experimental/type_name.hpp.
 
 
 # Identify the signature of non generic lambdas
