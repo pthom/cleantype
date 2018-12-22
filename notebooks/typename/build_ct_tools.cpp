@@ -122,7 +122,7 @@ void compile_code_decipher(const std::string & code)
 void compile_code_typename(const std::string & code)
 {
     save_temp_code(code);
-    std::string command = "clang++ --std=c++14 -c code.cpp -Iinclude -o a.out 2>&1 | ct_compiler_typename -c 2>&1";
+    std::string command = "clang++ --std=c++14 -c code.cpp -Iinclude -o a.out 2>&1 | ct_compiler_decipher 2>&1";
     std::cout << command << std::endl;
     exec_log_cout(command);
 }

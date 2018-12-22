@@ -3,15 +3,13 @@ cmake_minimum_required (VERSION 3.8.1)
 project(cleantype)
 
 option(CLEANTYPE_BUILD_TESTS "Build tests." ON)
-option(CLEANTYPE_COMPILETIME "Compile time type info (require Boost.Hana)." OFF)
 option(CLEANTYPE_USE_CONAN "Find deps (Boost) using conan." OFF)
-option(CLEANTYPE_BUILD_TOOLS "Build tools (ct_compiler_decipher and ct_compiler_typename)." OFF)
+option(CLEANTYPE_BUILD_TOOLS "Build tools (ct_compiler_decipher)." OFF)
 
 option(CLEANTYPE_ALL_OPTIONS "Use conan / build tests / build compile time" OFF)
 
 if (CLEANTYPE_ALL_OPTIONS)
   set(CLEANTYPE_BUILD_TESTS ON)
-  set(CLEANTYPE_COMPILETIME ON)
   set(CLEANTYPE_USE_CONAN ON)
   set(CLEANTYPE_BUILD_TOOLS ON)
 endif()
@@ -69,5 +67,4 @@ endif()
 
 if (CLEANTYPE_BUILD_TOOLS)
   add_subdirectory(src/tools/ct_compiler_decipher)
-  add_subdirectory(src/tools/ct_compiler_typename)
 endif()

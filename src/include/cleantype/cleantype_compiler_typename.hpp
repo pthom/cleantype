@@ -22,51 +22,13 @@ namespace cleantype
                     type_name_impl_stringliteral<T>();
             return boost::hana::string<*(name.ptr + i)...>{};
         }
-
-        auto string_to_char_tuple = [](auto s)
-        {
-            auto my_add = [](auto xs, auto ys) {
-                auto ys_t = boost::hana::make_tuple(ys);
-                auto r = boost::hana::flatten(boost::hana::make_tuple(xs, ys_t));
-                return r;
-            };
-            auto r = boost::hana::fold_left(s, boost::hana::make_tuple(), my_add); // MSVC MARKER
-            return r;
-        };
-
     }
 
     template <typename T>
-    auto compiler_typename() {
+    auto full_compiletime() {
             constexpr auto name = boost::hana::experimental::type_name_details::type_name_impl_stringliteral<T>();
             return compile_time_internal::type_name_impl<T>(std::make_index_sequence<name.length>{});
         }
-
-    template<typename... T> constexpr bool IntentionalError()
-    {
-        return false;
-    };
-
-
-#ifdef _MSC_VER
-#define _CLEANTYPE_OUTPUT(T) cleantype::compile_time_internal::string_to_char_tuple(cleantype::compiler_typename<T...>())
-#else
-#define _CLEANTYPE_OUTPUT(T) decltype(cleantype::compiler_typename<T...>())
-#endif
-
-    template<typename... T>
-    void ERROR_full() {
-       static_assert( IntentionalError<_CLEANTYPE_OUTPUT(T) >(), "" ); // your type can be deciphered via : make 2>&1 | cleantype_compiler_parser [-c | --clean]
-    }
-
-#ifdef _MSC_VER
-#define TN_ERROR_full(T) static_assert( std::is_integral<_CLEANTYPE_OUTPUT(T) >(), "" );
-#define TN_ERROR_full_var(var) static_assert( std::is_integral<_CLEANTYPE_OUTPUT( decltype(var) ) >(), "" );
-#else
-#define TN_ERROR_full(T) cleantype::ERROR_full<T>();
-#define TN_ERROR_full_var(var) cleantype::ERROR_full<decltype(var)>();
-#endif
-
 }
 
 #endif // #if defined(_HANA_TN_CAN_CONSTEXPR)

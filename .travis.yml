@@ -61,7 +61,6 @@ matrix:
       env: CLANG_VERSION=7
         - CC=clang-7
         - CXX=clang++-7
-        - TEST_COMPILER_TYPENAME=1
       addons:
         apt:
           sources: ['llvm-toolchain-trusty', 'llvm-toolchain-trusty-7', 'ubuntu-toolchain-r-test']
@@ -71,7 +70,6 @@ matrix:
       env: CLANG_VERSION=6.0
         - CC=clang-6.0
         - CXX=clang++-6.0
-        - TEST_COMPILER_TYPENAME=1
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-6.0']
@@ -85,14 +83,12 @@ matrix:
       env:
         - CXX=clang
         - OSX=1
-        - TEST_COMPILER_TYPENAME=1
 
     - os: osx
       osx_image: xcode9.4
       env:
         - CXX=clang
         - OSX=1
-        - TEST_COMPILER_TYPENAME=1
 
 
 before_install:
@@ -127,7 +123,3 @@ script:
   - ctest -C Release --output-on-failure
   - cmake --build . --target install
   - export PATH=$PATH:$(pwd)/install/bin
-  - |
-    if [[ $TEST_COMPILER_TYPENAME == "1" ]]; then
-      python3 ../src/tools/ct_compiler_typename/ct_compiler_typename_unit_test.py
-    fi

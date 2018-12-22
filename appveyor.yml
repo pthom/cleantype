@@ -53,7 +53,6 @@ build_script:
 test_script:
   - ps: cd c:\projects\cleantype\build
   - ctest -C Release --output-on-failure
-  - python ..\src\tools\ct_compiler_typename\ct_compiler_typename_unit_test.py
 
 only_commits:
   files:
@@ -61,4 +60,3 @@ only_commits:
     - appveyor.yml
     - src/
     - cmake/
-    - 
