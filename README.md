@@ -80,9 +80,9 @@ The "#pragma cling add_include_path" is specific to cling. Beside this, everythi
 
 ```c++
 // This macro is used later in this manual in order to display commands and their results
-#define run_show(cmd) \
-{  \
-    std::cout << #cmd << "\n"; \
+#define run_show(cmd)           \
+{                               \
+    std::cout << #cmd << "\n";  \
     std::cout << cmd << "\n\n"; \
 }
 ```
@@ -333,7 +333,7 @@ If we try to get the type of this lambda via `CT_cleantype_full`, we do not get 
 std::cout << cleantype::full<decltype(mystery_lambda)>();
 ```
 
-    (lambda at input_line_18:4:23)
+    (lambda at input_line_19:4:23)
 
 This is because "mystery_lambda" is actually a instance of a hidden class. We are actually looking for the signature of the operator() of this class. `type_lambda_clean` is able to extract the type of this operator and to display it in a readable way.
 
