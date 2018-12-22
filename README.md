@@ -156,20 +156,22 @@ run_show(     CT_show_details(v)                    )
 
 
 ### Example with rvalue references
-Fix this !
+Below, an where a function receives value by r-value references and can display its type & value correctly.
 
 
 ```c++
 {
-    auto foo = [](auto && v){
-        std::cout << CT_show_details(v);
-    };;
-    int a = 1;
-    foo(a);
+    auto log_received = [](auto && v) {
+        std::cout << cleantype::full<decltype(v)>() << std::endl;
+        std::cout << CT_show_details(v) << "\n";
+    };
+    log_received(42);
 }
 ```
 
-    [int &] v = 1
+    int &&
+    [int &&] v = 42
+
 
 ### Examples with arguments pack
 
