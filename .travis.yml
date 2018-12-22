@@ -6,6 +6,11 @@ language: Ruby
 dist: trusty
 sudo: required
 
+addons:
+  apt:
+    packages:
+      - python3-pip
+
 matrix:
     include:
     ##############
@@ -56,6 +61,7 @@ matrix:
       env: CLANG_VERSION=7
         - CC=clang-7
         - CXX=clang++-7
+        - TEST_COMPILER_TYPENAME=1
       addons:
         apt:
           sources: ['llvm-toolchain-trusty', 'llvm-toolchain-trusty-7', 'ubuntu-toolchain-r-test']
@@ -65,6 +71,7 @@ matrix:
       env: CLANG_VERSION=6.0
         - CC=clang-6.0
         - CXX=clang++-6.0
+        - TEST_COMPILER_TYPENAME=1
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-6.0']
@@ -78,12 +85,14 @@ matrix:
       env:
         - CXX=clang
         - OSX=1
+        - TEST_COMPILER_TYPENAME=1
 
     - os: osx
       osx_image: xcode9.4
       env:
         - CXX=clang
         - OSX=1
+        - TEST_COMPILER_TYPENAME=1
 
 
 before_install:
@@ -116,4 +125,8 @@ script:
   - cmake .. -DCLEANTYPE_ALL_OPTIONS=ON
   - cmake --build . --config Release -- -j4
   - ctest -C Release --output-on-failure
-  - ../src/tools/ct_compiler_typename/ct_compiler_typename_unit_test.sh
+  - sudo cmake --build . --target install
+  - |
+    if [[ $TEST_COMPILER_TYPENAME == "1" ]]; then
+      ../src/tools/ct_compiler_typename/ct_compiler_typename_unit_test.sh
+    fi

@@ -1,7 +1,7 @@
 
 echo "src/tools/ct_compiler_decipher/ct_compiler_typename_unit_test.sh"
 
-parsed_compiler_output=$(cmake --build . --target ct_compiler_typename_example 2>&1 | ./ct_compiler_typename -c)
+parsed_compiler_output=$(cmake --build . --target ct_compiler_typename_example 2>&1 | ct_compiler_typename -c)
 echo "parsed_compiler_output=\n$parsed_compiler_output"
 
 
