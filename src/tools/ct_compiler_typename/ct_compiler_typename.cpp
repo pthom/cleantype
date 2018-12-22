@@ -112,7 +112,7 @@ String extract_type_from_compiler_line( // can throw runtime_error !
         std::cerr << "extract_type_from_compiler_line : failure !\n";
         std::cerr << "compiler_line is \n" << compiler_line << "\n"
             << "config.start_marker=" << config.start_marker << "\n"
-            << "config.end_marker" << config.end_marker << "•n";
+            << "config.end_marker=" << config.end_marker << "\n";
         throw(std::runtime_error("extract_type_from_compiler_line : failure !"));
     }
 
