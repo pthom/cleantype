@@ -116,3 +116,4 @@ script:
   - cmake .. -DCLEANTYPE_ALL_OPTIONS=ON
   - cmake --build . --config Release -- -j4
   - ctest -C Release --output-on-failure
+  - ../src/tools/ct_compiler_typename/ct_compiler_typename_unit_test.sh

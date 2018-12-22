@@ -12,7 +12,7 @@ function(add_main_tests)
     source_group(TREE ${CMAKE_SOURCE_DIR}/src/include/ FILES ${files})
 
     add_test(NAME cleantype_test COMMAND cleantype_test)
-    endfunction()
+endfunction()
 
 add_main_tests()
 add_executable(type_name_stringliteral_test ../details/hana_type_name/test/type_name_stringliteral_test.cpp)
