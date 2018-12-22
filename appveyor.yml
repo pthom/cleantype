@@ -44,6 +44,7 @@ build_script:
 - cmd: |-
     mkdir build
     cd build
+    conan install .. --build=missing
     cmake --version
     cmake ..  -DCLEANTYPE_ALL_OPTIONS=ON -G %generator% -DCMAKE_INSTALL_PREFIX=c:/projects/cleantype/install
     cmake --build . --target ALL_BUILD --config Release
