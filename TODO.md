@@ -24,14 +24,12 @@
             * [X] On peut extraire le nom de la variable recherche en regardant quelques lignes plus bas,
 
 
-
-    * [ ] decipherer
-        * [X] rename
-        * [X] install
-        * [X] clean code
-        * [ ] doc
-        * [N] test unitaire avec output / avec erreur reelle
-        * [ ] make version inline pour binder
+    * [ ] Notebook Doc
+        * [ ] decipherer build tool
+        * [ ] decipherer
+        * [ ] check status / references & update accordingly
+        * [ ] doc / build and usage decipherer
+        * [ ] Remove zoo qualifiers
 
 
     * [ ] utiliser fplus pour de bon ?
@@ -60,6 +58,11 @@
     * [ ] Article ?
     * [ ] Insertion dans ClingRepl ?
     * [ ] Mention hana & ctti
+    * [ ] Better doc / config
+
+Config
+    * [ ] Read from file?
+
 
 Bugs
     * [ ] type function / several params
