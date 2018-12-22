@@ -122,11 +122,12 @@ script:
   - which $CXX
   - $CXX --version
   - cmake --version
-  - cmake .. -DCLEANTYPE_ALL_OPTIONS=ON
+  - cmake .. -DCLEANTYPE_ALL_OPTIONS=ON -DCMAKE_INSTALL_PREFIX=$(pwd)/install
   - cmake --build . --config Release -- -j4
   - ctest -C Release --output-on-failure
-  - sudo cmake --build . --target install
+  - cmake --build . --target install
+  - export PATH=$PATH:$(pwd)/install
   - |
     if [[ $TEST_COMPILER_TYPENAME == "1" ]]; then
-      ../src/tools/ct_compiler_typename/ct_compiler_typename_unit_test.sh
+      python3 ../src/tools/ct_compiler_typename/ct_compiler_typename_unit_test.py
     fi
