@@ -4,7 +4,7 @@ import subprocess
 
 print("ct_compiler_typename_unit_test.py")
 
-cmd = "cmake --build . --target ct_compiler_typename_example 2>&1"
+cmd = "cmake --build . --target ct_compiler_typename_example 2>&1 || true"
 try:
     result_raw = subprocess.check_output(cmd, shell=True)
 except:
