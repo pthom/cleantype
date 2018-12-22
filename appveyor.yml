@@ -45,12 +45,15 @@ build_script:
     mkdir build
     cd build
     cmake --version
-    cmake ..  -DCLEANTYPE_ALL_OPTIONS=ON -G %generator%
+    cmake ..  -DCLEANTYPE_ALL_OPTIONS=ON -G %generator% -DCMAKE_INSTALL_PREFIX=c:/projects/cleantype/install
     cmake --build . --target ALL_BUILD --config Release
+    cmake --build . --target install
+    set PATH=%PATH%;c:/projects/cleantype/install/bin
 
 test_script:
   - ps: cd c:\projects\cleantype\build
   - ctest -C Release --output-on-failure
+  - python3 ..\src\tools\ct_compiler_typename\ct_compiler_typename_unit_test.py
 
 only_commits:
   files:
@@ -58,3 +61,4 @@ only_commits:
     - appveyor.yml
     - src/
     - cmake/
+    - 
