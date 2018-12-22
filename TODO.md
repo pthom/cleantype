@@ -26,17 +26,18 @@
     * [ ] decipherer
         * [X] rename
         * [X] install
-        * [ ] clean code
+        * [X] clean code
         * [ ] doc
-        * [ ] test unitaire avec output / avec erreur reelle
+        * [N] test unitaire avec output / avec erreur reelle
         * [ ] make version inline pour binder
 
     * [ ] truc-type-compiletime
         * [X] rename
         * [X] install
-        * [ ] clean code
+        * [X] clean code
         * [ ] doc
         * [ ] test unitaire avec output / avec erreur reelle
+            * [ ] test unitaire MSVC
         * [ ] make version inline pour binder
 
 
