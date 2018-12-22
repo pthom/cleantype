@@ -90,17 +90,17 @@ The "#pragma cling add_include_path" is specific to cling. Beside this, everythi
    a readable type, for a given type or pack of types
    Use it with "type_name::clean<decltype(var)>()"<br/>
    Note: It will add a reference by default so that "int v = 5; type_name::clean(v)" will return "int&".
-   Use the macro CT_type_name_clean() if you want to avoid this
+   Use the macro CT_cleantype_clean() if you want to avoid this
 
 * `type_name::clean<T...>(t...)` is a an easier version, using an instance of the type.<br/>
     Notes:
-     * It will add a reference. Use the macro CT_type_name_clean() if you want to avoid this
+     * It will add a reference. Use the macro CT_cleantype_clean() if you want to avoid this
      * It is not able to output correctly r-value references. For this, use `type_name::clean<decltype(var)>()`
 
 * `type_name::show_details(T && v)` is a function that will return a string containing
    the readable type of a variable, as well as its content
 
-* `CT_type_name_clean(var)` is a macro that will also return the full type,
+* `CT_cleantype_clean(var)` is a macro that will also return the full type,
    but, it is able to also correctly display rvalue reference types.
 
 *  `CT_show_details(var)` is a macro that will return a string containing the name,
@@ -129,7 +129,7 @@ auto v = my_range(5);
 run_show(     type_name::clean(v)                   )
 run_show(     type_name::clean<decltype(v)>()       )
 run_show(     type_name::show_details(v)            )
-run_show(     CT_type_name_clean(v)                 )
+run_show(     CT_cleantype_clean(v)                 )
 run_show(     CT_show_details(v)                    )
 ```
 
@@ -142,7 +142,7 @@ run_show(     CT_show_details(v)                    )
     type_name::show_details(v)
     std::list<int> & = [1, 2, 3, 4, 5]
 
-    CT_type_name_clean(v)
+    CT_cleantype_clean(v)
     std::list<int>
 
     CT_show_details(v)
@@ -164,26 +164,26 @@ std::cout << type_name::clean<std::string, int, int &&, char &&>() << std::endl;
 
 ### Configuration of the clean types
 
-You can customize the suppressions and replacements inside [type_name/type_name_configuration.hpp](src/include/type_name/type_name_configuration.hpp)
+You can customize the suppressions and replacements inside [type_name/cleantype_configuration.hpp](src/include/type_name/cleantype_configuration.hpp)
 
 ## Full type names
 * `type_name::full<T...>()` is a function that will return a string containing
    the full type. It also works with packs of types. Use it with "type_name::full<decltype(var)>()"<br/>
    It will add a reference by default so that "int v = 5; type_name::full(v)" will return "int&".
-   Use the macro CT_type_name_full() if you want to avoid this
+   Use the macro CT_cleantype_full() if you want to avoid this
 
 * `type_name::full<T...>(t...)` is a an easier version, using an instance of the type.<br/>
    Notes:
      * It will add a reference by default so that
         int v = 5; type_name::full(v) will return "int&"
-        => use the macro CT_type_name_full() if you want to avoid this
+        => use the macro CT_cleantype_full() if you want to avoid this
      * It is not able to output correctly r-value references
          For this, use `type_name::full<decltype(var)>()`
 
 * `type_name::show_details_full(T && v)` is a function that will return a string containing
    the full type of a variable, as well as its content
 
-* `CT_type_name_full(var)` is a macro that will also return the full type,
+* `CT_cleantype_full(var)` is a macro that will also return the full type,
    but, it is able to also correctly display rvalue reference types.
 
 *  `CT_show_details_full(var)` is a macro that will return a string containing the name,
@@ -200,7 +200,7 @@ You can customize the suppressions and replacements inside [type_name/type_name_
 run_show(     type_name::full(v)                         )
 run_show(     type_name::full<decltype(v)>()             )
 run_show(     type_name::show_details_full(v)            )
-run_show(     CT_type_name_full(v)                       )
+run_show(     CT_cleantype_full(v)                       )
 run_show(     CT_show_details_full(v)                    )
 ```
 
@@ -213,7 +213,7 @@ run_show(     CT_show_details_full(v)                    )
     type_name::show_details_full(v)
     [std::__cxx11::list<int, std::allocator<int> > &] = [1, 2, 3, 4, 5]
 
-    CT_type_name_full(v)
+    CT_cleantype_full(v)
     std::__cxx11::list<int, std::allocator<int> >
 
     CT_show_details_full(v)
@@ -377,7 +377,7 @@ auto auto_fonction(int b) {
 
 ```c++
 auto foo = [](auto && x) {
-    run_show(     CT_type_name_clean(x)                                );
+    run_show(     CT_cleantype_clean(x)                                );
     run_show(     type_name::clean<decltype(x)>()                      );
 };;
 
@@ -385,7 +385,7 @@ auto foo = [](auto && x) {
     std::cout << " *********** " << title << " ***********\n";           \
     std::cout << "Bare variable (before the call)\n";                    \
     run_show(     type_name::clean<decltype(var)>()                    );\
-    run_show(     CT_type_name_clean(var)                              );\
+    run_show(     CT_cleantype_clean(var)                              );\
     std::cout << "Now inside foo (pass by universal reference)\n";       \
     foo(var);
 ```
@@ -421,11 +421,11 @@ auto foo = [](auto && x) {
     type_name::clean<decltype(a)>()
     int
 
-    CT_type_name_clean(a)
+    CT_cleantype_clean(a)
     int
 
     Now inside foo (pass by universal reference)
-    CT_type_name_clean(x)
+    CT_cleantype_clean(x)
     int &
 
     type_name::clean<decltype(x)>()
@@ -436,11 +436,11 @@ auto foo = [](auto && x) {
     type_name::clean<decltype(b)>()
     int const &
 
-    CT_type_name_clean(b)
+    CT_cleantype_clean(b)
     int const &
 
     Now inside foo (pass by universal reference)
-    CT_type_name_clean(x)
+    CT_cleantype_clean(x)
     int const &
 
     type_name::clean<decltype(x)>()
@@ -451,11 +451,11 @@ auto foo = [](auto && x) {
     type_name::clean<decltype(42)>()
     int
 
-    CT_type_name_clean(42)
+    CT_cleantype_clean(42)
     int
 
     Now inside foo (pass by universal reference)
-    CT_type_name_clean(x)
+    CT_cleantype_clean(x)
     int &&
 
     type_name::clean<decltype(x)>()
@@ -466,11 +466,11 @@ auto foo = [](auto && x) {
     type_name::clean<decltype(c)>()
     int* const
 
-    CT_type_name_clean(c)
+    CT_cleantype_clean(c)
     int* const
 
     Now inside foo (pass by universal reference)
-    CT_type_name_clean(x)
+    CT_cleantype_clean(x)
     int* const &
 
     type_name::clean<decltype(x)>()
@@ -481,11 +481,11 @@ auto foo = [](auto && x) {
     type_name::clean<decltype(d)>()
     int const*
 
-    CT_type_name_clean(d)
+    CT_cleantype_clean(d)
     int const*
 
     Now inside foo (pass by universal reference)
-    CT_type_name_clean(x)
+    CT_cleantype_clean(x)
     int const* &
 
     type_name::clean<decltype(x)>()
@@ -496,11 +496,11 @@ auto foo = [](auto && x) {
     type_name::clean<decltype(vol)>()
     int volatile
 
-    CT_type_name_clean(vol)
+    CT_cleantype_clean(vol)
     int volatile
 
     Now inside foo (pass by universal reference)
-    CT_type_name_clean(x)
+    CT_cleantype_clean(x)
     int volatile &
 
     type_name::clean<decltype(x)>()
@@ -511,11 +511,11 @@ auto foo = [](auto && x) {
     type_name::clean<decltype(e)>()
     int const
 
-    CT_type_name_clean(e)
+    CT_cleantype_clean(e)
     int const
 
     Now inside foo (pass by universal reference)
-    CT_type_name_clean(x)
+    CT_cleantype_clean(x)
     int const &
 
     type_name::clean<decltype(x)>()
