@@ -25,10 +25,10 @@
 
 
     * [ ] Notebook Doc
-        * [ ] decipherer build tool
-        * [ ] decipherer
+        * [X] decipherer build tool
+        * [X] decipherer
         * [X] check status / references & update accordingly
-        * [ ] doc / build and usage decipherer
+        * [X] doc / build and usage decipherer
         * [ ] Remove zoo qualifiers
 
 
