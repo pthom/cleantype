@@ -1,17 +1,4 @@
 
-# `cleantype` : Readable C++ Types and Lambda signatures / Compiler Decipherer
-
-`cleantype`is a small header only library which offer a *consistent naming scheme accross compilers*, at *run-time* and *compile-time*. It can also output the *signature of lambda* functions.
-
-The included tool `ct_compiler_decipher` simplifies the template noise in your compiler output : just pipe ( `|` ) your build tool to it.
-
-It can be seeen as a developper friendly `typeid` alternative.
-
-<!--
-![Build Status Travis](https://travis-ci.org/pthom/cleantype.svg?branch=master)
-![Build Status AppVeyor](https://ci.appveyor.com/api/projects/status/github/pthom/cleantype)
--->
-
 <table>
     <tr>
       <td>
@@ -29,7 +16,22 @@ It can be seeen as a developper friendly `typeid` alternative.
             <img src="https://mybinder.org/badge_logo.svg" /> 
         </a>
     </tr>
-</table>    
+</table> 
+
+# `cleantype` : Readable C++ Types and Lambda signatures / Compiler Decipherer
+
+`cleantype`is a small header only library which offer a *consistent naming scheme accross compilers*, at *run-time* and *compile-time*. It can also output the *signature of lambda* functions.
+
+The included tool `ct_compiler_decipher` simplifies the template noise in your compiler output : just pipe ( `|` ) your build tool to it.
+
+It can be seeen as a developper friendly `typeid` alternative.
+
+<!--
+![Build Status Travis](https://travis-ci.org/pthom/cleantype.svg?branch=master)
+![Build Status AppVeyor](https://ci.appveyor.com/api/projects/status/github/pthom/cleantype)
+-->
+
+   
 
 In C++, [typeid.name()](https://en.cppreference.com/w/cpp/language/typeid) is able to display the type of variables.
 However it has several limitations:
