@@ -4,6 +4,19 @@ import subprocess
 
 print("ct_compiler_typename_unit_test.py")
 
+cmd = "cmake --build . --target ct_compiler_typename_example 2>&1"
+result_raw = subprocess.check_output(cmd, shell=True)
+raw_compiler_output = result_raw.decode("utf-8")
+print("************************************************************************************")
+print("************************************************************************************")
+print("************************************************************************************")
+print(raw_compiler_output)
+print("************************************************************************************")
+print("************************************************************************************")
+print("************************************************************************************")
+
+
+
 cmd = "cmake --build . --target ct_compiler_typename_example 2>&1 | ct_compiler_typename -c"
 result = subprocess.check_output(cmd, shell=True)
 parsed_compiler_output = result.decode("utf-8")
