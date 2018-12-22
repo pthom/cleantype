@@ -1,10 +1,11 @@
 
 # `cleantype` a developper friendly `typeid` header only alternative
-Display **readable** types and contents for C++ variables and lambdas. 
+*readable*, *run-time* and *compile-time* types for C++ variables and ¨*lambdas*, 
+with a *consistent naming scheme accross compilers*
 
 <!--
 ![Build Status Travis](https://travis-ci.org/pthom/cleantype.svg?branch=master)
-![Build Status AppVeyor](https://ci.appveyor.com/api/projects/status/github/pthom/type-name)
+![Build Status AppVeyor](https://ci.appveyor.com/api/projects/status/github/pthom/cleantype)
 -->
 
 <table>
@@ -20,7 +21,7 @@ Display **readable** types and contents for C++ variables and lambdas.
     </td>
     <td>
         Try this online!
-        <a href="https://mybinder.org/v2/gh/pthom/cleantype/master?filepath=notebooks%2Ftypename%2Ftypename.ipynb"> 
+        <a href="https://mybinder.org/v2/gh/pthom/cleantype/master?filepath=notebooks%2Fcleantype%2Fcleantype.ipynb"> 
             <img src="https://mybinder.org/badge_logo.svg" /> 
         </a>
     </tr>
