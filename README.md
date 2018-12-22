@@ -1,9 +1,11 @@
 
-# `cleantype` : readable C++ types & compilers decipherer
+# `cleantype` : Readable C++ Types and Lambda signatures / Compiler Decipherer
 
-`cleantype`is a developper friendly `typeid` header only alternative which offer a *consistent naming scheme accross compilers*, at *run-time* and *compile-time*. It can also output the *signature of lambda* functions.
+`cleantype`is a small header only library which offer a *consistent naming scheme accross compilers*, at *run-time* and *compile-time*. It can also output the *signature of lambda* functions.
 
 The included tool `ct_compiler_decipher` simplifies the template noise in your compiler output : just pipe ( `|` ) your build tool to it.
+
+It can be seeen as a developper friendly `typeid` alternative.
 
 <!--
 ![Build Status Travis](https://travis-ci.org/pthom/cleantype.svg?branch=master)
