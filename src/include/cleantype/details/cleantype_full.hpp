@@ -107,7 +107,7 @@ namespace cleantype
 #define CT_cleantype_full(var) cleantype::full<decltype(var)>()
 
 #define CT_show_details_full(var) \
-        std::string("[") + TNS_cleantype_full(var) + "] " + #var \
+        std::string("[") + CT_cleantype_full(var) + "] " + #var \
         + " = " \
         + fp::show(var)
 
