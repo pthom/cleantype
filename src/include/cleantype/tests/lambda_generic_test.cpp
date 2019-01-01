@@ -104,7 +104,7 @@ auto _impl_lamda_to_ptr(Lambda fn)
     if constexpr((sizeof...(Args) > 0))
         return &Lambda::template operator() < Args... >;
     else
-        return &Lambda::operator();
+        return &Lambda::operator(); // if you have an error here, your lambda is generic! Add template params for its input types!
 }
 
 TEST_CASE("lambda_merge_generic")
