@@ -84,12 +84,13 @@ namespace cleantype
     // lambdas (non generic)
     /////////////////////////
 
-    // * `cleantype::lambda_clean<LambdaFn>(LambdaFn fn)` is a function that will return a string containing
-    //    the readable signature of a lambda (non generic)
-    template <typename LambdaFn> std::string lambda_clean(LambdaFn fn);
-    // * `cleantype::lambda_clean<LambdaFn>(LambdaFn fn)` is a function that will return a string containing
-    //    the full signature of a lambda (non generic)
-    template <typename LambdaFn> std::string lambda_clean(LambdaFn fn);
+    // * `cleantype::lambda_clean<typename... Args, typename Lambda>(Lambda fn)` is a function that will return a string containing
+    //    the readable signature of a lambda
+    template <typename... Args, typename Lambda> std::string lambda_clean(Lambda fn);
+
+    // * `cleantype::lambda_clean<typename... Args, typename Lambda>(Lambda fn)` is a function that will return a string containing
+    //    the full signature of a lambda
+    template <typename... Args, typename Lambda> std::string lambda_full(Lambda fn);
 
     // *  `CT_show_details_lambda(var)` is a macro that will return a string containing the
     //    readable signature of a lambda and its name

@@ -7,8 +7,10 @@
 #include <fplus/fplus.hpp>
 #include <functional>
 #include <map>
+#include <cmath>
 
 #define LOG(str) std::cout << str << std::endl
+#define LOG_VALUE(v) std::cout << #v << "==>" << v << "<==" << std::endl
 
 template<typename Lambda> void test_one_lambda(Lambda f, std::string const & expected_type)
 {
@@ -18,6 +20,7 @@ template<typename Lambda> void test_one_lambda(Lambda f, std::string const & exp
     REQUIRE_EQ(computed_type, expected_type);
 }
 
+#define CT_show_details_lambda2(f) std::string("[") + cleantype::lambda_clean(f) + "] " + #f
 
 
 TEST_CASE("log_type_lambda_clean")
@@ -50,4 +53,21 @@ TEST_CASE("log_type_lambda_clean")
     auto f = [&prefix](std::string const &s) { return prefix + s; };
     test_one_lambda(f, "[lambda: (std::string const &) -> std::string] f");
   }
+}
+
+
+TEST_CASE("lambda_merge")
+{
+    {
+        auto lambda = [](auto v) {
+            return v + 42;
+        };
+        LOG_VALUE(cleantype::lambda_full<int>(lambda));
+    }
+    {
+        auto lambda = [](int v) {
+            return v + 42;
+        };
+        LOG_VALUE(cleantype::lambda_full(lambda));
+    }
 }
