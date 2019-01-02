@@ -81,11 +81,17 @@ namespace cleantype
 
 
     /////////////////////////
-    // lambdas (non generic)
+    // lambdas
     /////////////////////////
 
     // * `cleantype::lambda_clean<typename... Args, typename Lambda>(Lambda fn)` is a function that will return a string containing
     //    the readable signature of a lambda
+    //
+    // In the case of a generic lambda, you will need to specify the type of the auto parameters:
+    // Example:
+    //    auto f = [](auto x, auto y) { return x + y; };
+    //    std::cout << cleantype::lambda_clean<int, char>(f) << std::endl;
+    //     ==>   lambda: (int, char) -> int
     template <typename... Args, typename Lambda> std::string lambda_clean(Lambda fn);
 
     // * `cleantype::lambda_clean<typename... Args, typename Lambda>(Lambda fn)` is a function that will return a string containing
@@ -97,22 +103,6 @@ namespace cleantype
 
     // *  `CT_show_details_lambda_full(var)` is a macro that will return a string containing the
     //    full signature of a lambda and its name
-
-    /////////////////////////
-    // lambdas ( generic)
-    /////////////////////////
-    // * `cleantype::lambda_generic_clean<Args...>(LambdaFn fn)` is a function that will return a string containing
-    //    the readable signature of a generic lambda.
-    // You will need to specify the type of the auto parameters
-    // Example:
-    //    auto f = [](auto x, auto y) { return x + y; };
-    //    std::cout << cleantype::lambda_generic_clean<int, char>(f) << std::endl;
-    //     ==>   lambda: (int, char) -> int
-    template <typename... Args, typename GenericLambda> std::string lambda_generic_clean(GenericLambda fn);
-
-    // * `cleantype::lambda_generic_full<Args...>(LambdaFn fn)` is a function that will return a string containing
-    //    the full signature of a generic lambda.
-    template <typename... Args, typename GenericLambda> std::string lambda_generic_full(GenericLambda fn);
 
     // *  `CT_type_lambda_generic_fromparams_XXX(lambda, arg1, arg2, ...)` is a macro that will return a string containing the
     //     signature of a generic lambda where you do not specify the args type, instead you give example of these types.
