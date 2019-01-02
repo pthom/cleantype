@@ -15,13 +15,12 @@
 #define LOG(str) std::cout << str << std::endl
 
 
-
 TEST_CASE("lambda_generic_clean")
 {
     {
         auto f = [](auto i) { return 2 * i; };
         REQUIRE_EQ(
-            cleantype::lambda_generic_clean<int>(f),
+            cleantype::lambda_clean<int>(f),
             "lambda: (int) -> int"
         );
     }
@@ -31,7 +30,7 @@ TEST_CASE("lambda_generic_clean")
             return fplus::pairs_to_map_grouped( fplus::overlapping_pairs_cyclic(range) );
         };
         REQUIRE_EQ(
-            cleantype::lambda_generic_clean<int>(f),
+            cleantype::lambda_clean<int>(f),
             "lambda: (int) -> std::map<int, std::vector<int>>"
         );
     }
@@ -40,7 +39,7 @@ TEST_CASE("lambda_generic_clean")
             return a + b;
         };
         REQUIRE_EQ(
-            cleantype::lambda_generic_clean<int, char>(f),
+            cleantype::lambda_clean<int, char>(f),
             "lambda: (int, char) -> int"
         );
     }

@@ -74,8 +74,6 @@ TEST_CASE("clean_from_values")
     const auto &e  = ee;
     auto computed = cleantype::clean(a, b, c, d, e);
     auto expected = std::string("int &, int const &, int const * const &, char &, std::vector<std::string> const &");
-    std::cout << computed << std::endl;
-    std::cout << expected << std::endl;
     REQUIRE_EQ(computed, expected);
 }
 

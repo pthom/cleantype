@@ -6,7 +6,6 @@
 #include <cleantype/details/cleantype_full.hpp>
 #include <cleantype/details/cleantype_clean.hpp>
 #include <cleantype/details/cleantype_lambda.hpp>
-#include <cleantype/details/cleantype_lambda_generic.hpp>
 #include <cleantype/details/cleantype_function.hpp>
 
 
@@ -79,39 +78,40 @@ namespace cleantype
     // * `CT_show_details_cont` (macro) is a version of CT_show_details for complex containers
     //    like "std::map". "cont" stands for "container".
 
-
     /////////////////////////
-    // lambdas (non generic)
+    // lambdas
     /////////////////////////
 
-    // * `cleantype::lambda_clean<LambdaFn>(LambdaFn fn)` is a function that will return a string containing
-    //    the readable signature of a lambda (non generic)
-    template <typename LambdaFn> std::string lambda_clean(LambdaFn fn);
-    // * `cleantype::lambda_clean<LambdaFn>(LambdaFn fn)` is a function that will return a string containing
-    //    the full signature of a lambda (non generic)
-    template <typename LambdaFn> std::string lambda_clean(LambdaFn fn);
+    // * `cleantype::lambda_clean<typename... Args, typename Lambda>(Lambda fn)` is a function that will return a string containing
+    //    the readable signature of a lambda
+    //
+    // In the case of a generic lambda, you will need to specify the type of the auto parameters:
+    // Example:
+    //    auto f = [](auto x, auto y) { return x + y; };
+    //    std::cout << cleantype::lambda_clean<int, char>(f) << std::endl;
+    //     ==>   lambda: (int, char) -> int
+    template <typename... Args, typename Lambda> std::string lambda_clean(Lambda fn);
+
+    // * `cleantype::lambda_clean<typename... Args, typename Lambda>(Lambda fn)` is a function that will return a string containing
+    //    the full signature of a lambda
+    template <typename... Args, typename Lambda> std::string lambda_full(Lambda fn);
+
+    // * `cleantype::lambda<typename... Args, typename Lambda>(Lambda fn, bool flag_clean)` is a function that will return
+    //    a string containing the signature of a lambda.
+    //    flag_clean controls wether the signature is cleaned or not.
+    //
+    // In the case of a generic lambda, you will need to specify the type of the auto parameters:
+    // Example:
+    //    auto f = [](auto x, auto y) { return x + y; };
+    //    std::cout << cleantype::lambda<int, char>(f, true) << std::endl;
+    //     ==>   lambda: (int, char) -> int
+    template <typename... Args, typename Lambda> std::string lambda(Lambda fn, bool flag_clean);
 
     // *  `CT_show_details_lambda(var)` is a macro that will return a string containing the
     //    readable signature of a lambda and its name
 
     // *  `CT_show_details_lambda_full(var)` is a macro that will return a string containing the
     //    full signature of a lambda and its name
-
-    /////////////////////////
-    // lambdas ( generic)
-    /////////////////////////
-    // * `cleantype::lambda_generic_clean<Args...>(LambdaFn fn)` is a function that will return a string containing
-    //    the readable signature of a generic lambda.
-    // You will need to specify the type of the auto parameters
-    // Example:
-    //    auto f = [](auto x, auto y) { return x + y; };
-    //    std::cout << cleantype::lambda_generic_clean<int, char>(f) << std::endl;
-    //     ==>   lambda: (int, char) -> int
-    template <typename... Args, typename GenericLambda> std::string lambda_generic_clean(GenericLambda fn);
-
-    // * `cleantype::lambda_generic_full<Args...>(LambdaFn fn)` is a function that will return a string containing
-    //    the full signature of a generic lambda.
-    template <typename... Args, typename GenericLambda> std::string lambda_generic_full(GenericLambda fn);
 
     // *  `CT_type_lambda_generic_fromparams_XXX(lambda, arg1, arg2, ...)` is a macro that will return a string containing the
     //     signature of a generic lambda where you do not specify the args type, instead you give example of these types.

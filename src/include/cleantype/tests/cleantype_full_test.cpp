@@ -293,7 +293,7 @@ TEST_CASE("cleantype_full_regex")
 #define RUN_ONE_TYPE_TEST_COMPILE_TIME(type_definition, type_string_literal)                     \
         {                                                                                        \
             constexpr auto computed =                                                            \
-                cleantype::internal::_impl_typeid_hana<type_definition>();                       \
+                cleantype::internal::_impl_typeid_hana_inside_holder<type_definition>();         \
             static_assert( boost::hana::experimental::type_name_details::stringliteral_equal_sz( \
                     computed, type_string_literal),                                              \
                 "RUN_ONE_TYPE_TEST_COMPILE_TIME error");                                         \
@@ -306,7 +306,7 @@ TEST_CASE("cleantype_full_regex")
 #define RUN_ONE_TYPE_TEST_RUN_TIME(type_definition, type_string_literal)                         \
         {                                                                                        \
             auto computed =                                                                      \
-                cleantype::internal::_impl_typeid_hana<type_definition>();                       \
+                cleantype::internal::_impl_typeid_hana_inside_holder<type_definition>();         \
             auto computed_s = boost::hana::experimental::type_name_details::                     \
                 stringliteral_to_string(computed);                                               \
             std::cout << "computed:"<< computed_s << std::endl;                                  \
