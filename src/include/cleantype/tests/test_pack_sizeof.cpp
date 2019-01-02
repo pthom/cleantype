@@ -5,8 +5,9 @@
 #define NONEMPTY_ARGS false
 
 ///////////////////////////////////////
-// C++ 17 version, using constexpr if
+// C++ 17 version, using constexpr if => disabled (this project is C++14 compatible)
 ///////////////////////////////////////
+/*
 template<typename... Args>
 constexpr auto one_cpp17()
 {
@@ -41,7 +42,7 @@ void test_cpp17()
     // Although, I would have thought otherwise, i.e this :
     // static_assert( two_cpp17<int>(42) == EMPTY_ARGS, "" );
 }
-
+*/
 
 ///////////////////////////////////////
 // C++ 14 version, using overloads
