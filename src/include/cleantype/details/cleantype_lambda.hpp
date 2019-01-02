@@ -10,44 +10,26 @@ namespace cleantype
 {
     namespace internal
     {
-
-        // template <typename LambdaFunction>
-        // std::string type_lambda(LambdaFunction fn, bool clean_params)
-        // {
-        //     auto as_ptr = &LambdaFunction::operator();
-        //     auto as_mem_fn = std::mem_fn(as_ptr);
-        //     std::string mem_fn_type = cleantype::internal::_impl_typeid_hana<decltype(as_mem_fn)>();
-        //     return _mem_fn_to_lambda_type(mem_fn_type, clean_params);
-        // }
-
         template <typename First, typename... Rest, typename Lambda>
-        std::string impl_lambda(Lambda fn, bool clean_type)
+        std::string lambda_memfn_type(Lambda fn)
         {
-            std::string mem_fn_type;
-            {
-                #ifdef _MSC_VER
-                    auto as_ptr = &Lambda::operator() < First, Rest... > ;
-                #else
-                    auto as_ptr = &Lambda::template operator() < First, Rest... > ;
-                #endif
-                auto as_mem_fn = std::mem_fn(as_ptr);
-                mem_fn_type = cleantype::internal::_impl_typeid_hana<decltype(as_mem_fn)>();
-            }
+            #ifdef _MSC_VER
+                auto as_ptr = &Lambda::operator() < First, Rest... > ;
+            #else
+                auto as_ptr = &Lambda::template operator() < First, Rest... > ;
+            #endif
+            auto as_mem_fn = std::mem_fn(as_ptr);
+            std::string mem_fn_type = cleantype::internal::_impl_typeid_hana<decltype(as_mem_fn)>();
 
-            std::string final_type = cleantype::internal::_mem_fn_to_lambda_type(mem_fn_type, clean_type);
-            return final_type;
+            return mem_fn_type;
         }
 
-        template <typename Lambda> std::string impl_lambda(Lambda fn, bool clean_type)
+        template <typename Lambda> std::string lambda_memfn_type(Lambda fn)
         {
-            std::string mem_fn_type;
-            {
-                auto as_ptr = &Lambda::operator(); // if you have an error here, your lambda is generic! Add template params for its input types!
-                auto as_mem_fn = std::mem_fn(as_ptr);
-                mem_fn_type = cleantype::internal::_impl_typeid_hana<decltype(as_mem_fn)>();
-            }
-            std::string final_type = cleantype::internal::_mem_fn_to_lambda_type(mem_fn_type, clean_type);
-            return final_type;
+            auto as_ptr = &Lambda::operator(); // if you have an error here, your lambda is generic! Add template params for its input types!
+            auto as_mem_fn = std::mem_fn(as_ptr);
+            std::string mem_fn_type = cleantype::internal::_impl_typeid_hana<decltype(as_mem_fn)>();
+            return mem_fn_type;
         }
 
 
@@ -68,8 +50,13 @@ namespace cleantype
     //     ==>   lambda: (int, char) -> int
     template <typename... Args, typename Lambda> std::string lambda_clean(Lambda fn)
     {
-        return internal::impl_lambda<Args...>(fn, true);
+        //return cleantype::lambda(fn, true); // Won't compile : clang gives up here
+        bool flag_clean = true;
+        std::string memfn_type = cleantype::internal::lambda_memfn_type<Args...>(fn);
+        std::string final_type = cleantype::internal::_mem_fn_to_lambda_type(memfn_type, flag_clean);
+        return final_type;
     }
+
 
     // * `cleantype::lambda_clean<typename... Args, typename Lambda>(Lambda fn)` is a function that will return a string containing
     //    the full signature of a lambda
@@ -77,8 +64,30 @@ namespace cleantype
     // (see lambda_clean doc for an example)
     template <typename... Args, typename Lambda> std::string lambda_full(Lambda fn)
     {
-        return internal::impl_lambda<Args...>(fn, false);
+        //return cleantype::lambda(fn, false); // Won't compile : clang gives up here
+        bool flag_clean = false;
+        std::string memfn_type = cleantype::internal::lambda_memfn_type<Args...>(fn);
+        std::string final_type = cleantype::internal::_mem_fn_to_lambda_type(memfn_type, flag_clean);
+        return final_type;
     }
+
+
+    // * `cleantype::lambda<typename... Args, typename Lambda>(Lambda fn, bool flag_clean)` is a function that will return
+    //    a string containing the signature of a lambda.
+    //    flag_clean controls wether the signature is cleaned or not.
+    //
+    // In the case of a generic lambda, you will need to specify the type of the auto parameters:
+    // Example:
+    //    auto f = [](auto x, auto y) { return x + y; };
+    //    std::cout << cleantype::lambda<int, char>(f, true) << std::endl;
+    //     ==>   lambda: (int, char) -> int
+    template <typename... Args, typename Lambda> std::string lambda(Lambda fn, bool flag_clean)
+    {
+        std::string memfn_type = cleantype::internal::lambda_memfn_type<Args...>(fn);
+        std::string final_type = cleantype::internal::_mem_fn_to_lambda_type(memfn_type, flag_clean);
+        return final_type;
+    }
+
 
 } // namespace cleantype
 

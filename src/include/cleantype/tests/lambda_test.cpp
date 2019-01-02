@@ -56,18 +56,41 @@ TEST_CASE("log_type_lambda_clean")
 }
 
 
-TEST_CASE("lambda_merge")
+TEST_CASE("lambda_generic_or_not")
 {
     {
         auto lambda = [](auto v) {
             return v + 42;
         };
-        LOG_VALUE(cleantype::lambda_full<int>(lambda));
+        REQUIRE_EQ(cleantype::lambda_full<int>(lambda), "lambda: (int) -> int");
     }
     {
         auto lambda = [](int v) {
             return v + 42;
         };
-        LOG_VALUE(cleantype::lambda_full(lambda));
+        REQUIRE_EQ(cleantype::lambda_full(lambda), "lambda: (int) -> int");
     }
+}
+
+TEST_CASE("lambda_clean_flag")
+{
+    {
+        auto make_repeat_vector = [](auto v, unsigned int nb) {
+            std::vector<decltype(v)> r;
+            for (std::size_t i = 0; i < nb; i++)
+                r.push_back(v);
+            return r;
+        };
+        REQUIRE_EQ(
+            cleantype::lambda<std::string>(make_repeat_vector, true),
+            "lambda: (std::string, unsigned int) -> std::vector<std::string>");
+
+        std::string full_type = cleantype::lambda<std::string>(make_repeat_vector, false);
+        // This test is disabled : it is very much compiler and stdlib dependant !
+        // REQUIRE_EQ(
+        //     full_type,
+        //     "lambda: (std::__1::basic_string<char>, unsigned int) -> std::__1::vector<std::__1::basic_string<char>, std::__1::allocator<std::__1::basic_string<char> > >");
+
+    }
+
 }

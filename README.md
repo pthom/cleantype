@@ -472,9 +472,9 @@ This is because "mystery_lambda" is actually a instance of a hidden class. We ar
 
 # Identify the signature of generic lambdas
 
-* `cleantype::lambda_generic_clean<Args...>(LambdaFn fn)` is a function that will return a string containing
+* `cleantype::lambda_clean<Args...>(LambdaFn fn)` is a function that will return a string containing
    the readable signature of a generic lambda. You will need to specify the type of the auto parameters
-* `cleantype::lambda_generic_full<Args...>(LambdaFn fn)` is a function that will return a string containing
+* `cleantype::lambda_full<Args...>(LambdaFn fn)` is a function that will return a string containing
    the full signature of a generic lambda.
 *  `CT_type_lambda_generic_fromparams_XXX(lambda, arg1, arg2, ...)` is a macro that will return a string containing the
     signature of a generic lambda where you do not specify the args type, instead you give example of these types.
@@ -497,7 +497,7 @@ So, if we try to get the signature via "cleantype::lambda_clean" we will run int
 
 ```c++
 // extract the lambda type using actual types
-std::cout << cleantype::lambda_generic_clean<int, double>(add) << std::endl;
+std::cout << cleantype::lambda_clean<int, double>(add) << std::endl;
 ```
 
     lambda: (int, double) -> double

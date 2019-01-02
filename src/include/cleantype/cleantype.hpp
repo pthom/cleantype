@@ -6,7 +6,6 @@
 #include <cleantype/details/cleantype_full.hpp>
 #include <cleantype/details/cleantype_clean.hpp>
 #include <cleantype/details/cleantype_lambda.hpp>
-#include <cleantype/details/cleantype_lambda_generic.hpp>
 #include <cleantype/details/cleantype_function.hpp>
 
 
@@ -79,7 +78,6 @@ namespace cleantype
     // * `CT_show_details_cont` (macro) is a version of CT_show_details for complex containers
     //    like "std::map". "cont" stands for "container".
 
-
     /////////////////////////
     // lambdas
     /////////////////////////
@@ -97,6 +95,17 @@ namespace cleantype
     // * `cleantype::lambda_clean<typename... Args, typename Lambda>(Lambda fn)` is a function that will return a string containing
     //    the full signature of a lambda
     template <typename... Args, typename Lambda> std::string lambda_full(Lambda fn);
+
+    // * `cleantype::lambda<typename... Args, typename Lambda>(Lambda fn, bool flag_clean)` is a function that will return
+    //    a string containing the signature of a lambda.
+    //    flag_clean controls wether the signature is cleaned or not.
+    //
+    // In the case of a generic lambda, you will need to specify the type of the auto parameters:
+    // Example:
+    //    auto f = [](auto x, auto y) { return x + y; };
+    //    std::cout << cleantype::lambda<int, char>(f, true) << std::endl;
+    //     ==>   lambda: (int, char) -> int
+    template <typename... Args, typename Lambda> std::string lambda(Lambda fn, bool flag_clean);
 
     // *  `CT_show_details_lambda(var)` is a macro that will return a string containing the
     //    readable signature of a lambda and its name
