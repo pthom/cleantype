@@ -39,13 +39,13 @@ namespace cleantype
                         auto as_ptr = &Lambda::template operator() < Args... > ;
                     #endif
                     auto as_mem_fn = std::mem_fn(as_ptr);
-                    mem_fn_type = cleantype::internal::_impl_typeid_hana_no_holder<decltype(as_mem_fn)>();
+                    mem_fn_type = cleantype::internal::_impl_typeid_hana<decltype(as_mem_fn)>();
                 }
                 else
                 {
                     auto as_ptr = &Lambda::operator(); // if you have an error here, your lambda is generic! Add template params for its input types!
                     auto as_mem_fn = std::mem_fn(as_ptr);
-                    mem_fn_type = cleantype::internal::_impl_typeid_hana_no_holder<decltype(as_mem_fn)>();
+                    mem_fn_type = cleantype::internal::_impl_typeid_hana<decltype(as_mem_fn)>();
                 }
             }
 

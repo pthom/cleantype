@@ -128,7 +128,7 @@ TEST_CASE("lambda_merge_generic")
         {
             auto ptr = _impl_lamda_to_ptr<int>( add_generic );
             auto as_mem_fn = std::mem_fn(ptr);
-            std::string mem_fn_type = cleantype::internal::_impl_typeid_hana_no_holder<decltype(as_mem_fn)>();
+            std::string mem_fn_type = cleantype::internal::_impl_typeid_hana<decltype(as_mem_fn)>();
             std::string final_type = cleantype::internal::_mem_fn_to_lambda_type(mem_fn_type, true);
             LOG("Generic");
             LOG(final_type);
@@ -136,7 +136,7 @@ TEST_CASE("lambda_merge_generic")
         {
             auto ptr = _impl_lamda_to_ptr( add_simple );
             auto as_mem_fn = std::mem_fn(ptr);
-            std::string mem_fn_type = cleantype::internal::_impl_typeid_hana_no_holder<decltype(as_mem_fn)>();
+            std::string mem_fn_type = cleantype::internal::_impl_typeid_hana<decltype(as_mem_fn)>();
             std::string final_type = cleantype::internal::_mem_fn_to_lambda_type(mem_fn_type, true);
             LOG("Simple");
             LOG(final_type);

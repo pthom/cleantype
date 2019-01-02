@@ -25,28 +25,28 @@ namespace cleantype
 
     namespace internal
     {
-        // Trick in order to skip having to deal the tedious syntax of parameter packs
+        // Trick in order to avoid having to deal the tedious syntax of parameter packs
         template<typename... T> struct TupleTypeHolder{
         };
 
 
         template<typename T>
-        constexpr stringliteral _impl_typeid_hana_no_holder_literal()
+        constexpr stringliteral _impl_typeid_hana_literal()
         {
             return boost::hana::experimental::type_name_details::type_name_impl_stringliteral<T>();
         }
 
         template<typename T>
-        std::string _impl_typeid_hana_no_holder()
+        std::string _impl_typeid_hana()
         {
             return boost::hana::experimental::type_name_details::stringliteral_to_string(
-                _impl_typeid_hana_no_holder_literal<T>()
+                _impl_typeid_hana_literal<T>()
             );
         }
 
 
         template<typename... T>
-        constexpr stringliteral _impl_typeid_hana()
+        constexpr stringliteral _impl_typeid_hana_inside_holder()
         {
             return boost::hana::experimental::type_name_details::type_name_impl_stringliteral< TupleTypeHolder<T...> >();
         }
@@ -55,7 +55,7 @@ namespace cleantype
         template<typename... T>
         stringliteral impl_typeid()
         {
-            return _impl_typeid_hana<T...>();
+            return _impl_typeid_hana_inside_holder<T...>();
         }
 
 
