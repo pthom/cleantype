@@ -29,14 +29,23 @@ struct my_functor{
 void static_test_invoke_result()
 {
     {
-        // For functions and auto function: use < decltype(&f), Args... >
+        // For functions, use < decltype(&f), Args... >
         using T = cleantype::invoke_result< decltype(&fortytwo), int, int>::type;
         static_assert(std::is_same<T, int>::value, "");
     }
     {
+        // For auto functions, use < decltype(&f), Args... >
+        using T = cleantype::invoke_result< decltype(&add_auto_fn), int, int>::type;
+        static_assert(std::is_same<T, int>::value, "");
+    }
+    {
         // For templated auto functions: use < decltype(&f)<Args...>, Args... >
+        // this does *not* work under MSVC, because of a probable compiler bug
+        // See https://stackoverflow.com/questions/54111146/invoke-result-for-template-function-with-auto-return-type-and-msvc-2017
+#ifndef _MSC_VER
         using T = cleantype::invoke_result< decltype(&add_auto_template_fn<int, double>), int, double>::type;
         static_assert(std::is_same<T, double>::value, "");
+#endif
     }
     {
         // For simple lambdas: use < decltype(lambda), Args... >
@@ -65,9 +74,20 @@ void static_test_invoke_result_fn()
         using T = CT_invoke_result_fn(fortytwo, int, int);
         static_assert(std::is_same<T, int>::value, "");
     }
+#ifndef _MSC_VER
     {
         // For templated auto functions: use CT_invoke_result_fn_template(f, Args...)
         using T = CT_invoke_result_fn_template(add_auto_template_fn, int, double);
         static_assert(std::is_same<T, double>::value, "");
     }
+#else
+    {
+        // For templated auto functions under MSVC:
+        // use CT_invoke_result_fn_template(f, Args...)
+        // you will need to "help" the compiler before, by calling CT_invoke_result_fn_template_memoize
+        CT_invoke_result_fn_template_memoize(add_auto_template_fn, int, double);
+        using T = CT_invoke_result_fn_template(add_auto_template_fn, int, double);
+        static_assert(std::is_same<T, double>::value, "");
+    }
+#endif
 }

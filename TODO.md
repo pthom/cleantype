@@ -1,8 +1,9 @@
 * invoke_result :
     * [X] remove cleantype_function.hpp
     * [X] polyfill invoke_result
-    * [X] invoke_result_clean / invoke_result_full
-    * [ ] ? essayer d'ameliorer API ?
+    * [N] invoke_result_clean / invoke_result_full
+    * [X] CT_invoke_result_fn, CT_invoke_result_fn_template
+    * [X] improve invoke_result on functions ant templated functions
     * [ ] Doc (separate page ?)
     * [ ] CI C++14 & C++17 ?
 

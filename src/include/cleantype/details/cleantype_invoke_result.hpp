@@ -7,21 +7,28 @@
 #include <cleantype/details/cleantype_clean.hpp>
 #include <cleantype/details/invoke_result_polyfill.hpp>
 
+
 namespace cleantype
 {
-    #if __cplusplus < 201703L
+#if __cplusplus < 201703L
     template <class F, class... ArgTypes>
     struct invoke_result : detail::invoke_result<void, F, ArgTypes...> {};
-    #else
+#else
     template <class F, class... ArgTypes>
     struct invoke_result : std::invoke_result<F, ArgTypes...> {};
-    #endif
+#endif
+}
 
-
-    #define CT_invoke_result_fn(f, ...) \
+#define CT_invoke_result_fn(f, ...) \
     cleantype::invoke_result<decltype(&f) , __VA_ARGS__>::type
 
-    #define CT_invoke_result_fn_template(f, ...) \
+#define CT_invoke_result_fn_template(f, ...) \
     cleantype::invoke_result<decltype(&f<__VA_ARGS__>) , __VA_ARGS__>::type
 
-}
+#ifdef _MSC_VER
+// under MSVC 2017, std::invoke_result fails with template functions
+// See https://stackoverflow.com/questions/54111146/invoke-result-for-template-function-with-auto-return-type-and-msvc-2017
+// You need to call CT_invoke_result_fn_template_memoize before calling CT_invoke_result_fn_template 
+// in order to help the compiler
+#define CT_invoke_result_fn_template_memoize(f, ...) { auto _ = f<__VA_ARGS__>; (void) _; }
+#endif
