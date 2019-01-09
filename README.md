@@ -81,10 +81,10 @@ The "#pragma cling add_include_path" is specific to cling. Beside this, everythi
 
 ```c++
 // This macro is used later in this manual in order to display commands and their results
-#define run_show(cmd)           \
-{                               \
-    std::cout << #cmd << "\n";  \
-    std::cout << cmd << "\n\n"; \
+#define run_show(...)                   \
+{                                       \
+    std::cout << #__VA_ARGS__ << "\n";  \
+    std::cout << __VA_ARGS__ << "\n\n"; \
 }
 ```
 
@@ -468,7 +468,7 @@ If we try to get the type of this lambda via `cleantype::full`, we do not get mu
 std::cout << cleantype::full<decltype(mystery_lambda)>();
 ```
 
-    (lambda at input_line_26:4:23)
+    (lambda at input_line_27:4:23)
 
 This is because "mystery_lambda" is actually a instance of a hidden class. We are actually looking for the signature of the operator() of this class. `type_lambda_clean` is able to extract the type of this operator and to display it in a readable way.
 
@@ -525,17 +525,76 @@ std::cout << CT_type_lambda_generic_fromparams_2(add, 1u, -2);
 
 This second version is useful when you are lost in a forest of "auto" variables deep in the call stack, and you do not know the return type of the lambda, and you do not even know the type of the input parameters: in that case, if you have a working call example, then you can use it.
 
-# Identify the return type of an `auto` function
+# Identify the return type of `auto` functions, functors, lambda, etc.
 
-Work in progress...
+* `cleantype::invoke_result<F, Args...>::type` will contain the type of any function / lambda / functor. This is a _type_, not a value
+* `cleantype::invoke_result_t<F, Args...>` is a shorter way to get the same type.
+* `CT_invoke_result_fn` is a macro that makes it easy to get the return type of a function whose has a return type is marked as "auto". 
+* `CT_invoke_result_fn_template` is a macro that makes it easy to get the return type of a _template_ function whose has a return type is marked as "auto". 
+
+_Note: "cleantype::invoke_result_t" is a C++14 polyfill for "std::invoke_result" (C++14 only provides "std::result_of", which is to be deprecated soon). When using C++17, it uses std::invoke_result in the background.
+
+## Examples
+
+### Using invoke_result and invoke_result_t
 
 
 ```c++
-auto auto_fonction(int b) {
-  std::vector<int> range = fplus::numbers(0, b);
-  return fplus::pairs_to_map_grouped( fplus::overlapping_pairs_cyclic(range) );
-};
+namespace {
+    auto add_auto_fn(int a, int b) { return a + b; }
+
+    template<typename U, typename V>
+    auto add_auto_template_fn(U a, V b) { return a + b; }
+
+    struct my_functor{ auto operator() (int a) { return a + 42; }  };
+}
+
+void static_test_invoke_result()
+{
+    // For auto functions: use cleantype::invoke_result_t< decltype(&f), Args... >
+    using T = cleantype::invoke_result_t< decltype(&add_auto_template_fn<int, double>), int, double>;
+    static_assert(std::is_same<T, double>::value, "");
+
+    // For templated auto functions: use cleantype::invoke_result_t< decltype(&f<Args...>), Args... >
+    using U = cleantype::invoke_result_t< decltype(&add_auto_template_fn<int, double>), int, double>;
+    static_assert(std::is_same<U, double>::value, "");
+
+    // For generic lambdas: use cleantype::invoke_result_t< decltype(lambda), Args... >
+    auto generic_lambda = [](auto a) {  return a + 42; };
+    using V = cleantype::invoke_result_t< decltype(generic_lambda), double>;
+    static_assert(std::is_same<V, double>::value, "");
+
+    // For functors: use cleantype::invoke_result_t< functor, Args... >
+    using W = cleantype::invoke_result_t< my_functor, int>;
+    static_assert(std::is_same<W, int>::value, "");
+}
+
 ```
+
+### Shorter / more legible code with `CT_invoke_result_fn`  and `CT_invoke_result_fn_template``
+
+
+```c++
+// For auto functions: use CT_invoke_result_fn(f, Args...)
+// you can combine it with cleantype::clean to get the name of the output type
+run_show (   cleantype::clean< CT_invoke_result_fn(add_auto_fn, int, int) >()  );
+
+// For templated auto functions: use CT_invoke_result_fn_template(f, Args...)
+// you can combine it with cleantype::clean to get the name of the output type
+run_show (   cleantype::clean< CT_invoke_result_fn_template(add_auto_template_fn, std::string, char) >()     );
+```
+
+    cleantype::clean< CT_invoke_result_fn(add_auto_fn, int, int) >()
+    int
+    
+    cleantype::clean< CT_invoke_result_fn_template(add_auto_template_fn, std::string, char) >()
+    std::string
+    
+
+
+__Limitations of invoke_result with MSVC 2017 and templated auto functions__:
+
+`invoke_result` does not work under MSVC with template functions whose return type is auto (see https://stackoverflow.com/questions/54111146/invoke-result-for-template-function-with-auto-return-type-and-msvc-2017)
 
 # The zoo of type qualifiers
 `cleantype`handles quite well `const`, `volatile`, references (`&`), rvalue references (`&&`), and pointers (`*`). See below a demonstration 
