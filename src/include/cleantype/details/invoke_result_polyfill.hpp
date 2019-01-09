@@ -66,12 +66,4 @@ namespace detail
 } // namespace detail
 #endif
 
-#if __cplusplus < 201703L
-template <class F, class... ArgTypes>
-struct invoke_result : detail::invoke_result<void, F, ArgTypes...> {};
-#else
-template <class F, class... ArgTypes>
-struct invoke_result : std::invoke_result<F, ArgTypes...> {};
-#endif
-
 } // namespace cleantype_polyfill

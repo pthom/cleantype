@@ -1,3 +1,11 @@
+* invoke_result :
+    * [X] remove cleantype_function.hpp
+    * [X] polyfill invoke_result
+    * [X] invoke_result_clean / invoke_result_full
+    * [ ] ? essayer d'ameliorer API ?
+    * [ ] Doc (separate page ?)
+    * [ ] CI C++14 & C++17 ?
+
 * [X]  type_name_s :
     * [X] hana
         * [X] pas de doctest, main only
