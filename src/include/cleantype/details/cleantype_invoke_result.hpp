@@ -24,18 +24,4 @@ namespace cleantype
     #define CT_invoke_result_fn_template(f, ...) \
     cleantype::invoke_result<decltype(&f<__VA_ARGS__>) , __VA_ARGS__>::type
 
-
-    template <class F, class... ArgTypes>
-    inline std::string invoke_result_clean()
-    {
-        using T = typename cleantype::invoke_result<F, ArgTypes...>::type;
-        return cleantype::clean<T>();
-    }
-
-    template <class F, class... ArgTypes>
-    inline std::string invoke_result_full()
-    {
-        using T = typename cleantype::invoke_result<F, ArgTypes...>::type;
-        return cleantype::full<T>();
-    }
 }
