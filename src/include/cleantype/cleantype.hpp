@@ -6,6 +6,7 @@
 #include <cleantype/details/cleantype_full.hpp>
 #include <cleantype/details/cleantype_clean.hpp>
 #include <cleantype/details/cleantype_lambda.hpp>
+#include <cleantype/details/cleantype_invoke_result.hpp>
 
 
 namespace cleantype
