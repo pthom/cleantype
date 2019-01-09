@@ -4,6 +4,7 @@
 #include "doctest.h"
 #include <vector>
 #include <cleantype/details/cleantype_invoke_result.hpp>
+#include <cleantype/cleantype.hpp>
 
 
 // #define LOG(v) std::cout << v << "\n";
@@ -54,6 +55,22 @@ void static_test_invoke_result()
         using T = cleantype::invoke_result< my_functor, int>::type;
         static_assert(std::is_same<T, int>::value, "");
     }
+}
+
+
+void static_test_invoke_result_fn()
+{
+    {
+        // For functions and auto function: use CT_invoke_result_fn(f, Args...)
+        using T = CT_invoke_result_fn(fortytwo, int, int);
+        static_assert(std::is_same<T, int>::value, "");
+    }
+    {
+        // For templated auto functions: use CT_invoke_result_fn_template(f, Args...)
+        using T = CT_invoke_result_fn_template(add_auto_template_fn, int, double);
+        static_assert(std::is_same<T, double>::value, "");
+    }
+
 }
 
 

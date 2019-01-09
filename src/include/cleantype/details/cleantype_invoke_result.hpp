@@ -17,6 +17,14 @@ namespace cleantype
     struct invoke_result : std::invoke_result<F, ArgTypes...> {};
     #endif
 
+
+    #define CT_invoke_result_fn(f, ...) \
+    cleantype::invoke_result<decltype(&f) , __VA_ARGS__>::type
+
+    #define CT_invoke_result_fn_template(f, ...) \
+    cleantype::invoke_result<decltype(&f<__VA_ARGS__>) , __VA_ARGS__>::type
+
+
     template <class F, class... ArgTypes>
     inline std::string invoke_result_clean()
     {
