@@ -574,7 +574,7 @@ void static_test_invoke_result()
 
 ```
 
-### Shorter / more legible code with `CT_invoke_result_fn`  and `CT_invoke_result_fn_template`
+### Shorter / more legible code with `CT_invoke_result_fn`
 
 
 ```c++
