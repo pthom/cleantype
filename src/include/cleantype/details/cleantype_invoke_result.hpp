@@ -17,6 +17,9 @@ namespace cleantype
     template <class F, class... ArgTypes>
     struct invoke_result : std::invoke_result<F, ArgTypes...> {};
 #endif
+
+    template< class F, class... ArgTypes>
+    using invoke_result_t = typename invoke_result<F, ArgTypes...>::type;
 }
 
 #define CT_invoke_result_fn(f, ...) \
@@ -28,7 +31,7 @@ namespace cleantype
 #ifdef _MSC_VER
 // under MSVC 2017, std::invoke_result fails with template functions
 // See https://stackoverflow.com/questions/54111146/invoke-result-for-template-function-with-auto-return-type-and-msvc-2017
-// You need to call CT_invoke_result_fn_template_memoize before calling CT_invoke_result_fn_template 
+// You need to call CT_invoke_result_fn_template_memoize before calling CT_invoke_result_fn_template
 // in order to help the compiler
 #define CT_invoke_result_fn_template_memoize(f, ...) { auto _ = f<__VA_ARGS__>; (void) _; }
 #endif

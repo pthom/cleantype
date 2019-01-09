@@ -32,11 +32,15 @@ void static_test_invoke_result()
         // For functions, use < decltype(&f), Args... >
         using T = cleantype::invoke_result< decltype(&fortytwo), int, int>::type;
         static_assert(std::is_same<T, int>::value, "");
+        using U = cleantype::invoke_result_t< decltype(&fortytwo), int, int>;
+        static_assert(std::is_same<U, int>::value, "");
     }
     {
         // For auto functions, use < decltype(&f), Args... >
         using T = cleantype::invoke_result< decltype(&add_auto_fn), int, int>::type;
         static_assert(std::is_same<T, int>::value, "");
+        using U = cleantype::invoke_result_t< decltype(&add_auto_fn), int, int>;
+        static_assert(std::is_same<U, int>::value, "");
     }
     {
         // For templated auto functions: use < decltype(&f)<Args...>, Args... >
@@ -45,6 +49,8 @@ void static_test_invoke_result()
 #ifndef _MSC_VER
         using T = cleantype::invoke_result< decltype(&add_auto_template_fn<int, double>), int, double>::type;
         static_assert(std::is_same<T, double>::value, "");
+        using U = cleantype::invoke_result_t< decltype(&add_auto_template_fn<int, double>), int, double>;
+        static_assert(std::is_same<U, double>::value, "");
 #endif
     }
     {
@@ -52,17 +58,23 @@ void static_test_invoke_result()
         auto simple_lambda = [](int a) {  return a + 42; };
         using T = cleantype::invoke_result< decltype(simple_lambda), int>::type;
         static_assert(std::is_same<T, int>::value, "");
+        using U = cleantype::invoke_result_t< decltype(simple_lambda), int>;
+        static_assert(std::is_same<U, int>::value, "");
     }
     {
         // For generic lambdas: use < decltype(lambda), Args... >
         auto generic_lambda = [](auto a) {  return a + 42; };
         using T = cleantype::invoke_result< decltype(generic_lambda), double>::type;
         static_assert(std::is_same<T, double>::value, "");
+        using U = cleantype::invoke_result_t< decltype(generic_lambda), double>;
+        static_assert(std::is_same<U, double>::value, "");
     }
     {
         // For functors: use < functor, Args... >
         using T = cleantype::invoke_result< my_functor, int>::type;
         static_assert(std::is_same<T, int>::value, "");
+        using U = cleantype::invoke_result_t< my_functor, int>;
+        static_assert(std::is_same<U, int>::value, "");
     }
 }
 
