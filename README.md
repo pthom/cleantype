@@ -581,7 +581,6 @@ void static_test_invoke_result()
 run_show (       CT_type_fn(add_auto_fn, int, int)                                   );
 
 // For templated auto functions: display their return type with CT_type_fn_template(f, Args...)
-// you can combine it with cleantype::clean to get the name of the output type
 run_show (       CT_type_fn_template(add_auto_template_fn, std::string, char)        );
 ```
 
