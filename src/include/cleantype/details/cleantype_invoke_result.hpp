@@ -28,6 +28,18 @@ namespace cleantype
 #define CT_invoke_result_fn_template(f, ...) \
     cleantype::invoke_result<decltype(&f<__VA_ARGS__>) , __VA_ARGS__>::type
 
+
+#define CT_type_fn(f, ...) \
+    cleantype::clean< CT_invoke_result_fn(f, __VA_ARGS__) >()
+#define CT_type_fn_full(f, ...) \
+    cleantype::full< CT_invoke_result_fn(f, __VA_ARGS__) >()
+
+#define CT_type_fn_template(f, ...) \
+    cleantype::clean< CT_invoke_result_fn_template(f, __VA_ARGS__) >()
+#define CT_type_fn_template_full(f, ...) \
+    cleantype::full< CT_invoke_result_fn_template(f, __VA_ARGS__) >()
+
+
 #ifdef _MSC_VER
 // under MSVC 2017, std::invoke_result fails with template functions
 // See https://stackoverflow.com/questions/54111146/invoke-result-for-template-function-with-auto-return-type-and-msvc-2017

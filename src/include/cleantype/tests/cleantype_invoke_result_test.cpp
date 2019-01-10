@@ -26,7 +26,7 @@ struct my_functor{
 };
 
 
-void static_test_invoke_result()
+TEST_CASE("test_invoke_result")
 {
     {
         // For functions, use < decltype(&f), Args... >
@@ -79,18 +79,22 @@ void static_test_invoke_result()
 }
 
 
-void static_test_invoke_result_fn()
+TEST_CASE("test_invoke_result_FN")
 {
     {
         // For functions and auto function: use CT_invoke_result_fn(f, Args...)
         using T = CT_invoke_result_fn(fortytwo, int, int);
         static_assert(std::is_same<T, int>::value, "");
+
+        REQUIRE_EQ( CT_type_fn(fortytwo, int, int), "int" );
     }
 #ifndef _MSC_VER
     {
         // For templated auto functions: use CT_invoke_result_fn_template(f, Args...)
         using T = CT_invoke_result_fn_template(add_auto_template_fn, int, double);
         static_assert(std::is_same<T, double>::value, "");
+
+        REQUIRE_EQ( CT_type_fn_template(add_auto_template_fn, int, double), "double" );
     }
 #else
     {

@@ -4,8 +4,12 @@
     * [N] invoke_result_clean / invoke_result_full
     * [X] CT_invoke_result_fn, CT_invoke_result_fn_template
     * [X] improve invoke_result on functions ant templated functions
-    * [ ] Doc (separate page ?)
+    * [X] Doc (separate page ?)
     * [ ] CI C++14 & C++17 ?
+
+* Layout doc : Table of Content?
+
+* doc / anonmymous namespace for several functions (code ballads)
 
 * [X]  type_name_s :
     * [X] hana
