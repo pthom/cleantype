@@ -527,18 +527,13 @@ This second version is useful when you are lost in a forest of "auto" variables 
 
 # Identify the return type of `auto` functions, functors, lambda, etc.
 
-* `cleantype::invoke_result<F, Args...>::type` will contain the type of any function / lambda / functor. This is a __type__, _not a value_
-* `cleantype::invoke_result_t<F, Args...>` is a shorter way to get the same type.
-* `CT_invoke_result_fn(F, Args...)` is a macro that makes it easy to get the return _type_ of a function whose return type is marked as "auto". 
-* `CT_invoke_result_fn_template(F, Args...)` is a macro that makes it easy to get the return _type_ of a _template_ function whose return type is marked as "auto". 
-* `CT_type_fn` and `CT_type_fn_full` are macros that return a _string_ containing the return type of a function whose return type is marked as "auto"
-* `CT_type_fn_template` and `CT_type_fn_template_full` are macros that return a _string_ containing the return type of a template function whose return type is marked as "auto"
-
+* `cleantype::invoke_result<F, Args...>::type` and `cleantype::invoke_result_t<F, Args...>` will contain the type of any function / lambda / functor. This is a __type__, _not a string_. 
+* `CT_invoke_result_fn(F, Args...)` and `CT_invoke_result_fn_template(F, Args...)` are macros that makes it easy to get the return _type_ of a function whose return type is marked as "auto" (the second version is for template functions)
+* `CT_type_fn`, `CT_type_fn_template`, `CT_type_fn_full` and `CT_type_fn_template_full` are macros that return a _string_ containing the return type of a function whose return type is marked as "auto"
 
 __Notes:__
-* `cleantype::invoke_result_t` is a C++14 polyfill for `std::invoke_result` (C++14 only provides "std::result_of", which is to be deprecated soon). When using C++17, it uses std::invoke_result in the background.
-* You can combine these functions and `cleantype::clean<T>()` to get the type as a string.
-* Yes, `CT_invoke_result_fn` is indeed a variadic macro!
+* "cleantype::invoke_result_t" is a C++14 polyfill for [`std::invoke_result`](https://en.cppreference.com/w/cpp/types/result_of) (C++14 only provides "std::result_of", which is to be deprecated soon). When using C++17, it uses std::invoke_result in the background.
+* Yes, "CT_invoke_result_fn" is indeed a variadic macro!
 
 ## Examples
 
