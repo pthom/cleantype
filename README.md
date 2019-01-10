@@ -43,6 +43,16 @@ The returned types names should be similar accross compilers.
 
 Note: this library is heavily [tested](https://github.com/pthom/cleantype/tree/master/src/include/cleantype/tests), with clang, gcc and msvc. However, it should be considered *alpha* state.
 
+# Table of content
+
+<table>
+<tr><td>
+    <a href="#Installation-and-usage">Installation and usage</a><br/>
+    <a href="#About-this-manual">About this manual</a><br/>
+    <a href="#Friendly-type-names-for-variables-(clean-type,-name-and-value)">Friendly type names for variables (clean type, name and value)</a><br/>
+</tr></td>
+</table>
+
 # Installation and usage
 
 * `cleantype`is a small header only library, so you just need to clone it and add it to your path.
