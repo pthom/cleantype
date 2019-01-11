@@ -3,16 +3,16 @@
 <table>
 <tr><td>
 <p style="text-align: left;">
-   <a href="#cleantype--readable-c++-types-and-lambda-signatures-/-compiler-decipherer">cleantype : Readable C++ Types and Lambda signatures / Compiler Decipherer</a><br/>
-   <a href="#installation-and-usage">Installation and usage</a><br/>
-   <a href="#about-this-manual">About this manual</a><br/>
-   <a href="#friendly-type-names">Friendly type names</a><br/>
-   <a href="#decipher-compiler-output-and-identify-types-in-the-compiler-output">Decipher compiler output and identify types in the compiler output</a><br/>
-   <a href="#constexpr-compile-time-type-names">constexpr Compile time type names</a><br/>
-   <a href="#identify-the-signature-of-lambdas">Identify the signature of lambdas</a><br/>
-   <a href="#identify-the-signature-of-generic-lambdas">Identify the signature of generic lambdas</a><br/>
-   <a href="#identify-the-return-type-of-`auto`-functions,-functors,-lambda,-etc.">Identify the return type of `auto` functions, functors, lambda, etc.</a><br/>
-   <a href="#the-zoo-of-type-qualifiers">The zoo of type qualifiers</a><br/>
+   <a href="#cleantype--Readable-C++-Types-and-Lambda-signatures-/-Compiler-Decipherer">cleantype : Readable C++ Types and Lambda signatures / Compiler Decipherer</a><br/>
+   <a href="#Installation-and-usage">Installation and usage</a><br/>
+   <a href="#About-this-manual">About this manual</a><br/>
+   <a href="#Friendly-type-names">Friendly type names</a><br/>
+   <a href="#Decipher-compiler-output-and-identify-types-in-the-compiler-output">Decipher compiler output and identify types in the compiler output</a><br/>
+   <a href="#constexpr-Compile-time-type-names">constexpr Compile time type names</a><br/>
+   <a href="#Identify-the-signature-of-lambdas">Identify the signature of lambdas</a><br/>
+   <a href="#Identify-the-signature-of-generic-lambdas">Identify the signature of generic lambdas</a><br/>
+   <a href="#Identify-the-return-type-of-"auto"-functions,-functors,-lambda,-etc.">Identify the return type of "auto" functions, functors, lambda, etc.</a><br/>
+   <a href="#The-zoo-of-type-qualifiers">The zoo of type qualifiers</a><br/>
 
 </p>
 </tr></td>
@@ -546,7 +546,7 @@ std::cout << CT_type_lambda_generic_fromparams_2(add, 1u, -2);
 
 This second version is useful when you are lost in a forest of "auto" variables deep in the call stack, and you do not know the return type of the lambda, and you do not even know the type of the input parameters: in that case, if you have a working call example, then you can use it.
 
-# Identify the return type of `auto` functions, functors, lambda, etc.
+# Identify the return type of "auto" functions, functors, lambda, etc.
 
 * `cleantype::invoke_result<F, Args...>::type` and `cleantype::invoke_result_t<F, Args...>` will contain the type of any function / lambda / functor. This is a __type__, _not a string_. 
 * `CT_invoke_result_fn(F, Args...)` and `CT_invoke_result_fn_template(F, Args...)` are macros that makes it easy to get the return _type_ of a function whose return type is marked as "auto" (the second version is for template functions)
