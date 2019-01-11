@@ -1,4 +1,26 @@
 
+# Table of content
+<table>
+<tr><td>
+<p style="text-align: left;">
+   <a href="#Table-of-content">Table of content</a><br/>
+   <a href="#cleantype-:-Readable-C++-Types-and-Lambda-signatures-/-Compiler-Decipherer">`cleantype` : Readable C++ Types and Lambda signatures / Compiler Decipherer</a><br/>
+   <a href="#Installation-and-usage">Installation and usage</a><br/>
+   <a href="#About-this-manual">About this manual</a><br/>
+   <a href="#Friendly-type-names-for-variables:-clean-type,-name-and-value">Friendly type names for variables: clean type, name and value</a><br/>
+   <a href="#Decipher-compiler-output-and-identify-types-in-the-compiler-output">Decipher compiler output and identify types in the compiler output</a><br/>
+   <a href="#constexpr-Compile-time-type-names">constexpr Compile time type names</a><br/>
+   <a href="#Identify-the-signature-of-lambdas">Identify the signature of lambdas</a><br/>
+   <a href="#Identify-the-signature-of-generic-lambdas">Identify the signature of generic lambdas</a><br/>
+   <a href="#Identify-the-return-type-of-auto-functions,-functors,-lambda,-etc.">Identify the return type of `auto` functions, functors, lambda, etc.</a><br/>
+   <a href="#The-zoo-of-type-qualifiers">The zoo of type qualifiers</a><br/>
+
+</p>
+</tr></td>
+</table>
+
+
+
 <table>
     <tr>
       <td>
@@ -42,16 +64,6 @@ The returned types names should be similar accross compilers.
 #### Status
 
 Note: this library is heavily [tested](https://github.com/pthom/cleantype/tree/master/src/include/cleantype/tests), with clang, gcc and msvc. However, it should be considered *alpha* state.
-
-# Table of content
-
-<table>
-<tr><td>
-    <a href="#Installation-and-usage">Installation and usage</a><br/>
-    <a href="#About-this-manual">About this manual</a><br/>
-    <a href="#Friendly-type-names-for-variables-(clean-type,-name-and-value)">Friendly type names for variables (clean type, name and value)</a><br/>
-</tr></td>
-</table>
 
 # Installation and usage
 
@@ -98,7 +110,7 @@ The "#pragma cling add_include_path" is specific to cling. Beside this, everythi
 }
 ```
 
-# Friendly type names for variables (clean type, name and value)
+# Friendly type names for variables: clean type, name and value
 
  ## Readable type names 
                  
@@ -297,7 +309,7 @@ run_show(     CT_show_details_full_cont(my_map)               )
     
 
 
-# Decipher compiler output and identify types and compile time
+# Decipher compiler output and identify types in the compiler output
 
 * `ct_compiler_decipher` is a tool that deciphers the compiler output and makes it more readable, especially when there are lots of templates
 * `CT_compiler_log_type(T)` is a macro that will create an intentional compiler error whose intent is to display the type name of T. You can use it in conjunction with "ct_compiler_decipher".
