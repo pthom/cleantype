@@ -8,9 +8,8 @@
    <a href="#About-this-manual">About this manual</a><br/>
    <a href="#Friendly-type-names">Friendly type names</a><br/>
    <a href="#Decipher-compiler-output-and-identify-types-in-the-compiler-output">Decipher compiler output and identify types in the compiler output</a><br/>
-   <a href="#constexpr-Compile-time-type-names">constexpr Compile time type names</a><br/>
+   <a href="#constexpr-compile-time-type-names">constexpr compile time type names</a><br/>
    <a href="#Identify-the-signature-of-lambdas">Identify the signature of lambdas</a><br/>
-   <a href="#Identify-the-signature-of-generic-lambdas">Identify the signature of generic lambdas</a><br/>
    <a href="#Identify-the-auto-return-type-of-functions,-functors,-lambda,-etc.">Identify the auto return type of functions, functors, lambda, etc.</a><br/>
    <a href="#The-zoo-of-type-qualifiers">The zoo of type qualifiers</a><br/>
 
@@ -421,7 +420,7 @@ compile_code_decipher__extract(code2);
         ^                        ~
 
 
-# constexpr Compile time type names
+# constexpr compile time type names
 
 ### Get the typename as a Boost.Hana string
 
@@ -441,6 +440,7 @@ Based on the work done during the development of this librayr, a [Pull Request](
 
 # Identify the signature of lambdas
 
+## Non generic lambdas
 * `cleantype::lambda<typename... Args, typename Lambda>(Lambda fn, bool flag_clean)` is a function that will return
     a string containing the signature of a lambda. flag_clean controls wether the signature is cleaned or not.
 
@@ -493,7 +493,7 @@ std::cout << cleantype::full<decltype(mystery_lambda)>();
 
 This is because "mystery_lambda" is actually a instance of a hidden class. We are actually looking for the signature of the operator() of this class. `type_lambda_clean` is able to extract the type of this operator and to display it in a readable way.
 
-# Identify the signature of generic lambdas
+## Generic lambdas
 
 * `cleantype::lambda`, `cleantype::lambda_clean` and `cleantype::lambda_full` are compatible with generic lambdas, provided that you specify the type of the "auto" params during the call.
 *  `CT_type_lambda_generic_fromparams_XXX(lambda, arg1, arg2, ...)` is a macro that will return a string containing the signature of a generic lambda where you do not specify the args type, instead you give example of these types.
