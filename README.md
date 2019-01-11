@@ -3,17 +3,16 @@
 <table>
 <tr><td>
 <p style="text-align: left;">
-   <a href="#Table-of-content">Table of content</a><br/>
-   <a href="#cleantype-:-Readable-C++-Types-and-Lambda-signatures-/-Compiler-Decipherer">`cleantype` : Readable C++ Types and Lambda signatures / Compiler Decipherer</a><br/>
-   <a href="#Installation-and-usage">Installation and usage</a><br/>
-   <a href="#About-this-manual">About this manual</a><br/>
-   <a href="#Friendly-type-names-for-variables:-clean-type,-name-and-value">Friendly type names for variables: clean type, name and value</a><br/>
-   <a href="#Decipher-compiler-output-and-identify-types-in-the-compiler-output">Decipher compiler output and identify types in the compiler output</a><br/>
-   <a href="#constexpr-Compile-time-type-names">constexpr Compile time type names</a><br/>
-   <a href="#Identify-the-signature-of-lambdas">Identify the signature of lambdas</a><br/>
-   <a href="#Identify-the-signature-of-generic-lambdas">Identify the signature of generic lambdas</a><br/>
-   <a href="#Identify-the-return-type-of-auto-functions,-functors,-lambda,-etc.">Identify the return type of `auto` functions, functors, lambda, etc.</a><br/>
-   <a href="#The-zoo-of-type-qualifiers">The zoo of type qualifiers</a><br/>
+   <a href="#cleantype--readable-c++-types-and-lambda-signatures-/-compiler-decipherer">cleantype : Readable C++ Types and Lambda signatures / Compiler Decipherer</a><br/>
+   <a href="#installation-and-usage">Installation and usage</a><br/>
+   <a href="#about-this-manual">About this manual</a><br/>
+   <a href="#friendly-type-names">Friendly type names</a><br/>
+   <a href="#decipher-compiler-output-and-identify-types-in-the-compiler-output">Decipher compiler output and identify types in the compiler output</a><br/>
+   <a href="#constexpr-compile-time-type-names">constexpr Compile time type names</a><br/>
+   <a href="#identify-the-signature-of-lambdas">Identify the signature of lambdas</a><br/>
+   <a href="#identify-the-signature-of-generic-lambdas">Identify the signature of generic lambdas</a><br/>
+   <a href="#identify-the-return-type-of-`auto`-functions,-functors,-lambda,-etc.">Identify the return type of `auto` functions, functors, lambda, etc.</a><br/>
+   <a href="#the-zoo-of-type-qualifiers">The zoo of type qualifiers</a><br/>
 
 </p>
 </tr></td>
@@ -40,7 +39,7 @@
     </tr>
 </table> 
 
-# `cleantype` : Readable C++ Types and Lambda signatures / Compiler Decipherer
+# cleantype : Readable C++ Types and Lambda signatures / Compiler Decipherer
 
 `cleantype`is a small header only library which offer *readable* type names, with a *consistent naming scheme accross compilers*, at *run-time* and *compile-time*. It can also output the *signature of lambda* functions.
 
@@ -110,7 +109,7 @@ The "#pragma cling add_include_path" is specific to cling. Beside this, everythi
 }
 ```
 
-# Friendly type names for variables: clean type, name and value
+# Friendly type names
 
  ## Readable type names 
                  
