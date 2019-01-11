@@ -6,7 +6,7 @@
    <a href="#cleantype--Readable-C++-Types-and-Lambda-signatures-/-Compiler-Decipherer">cleantype : Readable C++ Types and Lambda signatures / Compiler Decipherer</a><br/>
    <a href="#Installation-and-usage">Installation and usage</a><br/>
    <a href="#About-this-manual">About this manual</a><br/>
-   <a href="#Friendly-type-names">Friendly type names</a><br/>
+   <a href="#Readable-type-names-and-full-type-names">Readable type names and full type names</a><br/>
    <a href="#Decipher-compiler-output-and-identify-types-in-the-compiler-output">Decipher compiler output and identify types in the compiler output</a><br/>
    <a href="#Compile-time-constexpr-type-names">Compile time constexpr type names</a><br/>
    <a href="#Identify-the-signature-of-lambdas">Identify the signature of lambdas</a><br/>
@@ -108,7 +108,7 @@ The "#pragma cling add_include_path" is specific to cling. Beside this, everythi
 }
 ```
 
-# Friendly type names
+# Readable type names and full type names
 
  ## Readable type names 
                  
