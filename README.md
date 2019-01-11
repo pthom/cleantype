@@ -8,7 +8,7 @@
    <a href="#About-this-manual">About this manual</a><br/>
    <a href="#Friendly-type-names">Friendly type names</a><br/>
    <a href="#Decipher-compiler-output-and-identify-types-in-the-compiler-output">Decipher compiler output and identify types in the compiler output</a><br/>
-   <a href="#constexpr-compile-time-type-names">constexpr compile time type names</a><br/>
+   <a href="#Compile-time-constexpr-type-names">Compile time constexpr type names</a><br/>
    <a href="#Identify-the-signature-of-lambdas">Identify the signature of lambdas</a><br/>
    <a href="#Identify-the-auto-return-type-of-functions,-functors,-lambda,-etc.">Identify the auto return type of functions, functors, lambda, etc.</a><br/>
    <a href="#The-zoo-of-type-qualifiers">The zoo of type qualifiers</a><br/>
@@ -420,7 +420,7 @@ compile_code_decipher__extract(code2);
         ^                        ~
 
 
-# constexpr compile time type names
+# Compile time constexpr type names
 
 ### Get the typename as a Boost.Hana string
 
