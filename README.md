@@ -11,7 +11,7 @@
    <a href="#constexpr-Compile-time-type-names">constexpr Compile time type names</a><br/>
    <a href="#Identify-the-signature-of-lambdas">Identify the signature of lambdas</a><br/>
    <a href="#Identify-the-signature-of-generic-lambdas">Identify the signature of generic lambdas</a><br/>
-   <a href="#Identify-the-return-type-of-"auto"-functions,-functors,-lambda,-etc.">Identify the return type of "auto" functions, functors, lambda, etc.</a><br/>
+   <a href="#Identify-the-auto-return-type-of-functions,-functors,-lambda,-etc.">Identify the auto return type of functions, functors, lambda, etc.</a><br/>
    <a href="#The-zoo-of-type-qualifiers">The zoo of type qualifiers</a><br/>
 
 </p>
@@ -546,7 +546,7 @@ std::cout << CT_type_lambda_generic_fromparams_2(add, 1u, -2);
 
 This second version is useful when you are lost in a forest of "auto" variables deep in the call stack, and you do not know the return type of the lambda, and you do not even know the type of the input parameters: in that case, if you have a working call example, then you can use it.
 
-# Identify the return type of "auto" functions, functors, lambda, etc.
+# Identify the auto return type of functions, functors, lambda, etc.
 
 * `cleantype::invoke_result<F, Args...>::type` and `cleantype::invoke_result_t<F, Args...>` will contain the type of any function / lambda / functor. This is a __type__, _not a string_. 
 * `CT_invoke_result_fn(F, Args...)` and `CT_invoke_result_fn_template(F, Args...)` are macros that makes it easy to get the return _type_ of a function whose return type is marked as "auto" (the second version is for template functions)
