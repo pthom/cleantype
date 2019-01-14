@@ -42,22 +42,22 @@ using lhs_rhs_tree = tree<lhs_rhs>;
 struct tree_separators {
     char open_child = '<';
     char close_child = '>';
-    char separate_siblings = ',';
+    char siblings_separator = ',';
 };
 
 struct show_tree_options
 {
-    bool add_new_lines = true;
+    bool add_new_lines_before_children = true;
     bool add_space_between_siblings = false;
     std::string indent = "  ";
 };
 
 struct show_tree_lhs_rhs_options
 {
-    bool add_new_lines = true;
-    bool add_space_between_siblings = false;
+    bool add_new_lines_before_children = true;
     bool add_space_after_lhs = false;
     bool add_space_before_rhs = false;
+    bool add_space_between_siblings = false;
     std::string indent = "  ";
 };
 
@@ -103,7 +103,7 @@ inline lhs_rhs_tree parse_lhs_rhs_tree(
             is_first_after_tok = true;
             is_filling_rhs = false;
         }
-        else if (c == separators.separate_siblings)
+        else if (c == separators.siblings_separator)
         {
             lhs_rhs_tree brother{ {},{} };
             parents.back()->children_.push_back(brother);
@@ -169,7 +169,7 @@ inline string_tree parse_string_tree(
             current = &(parents.back()->children_.back());
             is_first_after_tok = true;
         }
-        else if (c == separators.separate_siblings)
+        else if (c == separators.siblings_separator)
         {
             string_tree brother{ {}, {} };
             parents.back()->children_.push_back(brother);
@@ -243,8 +243,8 @@ std::string show_tree_children(const std::vector<tree<T>> & children,
 
     const std::string siblings_separator =
         show_tree_lhs_rhs_options_.add_space_between_siblings ?
-          show(separators.separate_siblings) + " "
-        : show(separators.separate_siblings);
+          show(separators.siblings_separator) + " "
+        : show(separators.siblings_separator);
 
     std::string children_str = join(siblings_separator, children_strs);
     return children_str;
@@ -261,7 +261,7 @@ std::string show_tree_lhs_rhs(
     auto line_start = fp::repeat(level, show_tree_lhs_rhs_options_.indent);
 
     std::string result;
-    if (show_tree_lhs_rhs_options_.add_new_lines)
+    if (show_tree_lhs_rhs_options_.add_new_lines_before_children)
         result = line_start;
 
     result += fp::show(v.value_.lhs);
@@ -270,17 +270,17 @@ std::string show_tree_lhs_rhs(
 
     if (!v.children_.empty())
     {
-        if (show_tree_lhs_rhs_options_.add_new_lines)
+        if (show_tree_lhs_rhs_options_.add_new_lines_before_children)
             result += "\n" + line_start;
         result += separators.open_child;
-        if (show_tree_lhs_rhs_options_.add_new_lines)
+        if (show_tree_lhs_rhs_options_.add_new_lines_before_children)
             result += "\n";
 
         std::string children_str = show_tree_children(v.children_, separators, show_tree_lhs_rhs_options_, level);
 
         result += children_str;
 
-        if (show_tree_lhs_rhs_options_.add_new_lines)
+        if (show_tree_lhs_rhs_options_.add_new_lines_before_children)
             result += "\n" + line_start;
         result += separators.close_child;
     }
@@ -303,17 +303,17 @@ std::string show_tree(
     auto line_start = fp::repeat(level, show_tree_options_.indent);
 
     std::string result;
-    if (show_tree_options_.add_new_lines)
+    if (show_tree_options_.add_new_lines_before_children)
         result = line_start;
 
     result += fp::show(v.value_);
 
     if (!v.children_.empty())
     {
-        if (show_tree_options_.add_new_lines)
+        if (show_tree_options_.add_new_lines_before_children)
             result += "\n" + line_start;
         result += separators.open_child;
-        if (show_tree_options_.add_new_lines)
+        if (show_tree_options_.add_new_lines_before_children)
             result += "\n";
 
         std::vector<std::string> children_strs =
@@ -324,13 +324,13 @@ std::string show_tree(
 
         const std::string siblings_separator =
             show_tree_options_.add_space_between_siblings ?
-                    show(separators.separate_siblings) + " "
-                :   show(separators.separate_siblings);
+                    show(separators.siblings_separator) + " "
+                :   show(separators.siblings_separator);
         std::string children_str = join(siblings_separator, children_strs);
 
         result += children_str;
 
-        if (show_tree_options_.add_new_lines)
+        if (show_tree_options_.add_new_lines_before_children)
             result += "\n" + line_start;
         result += separators.close_child;
     }

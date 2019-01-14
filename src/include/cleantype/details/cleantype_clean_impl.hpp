@@ -63,7 +63,7 @@ namespace cleantype
             fp::fp_add::tree_separators sep;
             sep.open_child = '<';
             sep.close_child = '>';
-            sep.separate_siblings = ',';
+            sep.siblings_separator = ',';
             return sep;
         }
 
@@ -71,7 +71,7 @@ namespace cleantype
         inline fp::fp_add::show_tree_lhs_rhs_options make_template_show_tree_options()
         {
             fp::fp_add::show_tree_lhs_rhs_options result;
-            result.add_new_lines = false;
+            result.add_new_lines_before_children = false;
             result.add_space_between_siblings = true;
             result.indent = "";
             result.add_space_after_lhs = false;
