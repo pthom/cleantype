@@ -1,7 +1,4 @@
 * [ ] Cleanup
-    * [ ] Bugs
-        * [ ] lambda composed gcc ? Still here ???
-    * [ ] Continuous Integration : C++14 & C++17
     * [ ] Remove submodule hana (checkout via notebook if needed)
     * [ ] Configuration via pref file ?
     * [ ] Doc
@@ -11,10 +8,12 @@
         * [ ] Mention look for help?
         * [ ] Article ?
     * [ ] utiliser fplus pour de bon ?
+    * [ ] Continuous Integration : C++14 & C++17
 
 * [ ] Other
     * [ ] doc / anonmymous namespace for several functions (code ballads)
     * [ ] hana notebooks based on examples?
+    * [ ] test range v3
 
 * [ ] FPlus :
     * [ ] Officialy use it as a submodule

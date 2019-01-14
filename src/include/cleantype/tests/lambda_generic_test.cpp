@@ -7,10 +7,6 @@
 #include <functional>
 #include <map>
 
-#if !defined(__clang__) && ( defined(__GNUC__) || defined(__GNUG__) )
-    #define IS_GCC_COMPILER
-#endif
-
 
 #define LOG(str) std::cout << str << std::endl
 
@@ -74,7 +70,6 @@ auto lambda_generic = [](int a) { return a * 2; };
 auto lambda_composed = fplus::fwd::compose(lambda_std, lambda_generic);
 
 
-#ifndef IS_GCC_COMPILER
 TEST_CASE("lambda_generic_composition")
 {
 
@@ -85,8 +80,8 @@ TEST_CASE("lambda_generic_composition")
         );
     }
     {
-        auto local_lambda_std = [](int a) { return a * a; };
-        auto local_lambda_generic = [](int a) { return a * 2; };
+        auto local_lambda_std = [](auto a) { return a * a; };
+        auto local_lambda_generic = [](auto a) { return a * 2; };
         auto local_lambda_composed = fplus::fwd::compose(local_lambda_std, local_lambda_generic);
         REQUIRE_EQ(
             CT_type_lambda_generic_fromparams_1(local_lambda_composed, 1),
@@ -94,4 +89,3 @@ TEST_CASE("lambda_generic_composition")
         );
     }
 }
-#endif
