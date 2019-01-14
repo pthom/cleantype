@@ -68,21 +68,36 @@ namespace cleantype
         }
 
 
-        inline fp::fp_add::show_tree_lhs_rhs_options make_template_show_tree_options()
+        inline fp::fp_add::show_tree_lhs_rhs_options make_template_show_tree_options_impl(bool indent)
         {
             fp::fp_add::show_tree_lhs_rhs_options result;
-            result.add_new_lines_before_children = false;
-            result.add_space_between_siblings = true;
-            result.indent = "";
+            if (indent)
+            {
+                result.add_new_lines_before_children = true;
+                result.siblings_spacing = fp::fp_add::siblings_spacing_t::new_line;
+                result.indent = "    ";
+            }
+            else
+            {
+                result.add_new_lines_before_children = false;
+                result.siblings_spacing = fp::fp_add::siblings_spacing_t::space;
+                result.indent = "";
+            }
             result.add_space_after_lhs = false;
             result.add_space_before_rhs = true;
             return result;
         }
 
 
+        inline fp::fp_add::show_tree_lhs_rhs_options make_template_show_tree_options()
+        {
+            return make_template_show_tree_options_impl(false);
+        }
+
+
         inline code_pair_tree parse_template_tree(std::string const &s)
         {
-            return parse_lhs_rhs_tree(s, make_template_tree_separators(), false, false);
+            return parse_lhs_rhs_tree(s, make_template_tree_separators(), true);
         }
 
 
