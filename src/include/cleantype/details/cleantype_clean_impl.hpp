@@ -15,13 +15,12 @@ namespace cleantype
 
     namespace internal
     {
-        std::string impl_clean_one_type(std::string const & typ_name);
-
+        std::string impl_clean_one_type(std::string const & typ_name, bool remove_type_tuple_holder);
 
         inline std::vector<std::string> tokenize_params_around_comma(std::string const & params, bool clean_params)
         {
             auto clean_param_if_needed = [&clean_params](std::string const & param) {
-                return clean_params ? impl_clean_one_type(param) : fp::trim(' ', param);
+                return clean_params ? impl_clean_one_type(param, false) : fp::trim(' ', param);
             };
 
             std::vector<std::string> result;
@@ -196,7 +195,7 @@ namespace cleantype
         }
 
 
-        inline std::string type_children_to_string(code_pair_tree const & xs)
+        inline std::string code_pair_children_to_string(code_pair_tree const & xs)
         {
             return fp::fp_add::show_tree_children(
                     xs.children_,
@@ -214,7 +213,7 @@ namespace cleantype
         }
 
 
-        inline std::string impl_clean_one_type(std::string const & typ_name)
+        inline std::string impl_clean_one_type(std::string const & typ_name, bool remove_type_tuple_holder)
         {
             std::string typ_name_trimmed = fp::trim(' ', typ_name);
 
@@ -226,7 +225,10 @@ namespace cleantype
             fp::fp_add::tree_transform_leafs_depth_first_inplace(trim_spaces_inplace, template_tree);
             code_pair_tree template_tree_filtered = filter_undesirable_template_leafs(template_tree);
 
-            auto template_tree_filtered_str = code_pair_tree_to_string(template_tree_filtered);
+            std::string template_tree_filtered_str =
+                remove_type_tuple_holder ?
+                        code_pair_children_to_string(template_tree_filtered)
+                    :   code_pair_tree_to_string(template_tree_filtered);
 
             std::string final_type = perform_std_replacements(template_tree_filtered_str);
             final_type = add_space_before_ref(final_type);
@@ -236,9 +238,10 @@ namespace cleantype
 
         inline std::string impl_clean_several_types(std::string const & type_names)
         {
-            std::vector<std::string> types = tokenize_params_around_comma(type_names, true);
-            std::string r = fp::join(", ", types);
-            return r;
+            std::string types_with_holder = "type_tuple_holder< " + type_names + " >";
+            bool remove_type_tuple_holder = true;
+            std::string types_clean_with_holder = impl_clean_one_type(types_with_holder, remove_type_tuple_holder);
+            return types_clean_with_holder;
         }
 
 

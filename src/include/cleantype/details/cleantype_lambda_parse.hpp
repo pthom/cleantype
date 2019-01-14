@@ -152,7 +152,7 @@ namespace cleantype
                 return_str = garbage_r.remaining_at_start;
             }
 
-            std::string return_type = clean_params ? impl_clean_one_type(return_str) : return_str;
+            std::string return_type = clean_params ? impl_clean_one_type(return_str, false) : return_str;
             if (cleantype::CleanConfiguration::GlobalConfig().force_east_const_)
                 return_type = cleantype::apply_east_const(return_type);
             // std::cout << "params= " << params << '\n';

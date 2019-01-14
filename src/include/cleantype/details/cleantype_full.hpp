@@ -63,7 +63,7 @@ namespace cleantype
         {
             auto code_pair_tree_ = cleantype::internal::parse_template_tree(typ_name);
             assert(code_pair_tree_.children_.size() > 0);
-            std::string extracted_type = cleantype::internal::type_children_to_string(code_pair_tree_);
+            std::string extracted_type = cleantype::internal::code_pair_children_to_string(code_pair_tree_);
             return extracted_type;
         }
 
