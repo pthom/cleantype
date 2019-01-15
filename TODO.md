@@ -1,24 +1,21 @@
-* Range-v3 & indent:
-    * [X] auto-indent clean
-    * [X] pref / start auto indent
-    * [ ] doc / range-v3 & indent
-
 * [ ] Cleanup
-    * [ ] Remove submodule hana (checkout via notebook if needed)
     * [ ] Configuration via pref file ?
+    * [ ] third parties cleanup:
+        * [ ] Separate unit test & doc third parties from required third parties
+        * [ ] Remove submodules used only for tests?
+        * [ ] Document install & third parties
+        * [ ] Use Fplus instead of polyfills ?
+    * [ ] Continuous Integration : C++14 & C++17
     * [ ] Doc
-        * [ ] Layout doc : Table of Content?
-        * [ ] Add example with range v3 (no submodule : checkout via notebook)
+        * [X] Layout doc : Table of Content?
+        * [X] Add example with range v3 (no submodule : checkout via notebook)
         * [ ] Better doc / config
         * [ ] Mention look for help?
         * [ ] Article ?
-    * [ ] utiliser fplus pour de bon ?
-    * [ ] Continuous Integration : C++14 & C++17
 
 * [ ] Other
     * [ ] doc / anonmymous namespace for several functions (code ballads)
     * [ ] hana notebooks based on examples?
-    * [ ] test range v3
 
 * [ ] FPlus :
     * [ ] Officialy use it as a submodule
@@ -28,6 +25,11 @@
     * [ ] propose extensions
 
 
+* [X] Range-v3 & indent:
+    * [X] auto-indent clean
+    * [X] pref / start auto indent
+    * [X] doc / range-v3 & indent
+
 * invoke_result :
     * [X] remove cleantype_function.hpp
     * [X] polyfill invoke_result
@@ -35,7 +37,6 @@
     * [X] CT_invoke_result_fn, CT_invoke_result_fn_template
     * [X] improve invoke_result on functions ant templated functions
     * [X] Doc (separate page ?)
-
 
 * [X]  type_name_s :
     * [X] hana
@@ -62,13 +63,11 @@
             * [X] command line options / clean
             * [X] On peut extraire le nom de la variable recherche en regardant quelques lignes plus bas,
 
-
     * [X] Notebook Doc
         * [X] decipherer build tool
         * [X] decipherer
         * [X] check status / references & update accordingly
         * [X] doc / build and usage decipherer
-
 
 
     * [X] Compiler log decipherer
@@ -77,15 +76,7 @@
         * [X] gcc
         * [X] interact progressive ou utiliser tee ?
 
-
-* [X] Passer le code en east const
-* [X] includes avec <>
-* [X] classer fonctions string dans stringutils
-* [X] cleantype or ConsType ?
-
-* [X] Change name lib : clean type ?
-    * [X] Change copyright messsage & add one empty line
-
+    * [X] east const
 
 * [X] Check references: (same, and for compile time)
     * [X] boost::hana::experimental::type_name

@@ -18,7 +18,6 @@ TEST_CASE("indent")
     {
         std::string s("Foo<int>");
         auto indented = cleantype::indent_type_tree(s);
-        LOG_VAR(indented);
         std::string expected = R"(Foo
 <
     int

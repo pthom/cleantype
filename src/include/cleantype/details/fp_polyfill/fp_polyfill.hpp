@@ -296,4 +296,14 @@ T maximum(const std::vector<T>& xs)
     return max;
 }
 
+template <typename T>
+std::vector<T> reverse(const std::vector<T> & xs)
+{
+    std::vector<T> r;
+    for (std::size_t i = xs.size(); i > 0; i--)
+        r.push_back(xs[i - 1]);
+    return r;
+}
+
+
 }
