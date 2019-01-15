@@ -41,7 +41,7 @@
 
 # cleantype : readable C++ type introspection - Compiler Decipherer
 
-`cleantype`is a small header only library which offer *readable* type names, with a *consistent naming scheme accross compilers*, at *run-time* and *compile-time*. It can also output the *signature of lambda* functions, and the result type of any auto function (range-v3 anyone?).
+`cleantype`is a small header only library which offer *readable* type names, with a *consistent naming scheme accross compilers*, at *run-time* and *compile-time*. It can also output the *signature of lambda* functions, and the result type of any auto function.
 
 The included tool `ct_compiler_decipher` simplifies the template noise in your compiler output : just ` "|" (pipe)` your build tool to it.
 
@@ -791,7 +791,7 @@ Since lambda are actually anonymous structs, cleantype cannot disclose the signa
                 int,
                 void
             >,
-            (lambda at input_line_14:5:32)
+            (lambda at input_line_42:5:32)
         >,
         void
     > &
