@@ -1,0 +1,24 @@
+{
+    "force_east_const_": true,
+    "indent_depth_limit": 3,
+    "replacements_after_undesirable_node_extractions": {
+        "basic_string<_CharT, _Traits, _Allocator>": "std::string",
+        "std::basic_string<char>": "std::string"
+    },
+    "suppress_custom_": [
+        " __ptr64"
+    ],
+    "suppress_extra_namespaces_": [
+        "::__1",
+        "::__cxx11"
+    ],
+    "suppress_extract_struct_class_": [
+        "class ",
+        "struct "
+    ],
+    "undesirable_type_nodes_": [
+        "std::char_traits",
+        "std::allocator",
+        "std::less"
+    ]
+}

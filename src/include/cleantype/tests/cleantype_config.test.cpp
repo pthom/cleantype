@@ -6,7 +6,7 @@
 
 #define LOG_VAR(var) std::cout << #var << "\n" << var << "\n";
 
-TEST_CASE("config")
+TEST_CASE("CleanConfiguration_string_serialize")
 {
     using namespace nlohmann;
     cleantype::CleanConfiguration config_current = cleantype::CleanConfiguration::GlobalConfig();
@@ -22,6 +22,4 @@ TEST_CASE("config")
         config_current.suppress_extra_namespaces_,
         config_example.suppress_extra_namespaces_
     );
-
-
 }

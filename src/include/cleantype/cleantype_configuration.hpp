@@ -54,11 +54,14 @@ namespace cleantype
 
     )";
 
-    //
+
+
+
     // In order to configure the behavior of clean types :
-    // Create a file ~/.cleantype.json with the content of the string CleanConfigurationExample
-    // (just above). Edit this file as a normal json file (you can use https://jsoneditoronline.org/
-    // if you want an interactive editor)
+    // * Create a file ".cleantype.json" with the content of the string CleanConfigurationExample (just above)
+    //   (or duplicate the file .cleantype.json at the root of the cleantype repoitory)
+    // * Edit this file as a normal json file (you can use also use an online editor like https://jsoneditoronline.org/)
+    // * Save this file in anywhere in the hierarchy of the parent directories of the execution directory.
     struct CleanConfiguration
     {
         std::vector<std::string> suppress_extra_namespaces_ = {
@@ -100,6 +103,7 @@ namespace cleantype
         //   will be presented on several indented lines
         // set  indent_depth_limit = 0 to disable indentation
         std::size_t indent_depth_limit = 3;
+
 
         inline static CleanConfiguration & GlobalConfig()
         {
@@ -157,11 +161,14 @@ namespace cleantype
 
 #include <cstdlib>
 #include <sys/stat.h>
-
+#include <cleantype/details/fp_polyfill/fp_polyfill.hpp>
+#include <cleantype/details/stringutils.hpp>
 #if defined(__unix__) || defined(__APPLE__)
 #include <unistd.h>
 #include <sys/types.h>
-#include <pwd.h>
+#endif
+#ifdef WINDOWS
+#include <direct.h>
 #endif
 
 
@@ -169,39 +176,41 @@ namespace cleantype
 {
     namespace filesystem
     {
-        inline std::string safe_getenv(const std::string k)
+        inline std::string getcwd()
         {
-            char * p = getenv(k.c_str());
-            if (p == NULL)
-                return "";
-            else
-                return std::string(p);
-        }
-
-        inline std::string user_home_directory()
-        {
-            // cf https://stackoverflow.com/questions/2552416/how-can-i-find-the-users-home-dir-in-a-cross-platform-manner-using-c
-            // Windows: env USERPROFILE or if this fails, concatenate HOMEDRIVE+HOMEPATH
-            // Linux, Unix and OS X: env HOME or if this fails, use getpwuid() (example code)
-            std::string home_directory;
-
-            #if defined(__unix__) || defined(__APPLE__)
-                struct passwd* pwd = getpwuid(getuid());
-                if (pwd)
-                    home_directory = pwd->pw_dir;
-                else
-                    home_directory = getenv("HOME");
+            #ifdef WINDOWS
+            char *answer = _getcwd(NULL, 0);
             #else
-                home_directory= safe_getenv("USERPROFILE");
-                if (home_directory.empty())
-                    home_directory= safe_getenv("HOMEDRIVE") + safe_getenv("HOMEPATH");
+            char buffer[PATH_MAX];
+            char *answer = ::getcwd(buffer, sizeof(buffer));
             #endif
 
-            if (home_directory.empty())
+            std::string s;
+            if (answer)
+                s = answer;
+            return s;
+        }
+
+        inline std::vector<std::string> parent_directories()
+        {
+            std::string cwd = cleantype::filesystem::getcwd();
+            cwd = fp::replace_tokens("\\", "/", cwd);
+
+            std::vector<std::string> folder_elems = stringutils::split_string(cwd, '/');
+
+            if (folder_elems.empty())
+                return {};
+
+            std::vector<std::string> parent_dirs;
+            std::string current = "";
+            for (const auto & folder_elem : folder_elems)
             {
-                home_directory = "./";
+                current = current + folder_elem + "/";
+                parent_dirs.push_back(current);
             }
-            return home_directory;
+
+            parent_dirs = fp::reverse(parent_dirs);
+            return parent_dirs;
         }
 
         inline bool file_exists (const std::string& name) {
@@ -215,16 +224,20 @@ namespace cleantype
     {
         inline CleanConfiguration ImplGlobalConfig()
         {
-            cleantype::CleanConfiguration gCleanConfiguration;
-            std::string pref_file = cleantype::filesystem::user_home_directory() + ".cleantype.json";
-            if (cleantype::filesystem::file_exists(pref_file))
+            std::vector<std::string> parent_dirs = cleantype::filesystem::parent_directories();
+            for (const std::string & dir : parent_dirs)
             {
-                std::ifstream is(pref_file);
-                nlohmann::json json_data;
-                is >> json_data;
-                gCleanConfiguration = json_data.get<cleantype::CleanConfiguration>();
+                std::string pref_file = dir + "/.cleantype.json";
+                if (cleantype::filesystem::file_exists(pref_file))
+                {
+                    std::ifstream is(pref_file);
+                    nlohmann::json json_data;
+                    is >> json_data;
+                    cleantype::CleanConfiguration config = json_data.get<cleantype::CleanConfiguration>();
+                    return config;
+                }
             }
-            return gCleanConfiguration;
+            return cleantype::CleanConfiguration();
         }
     }
 
