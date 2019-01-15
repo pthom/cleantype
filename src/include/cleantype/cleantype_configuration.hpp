@@ -171,7 +171,7 @@ namespace cleantype
 #if defined(__unix__) || defined(__APPLE__)
 #include <sys/param.h>
 #endif
-#ifdef WINDOWS
+#ifdef _WIN32
 #include <direct.h>
 #endif
 
@@ -182,7 +182,7 @@ namespace cleantype
     {
         inline std::string getcwd()
         {
-            #ifdef WINDOWS
+            #ifdef _WIN32
             char *answer = _getcwd(NULL, 0);
             #else
             #ifdef __APPLE__
