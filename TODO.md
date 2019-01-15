@@ -3,21 +3,6 @@
     * [ ] pref / start auto indent
     * [ ] extract tupleholder to hpp
 
-    inline std::string clean_typestring(const std::string & type_names)
-    {
-        return internal::impl_clean_several_types(type_names);
-    }
-    inline std::string impl_clean_several_types(std::string const & type_names)
-    {
-        std::vector<std::string> types = split_types(type_names, true);
-        std::string r = fp::join(", ", types);
-        return r;
-    }
-
-    Refac:
-        clean_several_types : use strange impl_clean_one_type(bool remove_holder)
-        split_types -> rename with type list in the name
-
 * [ ] Cleanup
     * [ ] Remove submodule hana (checkout via notebook if needed)
     * [ ] Configuration via pref file ?

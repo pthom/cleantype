@@ -221,25 +221,62 @@ namespace cleantype
         }
 
 
+        inline std::string impl_indent_type_tree(const std::string & type_names)
+        {
+            std::string types_with_holder = add_type_holder_str(type_names);
+            code_pair_tree template_tree = parse_template_tree(types_with_holder);
+            std::string types_with_holder_indented = fp::fp_add::show_tree_lhs_rhs(
+                    template_tree,
+                    make_template_tree_separators(),
+                    make_template_show_tree_options_with_indent());
+
+            // now, types_with_holder_indented is like this:
+            //
+            // cleantype::internal::TupleTypeHolder
+            // <
+            //     Foo
+            //     <
+            //         int,
+            //         char
+            //     >
+            // >
+            //
+            // --> we remove the lines [0, 1, last], then w remove the first indentation level
+
+            auto remove_indented_tuple_holder = [](const std::string & type_str){
+                std::vector<std::string> lines = stringutils::split_string(type_str, '\n');
+                assert(lines.size() >= 3);
+                std::vector<std::string> filtered_lines(
+                    lines.begin() + 2,
+                    lines.end() - 1
+                 );
+                std::vector<std::string> unindented_lines = fp::transform(
+                    [](const std::string & s) {
+                        return stringutils::remove_start(s, "    ");
+                    },
+                    filtered_lines
+                );
+                std::string joined_lines = fp::join("\n", unindented_lines);
+                return joined_lines;
+            };
+
+            return remove_indented_tuple_holder(types_with_holder_indented);
+        }
+
+
         inline std::string impl_clean_several_types(std::string const & type_names)
         {
-          std::string types_with_holder = add_type_holder_str(type_names);
-          std::string types_clean_with_holder = impl_clean_one_type(types_with_holder);
-          return remove_type_holder_str(types_clean_with_holder);
-          //if fp::tree_depth > 3 ...
+            std::string types_with_holder = add_type_holder_str(type_names);
+            std::string types_clean_with_holder = impl_clean_one_type(types_with_holder);
+            return remove_type_holder_str(types_clean_with_holder);
+            //if fp::tree_depth > 3 ...
         }
 
-
-        inline std::vector<std::string> _split_string(std::string const & s, char delimiter)
+        inline std::string impl_clean(std::string const & type_names)
         {
-            std::vector<std::string> tokens;
-            std::string token;
-            std::istringstream tokenStream(s);
-            while (std::getline(tokenStream, token, delimiter))
-                tokens.push_back(token);
-            return tokens;
+            auto cleaned = impl_clean_several_types(type_names);
+            return cleaned;
         }
-
 
     } // namespace internal
 

@@ -12,6 +12,7 @@
 
 namespace fp
 {
+
 template <typename T>
 struct tree
 {
