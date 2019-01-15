@@ -11,6 +11,7 @@
    <a href="#Compile-time-constexpr-type-names">Compile time constexpr type names</a><br/>
    <a href="#Identify-the-signature-of-lambdas">Identify the signature of lambdas</a><br/>
    <a href="#Identify-the-auto-return-type-of-functions-and-functors">Identify the auto return type of functions and functors</a><br/>
+   <a href="#Configure-cleantype-replacements-and-indentation">Configure cleantype replacements and indentation</a><br/>
    <a href="#Decipher-range-v3-auto-types">Decipher range-v3 auto types</a><br/>
    <a href="#The-zoo-of-type-qualifiers">The zoo of type qualifiers</a><br/>
 
@@ -654,6 +655,45 @@ run_show (       CT_type_fn_template(add_auto_template_fn, std::string, char)   
 __Limitations of invoke_result with MSVC 2017 and templated auto functions__:
 
 `invoke_result` does not work under MSVC with template functions whose return type is auto (see https://stackoverflow.com/questions/54111146/invoke-result-for-template-function-with-auto-return-type-and-msvc-2017)
+
+# Configure cleantype replacements and indentation
+
+In order to configure the behavior of cleantype:
+
+* Duplicate the file `.cleantype.json` at the root of the cleantype repository, and place it wherever in the hierarchy of the parent directories of your application. 
+_Note_ : you can also edit the example json file via [an interactive online editor](https://jsoneditoronline.org/?id=df38aa61554e4aad92883eaede62edc2)
+* Edit this file as a normal json file
+* Save this file in anywhere in the hierarchy of the parent directories of the execution directory.
+
+The content of the pref file is self explanatory:
+
+````json
+{
+    "force_east_const_": false,
+    "indent_depth_limit": 3,
+    "replacements_after_undesirable_node_extractions": {
+        "basic_string<_CharT, _Traits, _Allocator>": "std::string",
+        "std::basic_string<char>": "std::string"
+    },
+    "suppress_custom_": [
+        " __ptr64"
+    ],
+    "suppress_extra_namespaces_": [
+        "::__1",
+        "::__cxx11"
+    ],
+    "suppress_extract_struct_class_": [
+        "class ",
+        "struct "
+    ],
+    "undesirable_type_nodes_": [
+        "std::char_traits",
+        "std::allocator",
+        "std::less"
+    ]
+}
+
+````
 
 # Decipher range-v3 auto types
 
