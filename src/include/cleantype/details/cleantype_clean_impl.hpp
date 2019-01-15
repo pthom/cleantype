@@ -130,11 +130,11 @@ namespace cleantype
 
         inline std::string perform_replacements(
             std::string const & typ_name,
-            std::vector<std::array<std::string, 2>> const & replacements)
+            std::map<std::string, std::string> const & replacements)
         {
             std::string result = typ_name;
-            for (const auto &r : replacements)
-                result = fp::replace_tokens(r[0], r[1], result);
+            for (const auto &kv : replacements)
+                result = fp::replace_tokens(kv.first, kv.second, result);
             return result;
         }
 
