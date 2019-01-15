@@ -18,6 +18,7 @@ auto is_six = [](int i) -> bool { return i == 6; };
 #include <iostream>
 #include <range/v3/all.hpp>
 
+#ifndef _MSC_VER
 
 TEST_CASE("range-v3-cleantype")
 {
@@ -75,3 +76,5 @@ TEST_CASE("range-v3-cleantype")
 
     //triples | view::take(100)
 }
+
+#endif // #ifndef _MSC_VER
