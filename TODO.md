@@ -1,7 +1,7 @@
 * Range-v3 & indent:
-    * [ ] auto-indent clean
-    * [ ] pref / start auto indent
-    * [ ] extract tupleholder to hpp
+    * [X] auto-indent clean
+    * [X] pref / start auto indent
+    * [ ] doc / range-v3 & indent
 
 * [ ] Cleanup
     * [ ] Remove submodule hana (checkout via notebook if needed)

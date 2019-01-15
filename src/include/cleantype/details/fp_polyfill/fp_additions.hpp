@@ -177,15 +177,15 @@ namespace detail {
         std::vector<std::size_t> sizes;
         sizes.push_back(current_depth);
         for (auto & child : xs.children_)
-            sizes.push_back(tree_depth_impl(xs.child, current_depth + 1)  );
+            sizes.push_back(tree_depth_impl(child, current_depth + 1)  );
         return fp::maximum(sizes);
     }
 }
 
 template <typename T>
-void tree_depth(const tree<T> &xs)
+std::size_t tree_depth(const tree<T> &xs)
 {
-    return detail::tree_depth_impl(xs, 1);
+    return detail::tree_depth_impl(xs, 0);
 }
 
 

@@ -55,4 +55,32 @@ TEST_CASE("indent")
 >)";
         REQUIRE_EQ(indented, expected);
     }
+
+    {
+        std::string s("std::deque<std::pair<std::string, std::map<int, int>>>");
+        cleantype::CleanConfiguration::GlobalConfig().indent_depth_limit = 3;
+        std::string expected("std::deque<std::pair<std::string, std::map<int, int>>>");
+        auto indented = cleantype::internal::impl_indent_if_neeeded(s);
+        REQUIRE_EQ(indented, expected);
+    }
+    {
+        std::string s("std::deque<std::pair<std::string, std::map<int, int>>>");
+        std::size_t old_limit = cleantype::CleanConfiguration::GlobalConfig().indent_depth_limit;
+        cleantype::CleanConfiguration::GlobalConfig().indent_depth_limit = 2;
+        std::string expected = R"(std::deque
+<
+    std::pair
+    <
+        std::string,
+        std::map
+        <
+            int,
+            int
+        >
+    >
+>)";
+        auto indented = cleantype::internal::impl_indent_if_neeeded(s);
+        REQUIRE_EQ(indented, expected);
+        cleantype::CleanConfiguration::GlobalConfig().indent_depth_limit = old_limit;
+    }
 }

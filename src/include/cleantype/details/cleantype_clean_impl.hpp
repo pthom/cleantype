@@ -241,7 +241,7 @@ namespace cleantype
             //     >
             // >
             //
-            // --> we remove the lines [0, 1, last], then w remove the first indentation level
+            // --> we remove the lines [0, 1, last], then we remove the first indentation level
 
             auto remove_indented_tuple_holder = [](const std::string & type_str){
                 std::vector<std::string> lines = stringutils::split_string(type_str, '\n');
@@ -272,10 +272,27 @@ namespace cleantype
             //if fp::tree_depth > 3 ...
         }
 
+
+        inline std::string impl_indent_if_neeeded(std::string const & type_names)
+        {
+            std::size_t indent_depth_limit = cleantype::CleanConfiguration::GlobalConfig().indent_depth_limit;
+            if (indent_depth_limit == 0)
+                return type_names;
+            std::string types_with_holder = add_type_holder_str(type_names);
+            code_pair_tree template_tree = parse_template_tree(types_with_holder);
+            std::size_t depth = fp::fp_add::tree_depth(template_tree);
+            if ( depth > indent_depth_limit + 1)
+                return impl_indent_type_tree(type_names);
+            else
+                return type_names;
+        }
+
+
         inline std::string impl_clean(std::string const & type_names)
         {
-            auto cleaned = impl_clean_several_types(type_names);
-            return cleaned;
+            std::string cleaned = impl_clean_several_types(type_names);
+            std::string indented = impl_indent_if_neeeded(cleaned);
+            return indented;
         }
 
     } // namespace internal

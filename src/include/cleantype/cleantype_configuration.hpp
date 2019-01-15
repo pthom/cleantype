@@ -51,6 +51,13 @@ namespace cleantype
         // this is experimental, and can fail
         bool force_east_const_ = false;
 
+        // * any type with a depth <= indent_depth_limit
+        //   will be presented on a single line
+        // * any type with a depth > indent_depth_limit
+        //   will be presented on several indented lines
+        // set  indent_depth_limit = 0 to disable indentation
+        std::size_t indent_depth_limit = 3;
+
         static CleanConfiguration & GlobalConfig()
         {
             thread_local CleanConfiguration gCleanConfiguration;
