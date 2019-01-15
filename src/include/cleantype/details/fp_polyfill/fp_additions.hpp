@@ -171,6 +171,23 @@ void tree_transform_leafs_breadth_first_inplace(Transformer_T transformer, tree<
         tree_transform_leafs_breadth_first_inplace(transformer, child);
 }
 
+namespace detail {
+    template <typename T>
+    std::size_t tree_depth_impl(const tree<T> &xs, int current_depth) {
+        std::vector<std::size_t> sizes;
+        sizes.push_back(current_depth);
+        for (auto & child : xs.children_)
+            sizes.push_back(tree_depth_impl(xs.child, current_depth + 1)  );
+        return fp::maximum(sizes);
+    }
+}
+
+template <typename T>
+void tree_depth(const tree<T> &xs)
+{
+    return detail::tree_depth_impl(xs, 1);
+}
+
 
 template<typename T>
 std::string show_tree_children(const std::vector<tree<T>> & children,

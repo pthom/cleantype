@@ -283,4 +283,16 @@ inline std::string to_lower_case(const std::string & xs)
     return r;
 }
 
+
+template <typename T>
+T maximum(const std::vector<T>& xs)
+{
+    assert( ! xs.empty() );
+    T max = xs[0];
+    for (const auto & v: xs)
+        if (v > max)
+            max = v;
+    return max;
+}
+
 }
