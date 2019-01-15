@@ -6,6 +6,7 @@
         * [ ] Remove submodules used only for tests?
         * [ ] Document install & third parties
         * [ ] Use Fplus instead of polyfills ?
+            * [X] Compat bare fplus
     * [ ] Continuous Integration : C++14 & C++17
     * [ ] Doc
         * [X] Layout doc : Table of Content?
