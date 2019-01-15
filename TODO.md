@@ -1,5 +1,6 @@
 * [ ] Cleanup
-    * [ ] Configuration via pref file ?
+    * [X] Configuration via pref file ?
+        * [ ] ? Change path for nlohmann/json : do not replace other instances (or do ?) !
     * [ ] third parties cleanup:
         * [ ] Separate unit test & doc third parties from required third parties
         * [ ] Remove submodules used only for tests?

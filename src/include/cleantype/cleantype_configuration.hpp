@@ -59,7 +59,7 @@ namespace cleantype
 
     // In order to configure the behavior of clean types :
     // * Create a file ".cleantype.json" with the content of the string CleanConfigurationExample (just above)
-    //   (or duplicate the file .cleantype.json at the root of the cleantype repoitory)
+    //   (or duplicate the file .cleantype.json at the root of the cleantype repository)
     // * Edit this file as a normal json file (you can use also use an online editor like https://jsoneditoronline.org/)
     // * Save this file in anywhere in the hierarchy of the parent directories of the execution directory.
     struct CleanConfiguration
