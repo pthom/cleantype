@@ -202,7 +202,7 @@ namespace cleantype
         inline std::vector<std::string> parent_directories()
         {
             std::string cwd = cleantype::filesystem::getcwd();
-            cwd = fp::replace_tokens("\\", "/", cwd);
+            cwd = fp::replace_tokens(std::string("\\"), std::string("/"), cwd);
 
             std::vector<std::string> folder_elems = stringutils::split_string(cwd, '/');
 

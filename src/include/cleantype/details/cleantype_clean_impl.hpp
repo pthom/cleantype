@@ -123,7 +123,7 @@ namespace cleantype
         {
             std::string result = typ_name;
             for (const auto &v : suppressions)
-                result = fp::replace_tokens(v, "", result);
+                result = fp::replace_tokens(v, std::string(""), result);
             return result;
         }
 
@@ -256,7 +256,7 @@ namespace cleantype
                     },
                     filtered_lines
                 );
-                std::string joined_lines = fp::join("\n", unindented_lines);
+                std::string joined_lines = fp::join(std::string("\n"), unindented_lines);
                 return joined_lines;
             };
 

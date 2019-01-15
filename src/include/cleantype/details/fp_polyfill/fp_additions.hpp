@@ -258,5 +258,29 @@ std::string show_tree_lhs_rhs(
     return result;
 }
 
+
+
+
+template <typename F, typename InputStream, typename OutputStream>
+std::function<void()> interact_by_line(F f, InputStream & is, OutputStream & os)
+{
+    return [f, &is, &os]() -> void
+    {
+        std::string line;
+        while (!is.eof())
+        {
+            std::getline(is, line);
+            std::string out = f(line);
+            os << out << "\n";
+        }
+    };
+}
+
+template <typename F>
+std::function<void()> interact_by_line(F f)
+{
+    return interact_by_line(f, std::cin, std::cout);
+}
+
 } // namespace fp_add
 } // namespace fp

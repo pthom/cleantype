@@ -70,7 +70,7 @@ std::string decipher_line(const std::string & compiler_line)
 
 int main()
 {
-    auto prog = fp::interact_by_line(decipher_line);
+    auto prog = fp::fp_add::interact_by_line(decipher_line);
 
     // Debug version
     //{

@@ -96,7 +96,7 @@ namespace cleantype
     {
         std::vector<std::string> types = internal::split_types(type_names);
         types = fp::transform(internal::apply_east_const_one_type, types);
-        std::string r = fp::join(", ", types);
+        std::string r = fp::join(std::string(", "), types);
         return r;
     }
 

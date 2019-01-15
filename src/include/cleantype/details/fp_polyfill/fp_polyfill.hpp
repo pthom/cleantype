@@ -10,6 +10,9 @@
 #include <algorithm>
 #include <fplus/fplus.hpp> // REMOVE ME !!!
 
+// //namespace fp = fplus;
+// #define fp fplus
+
 namespace fp
 {
 
@@ -188,30 +191,6 @@ std::function<void()> interact(F f)
             std::istreambuf_iterator<char>()));
     };
 }
-
-
-template <typename F, typename InputStream, typename OutputStream>
-std::function<void()> interact_by_line(F f, InputStream & is, OutputStream & os)
-{
-    return [f, &is, &os]() -> void
-    {
-        std::string line;
-        while (!is.eof())
-        {
-            std::getline(is, line);
-            std::string out = f(line);
-            os << out << "\n";
-        }
-    };
-}
-
-template <typename F>
-std::function<void()> interact_by_line(F f)
-{
-    return interact_by_line(f, std::cin, std::cout);
-}
-
-
 
 
 template <typename T, typename Pred>
