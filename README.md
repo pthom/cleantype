@@ -670,7 +670,7 @@ First, we include cleantype and the range-v3 library
 #include <cleantype/cleantype.hpp>
 #include <range/v3/all.hpp>
 
-#define run_show2(...)                   \
+#define run__show(...)                  \
 {                                       \
     std::cout << #__VA_ARGS__ << "\n";  \
     std::cout << __VA_ARGS__ << "\n\n"; \
@@ -694,7 +694,7 @@ Let's define a function that yields using `ranges::yield` and, then let's identi
 auto square_yield_fn(int x) {
     return ranges::yield(x * x);
 }
-run_show2(  CT_type_fn(square_yield_fn, int)  );
+run__show(  CT_type_fn(square_yield_fn, int)  );
 ```
 
     CT_type_fn(square_yield_fn, int)
@@ -707,7 +707,7 @@ Now, let's define a view that transform ints into squares. This view is lazy, an
 
 ```c++
 auto squares_view_fn = view::for_each(view::ints(1), square_yield_fn);
-run_show2(  cleantype::clean(squares_view_fn)  );
+run__show(  cleantype::clean(squares_view_fn)  );
 ```
 
     cleantype::clean(squares_view_fn)
@@ -733,7 +733,7 @@ run_show2(  cleantype::clean(squares_view_fn)  );
 
 ```c++
 auto squares_fn_take_10 = squares_view_fn | view::take(10);
-run_show2(  cleantype::clean(squares_fn_take_10)  );
+run__show(  cleantype::clean(squares_fn_take_10)  );
 ```
 
     cleantype::clean(squares_fn_take_10)
@@ -772,9 +772,9 @@ Since lambda are actually anonymous structs, cleantype cannot disclose the signa
     auto square_yield_lambda = [](int x) {
         return yield(x * x);
     };
-    run_show2(  cleantype::lambda_clean(square_yield_lambda)  );
+    run__show(  cleantype::lambda_clean(square_yield_lambda)  );
     auto squares_view_lambda = view::for_each(view::ints(1), square_yield_lambda);
-    run_show2(  cleantype::clean(squares_view_lambda)  );
+    run__show(  cleantype::clean(squares_view_lambda)  );
 }
 ```
 
