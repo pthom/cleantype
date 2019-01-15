@@ -15,24 +15,23 @@ namespace cleantype
 
     namespace internal
     {
-        std::string impl_clean_one_type(std::string const & typ_name, bool remove_type_tuple_holder);
+        std::string impl_clean_one_type(std::string const & typ_name);
+        std::string add_type_holder_str(std::string const & type_names);
+        std::string remove_type_holder_str(std::string const & type_name);
 
         inline std::vector<std::string> clean_several_types(const std::vector<std::string> &types)
         {
-            return fp::transform(
-                [](const std::string &p) { return impl_clean_one_type(p, false); },
-                types
-            );
+            return fp::transform(impl_clean_one_type, types);
         }
 
 
-        inline std::vector<std::string> split_types(std::string const & params)
+        inline std::vector<std::string> split_types(std::string const & type_names)
         {
             std::vector<std::string> result;
             // counts < and > occurrences
             int count = 0;
             std::string current;
-            for (const auto c : params)
+            for (const auto c : type_names)
             {
                 if (c == '<')
                     ++count;
@@ -200,15 +199,6 @@ namespace cleantype
         }
 
 
-        inline std::string code_pair_children_to_string(code_pair_tree const & xs)
-        {
-            return fp::fp_add::show_tree_children(
-                    xs.children_,
-                    make_template_tree_separators(),
-                    make_template_show_tree_options_no_indent());
-        }
-
-
         inline std::string code_pair_tree_to_string(code_pair_tree const & xs)
         {
             return fp::fp_add::show_tree_lhs_rhs(
@@ -218,7 +208,7 @@ namespace cleantype
         }
 
 
-        inline std::string impl_clean_one_type(std::string const & typ_name, bool remove_type_tuple_holder)
+        inline std::string impl_clean_one_type(std::string const & typ_name)
         {
             std::string typ_name_trimmed = fp::trim(' ', typ_name);
 
@@ -229,11 +219,7 @@ namespace cleantype
             code_pair_tree template_tree = parse_template_tree(typ_namecleaned);
             fp::fp_add::tree_transform_leafs_depth_first_inplace(trim_spaces_inplace, template_tree);
             code_pair_tree template_tree_filtered = filter_undesirable_template_leafs(template_tree);
-
-            std::string template_tree_filtered_str =
-                remove_type_tuple_holder ?
-                        code_pair_children_to_string(template_tree_filtered)
-                    :   code_pair_tree_to_string(template_tree_filtered);
+            std::string template_tree_filtered_str = code_pair_tree_to_string(template_tree_filtered);
 
             std::string final_type = perform_std_replacements(template_tree_filtered_str);
             final_type = add_space_before_ref(final_type);
@@ -243,11 +229,11 @@ namespace cleantype
 
         inline std::string impl_clean_several_types_no_indent(std::string const & type_names)
         {
-            std::string types_with_holder = "type_tuple_holder< " + type_names + " >";
-            bool remove_type_tuple_holder = true;
-            std::string types_clean_with_holder = impl_clean_one_type(types_with_holder, remove_type_tuple_holder);
-            return types_clean_with_holder;
+            std::string types_with_holder = add_type_holder_str(type_names);
+            std::string types_clean_with_holder = impl_clean_one_type(types_with_holder);
+            return remove_type_holder_str(types_clean_with_holder);
         }
+
 
         inline std::string impl_clean_several_types(std::string const & type_names)
         {
@@ -255,80 +241,6 @@ namespace cleantype
             //if fp::tree_depth > 3 ...
         }
 
-
-        inline std::string apply_east_const_impl(std::string const & type_name)
-        {
-            // Note : this implementation is by no means neither complete nor foolproof
-            // It expects types that were preprocessed as inputs (spaces before * and &, etc.)
-            // For a more complete implementation, a BNF grammar parse would probably be required
-            //
-            // By default, cleantype this transformation is not applied (only for the unit tests)
-            namespace stringutils = cleantype::stringutils;
-
-            if (type_name.empty())
-                return "";
-            if (stringutils::ends_with(type_name, "const") && (!stringutils::starts_with(type_name, "const ")))
-                return type_name;
-
-            // const T * const => T const * const
-            if (stringutils::starts_ends_with(type_name, "const ", " * const"))
-            {
-                auto r = stringutils::remove_start_end(type_name, "const ", " * const");
-                r = r + " const * const";
-                return r;
-            }
-
-            // const T * const & => T const * const &
-            if (stringutils::starts_ends_with(type_name, "const ", " * const &"))
-            {
-                auto r = stringutils::remove_start_end(type_name, "const ", " * const &");
-                r = r + " const * const &";
-                return r;
-            }
-
-
-            // const T * & => T const * &
-            if (stringutils::starts_ends_with(type_name, "const ", " * &"))
-            {
-                auto r = stringutils::remove_start_end(type_name, "const ", " * &");
-                r = r + " const * &";
-                return r;
-            }
-
-            // const T & => T const &
-            if (stringutils::starts_ends_with(type_name, "const ", " &"))
-            {
-                auto r = stringutils::remove_start_end(type_name, "const ", " &");
-                r = r + " const &";
-                return r;
-            }
-
-            // const T * => T const *
-            if (stringutils::starts_ends_with(type_name, "const ", " *"))
-            {
-                auto r = stringutils::remove_start_end(type_name, "const ", " *");
-                r = r + " const *";
-                return r;
-            }
-
-            // const * T => T const *
-            if (stringutils::starts_with(type_name, "const * "))
-            {
-                auto r = stringutils::remove_start(type_name, "const * ");
-                r = r + " const *";
-                return r;
-            }
-
-            // const T => T const
-            if (stringutils::starts_with(type_name, "const "))
-            {
-                auto r = stringutils::remove_start(type_name, "const ");
-                r = r + " const";
-                return r;
-            }
-
-            return type_name;
-        }
 
         inline std::vector<std::string> _split_string(std::string const & s, char delimiter)
         {
@@ -342,15 +254,6 @@ namespace cleantype
 
 
     } // namespace internal
-
-    inline std::string apply_east_const_typelist(std::string const & type_names)
-    {
-        std::vector<std::string> types = internal::split_types(type_names);
-        types = fp::transform(internal::apply_east_const_impl, types);
-        std::string r = fp::join(", ", types);
-        return r;
-    }
-
 
 
 } // namespace cleantype

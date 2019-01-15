@@ -4,6 +4,7 @@
 #pragma once
 #include <cleantype/cleantype_configuration.hpp>
 #include <cleantype/details/cleantype_full.hpp>
+#include <cleantype/details/cleantype_eastconst.hpp>
 #include <cleantype/details/cleantype_clean.hpp>
 #include <cleantype/details/cleantype_lambda.hpp>
 #include <cleantype/details/cleantype_invoke_result.hpp>

@@ -16,7 +16,7 @@
 
 #include <cleantype/details/hana_type_name/type_name_pretty_function.hpp>
 #include <cleantype/details/cleantype_format_whitespace.hpp>
-#include <cleantype/details/cleantype_clean_impl.hpp>
+#include <cleantype/details/cleantype_eastconst.hpp>
 #include <cleantype/cleantype_configuration.hpp>
 
 namespace cleantype
@@ -28,6 +28,20 @@ namespace cleantype
         // Trick in order to avoid having to deal the tedious syntax of parameter packs
         template<typename... T> struct TupleTypeHolder{
         };
+
+        inline std::string add_type_holder_str(const std::string & type_names)
+        {
+            const std::string start = "cleantype::internal::TupleTypeHolder<";
+            const std::string end = ">";
+            return start + type_names + end;
+        }
+
+        inline std::string remove_type_holder_str(const std::string & types_inside_holder)
+        {
+            const std::string start = "cleantype::internal::TupleTypeHolder<";
+            const std::string end = ">";
+            return types_inside_holder.substr(start.size(), types_inside_holder.size() - start.size() - end.size() );
+        }
 
 
         template<typename T>
@@ -59,22 +73,13 @@ namespace cleantype
         }
 
 
-        inline std::string extract_type_from_tupletypeholder(std::string const & typ_name)
-        {
-            auto code_pair_tree_ = cleantype::internal::parse_template_tree(typ_name);
-            assert(code_pair_tree_.children_.size() > 0);
-            std::string extracted_type = cleantype::internal::code_pair_children_to_string(code_pair_tree_);
-            return extracted_type;
-        }
-
-
         template <typename... T> std::string impl_full()
         {
             stringliteral type_sl_in_tupletypeholder  = impl_typeid<T...>();
             std::string type_in_tupletypeholder =
                 boost::hana::experimental::type_name_details::stringliteral_to_string(type_sl_in_tupletypeholder);
 
-            std::string type_definition = extract_type_from_tupletypeholder(type_in_tupletypeholder);
+            std::string type_definition = remove_type_holder_str(type_in_tupletypeholder);
 
             std::string formatted = cleantype::format_whitespace(type_definition);
 
