@@ -18,6 +18,7 @@
 #include <cleantype/details/cleantype_format_whitespace.hpp>
 #include <cleantype/details/cleantype_eastconst.hpp>
 #include <cleantype/cleantype_configuration.hpp>
+#include <cleantype/details/stringutils.hpp>
 
 namespace cleantype
 {
@@ -32,23 +33,24 @@ namespace cleantype
         inline std::string add_type_holder_str(const std::string & type_names)
         {
 #ifdef _MSC_VER
-          const std::string start = "struct cleantype::internal::TupleTypeHolder<";
-#else
-          const std::string start = "cleantype::internal::TupleTypeHolder<";
-#endif
-          const std::string end = ">";
-            return start + type_names + end;
-        }
-
-        inline std::string remove_type_holder_str(const std::string & types_inside_holder)
-        {
-#ifdef _MSC_VER
             const std::string start = "struct cleantype::internal::TupleTypeHolder<";
 #else
             const std::string start = "cleantype::internal::TupleTypeHolder<";
 #endif
             const std::string end = ">";
-            return types_inside_holder.substr(start.size(), types_inside_holder.size() - start.size() - end.size() );
+            return start + type_names + end;
+        }
+
+        inline std::string remove_type_holder_str(const std::string & types_inside_holder)
+        {
+          std::string r = types_inside_holder;
+          if (stringutils::starts_with(r, "struct cleantype::internal::TupleTypeHolder<"))
+              r = stringutils::remove_start(r, "struct cleantype::internal::TupleTypeHolder<");
+          if (stringutils::starts_with(r, "cleantype::internal::TupleTypeHolder<"))
+            r = stringutils::remove_start(r, "cleantype::internal::TupleTypeHolder<");
+          if (stringutils::ends_with(r, ">"))
+            r = stringutils::remove_end(r, ">");
+          return r;
         }
 
 
