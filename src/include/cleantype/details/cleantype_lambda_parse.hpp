@@ -2,8 +2,10 @@
 // Copyright Pascal Thomet - 2018
 // Distributed under the Boost Software License, Version 1.0. (see LICENSE.md)
 #pragma once
-#include <cleantype/details/cleantype_clean.hpp>
+#include <cassert>
+#include <iostream>
 #include <cleantype/cleantype_configuration.hpp>
+#include <cleantype/details/cleantype_clean_impl.hpp>
 
 namespace cleantype
 {
@@ -136,7 +138,7 @@ namespace cleantype
             const std::string params_cleaned = [&](){
                 auto params_list = split_types(params_str);
                 if (clean_params)
-                    params_list = clean_several_types(params_list);
+                    params_list = fp::transform(impl_clean_one_type, params_list);
                 std::string params_joined = fp::join(std::string(", "), params_list);
                 if (params_joined == "void")
                   params_joined = "";

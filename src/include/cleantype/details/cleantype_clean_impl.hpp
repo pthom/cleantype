@@ -15,14 +15,8 @@ namespace cleantype
 
     namespace internal
     {
-        std::string impl_clean_one_type(std::string const & typ_name);
         std::string add_type_holder_str(std::string const & type_names);
         std::string remove_type_holder_str(std::string const & type_name);
-
-        inline std::vector<std::string> clean_several_types(const std::vector<std::string> &types)
-        {
-            return fp::transform(impl_clean_one_type, types);
-        }
 
 
         inline std::vector<std::string> split_types(std::string const & type_names)
@@ -227,18 +221,12 @@ namespace cleantype
         }
 
 
-        inline std::string impl_clean_several_types_no_indent(std::string const & type_names)
-        {
-            std::string types_with_holder = add_type_holder_str(type_names);
-            std::string types_clean_with_holder = impl_clean_one_type(types_with_holder);
-            return remove_type_holder_str(types_clean_with_holder);
-        }
-
-
         inline std::string impl_clean_several_types(std::string const & type_names)
         {
-            return impl_clean_several_types_no_indent(type_names);
-            //if fp::tree_depth > 3 ...
+          std::string types_with_holder = add_type_holder_str(type_names);
+          std::string types_clean_with_holder = impl_clean_one_type(types_with_holder);
+          return remove_type_holder_str(types_clean_with_holder);
+          //if fp::tree_depth > 3 ...
         }
 
 

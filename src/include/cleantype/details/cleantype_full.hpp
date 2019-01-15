@@ -31,14 +31,22 @@ namespace cleantype
 
         inline std::string add_type_holder_str(const std::string & type_names)
         {
-            const std::string start = "cleantype::internal::TupleTypeHolder<";
-            const std::string end = ">";
+#ifdef _MSC_VER
+          const std::string start = "struct cleantype::internal::TupleTypeHolder<";
+#else
+          const std::string start = "cleantype::internal::TupleTypeHolder<";
+#endif
+          const std::string end = ">";
             return start + type_names + end;
         }
 
         inline std::string remove_type_holder_str(const std::string & types_inside_holder)
         {
+#ifdef _MSC_VER
+            const std::string start = "struct cleantype::internal::TupleTypeHolder<";
+#else
             const std::string start = "cleantype::internal::TupleTypeHolder<";
+#endif
             const std::string end = ">";
             return types_inside_holder.substr(start.size(), types_inside_holder.size() - start.size() - end.size() );
         }

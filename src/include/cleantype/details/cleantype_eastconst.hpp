@@ -4,8 +4,6 @@
 #pragma once
 #include <string>
 #include <deque>
-#include <cleantype/details/cleantype_full.hpp>
-#include <cleantype/details/cleantype_clean_impl.hpp>
 #include <cleantype/details/fp_polyfill/fp_polyfill.hpp>
 #include <cleantype/details/stringutils.hpp>
 
@@ -14,6 +12,8 @@ namespace cleantype
 
     namespace internal
     {
+        std::vector<std::string> split_types(std::string const & type_names);
+
         inline std::string apply_east_const_one_type(std::string const & type_name)
         {
             // Note : this implementation is by no means neither complete nor foolproof
@@ -90,6 +90,7 @@ namespace cleantype
         }
 
     } // namespace internal
+
 
     inline std::string apply_east_const_typelist(std::string const & type_names)
     {
