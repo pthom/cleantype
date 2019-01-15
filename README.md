@@ -3,7 +3,7 @@
 <table>
 <tr><td>
 <p style="text-align: left;">
-   <a href="#cleantype--Readable-C++-Types-and-Lambda-signatures-/-Compiler-Decipherer">cleantype : Readable C++ Types and Lambda signatures / Compiler Decipherer</a><br/>
+   <a href="#cleantype--readable-C++-type-introspection---Compiler-Decipherer">cleantype : readable C++ type introspection - Compiler Decipherer</a><br/>
    <a href="#Installation-and-usage">Installation and usage</a><br/>
    <a href="#About-this-manual">About this manual</a><br/>
    <a href="#Readable-type-names-and-full-type-names">Readable type names and full type names</a><br/>
@@ -38,9 +38,9 @@
     </tr>
 </table> 
 
-# cleantype : Readable C++ Types and Lambda signatures / Compiler Decipherer
+# cleantype : readable C++ type introspection - Compiler Decipherer
 
-`cleantype`is a small header only library which offer *readable* type names, with a *consistent naming scheme accross compilers*, at *run-time* and *compile-time*. It can also output the *signature of lambda* functions.
+`cleantype`is a small header only library which offer *readable* type names, with a *consistent naming scheme accross compilers*, at *run-time* and *compile-time*. It can also output the *signature of lambda* functions, and the result type of any auto function (range-v3 anyone?).
 
 The included tool `ct_compiler_decipher` simplifies the template noise in your compiler output : just ` "|" (pipe)` your build tool to it.
 
