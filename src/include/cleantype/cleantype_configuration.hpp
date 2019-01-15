@@ -159,6 +159,7 @@ namespace cleantype
 }
 
 
+// filesystem polyfills for C++14 (70's style)
 #include <cstdlib>
 #include <sys/stat.h>
 #include <cleantype/details/fp_polyfill/fp_polyfill.hpp>
@@ -166,6 +167,9 @@ namespace cleantype
 #if defined(__unix__) || defined(__APPLE__)
 #include <unistd.h>
 #include <sys/types.h>
+#endif
+#if defined(__unix__) || defined(__APPLE__)
+#include <sys/param.h>
 #endif
 #ifdef WINDOWS
 #include <direct.h>
@@ -181,7 +185,11 @@ namespace cleantype
             #ifdef WINDOWS
             char *answer = _getcwd(NULL, 0);
             #else
+            #ifdef __APPLE__
             char buffer[PATH_MAX];
+            #else
+            char buffer[MAXPATHLEN];
+            #endif
             char *answer = ::getcwd(buffer, sizeof(buffer));
             #endif
 
