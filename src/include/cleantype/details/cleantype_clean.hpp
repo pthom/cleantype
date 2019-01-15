@@ -11,7 +11,12 @@ namespace cleantype
 {
     inline std::string clean_typestring(const std::string & type_names)
     {
-        return internal::impl_clean_several_types(type_names);
+        return internal::impl_clean(type_names);
+    }
+
+    inline std::string indent_type_tree(const std::string & type_names)
+    {
+        return internal::impl_indent_type_tree(type_names);
     }
 
     template <typename... T>

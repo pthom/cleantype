@@ -36,28 +36,34 @@ struct lhs_rhs
     std::string rhs;
 };
 
-using string_tree = tree<std::string>;
 using lhs_rhs_tree = tree<lhs_rhs>;
 
 struct tree_separators {
     char open_child = '<';
     char close_child = '>';
-    char separate_siblings = ',';
+    char siblings_separator = ',';
+};
+
+enum class siblings_spacing_t
+{
+    no_spacing,
+    space,
+    new_line
 };
 
 struct show_tree_options
 {
-    bool add_new_lines = true;
-    bool add_space_between_siblings = false;
+    bool add_new_lines_before_children = true;
+    siblings_spacing_t siblings_spacing = siblings_spacing_t::no_spacing;
     std::string indent = "  ";
 };
 
 struct show_tree_lhs_rhs_options
 {
-    bool add_new_lines = true;
-    bool add_space_between_siblings = false;
+    bool add_new_lines_before_children = true;
     bool add_space_after_lhs = false;
     bool add_space_before_rhs = false;
+    siblings_spacing_t siblings_spacing = siblings_spacing_t::no_spacing;
     std::string indent = "  ";
 };
 
@@ -65,8 +71,7 @@ struct show_tree_lhs_rhs_options
 inline lhs_rhs_tree parse_lhs_rhs_tree(
     std::string const &s,
     const tree_separators & separators,
-    bool remove_space_after_tok,
-    bool remove_space
+    bool remove_space_after_separator
     )
 {
     bool is_filling_rhs = false;
@@ -81,7 +86,7 @@ inline lhs_rhs_tree parse_lhs_rhs_tree(
     lhs_rhs_tree *current = &result;
     std::vector<lhs_rhs_tree *> parents;
 
-    bool is_first_after_tok = false;
+    bool is_first_after_separator = false;
     while (!fifo_letters.empty())
     {
         char c = fifo_letters.front();
@@ -89,9 +94,7 @@ inline lhs_rhs_tree parse_lhs_rhs_tree(
         fifo_letters.pop_front();
         if (isspace(c))
         {
-            if (remove_space)
-                continue;
-            if (remove_space_after_tok && is_first_after_tok)
+            if (remove_space_after_separator && is_first_after_separator)
                 continue;
         }
         if (c == separators.open_child)
@@ -100,22 +103,22 @@ inline lhs_rhs_tree parse_lhs_rhs_tree(
             current->children_.push_back(child);
             parents.push_back(current);
             current = &(parents.back()->children_.back());
-            is_first_after_tok = true;
+            is_first_after_separator = true;
             is_filling_rhs = false;
         }
-        else if (c == separators.separate_siblings)
+        else if (c == separators.siblings_separator)
         {
             lhs_rhs_tree brother{ {},{} };
             parents.back()->children_.push_back(brother);
             current = &(parents.back()->children_.back());
-            is_first_after_tok = true;
+            is_first_after_separator = true;
             is_filling_rhs = false;
         }
         else if (c == separators.close_child)
         {
             current = parents.back();
             parents.pop_back();
-            is_first_after_tok = true;
+            is_first_after_separator = true;
             is_filling_rhs = true;
         }
         else
@@ -124,72 +127,12 @@ inline lhs_rhs_tree parse_lhs_rhs_tree(
                 current->value_.rhs += c;
             else
                 current->value_.lhs += c;
-            is_first_after_tok = false;
+            is_first_after_separator = false;
         }
     }
     return result;
 }
 
-
-
-inline string_tree parse_string_tree(
-    std::string const &s,
-    const tree_separators & separators,
-    bool remove_space_after_tok,
-    bool remove_space)
-{
-    std::deque<char> fifo_letters;
-    {
-        for (const auto & letter: s)
-            fifo_letters.push_back(letter);
-    }
-
-    string_tree result{ {}, {} };
-    string_tree *current = &result;
-    std::vector<string_tree *> parents;
-
-    bool is_first_after_tok = false;
-    while (!fifo_letters.empty())
-    {
-        char c = fifo_letters.front();
-
-        fifo_letters.pop_front();
-        if (isspace(c))
-        {
-            if (remove_space)
-                continue;
-            if (remove_space_after_tok && is_first_after_tok)
-                continue;
-        }
-        if (c == separators.open_child)
-        {
-            string_tree child{ {}, {} };
-            current->children_.push_back(child);
-            parents.push_back(current);
-            current = &(parents.back()->children_.back());
-            is_first_after_tok = true;
-        }
-        else if (c == separators.separate_siblings)
-        {
-            string_tree brother{ {}, {} };
-            parents.back()->children_.push_back(brother);
-            current = &(parents.back()->children_.back());
-            is_first_after_tok = true;
-        }
-        else if (c == separators.close_child)
-        {
-            current = parents.back();
-            parents.pop_back();
-            is_first_after_tok = true;
-        }
-        else
-        {
-            current->value_ += c;
-            is_first_after_tok = false;
-        }
-    }
-    return result;
-}
 
 template <typename T>
 tree<T> tree_keep_if(std::function<bool(const T &)> f, const tree<T> &xs)
@@ -228,6 +171,23 @@ void tree_transform_leafs_breadth_first_inplace(Transformer_T transformer, tree<
         tree_transform_leafs_breadth_first_inplace(transformer, child);
 }
 
+namespace detail {
+    template <typename T>
+    std::size_t tree_depth_impl(const tree<T> &xs, int current_depth) {
+        std::vector<std::size_t> sizes;
+        sizes.push_back(current_depth);
+        for (auto & child : xs.children_)
+            sizes.push_back(tree_depth_impl(child, current_depth + 1)  );
+        return fp::maximum(sizes);
+    }
+}
+
+template <typename T>
+std::size_t tree_depth(const tree<T> &xs)
+{
+    return detail::tree_depth_impl(xs, 0);
+}
+
 
 template<typename T>
 std::string show_tree_children(const std::vector<tree<T>> & children,
@@ -241,10 +201,16 @@ std::string show_tree_children(const std::vector<tree<T>> & children,
         },
         children);
 
-    const std::string siblings_separator =
-        show_tree_lhs_rhs_options_.add_space_between_siblings ?
-          show(separators.separate_siblings) + " "
-        : show(separators.separate_siblings);
+    const std::string siblings_separator = [&] {
+        std::string separator_string(1, separators.siblings_separator);
+        if (show_tree_lhs_rhs_options_.siblings_spacing == siblings_spacing_t::no_spacing)
+            return separator_string;
+        else if (show_tree_lhs_rhs_options_.siblings_spacing == siblings_spacing_t::space)
+            return separator_string + " ";
+        else { // if (show_tree_lhs_rhs_options_.siblings_spacing == siblings_spacing_t::new_line)
+            return separator_string + std::string("\n");
+        }
+    }();
 
     std::string children_str = join(siblings_separator, children_strs);
     return children_str;
@@ -261,7 +227,7 @@ std::string show_tree_lhs_rhs(
     auto line_start = fp::repeat(level, show_tree_lhs_rhs_options_.indent);
 
     std::string result;
-    if (show_tree_lhs_rhs_options_.add_new_lines)
+    if (show_tree_lhs_rhs_options_.add_new_lines_before_children)
         result = line_start;
 
     result += fp::show(v.value_.lhs);
@@ -270,17 +236,17 @@ std::string show_tree_lhs_rhs(
 
     if (!v.children_.empty())
     {
-        if (show_tree_lhs_rhs_options_.add_new_lines)
+        if (show_tree_lhs_rhs_options_.add_new_lines_before_children)
             result += "\n" + line_start;
         result += separators.open_child;
-        if (show_tree_lhs_rhs_options_.add_new_lines)
+        if (show_tree_lhs_rhs_options_.add_new_lines_before_children)
             result += "\n";
 
         std::string children_str = show_tree_children(v.children_, separators, show_tree_lhs_rhs_options_, level);
 
         result += children_str;
 
-        if (show_tree_lhs_rhs_options_.add_new_lines)
+        if (show_tree_lhs_rhs_options_.add_new_lines_before_children)
             result += "\n" + line_start;
         result += separators.close_child;
     }
@@ -289,51 +255,6 @@ std::string show_tree_lhs_rhs(
         result += " ";
     result += fp::show(v.value_.rhs);
 
-    return result;
-}
-
-
-template <typename T>
-std::string show_tree(
-    const tree<T> &v,
-    const tree_separators & separators,
-    const show_tree_options & show_tree_options_,
-    int level = 0)
-{
-    auto line_start = fp::repeat(level, show_tree_options_.indent);
-
-    std::string result;
-    if (show_tree_options_.add_new_lines)
-        result = line_start;
-
-    result += fp::show(v.value_);
-
-    if (!v.children_.empty())
-    {
-        if (show_tree_options_.add_new_lines)
-            result += "\n" + line_start;
-        result += separators.open_child;
-        if (show_tree_options_.add_new_lines)
-            result += "\n";
-
-        std::vector<std::string> children_strs =
-            fp_incompat::transform_vector<std::string>([=](const tree<T> &vv) -> std::string {
-                return show_tree(vv, separators, show_tree_options_, level + 1);
-            },
-            v.children_);
-
-        const std::string siblings_separator =
-            show_tree_options_.add_space_between_siblings ?
-                    show(separators.separate_siblings) + " "
-                :   show(separators.separate_siblings);
-        std::string children_str = join(siblings_separator, children_strs);
-
-        result += children_str;
-
-        if (show_tree_options_.add_new_lines)
-            result += "\n" + line_start;
-        result += separators.close_child;
-    }
     return result;
 }
 

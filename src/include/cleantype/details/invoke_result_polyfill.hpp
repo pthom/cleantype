@@ -1,3 +1,4 @@
+#include <functional>
 // From https://en.cppreference.com/w/cpp/types/result_of
 
 namespace cleantype

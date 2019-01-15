@@ -1,3 +1,8 @@
+* Range-v3 & indent:
+    * [X] auto-indent clean
+    * [X] pref / start auto indent
+    * [ ] doc / range-v3 & indent
+
 * [ ] Cleanup
     * [ ] Remove submodule hana (checkout via notebook if needed)
     * [ ] Configuration via pref file ?

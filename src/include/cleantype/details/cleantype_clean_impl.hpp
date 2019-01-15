@@ -15,20 +15,17 @@ namespace cleantype
 
     namespace internal
     {
-        std::string impl_clean_one_type(std::string const & typ_name);
+        std::string add_type_holder_str(std::string const & type_names);
+        std::string remove_type_holder_str(std::string const & type_name);
 
 
-        inline std::vector<std::string> tokenize_params_around_comma(std::string const & params, bool clean_params)
+        inline std::vector<std::string> split_types(std::string const & type_names)
         {
-            auto clean_param_if_needed = [&clean_params](std::string const & param) {
-                return clean_params ? impl_clean_one_type(param) : fp::trim(' ', param);
-            };
-
             std::vector<std::string> result;
             // counts < and > occurrences
             int count = 0;
             std::string current;
-            for (const auto c : params)
+            for (const auto c : type_names)
             {
                 if (c == '<')
                     ++count;
@@ -36,7 +33,7 @@ namespace cleantype
                     --count;
                 if ( (c == ',') && (count == 0))
                 {
-                    result.push_back(clean_param_if_needed(current));
+                    result.push_back(fp::trim(' ', current));
                     current = "";
                 }
                 else
@@ -44,7 +41,7 @@ namespace cleantype
                     current += c;
                 }
             }
-            result.push_back(clean_param_if_needed(current));
+            result.push_back(fp::trim(' ', current));
             return result;
         }
 
@@ -63,26 +60,45 @@ namespace cleantype
             fp::fp_add::tree_separators sep;
             sep.open_child = '<';
             sep.close_child = '>';
-            sep.separate_siblings = ',';
+            sep.siblings_separator = ',';
             return sep;
         }
 
 
-        inline fp::fp_add::show_tree_lhs_rhs_options make_template_show_tree_options()
+        inline fp::fp_add::show_tree_lhs_rhs_options make_template_show_tree_options_impl(bool indent)
         {
             fp::fp_add::show_tree_lhs_rhs_options result;
-            result.add_new_lines = false;
-            result.add_space_between_siblings = true;
-            result.indent = "";
+            if (indent)
+            {
+                result.add_new_lines_before_children = true;
+                result.siblings_spacing = fp::fp_add::siblings_spacing_t::new_line;
+                result.indent = "    ";
+            }
+            else
+            {
+                result.add_new_lines_before_children = false;
+                result.siblings_spacing = fp::fp_add::siblings_spacing_t::space;
+                result.indent = "";
+            }
             result.add_space_after_lhs = false;
             result.add_space_before_rhs = true;
             return result;
         }
 
 
+        inline fp::fp_add::show_tree_lhs_rhs_options make_template_show_tree_options_no_indent()
+        {
+            return make_template_show_tree_options_impl(false);
+        }
+
+        inline fp::fp_add::show_tree_lhs_rhs_options make_template_show_tree_options_with_indent()
+        {
+            return make_template_show_tree_options_impl(true);
+        }
+
         inline code_pair_tree parse_template_tree(std::string const &s)
         {
-            return parse_lhs_rhs_tree(s, make_template_tree_separators(), false, false);
+            return parse_lhs_rhs_tree(s, make_template_tree_separators(), true);
         }
 
 
@@ -177,21 +193,12 @@ namespace cleantype
         }
 
 
-        inline std::string type_children_to_string(code_pair_tree const & xs)
-        {
-            return fp::fp_add::show_tree_children(
-                    xs.children_,
-                    make_template_tree_separators(),
-                    make_template_show_tree_options());
-        }
-
-
         inline std::string code_pair_tree_to_string(code_pair_tree const & xs)
         {
             return fp::fp_add::show_tree_lhs_rhs(
                     xs,
                     make_template_tree_separators(),
-                    make_template_show_tree_options());
+                    make_template_show_tree_options_no_indent());
         }
 
 
@@ -206,8 +213,7 @@ namespace cleantype
             code_pair_tree template_tree = parse_template_tree(typ_namecleaned);
             fp::fp_add::tree_transform_leafs_depth_first_inplace(trim_spaces_inplace, template_tree);
             code_pair_tree template_tree_filtered = filter_undesirable_template_leafs(template_tree);
-
-            auto template_tree_filtered_str = code_pair_tree_to_string(template_tree_filtered);
+            std::string template_tree_filtered_str = code_pair_tree_to_string(template_tree_filtered);
 
             std::string final_type = perform_std_replacements(template_tree_filtered_str);
             final_type = add_space_before_ref(final_type);
@@ -215,109 +221,81 @@ namespace cleantype
         }
 
 
+        inline std::string impl_indent_type_tree(const std::string & type_names)
+        {
+            std::string types_with_holder = add_type_holder_str(type_names);
+            code_pair_tree template_tree = parse_template_tree(types_with_holder);
+            std::string types_with_holder_indented = fp::fp_add::show_tree_lhs_rhs(
+                    template_tree,
+                    make_template_tree_separators(),
+                    make_template_show_tree_options_with_indent());
+
+            // now, types_with_holder_indented is like this:
+            //
+            // cleantype::internal::TupleTypeHolder
+            // <
+            //     Foo
+            //     <
+            //         int,
+            //         char
+            //     >
+            // >
+            //
+            // --> we remove the lines [0, 1, last], then we remove the first indentation level
+
+            auto remove_indented_tuple_holder = [](const std::string & type_str){
+                std::vector<std::string> lines = stringutils::split_string(type_str, '\n');
+                assert(lines.size() >= 3);
+                std::vector<std::string> filtered_lines(
+                    lines.begin() + 2,
+                    lines.end() - 1
+                 );
+                std::vector<std::string> unindented_lines = fp::transform(
+                    [](const std::string & s) {
+                        return stringutils::remove_start(s, "    ");
+                    },
+                    filtered_lines
+                );
+                std::string joined_lines = fp::join("\n", unindented_lines);
+                return joined_lines;
+            };
+
+            return remove_indented_tuple_holder(types_with_holder_indented);
+        }
+
+
         inline std::string impl_clean_several_types(std::string const & type_names)
         {
-            std::vector<std::string> types = tokenize_params_around_comma(type_names, true);
-            std::string r = fp::join(", ", types);
-            return r;
+            std::string types_with_holder = add_type_holder_str(type_names);
+            std::string types_clean_with_holder = impl_clean_one_type(types_with_holder);
+            return remove_type_holder_str(types_clean_with_holder);
+            //if fp::tree_depth > 3 ...
         }
 
 
-        inline std::string apply_east_const_impl(std::string const & type_name)
+        inline std::string impl_indent_if_neeeded(std::string const & type_names)
         {
-            // Note : this implementation is by no means neither complete nor foolproof
-            // It expects types that were preprocessed as inputs (spaces before * and &, etc.)
-            // For a more complete implementation, a BNF grammar parse would probably be required
-            //
-            // By default, cleantype this transformation is not applied (only for the unit tests)
-            namespace stringutils = cleantype::stringutils;
-
-            if (type_name.empty())
-                return "";
-            if (stringutils::ends_with(type_name, "const") && (!stringutils::starts_with(type_name, "const ")))
-                return type_name;
-
-            // const T * const => T const * const
-            if (stringutils::starts_ends_with(type_name, "const ", " * const"))
-            {
-                auto r = stringutils::remove_start_end(type_name, "const ", " * const");
-                r = r + " const * const";
-                return r;
-            }
-
-            // const T * const & => T const * const &
-            if (stringutils::starts_ends_with(type_name, "const ", " * const &"))
-            {
-                auto r = stringutils::remove_start_end(type_name, "const ", " * const &");
-                r = r + " const * const &";
-                return r;
-            }
-
-
-            // const T * & => T const * &
-            if (stringutils::starts_ends_with(type_name, "const ", " * &"))
-            {
-                auto r = stringutils::remove_start_end(type_name, "const ", " * &");
-                r = r + " const * &";
-                return r;
-            }
-
-            // const T & => T const &
-            if (stringutils::starts_ends_with(type_name, "const ", " &"))
-            {
-                auto r = stringutils::remove_start_end(type_name, "const ", " &");
-                r = r + " const &";
-                return r;
-            }
-
-            // const T * => T const *
-            if (stringutils::starts_ends_with(type_name, "const ", " *"))
-            {
-                auto r = stringutils::remove_start_end(type_name, "const ", " *");
-                r = r + " const *";
-                return r;
-            }
-
-            // const * T => T const *
-            if (stringutils::starts_with(type_name, "const * "))
-            {
-                auto r = stringutils::remove_start(type_name, "const * ");
-                r = r + " const *";
-                return r;
-            }
-
-            // const T => T const
-            if (stringutils::starts_with(type_name, "const "))
-            {
-                auto r = stringutils::remove_start(type_name, "const ");
-                r = r + " const";
-                return r;
-            }
-
-            return type_name;
+            std::size_t indent_depth_limit = cleantype::CleanConfiguration::GlobalConfig().indent_depth_limit;
+            if (indent_depth_limit == 0)
+                return type_names;
+            std::string types_with_holder = add_type_holder_str(type_names);
+            code_pair_tree template_tree = parse_template_tree(types_with_holder);
+            std::size_t depth = fp::fp_add::tree_depth(template_tree);
+            if ( depth > indent_depth_limit + 1)
+                return impl_indent_type_tree(type_names);
+            else
+                return type_names;
         }
 
-        inline std::vector<std::string> _split_string(std::string const & s, char delimiter)
+
+        inline std::string impl_clean(std::string const & type_names)
         {
-            std::vector<std::string> tokens;
-            std::string token;
-            std::istringstream tokenStream(s);
-            while (std::getline(tokenStream, token, delimiter))
-                tokens.push_back(token);
-            return tokens;
+            std::string cleaned = impl_clean_several_types(type_names);
+            std::string indented = impl_indent_if_neeeded(cleaned);
+            return indented;
         }
-
 
     } // namespace internal
-
-    inline std::string apply_east_const(std::string const & type_name)
-    {
-        std::vector<std::string> types = internal::tokenize_params_around_comma(type_name, false);
-        types = fp::transform(internal::apply_east_const_impl, types);
-        std::string r = fp::join(", ", types);
-        return r;
-    }
-
 
 
 } // namespace cleantype

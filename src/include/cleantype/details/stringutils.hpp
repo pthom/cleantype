@@ -6,6 +6,7 @@
 
 #include <string>
 #include <vector>
+#include <cassert>
 
 namespace cleantype
 {
@@ -49,5 +50,16 @@ namespace stringutils
         r = remove_end(r, end);
         return r;
     }
+
+    inline std::vector<std::string> split_string(std::string const & s, char delimiter)
+    {
+        std::vector<std::string> tokens;
+        std::string token;
+        std::istringstream tokenStream(s);
+        while (std::getline(tokenStream, token, delimiter))
+            tokens.push_back(token);
+        return tokens;
+    }
+
 }
 }

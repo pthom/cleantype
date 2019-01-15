@@ -123,76 +123,12 @@ TEST_CASE("clean_typename_from_string")
 void compare_type_full_to_repr(std::string const & type_full, std::string const &expected_repr)
 {
     std::string type_clean = cleantype::clean_typestring(type_full);
-    std::string type_west = cleantype::apply_east_const(type_clean);
+    std::string type_west = cleantype::apply_east_const_typelist(type_clean);
     std::string expected_repr2 = fp::replace_tokens(" COMMA ", ", ", expected_repr);
     if (type_west != expected_repr2)
         std::cout << "Ah";
     REQUIRE_EQ(type_west, expected_repr2);
 }
-
-
-TEST_CASE("apply_east_const")
-{
-    auto make_one_test = make_test_string_transform(cleantype::apply_east_const);
-
-    // T => T
-    make_one_test(
-        "T",
-        "T");
-    // T * => T *
-    make_one_test(
-        "T *",
-        "T *");
-    make_one_test(
-        "T * &",
-        "T * &");
-
-    // const T => T const
-    make_one_test(
-        "T const",
-        "T const");
-    make_one_test(
-        "const T",
-        "T const");
-
-    // const T & => T const &
-    make_one_test(
-        "T const &",
-        "T const &");
-    make_one_test(
-        "const T &",
-        "T const &");
-
-    // const * T => T const *
-    make_one_test(
-        "T const *",
-        "T const *");
-    make_one_test(
-        "const T *",
-        "T const *");
-
-    // const T * const => T const * const
-    make_one_test(
-        "T const * const",
-        "T const * const");
-    make_one_test(
-        "const T * const",
-        "T const * const");
-
-    // const T * & => T const * &
-    make_one_test(
-        "T const * &",
-        "T const * &");
-    make_one_test(
-        "const T * &",
-        "T const * &");
-
-    // const T * const & => T const * const &
-    make_one_test(
-            "const int * const &",
-            "int const * const &");
-}
-
 
 
 template<typename T>

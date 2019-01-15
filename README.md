@@ -3,7 +3,7 @@
 <table>
 <tr><td>
 <p style="text-align: left;">
-   <a href="#cleantype--Readable-C++-Types-and-Lambda-signatures-/-Compiler-Decipherer">cleantype : Readable C++ Types and Lambda signatures / Compiler Decipherer</a><br/>
+   <a href="#cleantype--readable-C++-type-introspection---Compiler-Decipherer">cleantype : readable C++ type introspection - Compiler Decipherer</a><br/>
    <a href="#Installation-and-usage">Installation and usage</a><br/>
    <a href="#About-this-manual">About this manual</a><br/>
    <a href="#Readable-type-names-and-full-type-names">Readable type names and full type names</a><br/>
@@ -11,6 +11,7 @@
    <a href="#Compile-time-constexpr-type-names">Compile time constexpr type names</a><br/>
    <a href="#Identify-the-signature-of-lambdas">Identify the signature of lambdas</a><br/>
    <a href="#Identify-the-auto-return-type-of-functions-and-functors">Identify the auto return type of functions and functors</a><br/>
+   <a href="#Decipher-range-v3-auto-types">Decipher range-v3 auto types</a><br/>
    <a href="#The-zoo-of-type-qualifiers">The zoo of type qualifiers</a><br/>
 
 </p>
@@ -38,9 +39,9 @@
     </tr>
 </table> 
 
-# cleantype : Readable C++ Types and Lambda signatures / Compiler Decipherer
+# cleantype : readable C++ type introspection - Compiler Decipherer
 
-`cleantype`is a small header only library which offer *readable* type names, with a *consistent naming scheme accross compilers*, at *run-time* and *compile-time*. It can also output the *signature of lambda* functions.
+`cleantype`is a small header only library which offer *readable* type names, with a *consistent naming scheme accross compilers*, at *run-time* and *compile-time*. It can also output the *signature of lambda* functions, and the result type of any auto function (range-v3 anyone?).
 
 The included tool `ct_compiler_decipher` simplifies the template noise in your compiler output : just ` "|" (pipe)` your build tool to it.
 
@@ -111,7 +112,9 @@ The "#pragma cling add_include_path" is specific to cling. Beside this, everythi
 # Readable type names and full type names
 
  ## Readable type names 
-                 
+ 
+ #### Functions operating on types and variables
+                
 * `cleantype::clean<T...>()` is a function that will return a string containing
    a readable type, for a given type or pack of types
    Use it with "cleantype::clean<decltype(var)>()"<br/>
@@ -135,6 +138,14 @@ The "#pragma cling add_include_path" is specific to cling. Beside this, everythi
 
 * `CT_show_details_cont` (macro) is a version of CT_show_details for complex containers
    like "std::map". "cont" stands for "container".
+   
+#### Functions operating on strings
+
+* `cleantype::clean_typestring(type_names)` will clean a given (list of) type(s) given as a string
+* `cleantype::indent_type_tree(type_names)` will present an indented view of a given (list of) type(s).
+
+_Note_: by default, types will be presented with an indentation as soon as the type tree depth is > 3. 
+
 
 ### Examples
 
@@ -206,6 +217,38 @@ std::cout << cleantype::clean<std::string, int, int &&, char &&>() << std::endl;
     std::string, int, int &&, char &&
 
 
+### Example with strings
+
+
+```c++
+{
+    // clean_typestring
+    run_show(  cleantype::clean_typestring("std::__cxx11::list<int, std::allocator<int> >")    );
+
+    // indent_type_tree
+    run_show(  cleantype::indent_type_tree("std::deque<std::pair<std::string, std::map<int, int>>>")    );
+}
+```
+
+    cleantype::clean_typestring("std::__cxx11::list<int, std::allocator<int> >")
+    std::list<int>
+    
+    cleantype::indent_type_tree("std::deque<std::pair<std::string, std::map<int, int>>>")
+    std::deque
+    <
+        std::pair
+        <
+            std::string,
+            std::map
+            <
+                int,
+                int
+            >
+        >
+    >
+    
+
+
 ### Configuration of the clean types
 
 You can customize the suppressions and replacements inside [cleantype/cleantype_configuration.hpp](src/include/cleantype/cleantype_configuration.hpp)
@@ -250,19 +293,19 @@ run_show(     CT_show_details_full(w)                    )
 ```
 
     cleantype::full(w)
-    std::__cxx11::list<int, std::allocator<int> > &
+    std::__cxx11::list<int, std::allocator<int>> &
     
     cleantype::full<decltype(w)>()
-    std::__cxx11::list<int, std::allocator<int> >
+    std::__cxx11::list<int, std::allocator<int>>
     
     cleantype::show_details_full(w)
-    [std::__cxx11::list<int, std::allocator<int> > &] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    [std::__cxx11::list<int, std::allocator<int>> &] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     
     CT_cleantype_full(w)
-    std::__cxx11::list<int, std::allocator<int> >
+    std::__cxx11::list<int, std::allocator<int>>
     
     CT_show_details_full(w)
-    [std::__cxx11::list<int, std::allocator<int> >] w = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    [std::__cxx11::list<int, std::allocator<int>>] w = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     
 
 
@@ -277,7 +320,7 @@ run_show(     cleantype::show_details(my_set)                    )
 ```
 
     cleantype::show_details_full(my_set)
-    [std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > &] = [Hello, There]
+    [std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>>, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>>> &] = [Hello, There]
     
     cleantype::show_details(my_set)
     std::set<std::string> & = [Hello, There]
@@ -303,7 +346,7 @@ run_show(     CT_show_details_full_cont(my_map)               )
     [std::map<std::string, int>] my_map = [(a, 1), (b, 2), (c, 3)]
     
     CT_show_details_full_cont(my_map)
-    [std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<const std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int> > >] my_map = [(a, 1), (b, 2), (c, 3)]
+    [std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>, int, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>>, std::allocator<std::pair<const std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>, int>>>] my_map = [(a, 1), (b, 2), (c, 3)]
     
 
 
@@ -489,7 +532,7 @@ If we try to get the type of this lambda via `cleantype::full`, we do not get mu
 std::cout << cleantype::full<decltype(mystery_lambda)>();
 ```
 
-    (lambda at input_line_26:4:23)
+    (lambda at input_line_27:4:23)
 
 This is because "mystery_lambda" is actually a instance of a hidden class. We are actually looking for the signature of the operator() of this class. `type_lambda_clean` is able to extract the type of this operator and to display it in a readable way.
 
@@ -611,6 +654,169 @@ run_show (       CT_type_fn_template(add_auto_template_fn, std::string, char)   
 __Limitations of invoke_result with MSVC 2017 and templated auto functions__:
 
 `invoke_result` does not work under MSVC with template functions whose return type is auto (see https://stackoverflow.com/questions/54111146/invoke-result-for-template-function-with-auto-return-type-and-msvc-2017)
+
+# Decipher range-v3 auto types
+
+[range-v3](https://github.com/ericniebler/range-v3) is a range library which will (most probably) be included in the next C++ standard. 
+It allows very expressive code. However, the design of the library is based on a complex collection of types, so that most of the functions and variables can only be noted as `auto`.  
+
+`cleantype` can help in deciphering what's going on with the types with range-v3: 
+
+First, we include cleantype and the range-v3 library
+
+
+```c++
+#pragma cling add_include_path("./include")
+#include <cleantype/cleantype.hpp>
+#include <range/v3/all.hpp>
+
+#define run_show2(...)                   \
+{                                       \
+    std::cout << #__VA_ARGS__ << "\n";  \
+    std::cout << __VA_ARGS__ << "\n\n"; \
+}
+using namespace ranges;
+```
+
+Then we set the indent depth limit to 2, because indenting will make the types much easier to read, since `range-v3` uses long and deep nested types. 
+
+
+```c++
+cleantype::CleanConfiguration::GlobalConfig().indent_depth_limit = 2;
+```
+
+### Example of a view that return square numbers
+
+Let's define a function that yields using `ranges::yield` and, then let's identify its return type.
+
+
+```c++
+auto square_yield_fn(int x) {
+    return ranges::yield(x * x);
+}
+run_show2(  CT_type_fn(square_yield_fn, int)  );
+```
+
+    CT_type_fn(square_yield_fn, int)
+    ranges::v3::single_view<int>
+    
+
+
+Now, let's define a view that transform ints into squares. This view is lazy, and unlimited (it never ends). We then identify its type:
+
+
+```c++
+auto squares_view_fn = view::for_each(view::ints(1), square_yield_fn);
+run_show2(  cleantype::clean(squares_view_fn)  );
+```
+
+    cleantype::clean(squares_view_fn)
+    ranges::v3::join_view
+    <
+        ranges::v3::transform_view
+        <
+            ranges::v3::iota_view
+            <
+                int,
+                void
+            >,
+            ranges::v3::single_view
+            <
+                int
+            > (*)(int)
+        >,
+        void
+    > &
+    
+
+
+
+```c++
+auto squares_fn_take_10 = squares_view_fn | view::take(10);
+run_show2(  cleantype::clean(squares_fn_take_10)  );
+```
+
+    cleantype::clean(squares_fn_take_10)
+    ranges::v3::detail::take_exactly_view_
+    <
+        ranges::v3::join_view
+        <
+            ranges::v3::transform_view
+            <
+                ranges::v3::iota_view
+                <
+                    int,
+                    void
+                >,
+                ranges::v3::single_view
+                <
+                    int
+                > (*)(int)
+            >,
+            void
+        >,
+        false
+    > &
+    
+
+
+### Example with range-v3 and lambdas:
+
+Since lambda are actually anonymous structs, cleantype cannot disclose the signature of the inner lambda of a view that is contructed using a lambda. 
+
+
+```c++
+{
+    using namespace ranges;
+    
+    auto square_yield_lambda = [](int x) {
+        return yield(x * x);
+    };
+    run_show2(  cleantype::lambda_clean(square_yield_lambda)  );
+    auto squares_view_lambda = view::for_each(view::ints(1), square_yield_lambda);
+    run_show2(  cleantype::clean(squares_view_lambda)  );
+}
+```
+
+    cleantype::lambda_clean(square_yield_lambda)
+    lambda: (int) -> ranges::v3::single_view<int>
+    
+    cleantype::clean(squares_view_lambda)
+    ranges::v3::join_view
+    <
+        ranges::v3::transform_view
+        <
+            ranges::v3::iota_view
+            <
+                int,
+                void
+            >,
+            (lambda at input_line_14:5:32)
+        >,
+        void
+    > &
+    
+
+
+In an ideal world, I would be interesting to be able to display the view type as below (but I'm afraid that the code in order to get to this might be intractable).
+
+````
+ranges::v3::join_view
+<
+    ranges::v3::transform_view
+    <
+        ranges::v3::iota_view
+        <
+            int,
+            void
+        >,
+        lambda: (int) -> ranges::v3::single_view<int>
+    >,
+    void
+> &
+````
+
+Thus, it is advised to prefer "auto return functions" to lambdas when using range-v3 with cleantype.
 
 # The zoo of type qualifiers
 `cleantype`handles quite well `const`, `volatile`, references (`&`), rvalue references (`&&`), and pointers (`*`). See below a demonstration 

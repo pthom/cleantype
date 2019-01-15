@@ -12,12 +12,12 @@
 // #define LOG_VALUE(v) std::cout << #v << "==>" << v << "<==" << std::endl
 
 
-TEST_CASE("tokenize_params_around_comma")
+TEST_CASE("split_types")
 {
     using namespace cleantype::internal;
     {
         std::string params_str("int, string");
-        auto params = tokenize_params_around_comma(params_str, false);
+        auto params = split_types(params_str);
         std::vector<std::string> expected {
             {"int"},
             {"string"}
@@ -26,7 +26,7 @@ TEST_CASE("tokenize_params_around_comma")
     }
     {
         std::string params_str("int, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, double");
-        auto params = tokenize_params_around_comma(params_str, false);
+        auto params = split_types(params_str);
         std::vector<std::string> expected {
             {"int"},
             {"std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >"},
@@ -35,24 +35,14 @@ TEST_CASE("tokenize_params_around_comma")
         REQUIRE_EQ(params, expected);
     }
     {
-        std::string params_str("int, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, double");
-        auto params = tokenize_params_around_comma(params_str, true);
-        std::vector<std::string> expected {
-            {"int"},
-            {"std::string"},
-            {"double"},
-        };
-        REQUIRE_EQ(params, expected);
-    }
-    {
         std::string params_str("");
-        auto params = tokenize_params_around_comma(params_str, true);
+        auto params = split_types(params_str);
         std::vector<std::string> expected { "" };
         REQUIRE_EQ(params, expected);
     }
     {
         std::string params_str("int");
-        auto params = tokenize_params_around_comma(params_str, true);
+        auto params = split_types(params_str);
         std::vector<std::string> expected {
             "int"
         };
@@ -60,7 +50,8 @@ TEST_CASE("tokenize_params_around_comma")
     }
     {
         std::string params_str("std::__1::basic_string<char> const &, std::__1::basic_string<char> const &");
-        auto params = tokenize_params_around_comma(params_str, true);
+        auto params = split_types(params_str);
+        params = fp::transform(cleantype::internal::impl_clean_one_type, params);
         std::vector<std::string> expected {
             "std::string const &", "std::string const &"
         };
