@@ -236,12 +236,18 @@ namespace cleantype
         }
 
 
-        inline std::string impl_clean_several_types(std::string const & type_names)
+        inline std::string impl_clean_several_types_no_indent(std::string const & type_names)
         {
             std::string types_with_holder = "type_tuple_holder< " + type_names + " >";
             bool remove_type_tuple_holder = true;
             std::string types_clean_with_holder = impl_clean_one_type(types_with_holder, remove_type_tuple_holder);
             return types_clean_with_holder;
+        }
+
+        inline std::string impl_clean_several_types(std::string const & type_names)
+        {
+            return impl_clean_several_types_no_indent(type_names);
+            //if fp::tree_depth > 3 ...
         }
 
 

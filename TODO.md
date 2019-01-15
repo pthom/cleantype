@@ -1,3 +1,20 @@
+* Range-v3 & indent:
+    * [ ] auto-indent clean
+    * [ ] pref / start auto indent
+    * [ ] impl_clean_one_type needs refactor (gloubi boulga / calls)
+
+    inline std::string clean_typestring(const std::string & type_names)
+    {
+        return internal::impl_clean_several_types(type_names);
+    }
+    inline std::string impl_clean_several_types(std::string const & type_names)
+    {
+        std::vector<std::string> types = tokenize_params_around_comma(type_names, true);
+        std::string r = fp::join(", ", types);
+        return r;
+    }
+
+
 * [ ] Cleanup
     * [ ] Remove submodule hana (checkout via notebook if needed)
     * [ ] Configuration via pref file ?
