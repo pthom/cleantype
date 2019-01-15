@@ -123,7 +123,7 @@ TEST_CASE("clean_typename_from_string")
 void compare_type_full_to_repr(std::string const & type_full, std::string const &expected_repr)
 {
     std::string type_clean = cleantype::clean_typestring(type_full);
-    std::string type_west = cleantype::apply_east_const(type_clean);
+    std::string type_west = cleantype::apply_east_const_typelist(type_clean);
     std::string expected_repr2 = fp::replace_tokens(" COMMA ", ", ", expected_repr);
     if (type_west != expected_repr2)
         std::cout << "Ah";
@@ -131,9 +131,9 @@ void compare_type_full_to_repr(std::string const & type_full, std::string const 
 }
 
 
-TEST_CASE("apply_east_const")
+TEST_CASE("apply_east_const_typelist")
 {
-    auto make_one_test = make_test_string_transform(cleantype::apply_east_const);
+    auto make_one_test = make_test_string_transform(cleantype::apply_east_const_typelist);
 
     // T => T
     make_one_test(

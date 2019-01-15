@@ -79,7 +79,7 @@ namespace cleantype
             std::string formatted = cleantype::format_whitespace(type_definition);
 
             if (CleanConfiguration::GlobalConfig().force_east_const_)
-                formatted = cleantype::apply_east_const(formatted);
+                formatted = cleantype::apply_east_const_typelist(formatted);
 
             return formatted;
         }

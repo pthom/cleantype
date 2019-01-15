@@ -17,12 +17,17 @@ namespace cleantype
     {
         std::string impl_clean_one_type(std::string const & typ_name, bool remove_type_tuple_holder);
 
-        inline std::vector<std::string> tokenize_params_around_comma(std::string const & params, bool clean_params)
+        inline std::vector<std::string> clean_several_types(const std::vector<std::string> &types)
         {
-            auto clean_param_if_needed = [&clean_params](std::string const & param) {
-                return clean_params ? impl_clean_one_type(param, false) : fp::trim(' ', param);
-            };
+            return fp::transform(
+                [](const std::string &p) { return impl_clean_one_type(p, false); },
+                types
+            );
+        }
 
+
+        inline std::vector<std::string> split_types(std::string const & params)
+        {
             std::vector<std::string> result;
             // counts < and > occurrences
             int count = 0;
@@ -35,7 +40,7 @@ namespace cleantype
                     --count;
                 if ( (c == ',') && (count == 0))
                 {
-                    result.push_back(clean_param_if_needed(current));
+                    result.push_back(fp::trim(' ', current));
                     current = "";
                 }
                 else
@@ -43,7 +48,7 @@ namespace cleantype
                     current += c;
                 }
             }
-            result.push_back(clean_param_if_needed(current));
+            result.push_back(fp::trim(' ', current));
             return result;
         }
 
@@ -338,9 +343,9 @@ namespace cleantype
 
     } // namespace internal
 
-    inline std::string apply_east_const(std::string const & type_name)
+    inline std::string apply_east_const_typelist(std::string const & type_names)
     {
-        std::vector<std::string> types = internal::tokenize_params_around_comma(type_name, false);
+        std::vector<std::string> types = internal::split_types(type_names);
         types = fp::transform(internal::apply_east_const_impl, types);
         std::string r = fp::join(", ", types);
         return r;

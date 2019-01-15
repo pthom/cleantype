@@ -64,7 +64,7 @@ TEST_CASE("cleantype_full_test_s")
         my_require_eq_string(cleantype::full(v),
            "char const &"
         );
-        my_require_eq_string(cleantype::apply_east_const(CT_cleantype_full(v)),
+        my_require_eq_string(cleantype::apply_east_const_typelist(CT_cleantype_full(v)),
             "char const &"
         );
     }
@@ -75,7 +75,7 @@ TEST_CASE("cleantype_full_test_s")
         my_require_eq_string(cleantype::full(v),
           "char const * &"
         );
-        my_require_eq_string(cleantype::apply_east_const(CT_cleantype_full(v)),
+        my_require_eq_string(cleantype::apply_east_const_typelist(CT_cleantype_full(v)),
             "char const *"
         );
     }
@@ -86,7 +86,7 @@ TEST_CASE("cleantype_full_test_s")
         my_require_eq_string(cleantype::full(v),
         "char const * &"
         );
-        my_require_eq_string(cleantype::apply_east_const(CT_cleantype_full(v)),
+        my_require_eq_string(cleantype::apply_east_const_typelist(CT_cleantype_full(v)),
         "char const *"
         );
     }
