@@ -3,8 +3,8 @@
 // Distributed under the Boost Software License, Version 1.0. (see LICENSE.md)
 #include "doctest.h"
 #include <cleantype/cleantype.hpp>
-#include <cleantype/details/debug_break.hpp>
 #include <fplus/fplus.hpp>
+#include <cleantype/details/debug_break.hpp>
 #include <functional>
 #include <map>
 

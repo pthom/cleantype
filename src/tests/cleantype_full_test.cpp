@@ -7,6 +7,10 @@
 #include <cleantype/details/debug_break.hpp>
 #include <regex>
 
+#ifdef _WIN32
+#include <Windows.h>
+#endif // _WIN32
+
 //#define LOG(str) std::cout << str << std::endl
 //#define LOG_VALUE(var) std::cout << #var << " = " << var << std::endl
 

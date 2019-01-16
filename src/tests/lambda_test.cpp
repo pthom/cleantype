@@ -9,6 +9,10 @@
 #include <functional>
 #include <map>
 
+#ifdef _WIN32
+#include <Windows.h>
+#endif // _WIN32
+
 #define LOG(str) std::cout << str << std::endl
 #define LOG_VALUE(v) std::cout << #v << "==>" << v << "<==" << std::endl
 
