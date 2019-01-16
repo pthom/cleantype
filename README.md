@@ -117,7 +117,7 @@ The "#pragma cling add_include_path" is specific to cling. Beside this, everythi
  #### Functions operating on types and variables
                 
 * `cleantype::clean<T...>()` is a function that will return a string containing
-   a readable type, for a given type or pack of types
+   a readable type, for a given type or pack of types.
    Use it with "cleantype::clean<decltype(var)>()"<br/>
    Note: It will add a reference by default so that "int v = 5; cleantype::clean(v)" will return "int&". 
    Use the macro CT_cleantype_clean() if you want to avoid this
@@ -459,9 +459,9 @@ compile_code_decipher__extract(code2);
 ```
 
     clang++ --std=c++14 -c code.cpp -Iinclude -o a.out 2>&1 | ct_compiler_decipher | head -3 2>&1
-    code.cpp:10:5: error: no member named 'IntentionalError' in 'std::vector<std::pair<int, int>> '
-        CT_compiler_log_var_type(v); // Here we ask the compiler to give us the type of v
-        ^                        ~
+    In file included from code.cpp:2:
+    In file included from include/cleantype/cleantype.hpp:5:
+    include/cleantype/cleantype_configuration.hpp:130:10: fatal error: 'nlohmann/json.hpp' file not found
 
 
 # Compile time constexpr type names
@@ -921,17 +921,17 @@ auto foo = [](auto && x) {
      *********** Calling with a const lvalue reference ***********
     Bare variable (before the call)
     cleantype::clean<decltype(b)>()
-    const int &
+    int const &
     
     CT_cleantype_clean(b)
-    const int &
+    int const &
     
     Now inside foo (pass by universal reference)
     CT_cleantype_clean(x)
-    const int &
+    int const &
     
     cleantype::clean<decltype(x)>()
-    const int &
+    int const &
     
      *********** Calling with an rvalue reference ***********
     Bare variable (before the call)
@@ -966,17 +966,17 @@ auto foo = [](auto && x) {
      *********** Calling with a pointer to const ***********
     Bare variable (before the call)
     cleantype::clean<decltype(d)>()
-    const int *
+    int const *
     
     CT_cleantype_clean(d)
-    const int *
+    int const *
     
     Now inside foo (pass by universal reference)
     CT_cleantype_clean(x)
-    const int * &
+    int const * &
     
     cleantype::clean<decltype(x)>()
-    const int * &
+    int const * &
     
      *********** Calling with a volatile int ***********
     Bare variable (before the call)
@@ -996,16 +996,16 @@ auto foo = [](auto && x) {
      *********** Calling with a const ***********
     Bare variable (before the call)
     cleantype::clean<decltype(e)>()
-    const int
+    int const
     
     CT_cleantype_clean(e)
-    const int
+    int const
     
     Now inside foo (pass by universal reference)
     CT_cleantype_clean(x)
-    const int &
+    int const &
     
     cleantype::clean<decltype(x)>()
-    const int &
+    int const &
     
 
