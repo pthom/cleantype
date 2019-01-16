@@ -43,7 +43,7 @@ TEST_CASE("CT_show_details")
 template <typename Transform>
 auto make_test_string_transform(Transform f)
 {
-    return [f](std::string const &input, std::string const &expected_output) {
+    return [f](std::string const & input, std::string const & expected_output) {
         std::string computed_output = f(input);
         if (computed_output != expected_output)
             std::cout << "Mince";
@@ -54,11 +54,11 @@ auto make_test_string_transform(Transform f)
 TEST_CASE("clean_from_values")
 {
     int a = 3;
-    int const &b = a;
-    int const *const c = &a;
+    int const & b = a;
+    int const * const c = &a;
     char d = 42;
     std::vector<std::string> ee;
-    const auto &e = ee;
+    const auto & e = ee;
     auto computed = cleantype::clean(a, b, c, d, e);
     auto expected = std::string(
         "int &, int const &, int const * const &, char &, std::vector<std::string> const &");
@@ -88,7 +88,7 @@ TEST_CASE("clean_typename_from_string")
                   "std::vector<int> const &");
 }
 
-void compare_type_full_to_repr(std::string const &type_full, std::string const &expected_repr)
+void compare_type_full_to_repr(std::string const & type_full, std::string const & expected_repr)
 {
     std::string type_clean = cleantype::clean_typestring(type_full);
     std::string type_west = cleantype::apply_east_const_typelist(type_clean);
@@ -100,7 +100,7 @@ void compare_type_full_to_repr(std::string const &type_full, std::string const &
 }
 
 template <typename T>
-void impl_test_clean_type(std::string const &expectedRepr, T value)
+void impl_test_clean_type(std::string const & expectedRepr, T value)
 {
     std::string type_full = CT_cleantype_full(value);
     compare_type_full_to_repr(type_full, expectedRepr);

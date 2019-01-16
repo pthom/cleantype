@@ -40,7 +40,7 @@ namespace boost
             {
                 struct stringliteral
                 {
-                    char const* ptr;
+                    char const * ptr;
                     std::size_t length;
                 };
 
@@ -49,7 +49,7 @@ namespace boost
     {                                            \
         str_literal, _HANA_SIZEOF_OR_STRLEN(str_literal);
 
-                inline constexpr std::size_t constexpr_strlen(char const* s)
+                inline constexpr std::size_t constexpr_strlen(char const * s)
                 {
                     std::size_t r = 0;
                     while (*s++ != '\0')
@@ -57,8 +57,8 @@ namespace boost
                     return r;
                 }
 
-                inline constexpr bool stringliteral_equal(stringliteral const& cs1,
-                                                          stringliteral const& cs2)
+                inline constexpr bool stringliteral_equal(stringliteral const & cs1,
+                                                          stringliteral const & cs2)
                 {
                     if (cs1.length != cs2.length)
                         return false;
@@ -75,14 +75,14 @@ namespace boost
                     return true;
                 }
 
-                inline constexpr bool stringliteral_equal_sz(stringliteral const& cs1,
-                                                             char const* literal)
+                inline constexpr bool stringliteral_equal_sz(stringliteral const & cs1,
+                                                             char const * literal)
                 {
                     stringliteral cs2{literal, constexpr_strlen(literal)};
                     return stringliteral_equal(cs1, cs2);
                 }
 
-                inline std::string stringliteral_to_string(stringliteral const& cs)
+                inline std::string stringliteral_to_string(stringliteral const & cs)
                 {
                     return std::string(cs.ptr, cs.length);
                 }

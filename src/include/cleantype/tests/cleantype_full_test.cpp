@@ -10,7 +10,7 @@
 //#define LOG(str) std::cout << str << std::endl
 //#define LOG_VALUE(var) std::cout << #var << " = " << var << std::endl
 
-void my_require_eq_string(std::string const &computed, std::string const &expected)
+void my_require_eq_string(std::string const & computed, std::string const & expected)
 {
 #ifdef _MSC_VER  // remove __ptr64 from msvc types
     std::string computed2 = cleantype_fp::replace_tokens(" __ptr64", "", computed);
@@ -43,14 +43,14 @@ TEST_CASE("cleantype_full_test_s")
     {
         // Reference
         char a = 5;
-        char &v = a;
+        char & v = a;
         my_require_eq_string(cleantype::full(v), "char &");
         my_require_eq_string(CT_cleantype_full(v), "char &");
     }
     {
         // Const reference
         char a = 5;
-        const char &v = a;
+        const char & v = a;
         my_require_eq_string(cleantype::full(v), "char const &");
         my_require_eq_string(cleantype::apply_east_const_typelist(CT_cleantype_full(v)),
                              "char const &");
@@ -58,7 +58,7 @@ TEST_CASE("cleantype_full_test_s")
     {
         // Pointer to const
         char a = 5;
-        const char *v = &a;
+        const char * v = &a;
         my_require_eq_string(cleantype::full(v), "char const * &");
         my_require_eq_string(cleantype::apply_east_const_typelist(CT_cleantype_full(v)),
                              "char const *");
@@ -66,7 +66,7 @@ TEST_CASE("cleantype_full_test_s")
     {
         // Const pointer (but modifiable content)
         char a = 5;
-        const char *v = &a;
+        const char * v = &a;
         my_require_eq_string(cleantype::full(v), "char const * &");
         my_require_eq_string(cleantype::apply_east_const_typelist(CT_cleantype_full(v)),
                              "char const *");
@@ -83,10 +83,10 @@ TEST_CASE("cleantype_full_r_value_references")
 {
     using TypenamePair = std::array<std::string, 2>;
     // r-value reference tests
-    auto output_received_type = [](auto &&v) -> TypenamePair {
+    auto output_received_type = [](auto && v) -> TypenamePair {
         return {cleantype::full<decltype(v)>(), cleantype::full(v)};
     };
-    auto require_eq_typename_pair = [](const TypenamePair &p1, const TypenamePair &p2) {
+    auto require_eq_typename_pair = [](const TypenamePair & p1, const TypenamePair & p2) {
         if (p1[0] != p2[0])
             std::cout << "ARGGHHH" << std::endl;
         if (p1[1] != p2[1])
@@ -103,13 +103,13 @@ TEST_CASE("cleantype_full_r_value_references")
     // with a reference
     {
         char a = 5;
-        char &v = a;
+        char & v = a;
         require_eq_typename_pair(output_received_type(v), {"char &", "char &"});
     }
     // with a const reference
     {
         char a = 5;
-        const char &v = a;
+        const char & v = a;
         require_eq_typename_pair(output_received_type(v), {"char const &", "char const &"});
     }
     // with an r-value reference
@@ -138,7 +138,7 @@ struct TemplateClass
 };
 
 template <typename... Args>
-void check_multiple_args(std::string const &expected)
+void check_multiple_args(std::string const & expected)
 {
     auto v1 = cleantype::full<Args...>();
     auto v2 = TemplateClass<Args...>::full_type();
@@ -157,12 +157,12 @@ TEST_CASE("cleantype_full_multiple")
     check_multiple_args<char &&>("char &&");
     check_multiple_args<char &&>("char &&");
 
-    check_multiple_args<char *, char const *, char *const, char const *const>(
+    check_multiple_args<char *, char const *, char * const, char const * const>(
         "char *, char const *, char * const, char const * const");
 }
 
 template <typename... Args>
-void check_multiple_args_fromvalues(std::string const &expected, Args... args)
+void check_multiple_args_fromvalues(std::string const & expected, Args... args)
 {
     my_require_eq_string(cleantype::full(args...), expected);
 }
@@ -173,9 +173,9 @@ TEST_CASE("cleantype_full_multiple_fromvalues")
     my_require_eq_string(cleantype::full(static_cast<char>(1), static_cast<char>(1)), "char, char");
     {
         char a = 5;
-        char &v = a;
-        char &v2 = a;
-        const char &c = a;
+        char & v = a;
+        char & v2 = a;
+        const char & c = a;
         my_require_eq_string(cleantype::full(a, v, c, c),
                              "char &, char &, char const &, char const &");
     }
@@ -187,7 +187,7 @@ struct Template
 };
 
 template <typename T>
-void check_matches(std::string const &re)
+void check_matches(std::string const & re)
 {
     std::string name = cleantype::full<T>();
     std::regex regex{re};

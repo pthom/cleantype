@@ -23,7 +23,7 @@ namespace cleantype
     namespace internal
     {
         std::string user_home_directory();
-        bool file_exists(const std::string& name);
+        bool file_exists(const std::string & name);
         CleanConfiguration ImplGlobalConfig();
     }  // namespace internal
 
@@ -98,7 +98,7 @@ namespace cleantype
         // set  indent_depth_limit = 0 to disable indentation
         std::size_t indent_depth_limit = 3;
 
-        inline static CleanConfiguration& GlobalConfig()
+        inline static CleanConfiguration & GlobalConfig()
         {
             thread_local CleanConfiguration gCleanConfiguration = internal::ImplGlobalConfig();
             return gCleanConfiguration;
@@ -131,7 +131,7 @@ namespace cleantype
 #else
 namespace cleantype
 {
-    inline void to_json(nlohmann::json& j, const cleantype::CleanConfiguration& c)
+    inline void to_json(nlohmann::json & j, const cleantype::CleanConfiguration & c)
     {
         j = nlohmann::json{{"suppress_extra_namespaces_", c.suppress_extra_namespaces_},
                            {"suppress_extract_struct_class_", c.suppress_extract_struct_class_},
@@ -143,7 +143,7 @@ namespace cleantype
                            {"indent_depth_limit", c.indent_depth_limit}};
     }
 
-    inline void from_json(const nlohmann::json& j, cleantype::CleanConfiguration& c)
+    inline void from_json(const nlohmann::json & j, cleantype::CleanConfiguration & c)
     {
         c = cleantype::CleanConfiguration::_EmptyConfig();
         j.at("suppress_extra_namespaces_").get_to(c.suppress_extra_namespaces_);
@@ -181,14 +181,14 @@ namespace cleantype
         inline std::string getcwd()
         {
 #ifdef _WIN32
-            char* answer = _getcwd(NULL, 0);
+            char * answer = _getcwd(NULL, 0);
 #else
 #ifdef __APPLE__
             char buffer[PATH_MAX];
 #else
             char buffer[MAXPATHLEN];
 #endif
-            char* answer = ::getcwd(buffer, sizeof(buffer));
+            char * answer = ::getcwd(buffer, sizeof(buffer));
 #endif
 
             std::string s;
@@ -209,7 +209,7 @@ namespace cleantype
 
             std::vector<std::string> parent_dirs;
             std::string current = "";
-            for (const auto& folder_elem : folder_elems)
+            for (const auto & folder_elem : folder_elems)
             {
                 current = current + folder_elem + "/";
                 parent_dirs.push_back(current);
@@ -219,7 +219,7 @@ namespace cleantype
             return parent_dirs;
         }
 
-        inline bool file_exists(const std::string& name)
+        inline bool file_exists(const std::string & name)
         {
             struct stat buffer;
             return (stat(name.c_str(), &buffer) == 0);
@@ -231,7 +231,7 @@ namespace cleantype
         inline CleanConfiguration ImplGlobalConfig()
         {
             std::vector<std::string> parent_dirs = cleantype::filesystem::parent_directories();
-            for (const std::string& dir : parent_dirs)
+            for (const std::string & dir : parent_dirs)
             {
                 std::string pref_file = dir + "/.cleantype.json";
                 if (cleantype::filesystem::file_exists(pref_file))

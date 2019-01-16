@@ -8,7 +8,7 @@ struct template_count
     int nb_remaining_open = 0;
 };
 
-template_count count_templates(const std::string& compiler_line)
+template_count count_templates(const std::string & compiler_line)
 {
     template_count r;
     for (auto c : compiler_line)
@@ -27,7 +27,7 @@ template_count count_templates(const std::string& compiler_line)
     return r;
 }
 
-bool need_decipher_line(const std::string& compiler_line)
+bool need_decipher_line(const std::string & compiler_line)
 {
     auto r = count_templates(compiler_line);
 
@@ -36,7 +36,7 @@ bool need_decipher_line(const std::string& compiler_line)
     return (r.nb_open_close >= 2);
 }
 
-std::string msvc_remove_false_open_template(const std::string& compiler_line)
+std::string msvc_remove_false_open_template(const std::string & compiler_line)
 {
 #ifdef _MSC_VER
     // msvc compile lines start with a false opening template (">") => we skip it
@@ -56,7 +56,7 @@ std::string msvc_remove_false_open_template(const std::string& compiler_line)
 #endif
 }
 
-std::string decipher_line(const std::string& compiler_line)
+std::string decipher_line(const std::string & compiler_line)
 {
     std::string compiler_line_cut = msvc_remove_false_open_template(compiler_line);
     bool needs_decipher = need_decipher_line(compiler_line_cut);

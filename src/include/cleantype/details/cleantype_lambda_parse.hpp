@@ -11,7 +11,7 @@ namespace cleantype
 {
     namespace internal
     {
-        inline std::string remove_outer_parenthesis(std::string const &s)
+        inline std::string remove_outer_parenthesis(std::string const & s)
         {
             assert(s.size() >= 2);
             assert(s.front() == '(');
@@ -38,7 +38,7 @@ namespace cleantype
         //  "ABC(DEF)(GHI)KLM"
         // Returns { remaining_at_start = "ABC", parenthesis_content="GHI", success = true }
         inline extract_parenthesis_content_at_end_result extract_parenthesis_content_at_end(
-            std::string const &str)
+            std::string const & str)
         {
             if (str.empty())
             {
@@ -94,7 +94,7 @@ namespace cleantype
             return result;
         }
 
-        inline std::string _remove_mem_fn_surround(std::string const &mem_fn_type)
+        inline std::string _remove_mem_fn_surround(std::string const & mem_fn_type)
         {
             std::string result = mem_fn_type;
             // Suppress mem_fn< at the start
@@ -112,7 +112,8 @@ namespace cleantype
             return result;
         }
 
-        inline std::string _mem_fn_to_lambda_type(std::string const &mem_fn_type, bool clean_params)
+        inline std::string _mem_fn_to_lambda_type(std::string const & mem_fn_type,
+                                                  bool clean_params)
         {
             // Examples of possible inputs:
 

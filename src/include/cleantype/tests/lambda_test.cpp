@@ -13,7 +13,7 @@
 #define LOG_VALUE(v) std::cout << #v << "==>" << v << "<==" << std::endl
 
 template <typename Lambda>
-void test_one_lambda(Lambda f, std::string const &expected_type)
+void test_one_lambda(Lambda f, std::string const & expected_type)
 {
     const std::string computed_type = CT_show_details_lambda(f);
     if (computed_type != expected_type)
@@ -40,7 +40,7 @@ TEST_CASE("log_type_lambda_clean")
         test_one_lambda(f, "[lambda: (int, int) -> double] f");
     }
     {
-        auto f = [](std::string const &a, std::string const &b) -> std::string const {
+        auto f = [](std::string const & a, std::string const & b) -> std::string const {
             return a + b;
         };
         test_one_lambda(
@@ -55,7 +55,7 @@ TEST_CASE("log_type_lambda_clean")
     }
     {
         std::string prefix = "a-";
-        auto f = [&prefix](std::string const &s) { return prefix + s; };
+        auto f = [&prefix](std::string const & s) { return prefix + s; };
         test_one_lambda(f, "[lambda: (std::string const &) -> std::string] f");
     }
 }

@@ -11,9 +11,9 @@ namespace cleantype
 {
     namespace internal
     {
-        std::vector<std::string> split_types(std::string const &type_names);
+        std::vector<std::string> split_types(std::string const & type_names);
 
-        inline std::string apply_east_const_one_type(std::string const &type_name)
+        inline std::string apply_east_const_one_type(std::string const & type_name)
         {
             // Note : this implementation is by no means neither complete nor foolproof
             // It expects types that were preprocessed as inputs (spaces before * and &, etc.)
@@ -90,7 +90,7 @@ namespace cleantype
 
     }  // namespace internal
 
-    inline std::string apply_east_const_typelist(std::string const &type_names)
+    inline std::string apply_east_const_typelist(std::string const & type_names)
     {
         std::vector<std::string> types = internal::split_types(type_names);
         types = cleantype_fp::transform(internal::apply_east_const_one_type, types);

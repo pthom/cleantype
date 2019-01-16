@@ -25,7 +25,7 @@ namespace cleantype_fp_tree
     template <typename T>
     struct tree
     {
-        tree(const T &value, const std::vector<tree<T>> &children)
+        tree(const T & value, const std::vector<tree<T>> & children)
             : value_(value), children_(children)
         {
         }
@@ -71,20 +71,20 @@ namespace cleantype_fp_tree
         std::string indent = "  ";
     };
 
-    inline lhs_rhs_tree parse_lhs_rhs_tree(std::string const &s,
-                                           const tree_separators &separators,
+    inline lhs_rhs_tree parse_lhs_rhs_tree(std::string const & s,
+                                           const tree_separators & separators,
                                            bool remove_space_after_separator)
     {
         bool is_filling_rhs = false;
 
         std::deque<char> fifo_letters;
         {
-            for (const auto &letter : s)
+            for (const auto & letter : s)
                 fifo_letters.push_back(letter);
         }
 
         lhs_rhs_tree result{{}, {}};
-        lhs_rhs_tree *current = &result;
+        lhs_rhs_tree * current = &result;
         std::vector<lhs_rhs_tree *> parents;
 
         bool is_first_after_separator = false;
@@ -135,15 +135,15 @@ namespace cleantype_fp_tree
     }
 
     template <typename T>
-    tree<T> tree_keep_if(std::function<bool(const T &)> f, const tree<T> &xs)
+    tree<T> tree_keep_if(std::function<bool(const T &)> f, const tree<T> & xs)
     {
         tree<T> result = xs;
 
-        result.children_ = cleantype_fp::keep_if([f](const tree<T> &xxs) { return f(xxs.value_); },
+        result.children_ = cleantype_fp::keep_if([f](const tree<T> & xxs) { return f(xxs.value_); },
                                                  result.children_);
 
         std::vector<tree<T>> children_filtered_grandchhildren;
-        for (auto &child : result.children_)
+        for (auto & child : result.children_)
         {
             auto child_filtered = tree_keep_if(f, child);
             children_filtered_grandchhildren.push_back(child_filtered);
@@ -153,45 +153,45 @@ namespace cleantype_fp_tree
     }
 
     template <typename T, typename Transformer_T>
-    void tree_transform_leafs_depth_first_inplace(Transformer_T transformer, tree<T> &xs_io)
+    void tree_transform_leafs_depth_first_inplace(Transformer_T transformer, tree<T> & xs_io)
     {
-        for (auto &child : xs_io.children_)
+        for (auto & child : xs_io.children_)
             tree_transform_leafs_depth_first_inplace(transformer, child);
         transformer(xs_io.value_);
     }
 
     template <typename T, typename Transformer_T>
-    void tree_transform_leafs_breadth_first_inplace(Transformer_T transformer, tree<T> &xs_io)
+    void tree_transform_leafs_breadth_first_inplace(Transformer_T transformer, tree<T> & xs_io)
     {
         transformer(xs_io.value_);
-        for (auto &child : xs_io.children_)
+        for (auto & child : xs_io.children_)
             tree_transform_leafs_breadth_first_inplace(transformer, child);
     }
 
     namespace detail
     {
         template <typename T>
-        std::size_t tree_depth_impl(const tree<T> &xs, int current_depth)
+        std::size_t tree_depth_impl(const tree<T> & xs, int current_depth)
         {
             std::vector<std::size_t> sizes;
             sizes.push_back(current_depth);
-            for (auto &child : xs.children_)
+            for (auto & child : xs.children_)
                 sizes.push_back(tree_depth_impl(child, current_depth + 1));
             return cleantype_fp::maximum(sizes);
         }
     }  // namespace detail
 
     template <typename T>
-    std::size_t tree_depth(const tree<T> &xs)
+    std::size_t tree_depth(const tree<T> & xs)
     {
         return detail::tree_depth_impl(xs, 0);
     }
 
     template <typename OutputType, typename InputType, typename F>
-    std::vector<OutputType> transform_vector(F f, const std::vector<InputType> &xs)
+    std::vector<OutputType> transform_vector(F f, const std::vector<InputType> & xs)
     {
         std::vector<OutputType> out;
-        for (const auto &v : xs)
+        for (const auto & v : xs)
         {
             out.push_back(f(v));
         }
@@ -199,13 +199,13 @@ namespace cleantype_fp_tree
     }
 
     template <typename T>
-    std::string show_tree_children(const std::vector<tree<T>> &children,
-                                   const tree_separators &separators,
-                                   const show_tree_lhs_rhs_options &show_tree_lhs_rhs_options_,
+    std::string show_tree_children(const std::vector<tree<T>> & children,
+                                   const tree_separators & separators,
+                                   const show_tree_lhs_rhs_options & show_tree_lhs_rhs_options_,
                                    int level = 0)
     {
         std::vector<std::string> children_strs = transform_vector<std::string>(
-            [=](const tree<T> &vv) -> std::string {
+            [=](const tree<T> & vv) -> std::string {
                 return show_tree_lhs_rhs(vv, separators, show_tree_lhs_rhs_options_, level + 1);
             },
             children);
@@ -227,9 +227,9 @@ namespace cleantype_fp_tree
     }
 
     template <typename T>
-    std::string show_tree_lhs_rhs(const tree<T> &v,
-                                  const tree_separators &separators,
-                                  const show_tree_lhs_rhs_options &show_tree_lhs_rhs_options_,
+    std::string show_tree_lhs_rhs(const tree<T> & v,
+                                  const tree_separators & separators,
+                                  const show_tree_lhs_rhs_options & show_tree_lhs_rhs_options_,
                                   int level = 0)
     {
         auto line_start = cleantype_fp::repeat(level, show_tree_lhs_rhs_options_.indent);

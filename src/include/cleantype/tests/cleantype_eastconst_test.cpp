@@ -10,7 +10,7 @@
 template <typename Transform>
 auto make_test_string_transform(Transform f)
 {
-    return [f](std::string const& input, std::string const& expected_output) {
+    return [f](std::string const & input, std::string const & expected_output) {
         std::string computed_output = f(input);
         if (computed_output != expected_output)
             std::cout << "Mince";

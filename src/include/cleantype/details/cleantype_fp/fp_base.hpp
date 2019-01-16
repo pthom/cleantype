@@ -20,7 +20,7 @@
 
 namespace cleantype_fp
 {
-    inline std::string repeat(std::size_t n, const std::string &xs)
+    inline std::string repeat(std::size_t n, const std::string & xs)
     {
         std::string xss;
         for (std::size_t i = 0; i < n; i++)
@@ -29,19 +29,19 @@ namespace cleantype_fp
     }
 
     template <typename F, typename T, typename U = T>
-    std::vector<U> transform(F f, const std::vector<T> &xs)
+    std::vector<U> transform(F f, const std::vector<T> & xs)
     {
         std::vector<U> out;
-        for (const auto &x : xs)
+        for (const auto & x : xs)
             out.push_back(f(x));
         return out;
     }
 
     template <typename T, typename F>
-    std::vector<T> keep_if(F f, const std::vector<T> &xs)
+    std::vector<T> keep_if(F f, const std::vector<T> & xs)
     {
         std::vector<T> out;
-        for (const auto &v : xs)
+        for (const auto & v : xs)
         {
             if (f(v))
                 out.push_back(v);
@@ -49,7 +49,7 @@ namespace cleantype_fp
         return out;
     }
 
-    inline std::string join(std::string const &separator, const std::vector<std::string> &xs)
+    inline std::string join(std::string const & separator, const std::vector<std::string> & xs)
     {
         std::string out;
         for (size_t idx = 0; idx < xs.size(); idx++)
@@ -61,7 +61,7 @@ namespace cleantype_fp
         return out;
     }
 
-    inline std::string join(std::string const &separator, const std::deque<std::string> &xs)
+    inline std::string join(std::string const & separator, const std::deque<std::string> & xs)
     {
         std::string out;
         for (size_t idx = 0; idx < xs.size(); idx++)
@@ -74,11 +74,11 @@ namespace cleantype_fp
     }
 
     template <typename T>
-    std::vector<T> trim(const T &trim_what, const std::vector<T> &xs)
+    std::vector<T> trim(const T & trim_what, const std::vector<T> & xs)
     {
         bool stop = false;
         std::vector<T> out;
-        for (const auto &v : xs)
+        for (const auto & v : xs)
         {
             if (stop)
                 out.push_back(v);
@@ -93,11 +93,11 @@ namespace cleantype_fp
         return out;
     }
 
-    inline std::string trim(const char &trim_what, std::string const &xs)
+    inline std::string trim(const char & trim_what, std::string const & xs)
     {
         bool stop = false;
         std::string out;
-        for (const auto &v : xs)
+        for (const auto & v : xs)
         {
             if (stop)
                 out.push_back(v);
@@ -112,7 +112,7 @@ namespace cleantype_fp
         return out;
     }
 
-    inline std::string trim_whitespace(std::string const &s)
+    inline std::string trim_whitespace(std::string const & s)
     {
         std::string r = trim(' ', s);
         r = trim('\t', r);
@@ -120,9 +120,9 @@ namespace cleantype_fp
         return r;
     }
 
-    inline std::string replace_tokens(const std::string &from,
-                                      const std::string &to,
-                                      const std::string &xs)
+    inline std::string replace_tokens(const std::string & from,
+                                      const std::string & to,
+                                      const std::string & xs)
     {
         if (from.empty())
             return xs;
@@ -137,10 +137,10 @@ namespace cleantype_fp
     }
 
     template <typename T, typename Pred>
-    std::vector<T> keep_if(Pred pred, std::vector<T> &&xs)
+    std::vector<T> keep_if(Pred pred, std::vector<T> && xs)
     {
         std::vector<T> r;
-        for (const auto &v : xs)
+        for (const auto & v : xs)
             if (pred(v))
                 r.push_back(v);
         return r;
@@ -163,7 +163,7 @@ namespace cleantype_fp
     }
 
     template <typename T, typename U>
-    std::vector<std::pair<T, U>> zip(const std::vector<T> &xs, const std::vector<U> &ys)
+    std::vector<std::pair<T, U>> zip(const std::vector<T> & xs, const std::vector<U> & ys)
     {
         std::vector<std::pair<T, U>> r;
 
@@ -176,10 +176,10 @@ namespace cleantype_fp
     }
 
     template <typename T, typename U>
-    std::pair<std::vector<T>, std::vector<U>> unzip(const std::vector<std::pair<T, U>> &xs)
+    std::pair<std::vector<T>, std::vector<U>> unzip(const std::vector<std::pair<T, U>> & xs)
     {
         std::pair<std::vector<T>, std::vector<U>> r;
-        for (const auto &v : xs)
+        for (const auto & v : xs)
         {
             r.first.push_back(v.first);
             r.second.push_back(v.second);
@@ -187,14 +187,14 @@ namespace cleantype_fp
         return r;
     }
 
-    inline std::string to_upper_case(const std::string &xs)
+    inline std::string to_upper_case(const std::string & xs)
     {
         std::string r = xs;
         std::transform(r.begin(), r.end(), r.begin(), ::toupper);
         return r;
     }
 
-    inline std::string to_lower_case(const std::string &xs)
+    inline std::string to_lower_case(const std::string & xs)
     {
         std::string r = xs;
         std::transform(r.begin(), r.end(), r.begin(), ::tolower);
@@ -202,18 +202,18 @@ namespace cleantype_fp
     }
 
     template <typename T>
-    T maximum(const std::vector<T> &xs)
+    T maximum(const std::vector<T> & xs)
     {
         assert(!xs.empty());
         T max = xs[0];
-        for (const auto &v : xs)
+        for (const auto & v : xs)
             if (v > max)
                 max = v;
         return max;
     }
 
     template <typename T>
-    std::vector<T> reverse(const std::vector<T> &xs)
+    std::vector<T> reverse(const std::vector<T> & xs)
     {
         std::vector<T> r;
         for (std::size_t i = xs.size(); i > 0; i--)

@@ -19,7 +19,7 @@ namespace cleantype_fp_interact
     }
 
     template <typename F, typename InputStream, typename OutputStream>
-    std::function<void()> interact_by_line(F f, InputStream &is, OutputStream &os)
+    std::function<void()> interact_by_line(F f, InputStream & is, OutputStream & os)
     {
         return [f, &is, &os]() -> void {
             std::string line;

@@ -65,7 +65,7 @@ namespace boost
                 template <typename T>
                 constexpr stringliteral type_name_impl_stringliteral()
                 {
-                    _HANA_TN_CONSTEXPR_IF_POSSIBLE char const* pretty_function =
+                    _HANA_TN_CONSTEXPR_IF_POSSIBLE char const * pretty_function =
                         _HANA_TN__PRETTY_FUNCTION__;
                     _HANA_TN_CONSTEXPR_IF_POSSIBLE std::size_t total_size =
                         _HANA_SIZEOF_OR_STRLEN(_HANA_TN__PRETTY_FUNCTION__);

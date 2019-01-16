@@ -31,7 +31,7 @@ namespace cleantype
         {
         };
 
-        inline std::string add_type_holder_str(const std::string &type_names)
+        inline std::string add_type_holder_str(const std::string & type_names)
         {
 #ifdef _MSC_VER
             const std::string start = "struct cleantype::internal::TupleTypeHolder<";
@@ -42,7 +42,7 @@ namespace cleantype
             return start + type_names + end;
         }
 
-        inline std::string remove_type_holder_str(const std::string &types_inside_holder)
+        inline std::string remove_type_holder_str(const std::string & types_inside_holder)
         {
             std::string r = types_inside_holder;
             if (stringutils::starts_with(r, "struct cleantype::internal::TupleTypeHolder<"))
@@ -112,7 +112,7 @@ namespace cleantype
     }
 
     template <typename T>
-    std::string show_details_full(T &&v)
+    std::string show_details_full(T && v)
     {
         return std::string("[") + full<T>() + "]" + " = " + cleantype_fp::show(v);
     }
