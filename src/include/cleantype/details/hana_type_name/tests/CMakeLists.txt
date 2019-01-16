@@ -1,0 +1,2 @@
+add_executable(type_name_stringliteral_test type_name_stringliteral_test.cpp)
+clean_type_set_target_option(type_name_stringliteral_test)

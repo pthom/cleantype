@@ -64,7 +64,8 @@ function(clean_type_set_target_option target)
 endfunction()
 
 if (CLEANTYPE_BUILD_TESTS)
-  add_subdirectory(src/include/cleantype/tests)
+  add_subdirectory(src/tests)
+  add_subdirectory(src/include/cleantype/details/hana_type_name/tests)
 endif()
 
 if (CLEANTYPE_BUILD_TOOLS)
