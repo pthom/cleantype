@@ -58,7 +58,7 @@ inline void compile_code(const std::string & code)
 inline void compile_code__extract(const std::string & code)
 {
     save_temp_code(code);
-    std::string command = "clang++ --std=c++14 -c code.cpp -Iinclude -o a.out 2>&1 | head -3";
+    std::string command = "clang++ --std=c++14 -c code.cpp -Iinclude -o a.out 2>&1 | head -5";
     exec(command);
 }
 
@@ -73,7 +73,7 @@ inline void compile_code_decipher(const std::string & code)
 inline void compile_code_decipher__extract(const std::string & code)
 {
     save_temp_code(code);
-    std::string command = "clang++ --std=c++14 -c code.cpp -Iinclude -o a.out 2>&1 | ct_compiler_decipher | head -3";
+    std::string command = "clang++ --std=c++14 -c code.cpp -Iinclude -o a.out 2>&1 | ct_compiler_decipher | head -5";
     exec(command);
 }
 
