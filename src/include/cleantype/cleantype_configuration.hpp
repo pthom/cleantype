@@ -175,7 +175,7 @@ namespace cleantype
 // filesystem polyfills for C++14 (70's style)
 #include <cstdlib>
 #include <sys/stat.h>
-#include <cleantype/details/fp_polyfill/fp_polyfill.hpp>
+#include <cleantype/details/cleantype_fp/fp_base.hpp>
 #include <cleantype/details/stringutils.hpp>
 #if defined(__unix__) || defined(__APPLE__)
 #include <unistd.h>
@@ -215,7 +215,7 @@ namespace cleantype
         inline std::vector<std::string> parent_directories()
         {
             std::string cwd = cleantype::filesystem::getcwd();
-            cwd = fp::replace_tokens(std::string("\\"), std::string("/"), cwd);
+            cwd = cleantype_fp::replace_tokens(std::string("\\"), std::string("/"), cwd);
 
             std::vector<std::string> folder_elems = stringutils::split_string(cwd, '/');
 
@@ -230,7 +230,7 @@ namespace cleantype
                 parent_dirs.push_back(current);
             }
 
-            parent_dirs = fp::reverse(parent_dirs);
+            parent_dirs = cleantype_fp::reverse(parent_dirs);
             return parent_dirs;
         }
 

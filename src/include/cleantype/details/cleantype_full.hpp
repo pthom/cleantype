@@ -12,7 +12,8 @@
 #include <string>
 #include <cstdlib>
 #include <string>
-#include <cleantype/details/fp_polyfill/fp_polyfill.hpp>
+#include <cleantype/details/cleantype_fp/fp_base.hpp>
+#include <cleantype/details/cleantype_fp/fp_show.hpp>
 
 #include <cleantype/details/hana_type_name/type_name_pretty_function.hpp>
 #include <cleantype/details/cleantype_format_whitespace.hpp>
@@ -23,7 +24,6 @@
 namespace cleantype
 {
     using stringliteral = boost::hana::experimental::type_name_details::stringliteral;
-
     namespace internal
     {
         // Trick in order to avoid having to deal the tedious syntax of parameter packs
@@ -113,7 +113,7 @@ namespace cleantype
 
 
     template <typename T> std::string show_details_full(T && v) {
-        return std::string("[") + full<T>() + "]" + " = " + fp::show(v);
+        return std::string("[") + full<T>() + "]" + " = " + cleantype_fp::show(v);
     }
 
 } // namespace cleantype
@@ -124,12 +124,12 @@ namespace cleantype
 #define CT_show_details_full(var) \
         std::string("[") + CT_cleantype_full(var) + "] " + #var \
         + " = " \
-        + fp::show(var)
+        + cleantype_fp::show(var)
 
 #define CT_show_details_full_cont(var) \
         std::string("[") + CT_cleantype_full(var) + "] " + #var \
         + " = " \
-        + fp::show_cont(var)
+        + cleantype_fp::show_cont(var)
 
 
 #define CT_compiler_log_var_type(var) { var.IntentionalError = 42; }

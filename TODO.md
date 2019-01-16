@@ -1,12 +1,18 @@
 * [ ] Cleanup
     * [X] Configuration via pref file ?
-        * [ ] ? Change path for nlohmann/json : do not replace other instances (or do ?) !
     * [ ] third parties cleanup:
         * [ ] Separate unit test & doc third parties from required third parties
-        * [ ] Remove submodules used only for tests?
-        * [ ] Document install & third parties
-        * [ ] Use Fplus instead of polyfills ?
-            * [X] Compat bare fplus
+            * [ ] required third parties : add subfolder third_party/required_thirdparty
+                * [X] nlohlann/json: official : provide default and way to override
+                * [ ] fplus: official : provide default and way to override
+                    * [ ] Use Fplus instead of polyfills ? (measure compil times !)
+                        * [X] Compat bare fplus
+
+                * [ ] doctest: official / tests only
+            * [ ] non required third parties
+                * rename third_party/tests to third_party/tests_thirdparty
+                * [ ] Move hana to third_party/tests_thirdparty
+                * [ ]
     * [ ] Continuous Integration : C++14 & C++17
     * [ ] Doc
         * [ ] Range-v3 : will be part of C++20 (not probably) (verif sur blog e niebler)

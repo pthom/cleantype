@@ -13,8 +13,8 @@
 void my_require_eq_string(std::string const & computed, std::string const & expected )
 {
 #ifdef _MSC_VER // remove __ptr64 from msvc types
-    std::string computed2 = fp::replace_tokens(" __ptr64", "", computed);\
-    std::string expected2 = fp::replace_tokens(" __ptr64", "", expected);\
+    std::string computed2 = cleantype_fp::replace_tokens(" __ptr64", "", computed);\
+    std::string expected2 = cleantype_fp::replace_tokens(" __ptr64", "", expected);\
     if (computed2 != expected2)
         DEBUGBREAK;
     REQUIRE_EQ(computed2, expected2);

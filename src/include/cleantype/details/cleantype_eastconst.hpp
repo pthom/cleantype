@@ -4,7 +4,7 @@
 #pragma once
 #include <string>
 #include <deque>
-#include <cleantype/details/fp_polyfill/fp_polyfill.hpp>
+#include <cleantype/details/cleantype_fp/fp_base.hpp>
 #include <cleantype/details/stringutils.hpp>
 
 namespace cleantype
@@ -95,8 +95,8 @@ namespace cleantype
     inline std::string apply_east_const_typelist(std::string const & type_names)
     {
         std::vector<std::string> types = internal::split_types(type_names);
-        types = fp::transform(internal::apply_east_const_one_type, types);
-        std::string r = fp::join(std::string(", "), types);
+        types = cleantype_fp::transform(internal::apply_east_const_one_type, types);
+        std::string r = cleantype_fp::join(std::string(", "), types);
         return r;
     }
 

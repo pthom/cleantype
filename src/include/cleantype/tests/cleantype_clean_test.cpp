@@ -22,7 +22,7 @@ TEST_CASE("CT_show_details")
   }
   {
     std::vector<int> v{ { 1, 2, 3, 4, 5 } };
-    REQUIRE_EQ(CT_show_details(v), "[std::vector<int>] v = [1, 2, 3, 4, 5]");
+    REQUIRE_EQ(CT_show_details_cont(v), "[std::vector<int>] v = [1, 2, 3, 4, 5]");
   }
   {
     std::map<std::string, int> v{ {
@@ -124,7 +124,7 @@ void compare_type_full_to_repr(std::string const & type_full, std::string const 
 {
     std::string type_clean = cleantype::clean_typestring(type_full);
     std::string type_west = cleantype::apply_east_const_typelist(type_clean);
-    std::string expected_repr2 = fp::replace_tokens(std::string(" COMMA "), std::string(", "), expected_repr);
+    std::string expected_repr2 = cleantype_fp::replace_tokens(std::string(" COMMA "), std::string(", "), expected_repr);
     if (type_west != expected_repr2)
         std::cout << "Ah";
     REQUIRE_EQ(type_west, expected_repr2);
@@ -187,6 +187,7 @@ TEST_CASE("clean_multiple_args")
         ,                "std::string, std::vector<int> *, int"
     );
 }
+
 
 TEST_CASE("impl_clean")
 {

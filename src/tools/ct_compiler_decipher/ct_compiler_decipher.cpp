@@ -1,5 +1,5 @@
-#include <cleantype/details/fp_polyfill/fp_additions.hpp>
 #include <cleantype/cleantype.hpp>
+#include <cleantype/details/cleantype_fp/fp_interact.hpp>
 #include <sstream>
 
 struct template_count
@@ -40,7 +40,7 @@ std::string msvc_remove_false_open_template(const std::string & compiler_line)
 #ifdef _MSC_VER
     // msvc compile lines start with a false opening template (">") => we skip it
     // example :
-    // 1>F:\dvp\OpenSource\type_name\src\include\cleantype/details/fp_polyfill/fp_polyfill.hpp(38): ...
+    // 1>F:\dvp\OpenSource\type_name\src\include\cleantype/details/cleantype_fp/fp_base.hpp(38): ...
 
     auto idx = compiler_line.find(">");
     if ((idx != std::string::npos) && (idx < 5))
@@ -70,14 +70,14 @@ std::string decipher_line(const std::string & compiler_line)
 
 int main()
 {
-    auto prog = fp::fp_add::interact_by_line(decipher_line);
+    auto prog = cleantype_fp_interact::interact_by_line(decipher_line);
 
     // Debug version
     //{
     //    std::string error_log = R"(
     //    )";
     //    std::istringstream is(error_log);
-    //    auto prog = fp::interact_by_line(decipher_line, is, std::cout);
+    //    auto prog = cleantype_fp::interact_by_line(decipher_line, is, std::cout);
     //}
 
     prog();
@@ -95,11 +95,11 @@ ccache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctool
 ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:26:14: error: invalid operands to binary expression ('const std::map<std::string, int> ' and 'int')
 return v + 1;
 ~ ^ ~
-../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:38:23: note: in instantiation of function template specialization '(anonymous class)::operator()<std::map<std::string, int>> ' requested here
+../src/include/cleantype/details/cleantype_fp/fp_base.hpp:38:23: note: in instantiation of function template specialization '(anonymous class)::operator()<std::map<std::string, int>> ' requested here
 out.push_back(f(x));
 ^
-../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:35:19: note: in instantiation of function template specialization 'fp::transform<(lambda at ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:25:28), std::map<std::string, int>, std::map<std::string, int>> ' requested here
-auto v3 = fp::transform(my_spurious_lambda3, v2);
+../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:35:19: note: in instantiation of function template specialization 'cleantype_fp::transform<(lambda at ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:25:28), std::map<std::string, int>, std::map<std::string, int>> ' requested here
+auto v3 = cleantype_fp::transform(my_spurious_lambda3, v2);
 ^
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/iterator:761:1: note: candidate template ignored: could not match 'reverse_iterator<type-parameter-0-0> ' against 'int'
 operator+(typename reverse_iterator<_Iter> ::difference_type __n, const reverse_iterator<_Iter> & __x)
@@ -161,11 +161,11 @@ ccache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctool
 ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:26:14: error: invalid operands to binary expression ('const std::__1::map<std::__1::basic_string<char>, int, std::__1::less<std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<const std::__1::basic_string<char>, int> > >' and 'int')
     return v + 1;
            ~ ^ ~
-../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:38:23: note: in instantiation of function template specialization '(anonymous class)::operator()<std::__1::map<std::__1::basic_string<char>, int, std::__1::less<std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<const std::__1::basic_string<char>, int> > > >' requested here
+../src/include/cleantype/details/cleantype_fp/fp_base.hpp:38:23: note: in instantiation of function template specialization '(anonymous class)::operator()<std::__1::map<std::__1::basic_string<char>, int, std::__1::less<std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<const std::__1::basic_string<char>, int> > > >' requested here
         out.push_back(f(x));
                       ^
-../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:35:19: note: in instantiation of function template specialization 'fp::transform<(lambda at ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:25:28), std::__1::map<std::__1::basic_string<char>, int, std::__1::less<std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<const std::__1::basic_string<char>, int> > >, std::__1::map<std::__1::basic_string<char>, int, std::__1::less<std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<const std::__1::basic_string<char>, int> > > >' requested here
-    auto v3 = fp::transform(my_spurious_lambda3, v2);
+../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:35:19: note: in instantiation of function template specialization 'cleantype_fp::transform<(lambda at ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:25:28), std::__1::map<std::__1::basic_string<char>, int, std::__1::less<std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<const std::__1::basic_string<char>, int> > >, std::__1::map<std::__1::basic_string<char>, int, std::__1::less<std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<const std::__1::basic_string<char>, int> > > >' requested here
+    auto v3 = cleantype_fp::transform(my_spurious_lambda3, v2);
                   ^
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/iterator:761:1: note: candidate template ignored: could not match 'reverse_iterator<type-parameter-0-0>' against 'int'
 operator+(typename reverse_iterator<_Iter>::difference_type __n, const reverse_iterator<_Iter>& __x)
@@ -237,13 +237,13 @@ F:\dvp\OpenSource\type_name\src\include\cleantype\compile_time\example\cleantype
 1>            _Kty=fplus::FunctionName,
 1>            _Ty=int
 1>        ]
-F:\dvp\OpenSource\type_name\src\include\cleantype/details/fp_polyfill/fp_polyfill.hpp(38): note: see reference to function template instantiation 'auto<lambda_2274920e60722aee18d17f25952d5f34, std::map<std::string, int>, _Kty, _Ty> ::operator ()(const std::map &) const' being compiled
+F:\dvp\OpenSource\type_name\src\include\cleantype/details/cleantype_fp/fp_base.hpp(38): note: see reference to function template instantiation 'auto<lambda_2274920e60722aee18d17f25952d5f34, std::map<std::string, int>, _Kty, _Ty> ::operator ()(const std::map &) const' being compiled
 1>        with
 1>        [
 1>            _Kty=fplus::FunctionName,
 1>            _Ty=int
 1>        ]
-F:\dvp\OpenSource\type_name\src\include\cleantype\compile_time\example\cleantype_decipher_example.cpp(35): note: see reference to function template instantiation 'std::vector<std::map<std::string, int>, <lambda_2274920e60722aee18d17f25952d5f34>, std::map<_Kty, _Ty>, T> fp::transform(F, const std::vector<std::map<_Kty, _Ty>> &)' being compiled
+F:\dvp\OpenSource\type_name\src\include\cleantype\compile_time\example\cleantype_decipher_example.cpp(35): note: see reference to function template instantiation 'std::vector<std::map<std::string, int>, <lambda_2274920e60722aee18d17f25952d5f34>, std::map<_Kty, _Ty>, T> cleantype_fp::transform(F, const std::vector<std::map<_Kty, _Ty>> &)' being compiled
 1>        with
 1>        [
 1>            _Kty=fplus::FunctionName,
@@ -253,7 +253,7 @@ F=<lambda_2274920e60722aee18d17f25952d5f34>
 1>        ]
 C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.16.27023\include\chrono(201): note: see reference to template instantiation 'std::chrono::duration<__int64, std::nano> ' being compiled
 C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.16.27023\include\chrono(799): note: see reference to template instantiation 'std::chrono::time_point<std::chrono::steady_clock, std::chrono::steady_clock::duration> ' being compiled
-F:\dvp\OpenSource\type_name\src\include\cleantype/details/fp_polyfill/fp_polyfill.hpp(38): error C2664: 'void std::vector<std::map<std::string, int>, _Kty, _Ty> ::push_back(std::map &&)': cannot convert argument 1 from 'void' to 'const _Ty &'
+F:\dvp\OpenSource\type_name\src\include\cleantype/details/cleantype_fp/fp_base.hpp(38): error C2664: 'void std::vector<std::map<std::string, int>, _Kty, _Ty> ::push_back(std::map &&)': cannot convert argument 1 from 'void' to 'const _Ty &'
 1>        with
 1>        [
 1>            _Kty=fplus::FunctionName,
@@ -263,7 +263,7 @@ F:\dvp\OpenSource\type_name\src\include\cleantype/details/fp_polyfill/fp_polyfil
 1>        [
 _Ty=std::map<std::string, int>
 1>        ]
-1>F:\dvp\OpenSource\type_name\src\include\cleantype/details/fp_polyfill/fp_polyfill.hpp(38): note: Expressions of type void cannot be converted to other types
+1>F:\dvp\OpenSource\type_name\src\include\cleantype/details/cleantype_fp/fp_base.hpp(38): note: Expressions of type void cannot be converted to other types
 1>Done building project "cleantype_decipher_example.vcxproj" -- FAILED.
 2>cleantype_decipherer.cpp
 2>cleantype_decipherer.vcxproj -> F:\dvp\OpenSource\type_name\build\bin\cleantype_decipherer.exe
@@ -286,13 +286,13 @@ Error log without decipher / MSVC
 1>            _Kty=fplus::FunctionName,
 1>            _Ty=int
 1>        ]
-1>F:\dvp\OpenSource\type_name\src\include\cleantype/details/fp_polyfill/fp_polyfill.hpp(38): note: see reference to function template instantiation 'auto <lambda_2274920e60722aee18d17f25952d5f34>::operator ()<std::map<std::string,int,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>>(const std::map<_Kty,_Ty,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>> &) const' being compiled
+1>F:\dvp\OpenSource\type_name\src\include\cleantype/details/cleantype_fp/fp_base.hpp(38): note: see reference to function template instantiation 'auto <lambda_2274920e60722aee18d17f25952d5f34>::operator ()<std::map<std::string,int,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>>(const std::map<_Kty,_Ty,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>> &) const' being compiled
 1>        with
 1>        [
 1>            _Kty=fplus::FunctionName,
 1>            _Ty=int
 1>        ]
-1>F:\dvp\OpenSource\type_name\src\include\cleantype\compile_time\example\cleantype_decipher_example.cpp(35): note: see reference to function template instantiation 'std::vector<std::map<std::string,int,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>,std::allocator<std::map<_Kty,_Ty,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>>> fp::transform<<lambda_2274920e60722aee18d17f25952d5f34>,std::map<_Kty,_Ty,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>,T>(F,const std::vector<std::map<_Kty,_Ty,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>,std::allocator<std::map<_Kty,_Ty,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>>> &)' being compiled
+1>F:\dvp\OpenSource\type_name\src\include\cleantype\compile_time\example\cleantype_decipher_example.cpp(35): note: see reference to function template instantiation 'std::vector<std::map<std::string,int,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>,std::allocator<std::map<_Kty,_Ty,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>>> cleantype_fp::transform<<lambda_2274920e60722aee18d17f25952d5f34>,std::map<_Kty,_Ty,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>,T>(F,const std::vector<std::map<_Kty,_Ty,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>,std::allocator<std::map<_Kty,_Ty,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>>> &)' being compiled
 1>        with
 1>        [
 1>            _Kty=fplus::FunctionName,
@@ -302,7 +302,7 @@ Error log without decipher / MSVC
 1>        ]
 1>C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.16.27023\include\chrono(201): note: see reference to class template instantiation 'std::chrono::duration<__int64,std::nano>' being compiled
 1>C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Tools\MSVC\14.16.27023\include\chrono(799): note: see reference to class template instantiation 'std::chrono::time_point<std::chrono::steady_clock,std::chrono::steady_clock::duration>' being compiled
-1>F:\dvp\OpenSource\type_name\src\include\cleantype/details/fp_polyfill/fp_polyfill.hpp(38): error C2664: 'void std::vector<std::map<std::string,int,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>,std::allocator<std::map<_Kty,_Ty,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>>>::push_back(std::map<_Kty,_Ty,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>> &&)': cannot convert argument 1 from 'void' to 'const _Ty &'
+1>F:\dvp\OpenSource\type_name\src\include\cleantype/details/cleantype_fp/fp_base.hpp(38): error C2664: 'void std::vector<std::map<std::string,int,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>,std::allocator<std::map<_Kty,_Ty,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>>>::push_back(std::map<_Kty,_Ty,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>> &&)': cannot convert argument 1 from 'void' to 'const _Ty &'
 1>        with
 1>        [
 1>            _Kty=fplus::FunctionName,
@@ -312,7 +312,7 @@ Error log without decipher / MSVC
 1>        [
 1>            _Ty=std::map<std::string,int,std::less<fplus::FunctionName>,std::allocator<std::pair<const std::string,int>>>
 1>        ]
-1>F:\dvp\OpenSource\type_name\src\include\cleantype/details/fp_polyfill/fp_polyfill.hpp(38): note: Expressions of type void cannot be converted to other types
+1>F:\dvp\OpenSource\type_name\src\include\cleantype/details/cleantype_fp/fp_base.hpp(38): note: Expressions of type void cannot be converted to other types
 1>Done building project "cleantype_decipher_example.vcxproj" -- FAILED.
 2>cleantype_decipherer.cpp
 2>cleantype_decipherer.vcxproj -> F:\dvp\OpenSource\type_name\build\bin\cleantype_decipherer.exe
@@ -334,7 +334,7 @@ Error log with decipher / GCC
 FAILED: src/include/cleantype/compile_time/CMakeFiles/cleantype_decipher_example.dir/example/cleantype_decipher_example.cpp.o
 /usr/bin/c++  -DCLEANTYPE_COMPILETIME -I../third_party/FunctionalPlus/include -I../src/include -I/root/.conan/data/boost/1.68.0/conan/stable/package/d6cb600df9137cb7943d00f26e402be306584995/include -std=c++14 -MD -MT src/include/cleantype/compile_time/CMakeFiles/cleantype_decipher_example.dir/example/cleantype_decipher_example.cpp.o -MF src/include/cleantype/compile_time/CMakeFiles/cleantype_decipher_example.dir/example/cleantype_decipher_example.cpp.o.d -o src/include/cleantype/compile_time/CMakeFiles/cleantype_decipher_example.dir/example/cleantype_decipher_example.cpp.o -c ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp
 ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp: In instantiation of ‘<lambda(const auto:1316 &), std::string, int> [with auto:1316 = std::map]’:
-../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:38:24:   required from ‘std::vector<NewT> fp::transform(F, const std::vector<Y, lambda(const auto:1316 &), std::string, int, std::string, int> &) [with F = ; T = std::map; U = std::map]’
+../src/include/cleantype/details/cleantype_fp/fp_base.hpp:38:24:   required from ‘std::vector<NewT> cleantype_fp::transform(F, const std::vector<Y, lambda(const auto:1316 &), std::string, int, std::string, int> &) [with F = ; T = std::map; U = std::map]’
 ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:35:52:   required from here
 ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:26:14: error: no match for ‘operator+’ (operand types are ‘const std::map<std::string, int> ’ and ‘int’)
      return v + 1;
@@ -343,7 +343,7 @@ In file included from /usr/include/c++/7/deque:64:0,
                  from ../third_party/FunctionalPlus/include/fplus/container_traits.hpp:10,
                  from ../third_party/FunctionalPlus/include/fplus/container_common.hpp:10,
                  from ../third_party/FunctionalPlus/include/fplus/fplus.hpp:11,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:11,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:11,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/stl_deque.h:374:5: note: candidate: template<_Tp, _Ref, _Ptr, _Tp, _Ref, _Ptr> std::_Deque_iterator std::operator+(std::ptrdiff_t, const std::_Deque_iterator<_Tp, _Ref, _Ptr> &)
 operator+(ptrdiff_t __n, const _Deque_iterator<_Tp, _Ref, _Ptr> & __x)
@@ -353,7 +353,7 @@ operator+(ptrdiff_t __n, const _Deque_iterator<_Tp, _Ref, _Ptr> & __x)
      return v + 1;
             ~~^~~
 In file included from /usr/include/c++/7/vector:65:0,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:8,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:8,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/stl_bvector.h:387:3: note: candidate: std::_Bit_const_iterator std::operator+(std::ptrdiff_t, const std::_Bit_const_iterator&)
    operator+(ptrdiff_t __n, const _Bit_const_iterator& __x)
@@ -364,7 +364,7 @@ In file included from /usr/include/c++/7/vector:65:0,
    ^~~~~~~~
 /usr/include/c++/7/bits/stl_bvector.h:297:3: note:   no known conversion for argument 1 from ‘const std::map<std::string, int> ’ to ‘std::ptrdiff_t {aka long int}’
 In file included from /usr/include/c++/7/string:52:0,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/basic_string.h:5986:5: note: candidate: template<_CharT, _Traits, _Alloc, _CharT, _Traits, _Alloc, _CharT, _Traits, _Alloc> std::basic_string std::operator+(std::basic_string &&, _CharT)
 operator+(basic_string<_CharT, _Traits, _Alloc> && __lhs,
@@ -374,7 +374,7 @@ operator+(basic_string<_CharT, _Traits, _Alloc> && __lhs,
      return v + 1;
             ~~^~~
 In file included from /usr/include/c++/7/string:52:0,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/basic_string.h:5980:5: note: candidate: template<_CharT, _Traits, _Alloc, _CharT, _Traits, _Alloc, _CharT, _Traits, _Alloc> std::basic_string std::operator+(std::basic_string &&, const _CharT*)
 operator+(basic_string<_CharT, _Traits, _Alloc> && __lhs,
@@ -384,7 +384,7 @@ operator+(basic_string<_CharT, _Traits, _Alloc> && __lhs,
      return v + 1;
             ~~^~~
 In file included from /usr/include/c++/7/string:52:0,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/basic_string.h:5974:5: note: candidate: template<_CharT, _Traits, _Alloc, _CharT, _Traits, _Alloc> std::basic_string std::operator+(_CharT, std::basic_string<_CharT, _Traits, _Alloc> &&)
      operator+(_CharT __lhs,
@@ -394,7 +394,7 @@ In file included from /usr/include/c++/7/string:52:0,
      return v + 1;
             ~~^~~
 In file included from /usr/include/c++/7/string:52:0,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/basic_string.h:5968:5: note: candidate: template<_CharT, _Traits, _Alloc, _CharT, _Traits, _Alloc> std::basic_string std::operator+(const _CharT*, std::basic_string<_CharT, _Traits, _Alloc> &&)
      operator+(const _CharT* __lhs,
@@ -404,7 +404,7 @@ In file included from /usr/include/c++/7/string:52:0,
      return v + 1;
             ~~^~~
 In file included from /usr/include/c++/7/string:52:0,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/basic_string.h:5956:5: note: candidate: template<_CharT, _Traits, _Alloc, _CharT, _Traits, _Alloc, _CharT, _Traits, _Alloc> std::basic_string std::operator+(std::basic_string &&, std::basic_string<_CharT, _Traits, _Alloc> &&)
 operator+(basic_string<_CharT, _Traits, _Alloc> && __lhs,
@@ -414,7 +414,7 @@ operator+(basic_string<_CharT, _Traits, _Alloc> && __lhs,
      return v + 1;
             ~~^~~
 In file included from /usr/include/c++/7/string:52:0,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/basic_string.h:5950:5: note: candidate: template<_CharT, _Traits, _Alloc, _CharT, _Traits, _Alloc, _CharT, _Traits, _Alloc> std::basic_string std::operator+(const std::basic_string &, std::basic_string<_CharT, _Traits, _Alloc> &&)
 operator+(const basic_string<_CharT, _Traits, _Alloc> & __lhs,
@@ -424,7 +424,7 @@ operator+(const basic_string<_CharT, _Traits, _Alloc> & __lhs,
      return v + 1;
             ~~^~~
 In file included from /usr/include/c++/7/string:52:0,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/basic_string.h:5944:5: note: candidate: template<_CharT, _Traits, _Alloc, _CharT, _Traits, _Alloc, _CharT, _Traits, _Alloc> std::basic_string std::operator+(std::basic_string &&, const std::basic_string<_CharT, _Traits, _Alloc> &)
 operator+(basic_string<_CharT, _Traits, _Alloc> && __lhs,
@@ -434,7 +434,7 @@ operator+(basic_string<_CharT, _Traits, _Alloc> && __lhs,
      return v + 1;
             ~~^~~
 In file included from /usr/include/c++/7/string:52:0,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/basic_string.h:5932:5: note: candidate: template<_CharT, _Traits, _Alloc, _CharT, _Traits, _Alloc, _CharT, _Traits, _Alloc> std::basic_string std::operator+(const std::basic_string &, _CharT)
 operator+(const basic_string<_CharT, _Traits, _Alloc> & __lhs, _CharT __rhs)
@@ -444,7 +444,7 @@ operator+(const basic_string<_CharT, _Traits, _Alloc> & __lhs, _CharT __rhs)
      return v + 1;
             ~~^~~
 In file included from /usr/include/c++/7/string:52:0,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/basic_string.h:5916:5: note: candidate: template<_CharT, _Traits, _Alloc, _CharT, _Traits, _Alloc, _CharT, _Traits, _Alloc> std::basic_string std::operator+(const std::basic_string &, const _CharT*)
 operator+(const basic_string<_CharT, _Traits, _Alloc> & __lhs,
@@ -454,7 +454,7 @@ operator+(const basic_string<_CharT, _Traits, _Alloc> & __lhs,
      return v + 1;
             ~~^~~
 In file included from /usr/include/c++/7/string:53:0,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/basic_string.tcc:1173:5: note: candidate: template<_CharT, _Traits, _Alloc, _CharT, _Traits, _Alloc> std::basic_string std::operator+(_CharT, const std::basic_string<_CharT, _Traits, _Alloc> &)
 operator+(_CharT __lhs, const basic_string<_CharT, _Traits, _Alloc> & __rhs)
@@ -464,7 +464,7 @@ operator+(_CharT __lhs, const basic_string<_CharT, _Traits, _Alloc> & __rhs)
      return v + 1;
             ~~^~~
 In file included from /usr/include/c++/7/string:53:0,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/basic_string.tcc:1157:5: note: candidate: template<_CharT, _Traits, _Alloc, _CharT, _Traits, _Alloc> std::basic_string std::operator+(const _CharT*, const std::basic_string<_CharT, _Traits, _Alloc> &)
      operator+(const _CharT* __lhs,
@@ -474,7 +474,7 @@ In file included from /usr/include/c++/7/string:53:0,
      return v + 1;
             ~~^~~
 In file included from /usr/include/c++/7/string:52:0,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/basic_string.h:5879:5: note: candidate: template<_CharT, _Traits, _Alloc, _CharT, _Traits, _Alloc, _CharT, _Traits, _Alloc> std::basic_string std::operator+(const std::basic_string &, const std::basic_string<_CharT, _Traits, _Alloc> &)
 operator+(const basic_string<_CharT, _Traits, _Alloc> & __lhs,
@@ -486,7 +486,7 @@ operator+(const basic_string<_CharT, _Traits, _Alloc> & __lhs,
 In file included from /usr/include/c++/7/bits/stl_algobase.h:67:0,
                  from /usr/include/c++/7/bits/char_traits.h:39,
                  from /usr/include/c++/7/string:40,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/stl_iterator.h:1198:5: note: candidate: template<_Iterator, _IteratorL, _IteratorL> std::move_iterator std::operator+(typename std::move_iterator::difference_type, const std::move_iterator<_IteratorL> &)
 operator+(typename move_iterator<_Iterator> ::difference_type __n,
@@ -498,7 +498,7 @@ operator+(typename move_iterator<_Iterator> ::difference_type __n,
 In file included from /usr/include/c++/7/bits/stl_algobase.h:67:0,
                  from /usr/include/c++/7/bits/char_traits.h:39,
                  from /usr/include/c++/7/string:40,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/stl_iterator.h:397:5: note: candidate: template<_Iterator, _Iterator, _Iterator> std::reverse_iterator std::operator+(typename std::reverse_iterator::difference_type, const std::reverse_iterator<_Iterator> &)
 operator+(typename reverse_iterator<_Iterator> ::difference_type __n,
@@ -510,7 +510,7 @@ operator+(typename reverse_iterator<_Iterator> ::difference_type __n,
 In file included from /usr/include/c++/7/bits/stl_algobase.h:67:0,
                  from /usr/include/c++/7/bits/char_traits.h:39,
                  from /usr/include/c++/7/string:40,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/stl_iterator.h:969:5: note: candidate: template<_Iterator, _Container, _Iterator, _Container, _Iterator, _Container> __gnu_cxx::__normal_iterator __gnu_cxx::operator+(typename __gnu_cxx::__normal_iterator::difference_type, const __gnu_cxx::__normal_iterator<_Iterator, _Container> &)
 operator+(typename __normal_iterator<_Iterator, _Container> ::difference_type
@@ -520,9 +520,9 @@ operator+(typename __normal_iterator<_Iterator, _Container> ::difference_type
      return v + 1;
             ~~^~~
 In file included from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:0:
-../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp: In instantiation of ‘std::vector<NewT> fp::transform(F, const std::vector<Y, lambda(const auto:1316 &), std::string, int, std::string, int> &) [with F = ; T = std::map; U = std::map]’:
+../src/include/cleantype/details/cleantype_fp/fp_base.hpp: In instantiation of ‘std::vector<NewT> cleantype_fp::transform(F, const std::vector<Y, lambda(const auto:1316 &), std::string, int, std::string, int> &) [with F = ; T = std::map; U = std::map]’:
 ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:35:52:   required from here
-../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:38:9: error: invalid use of void expression
+../src/include/cleantype/details/cleantype_fp/fp_base.hpp:38:9: error: invalid use of void expression
          out.push_back(f(x));
          ^~~
 [2/4] Building CXX object src/include/cleantype/compile_time/CMakeFiles/cleantype_decipherer.dir/cleantype_decipherer.cpp.o
@@ -536,7 +536,7 @@ Error log without decipher / GCC
 FAILED: src/include/cleantype/compile_time/CMakeFiles/cleantype_decipher_example.dir/example/cleantype_decipher_example.cpp.o
 /usr/bin/c++  -DCLEANTYPE_COMPILETIME -I../third_party/FunctionalPlus/include -I../src/include -I/root/.conan/data/boost/1.68.0/conan/stable/package/d6cb600df9137cb7943d00f26e402be306584995/include -std=c++14 -MD -MT src/include/cleantype/compile_time/CMakeFiles/cleantype_decipher_example.dir/example/cleantype_decipher_example.cpp.o -MF src/include/cleantype/compile_time/CMakeFiles/cleantype_decipher_example.dir/example/cleantype_decipher_example.cpp.o.d -o src/include/cleantype/compile_time/CMakeFiles/cleantype_decipher_example.dir/example/cleantype_decipher_example.cpp.o -c ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp
 ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp: In instantiation of ‘<lambda(const auto:1316&)> [with auto:1316 = std::map<std::__cxx11::basic_string<char>, int>]’:
-../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:38:24:   required from ‘std::vector<NewT> fp::transform(F, const std::vector<Y>&) [with F = <lambda(const auto:1316&)>; T = std::map<std::__cxx11::basic_string<char>, int>; U = std::map<std::__cxx11::basic_string<char>, int>]’
+../src/include/cleantype/details/cleantype_fp/fp_base.hpp:38:24:   required from ‘std::vector<NewT> cleantype_fp::transform(F, const std::vector<Y>&) [with F = <lambda(const auto:1316&)>; T = std::map<std::__cxx11::basic_string<char>, int>; U = std::map<std::__cxx11::basic_string<char>, int>]’
 ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:35:52:   required from here
 ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:26:14: error: no match for ‘operator+’ (operand types are ‘const std::map<std::__cxx11::basic_string<char>, int>’ and ‘int’)
      return v + 1;
@@ -545,7 +545,7 @@ In file included from /usr/include/c++/7/deque:64:0,
                  from ../third_party/FunctionalPlus/include/fplus/container_traits.hpp:10,
                  from ../third_party/FunctionalPlus/include/fplus/container_common.hpp:10,
                  from ../third_party/FunctionalPlus/include/fplus/fplus.hpp:11,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:11,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:11,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/stl_deque.h:374:5: note: candidate: template<class _Tp, class _Ref, class _Ptr> std::_Deque_iterator<_Tp, _Ref, _Ptr> std::operator+(std::ptrdiff_t, const std::_Deque_iterator<_Tp, _Ref, _Ptr>&)
      operator+(ptrdiff_t __n, const _Deque_iterator<_Tp, _Ref, _Ptr>& __x)
@@ -555,7 +555,7 @@ In file included from /usr/include/c++/7/deque:64:0,
      return v + 1;
             ~~^~~
 In file included from /usr/include/c++/7/vector:65:0,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:8,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:8,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/stl_bvector.h:387:3: note: candidate: std::_Bit_const_iterator std::operator+(std::ptrdiff_t, const std::_Bit_const_iterator&)
    operator+(ptrdiff_t __n, const _Bit_const_iterator& __x)
@@ -566,7 +566,7 @@ In file included from /usr/include/c++/7/vector:65:0,
    ^~~~~~~~
 /usr/include/c++/7/bits/stl_bvector.h:297:3: note:   no known conversion for argument 1 from ‘const std::map<std::__cxx11::basic_string<char>, int>’ to ‘std::ptrdiff_t {aka long int}’
 In file included from /usr/include/c++/7/string:52:0,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/basic_string.h:5986:5: note: candidate: template<class _CharT, class _Traits, class _Alloc> std::__cxx11::basic_string<_CharT, _Traits, _Alloc> std::operator+(std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&&, _CharT)
      operator+(basic_string<_CharT, _Traits, _Alloc>&& __lhs,
@@ -576,7 +576,7 @@ In file included from /usr/include/c++/7/string:52:0,
      return v + 1;
             ~~^~~
 In file included from /usr/include/c++/7/string:52:0,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/basic_string.h:5980:5: note: candidate: template<class _CharT, class _Traits, class _Alloc> std::__cxx11::basic_string<_CharT, _Traits, _Alloc> std::operator+(std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&&, const _CharT*)
      operator+(basic_string<_CharT, _Traits, _Alloc>&& __lhs,
@@ -586,7 +586,7 @@ In file included from /usr/include/c++/7/string:52:0,
      return v + 1;
             ~~^~~
 In file included from /usr/include/c++/7/string:52:0,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/basic_string.h:5974:5: note: candidate: template<class _CharT, class _Traits, class _Alloc> std::__cxx11::basic_string<_CharT, _Traits, _Alloc> std::operator+(_CharT, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&&)
      operator+(_CharT __lhs,
@@ -596,7 +596,7 @@ In file included from /usr/include/c++/7/string:52:0,
      return v + 1;
             ~~^~~
 In file included from /usr/include/c++/7/string:52:0,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/basic_string.h:5968:5: note: candidate: template<class _CharT, class _Traits, class _Alloc> std::__cxx11::basic_string<_CharT, _Traits, _Alloc> std::operator+(const _CharT*, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&&)
      operator+(const _CharT* __lhs,
@@ -606,7 +606,7 @@ In file included from /usr/include/c++/7/string:52:0,
      return v + 1;
             ~~^~~
 In file included from /usr/include/c++/7/string:52:0,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/basic_string.h:5956:5: note: candidate: template<class _CharT, class _Traits, class _Alloc> std::__cxx11::basic_string<_CharT, _Traits, _Alloc> std::operator+(std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&&, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&&)
      operator+(basic_string<_CharT, _Traits, _Alloc>&& __lhs,
@@ -616,7 +616,7 @@ In file included from /usr/include/c++/7/string:52:0,
      return v + 1;
             ~~^~~
 In file included from /usr/include/c++/7/string:52:0,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/basic_string.h:5950:5: note: candidate: template<class _CharT, class _Traits, class _Alloc> std::__cxx11::basic_string<_CharT, _Traits, _Alloc> std::operator+(const std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&&)
      operator+(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
@@ -626,7 +626,7 @@ In file included from /usr/include/c++/7/string:52:0,
      return v + 1;
             ~~^~~
 In file included from /usr/include/c++/7/string:52:0,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/basic_string.h:5944:5: note: candidate: template<class _CharT, class _Traits, class _Alloc> std::__cxx11::basic_string<_CharT, _Traits, _Alloc> std::operator+(std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&&, const std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&)
      operator+(basic_string<_CharT, _Traits, _Alloc>&& __lhs,
@@ -636,7 +636,7 @@ In file included from /usr/include/c++/7/string:52:0,
      return v + 1;
             ~~^~~
 In file included from /usr/include/c++/7/string:52:0,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/basic_string.h:5932:5: note: candidate: template<class _CharT, class _Traits, class _Alloc> std::__cxx11::basic_string<_CharT, _Traits, _Alloc> std::operator+(const std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&, _CharT)
      operator+(const basic_string<_CharT, _Traits, _Alloc>& __lhs, _CharT __rhs)
@@ -646,7 +646,7 @@ In file included from /usr/include/c++/7/string:52:0,
      return v + 1;
             ~~^~~
 In file included from /usr/include/c++/7/string:52:0,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/basic_string.h:5916:5: note: candidate: template<class _CharT, class _Traits, class _Alloc> std::__cxx11::basic_string<_CharT, _Traits, _Alloc> std::operator+(const std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&, const _CharT*)
      operator+(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
@@ -656,7 +656,7 @@ In file included from /usr/include/c++/7/string:52:0,
      return v + 1;
             ~~^~~
 In file included from /usr/include/c++/7/string:53:0,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/basic_string.tcc:1173:5: note: candidate: template<class _CharT, class _Traits, class _Alloc> std::__cxx11::basic_string<_CharT, _Traits, _Alloc> std::operator+(_CharT, const std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&)
      operator+(_CharT __lhs, const basic_string<_CharT, _Traits, _Alloc>& __rhs)
@@ -666,7 +666,7 @@ In file included from /usr/include/c++/7/string:53:0,
      return v + 1;
             ~~^~~
 In file included from /usr/include/c++/7/string:53:0,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/basic_string.tcc:1157:5: note: candidate: template<class _CharT, class _Traits, class _Alloc> std::__cxx11::basic_string<_CharT, _Traits, _Alloc> std::operator+(const _CharT*, const std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&)
      operator+(const _CharT* __lhs,
@@ -676,7 +676,7 @@ In file included from /usr/include/c++/7/string:53:0,
      return v + 1;
             ~~^~~
 In file included from /usr/include/c++/7/string:52:0,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/basic_string.h:5879:5: note: candidate: template<class _CharT, class _Traits, class _Alloc> std::__cxx11::basic_string<_CharT, _Traits, _Alloc> std::operator+(const std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&, const std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&)
      operator+(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
@@ -688,7 +688,7 @@ In file included from /usr/include/c++/7/string:52:0,
 In file included from /usr/include/c++/7/bits/stl_algobase.h:67:0,
                  from /usr/include/c++/7/bits/char_traits.h:39,
                  from /usr/include/c++/7/string:40,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/stl_iterator.h:1198:5: note: candidate: template<class _Iterator> std::move_iterator<_IteratorL> std::operator+(typename std::move_iterator<_IteratorL>::difference_type, const std::move_iterator<_IteratorL>&)
      operator+(typename move_iterator<_Iterator>::difference_type __n,
@@ -700,7 +700,7 @@ In file included from /usr/include/c++/7/bits/stl_algobase.h:67:0,
 In file included from /usr/include/c++/7/bits/stl_algobase.h:67:0,
                  from /usr/include/c++/7/bits/char_traits.h:39,
                  from /usr/include/c++/7/string:40,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/stl_iterator.h:397:5: note: candidate: template<class _Iterator> std::reverse_iterator<_Iterator> std::operator+(typename std::reverse_iterator<_Iterator>::difference_type, const std::reverse_iterator<_Iterator>&)
      operator+(typename reverse_iterator<_Iterator>::difference_type __n,
@@ -712,7 +712,7 @@ In file included from /usr/include/c++/7/bits/stl_algobase.h:67:0,
 In file included from /usr/include/c++/7/bits/stl_algobase.h:67:0,
                  from /usr/include/c++/7/bits/char_traits.h:39,
                  from /usr/include/c++/7/string:40,
-                 from ../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:7,
+                 from ../src/include/cleantype/details/cleantype_fp/fp_base.hpp:7,
                  from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:
 /usr/include/c++/7/bits/stl_iterator.h:969:5: note: candidate: template<class _Iterator, class _Container> __gnu_cxx::__normal_iterator<_Iterator, _Container> __gnu_cxx::operator+(typename __gnu_cxx::__normal_iterator<_Iterator, _Container>::difference_type, const __gnu_cxx::__normal_iterator<_Iterator, _Container>&)
      operator+(typename __normal_iterator<_Iterator, _Container>::difference_type
@@ -722,9 +722,9 @@ In file included from /usr/include/c++/7/bits/stl_algobase.h:67:0,
      return v + 1;
             ~~^~~
 In file included from ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:1:0:
-../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp: In instantiation of ‘std::vector<NewT> fp::transform(F, const std::vector<Y>&) [with F = <lambda(const auto:1316&)>; T = std::map<std::__cxx11::basic_string<char>, int>; U = std::map<std::__cxx11::basic_string<char>, int>]’:
+../src/include/cleantype/details/cleantype_fp/fp_base.hpp: In instantiation of ‘std::vector<NewT> cleantype_fp::transform(F, const std::vector<Y>&) [with F = <lambda(const auto:1316&)>; T = std::map<std::__cxx11::basic_string<char>, int>; U = std::map<std::__cxx11::basic_string<char>, int>]’:
 ../src/include/cleantype/compile_time/example/cleantype_decipher_example.cpp:35:52:   required from here
-../src/include/cleantype/details/fp_polyfill/fp_polyfill.hpp:38:9: error: invalid use of void expression
+../src/include/cleantype/details/cleantype_fp/fp_base.hpp:38:9: error: invalid use of void expression
          out.push_back(f(x));
          ^~~
 ninja: build stopped: subcommand failed.

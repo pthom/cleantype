@@ -5,8 +5,8 @@
 #include <string>
 #include <deque>
 #include <cleantype/details/cleantype_full.hpp>
-#include <cleantype/details/fp_polyfill/fp_polyfill.hpp>
-#include <cleantype/details/fp_polyfill/fp_additions.hpp>
+#include <cleantype/details/cleantype_fp/fp_base.hpp>
+#include <cleantype/details/cleantype_fp/fp_tree.hpp>
 #include <cleantype/cleantype_configuration.hpp>
 #include <cleantype/details/stringutils.hpp>
 
@@ -33,7 +33,7 @@ namespace cleantype
                     --count;
                 if ( (c == ',') && (count == 0))
                 {
-                    result.push_back(fp::trim(' ', current));
+                    result.push_back(cleantype_fp::trim(' ', current));
                     current = "";
                 }
                 else
@@ -41,7 +41,7 @@ namespace cleantype
                     current += c;
                 }
             }
-            result.push_back(fp::trim(' ', current));
+            result.push_back(cleantype_fp::trim(' ', current));
             return result;
         }
 
@@ -51,13 +51,13 @@ namespace cleantype
         // - lhs = "std::vector"
         // - rhs = "const &"
         // - int is the lhs of a child node
-        using code_pair = fp::fp_add::lhs_rhs;
-        using code_pair_tree = fp::tree<code_pair>;
+        using code_pair = cleantype_fp_tree::lhs_rhs;
+        using code_pair_tree = cleantype_fp_tree::tree<code_pair>;
 
 
-        inline fp::fp_add::tree_separators make_template_tree_separators()
+        inline cleantype_fp_tree::tree_separators make_template_tree_separators()
         {
-            fp::fp_add::tree_separators sep;
+            cleantype_fp_tree::tree_separators sep;
             sep.open_child = '<';
             sep.close_child = '>';
             sep.siblings_separator = ',';
@@ -65,19 +65,19 @@ namespace cleantype
         }
 
 
-        inline fp::fp_add::show_tree_lhs_rhs_options make_template_show_tree_options_impl(bool indent)
+        inline cleantype_fp_tree::show_tree_lhs_rhs_options make_template_show_tree_options_impl(bool indent)
         {
-            fp::fp_add::show_tree_lhs_rhs_options result;
+            cleantype_fp_tree::show_tree_lhs_rhs_options result;
             if (indent)
             {
                 result.add_new_lines_before_children = true;
-                result.siblings_spacing = fp::fp_add::siblings_spacing_t::new_line;
+                result.siblings_spacing = cleantype_fp_tree::siblings_spacing_t::new_line;
                 result.indent = "    ";
             }
             else
             {
                 result.add_new_lines_before_children = false;
-                result.siblings_spacing = fp::fp_add::siblings_spacing_t::space;
+                result.siblings_spacing = cleantype_fp_tree::siblings_spacing_t::space;
                 result.indent = "";
             }
             result.add_space_after_lhs = false;
@@ -86,12 +86,12 @@ namespace cleantype
         }
 
 
-        inline fp::fp_add::show_tree_lhs_rhs_options make_template_show_tree_options_no_indent()
+        inline cleantype_fp_tree::show_tree_lhs_rhs_options make_template_show_tree_options_no_indent()
         {
             return make_template_show_tree_options_impl(false);
         }
 
-        inline fp::fp_add::show_tree_lhs_rhs_options make_template_show_tree_options_with_indent()
+        inline cleantype_fp_tree::show_tree_lhs_rhs_options make_template_show_tree_options_with_indent()
         {
             return make_template_show_tree_options_impl(true);
         }
@@ -109,11 +109,11 @@ namespace cleantype
                     const std::vector<std::string> undesirable_nodes =
                         cleantype::CleanConfiguration::GlobalConfig().undesirable_type_nodes_;
                     bool found =
-                        std::find(undesirable_nodes.begin(), undesirable_nodes.end(), fp::trim(' ', code_pair.lhs)) != undesirable_nodes.end();
+                        std::find(undesirable_nodes.begin(), undesirable_nodes.end(), cleantype_fp::trim(' ', code_pair.lhs)) != undesirable_nodes.end();
                     return !found;
                 };
 
-            auto xss = fp::fp_add::tree_keep_if(is_node_desirable, xs);
+            auto xss = cleantype_fp_tree::tree_keep_if(is_node_desirable, xs);
             return xss;
         }
 
@@ -123,7 +123,7 @@ namespace cleantype
         {
             std::string result = typ_name;
             for (const auto &v : suppressions)
-                result = fp::replace_tokens(v, std::string(""), result);
+                result = cleantype_fp::replace_tokens(v, std::string(""), result);
             return result;
         }
 
@@ -134,7 +134,7 @@ namespace cleantype
         {
             std::string result = typ_name;
             for (const auto &kv : replacements)
-                result = fp::replace_tokens(kv.first, kv.second, result);
+                result = cleantype_fp::replace_tokens(kv.first, kv.second, result);
             return result;
         }
 
@@ -172,8 +172,8 @@ namespace cleantype
 
         inline void trim_spaces_inplace(code_pair & xs_io)
         {
-            xs_io.lhs = fp::trim(' ', xs_io.lhs);
-            xs_io.rhs = fp::trim(' ', xs_io.rhs);
+            xs_io.lhs = cleantype_fp::trim(' ', xs_io.lhs);
+            xs_io.rhs = cleantype_fp::trim(' ', xs_io.rhs);
         }
 
 
@@ -195,7 +195,7 @@ namespace cleantype
 
         inline std::string code_pair_tree_to_string(code_pair_tree const & xs)
         {
-            return fp::fp_add::show_tree_lhs_rhs(
+            return cleantype_fp_tree::show_tree_lhs_rhs(
                     xs,
                     make_template_tree_separators(),
                     make_template_show_tree_options_no_indent());
@@ -204,14 +204,14 @@ namespace cleantype
 
         inline std::string impl_clean_one_type(std::string const & typ_name)
         {
-            std::string typ_name_trimmed = fp::trim(' ', typ_name);
+            std::string typ_name_trimmed = cleantype_fp::trim(' ', typ_name);
 
             std::string typ_namecleaned = remove_struct_class(
                 remove_extra_namespaces(typ_name_trimmed));
             typ_namecleaned = remove_custom(typ_namecleaned);
 
             code_pair_tree template_tree = parse_template_tree(typ_namecleaned);
-            fp::fp_add::tree_transform_leafs_depth_first_inplace(trim_spaces_inplace, template_tree);
+            cleantype_fp_tree::tree_transform_leafs_depth_first_inplace(trim_spaces_inplace, template_tree);
             code_pair_tree template_tree_filtered = filter_undesirable_template_leafs(template_tree);
             std::string template_tree_filtered_str = code_pair_tree_to_string(template_tree_filtered);
 
@@ -225,7 +225,7 @@ namespace cleantype
         {
             std::string types_with_holder = add_type_holder_str(type_names);
             code_pair_tree template_tree = parse_template_tree(types_with_holder);
-            std::string types_with_holder_indented = fp::fp_add::show_tree_lhs_rhs(
+            std::string types_with_holder_indented = cleantype_fp_tree::show_tree_lhs_rhs(
                     template_tree,
                     make_template_tree_separators(),
                     make_template_show_tree_options_with_indent());
@@ -250,13 +250,13 @@ namespace cleantype
                     lines.begin() + 2,
                     lines.end() - 1
                  );
-                std::vector<std::string> unindented_lines = fp::transform(
+                std::vector<std::string> unindented_lines = cleantype_fp::transform(
                     [](const std::string & s) {
                         return stringutils::remove_start(s, "    ");
                     },
                     filtered_lines
                 );
-                std::string joined_lines = fp::join(std::string("\n"), unindented_lines);
+                std::string joined_lines = cleantype_fp::join(std::string("\n"), unindented_lines);
                 return joined_lines;
             };
 
@@ -269,7 +269,7 @@ namespace cleantype
             std::string types_with_holder = add_type_holder_str(type_names);
             std::string types_clean_with_holder = impl_clean_one_type(types_with_holder);
             return remove_type_holder_str(types_clean_with_holder);
-            //if fp::tree_depth > 3 ...
+            //if cleantype_fp::tree_depth > 3 ...
         }
 
 
@@ -280,7 +280,7 @@ namespace cleantype
                 return type_names;
             std::string types_with_holder = add_type_holder_str(type_names);
             code_pair_tree template_tree = parse_template_tree(types_with_holder);
-            std::size_t depth = fp::fp_add::tree_depth(template_tree);
+            std::size_t depth = cleantype_fp_tree::tree_depth(template_tree);
             if ( depth > indent_depth_limit + 1)
                 return impl_indent_type_tree(type_names);
             else

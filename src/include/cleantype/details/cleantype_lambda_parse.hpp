@@ -138,8 +138,8 @@ namespace cleantype
             const std::string params_cleaned = [&](){
                 auto params_list = split_types(params_str);
                 if (clean_params)
-                    params_list = fp::transform(impl_clean_one_type, params_list);
-                std::string params_joined = fp::join(std::string(", "), params_list);
+                    params_list = cleantype_fp::transform(impl_clean_one_type, params_list);
+                std::string params_joined = cleantype_fp::join(std::string(", "), params_list);
                 if (params_joined == "void")
                   params_joined = "";
                 if (cleantype::CleanConfiguration::GlobalConfig().force_east_const_)

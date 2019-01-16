@@ -3,6 +3,9 @@
 // Distributed under the Boost Software License, Version 1.0. (see LICENSE.md)
 #pragma once
 
+// These functions parse and manipulate trees in a functional way (this is the basis
+// of the type parsing in this project)
+
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -11,30 +14,31 @@
 #include <algorithm>
 #include <functional>
 
-#include <cleantype/details/fp_polyfill/fp_polyfill.hpp>
-#include <cleantype/details/fp_polyfill/fp_incompat.hpp>
+#include <cleantype/details/cleantype_fp/fp_base.hpp>
 
+namespace fp_incompat
+{
+} // namespace fp_incompat
 
-// Additions to fplus
-namespace fp
-{
-namespace fp_add
+namespace cleantype_fp_tree
 {
 
-template<typename T>
-std::vector<T> take_at_idxs(const std::vector<T> & xs, const std::vector<size_t> & indexes)
+template <typename T>
+struct tree
 {
-    std::vector<T> r;
-    for (auto idx : indexes)
-        r.push_back(xs[idx]);
-    return r;
-}
+    tree (const T& value, const std::vector<tree<T>>& children) :
+        value_(value), children_(children) {}
+    T value_;
+    std::vector<tree<T>> children_;
+};
+
 
 struct lhs_rhs
 {
     std::string lhs;
     std::string rhs;
 };
+
 
 using lhs_rhs_tree = tree<lhs_rhs>;
 
@@ -44,6 +48,7 @@ struct tree_separators {
     char siblings_separator = ',';
 };
 
+
 enum class siblings_spacing_t
 {
     no_spacing,
@@ -51,12 +56,14 @@ enum class siblings_spacing_t
     new_line
 };
 
+
 struct show_tree_options
 {
     bool add_new_lines_before_children = true;
     siblings_spacing_t siblings_spacing = siblings_spacing_t::no_spacing;
     std::string indent = "  ";
 };
+
 
 struct show_tree_lhs_rhs_options
 {
@@ -139,7 +146,7 @@ tree<T> tree_keep_if(std::function<bool(const T &)> f, const tree<T> &xs)
 {
     tree<T> result = xs;
 
-    result.children_ = fp::keep_if([f](const tree<T> &xxs) {
+    result.children_ = cleantype_fp::keep_if([f](const tree<T> &xxs) {
         return f(xxs.value_);
     },
     result.children_);
@@ -163,6 +170,7 @@ void tree_transform_leafs_depth_first_inplace(Transformer_T transformer, tree<T>
     transformer(xs_io.value_);
 }
 
+
 template <typename T, typename Transformer_T>
 void tree_transform_leafs_breadth_first_inplace(Transformer_T transformer, tree<T> &xs_io)
 {
@@ -171,6 +179,7 @@ void tree_transform_leafs_breadth_first_inplace(Transformer_T transformer, tree<
         tree_transform_leafs_breadth_first_inplace(transformer, child);
 }
 
+
 namespace detail {
     template <typename T>
     std::size_t tree_depth_impl(const tree<T> &xs, int current_depth) {
@@ -178,14 +187,25 @@ namespace detail {
         sizes.push_back(current_depth);
         for (auto & child : xs.children_)
             sizes.push_back(tree_depth_impl(child, current_depth + 1)  );
-        return fp::maximum(sizes);
+        return cleantype_fp::maximum(sizes);
     }
 }
+
 
 template <typename T>
 std::size_t tree_depth(const tree<T> &xs)
 {
     return detail::tree_depth_impl(xs, 0);
+}
+
+
+template <typename OutputType, typename InputType, typename F>
+std::vector<OutputType> transform_vector(F f, const std::vector<InputType>& xs) {
+    std::vector<OutputType> out;
+    for (const auto & v : xs) {
+        out.push_back(f(v));
+    }
+    return out;
 }
 
 
@@ -196,7 +216,7 @@ std::string show_tree_children(const std::vector<tree<T>> & children,
     int level = 0)
 {
     std::vector<std::string> children_strs =
-            fp_incompat::transform_vector<std::string>([=](const tree<T> &vv) -> std::string {
+            transform_vector<std::string>([=](const tree<T> &vv) -> std::string {
             return show_tree_lhs_rhs(vv, separators, show_tree_lhs_rhs_options_, level + 1);
         },
         children);
@@ -212,7 +232,7 @@ std::string show_tree_children(const std::vector<tree<T>> & children,
         }
     }();
 
-    std::string children_str = join(siblings_separator, children_strs);
+    std::string children_str = cleantype_fp::join(siblings_separator, children_strs);
     return children_str;
 }
 
@@ -224,13 +244,13 @@ std::string show_tree_lhs_rhs(
     const show_tree_lhs_rhs_options & show_tree_lhs_rhs_options_,
     int level = 0)
 {
-    auto line_start = fp::repeat(level, show_tree_lhs_rhs_options_.indent);
+    auto line_start = cleantype_fp::repeat(level, show_tree_lhs_rhs_options_.indent);
 
     std::string result;
     if (show_tree_lhs_rhs_options_.add_new_lines_before_children)
         result = line_start;
 
-    result += fp::show(v.value_.lhs);
+    result += cleantype_fp::show(v.value_.lhs);
     if (!v.value_.lhs.empty() && show_tree_lhs_rhs_options_.add_space_after_lhs)
         result += " ";
 
@@ -253,34 +273,9 @@ std::string show_tree_lhs_rhs(
 
     if (!v.value_.rhs.empty() && show_tree_lhs_rhs_options_.add_space_before_rhs)
         result += " ";
-    result += fp::show(v.value_.rhs);
+    result += cleantype_fp::show(v.value_.rhs);
 
     return result;
 }
 
-
-
-
-template <typename F, typename InputStream, typename OutputStream>
-std::function<void()> interact_by_line(F f, InputStream & is, OutputStream & os)
-{
-    return [f, &is, &os]() -> void
-    {
-        std::string line;
-        while (!is.eof())
-        {
-            std::getline(is, line);
-            std::string out = f(line);
-            os << out << "\n";
-        }
-    };
-}
-
-template <typename F>
-std::function<void()> interact_by_line(F f)
-{
-    return interact_by_line(f, std::cin, std::cout);
-}
-
-} // namespace fp_add
-} // namespace fp
+} // namespace cleantype_fp_tree

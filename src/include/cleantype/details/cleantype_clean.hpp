@@ -30,7 +30,7 @@ namespace cleantype
     }
 
     template <class T> std::string show_details(T && v) {
-        return clean<T>() + " = " + fp::show(v);
+        return clean<T>() + " = " + cleantype_fp::show(v);
     }
 
 } // namespace cleantype
@@ -42,10 +42,10 @@ namespace cleantype
 #define CT_show_details(var) \
         std::string("[") + CT_cleantype_clean(var) + "] " + #var \
         + " = " \
-        + fp::show(var)
+        + cleantype_fp::show(var)
 
 
 #define CT_show_details_cont(var) \
         std::string("[") + CT_cleantype_clean(var) + "] " + #var \
         + " = " \
-        + fp::show_cont(var)
+        + cleantype_fp::show_cont(var)

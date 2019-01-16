@@ -51,7 +51,7 @@ TEST_CASE("split_types")
     {
         std::string params_str("std::__1::basic_string<char> const &, std::__1::basic_string<char> const &");
         auto params = split_types(params_str);
-        params = fp::transform(cleantype::internal::impl_clean_one_type, params);
+        params = cleantype_fp::transform(cleantype::internal::impl_clean_one_type, params);
         std::vector<std::string> expected {
             "std::string const &", "std::string const &"
         };
