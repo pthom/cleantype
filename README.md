@@ -459,9 +459,9 @@ compile_code_decipher__extract(code2);
 ```
 
     clang++ --std=c++14 -c code.cpp -Iinclude -o a.out 2>&1 | ct_compiler_decipher | head -3 2>&1
-    In file included from code.cpp:2:
-    In file included from include/cleantype/cleantype.hpp:5:
-    include/cleantype/cleantype_configuration.hpp:130:10: fatal error: 'nlohmann/json.hpp' file not found
+    code.cpp:10:5: error: no member named 'IntentionalError' in 'std::vector<std::pair<int, int>> '
+        CT_compiler_log_var_type(v); // Here we ask the compiler to give us the type of v
+        ^                        ~
 
 
 # Compile time constexpr type names
@@ -831,7 +831,7 @@ Since lambda are actually anonymous structs, cleantype cannot disclose the signa
                 int,
                 void
             >,
-            (lambda at input_line_42:5:32)
+            (lambda at input_line_46:5:32)
         >,
         void
     > &
