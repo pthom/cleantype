@@ -9,6 +9,13 @@
 #include <map>
 #include <fstream>
 
+// in order to read preferences from the settings file (.cleantype.json),
+// #define CLEANTYPE_USE_NLOHMANN_JSON before including this file
+// (and add the include path to nlohmann/json.hpp)
+
+#ifdef CLEANTYPE_USE_NLOHMANN_JSON
+#include <nlohmann/json.hpp>
+#endif
 
 namespace cleantype
 {
@@ -126,8 +133,14 @@ namespace cleantype
     };
 }
 
+#ifndef CLEANTYPE_USE_NLOHMANN_JSON
+namespace cleantype {
+    namespace internal {
+        inline CleanConfiguration ImplGlobalConfig() { return cleantype::CleanConfiguration(); }
+    }
+}
 
-#include <nlohmann/json.hpp>
+#else
 namespace cleantype
 {
     inline void to_json(nlohmann::json& j, const cleantype::CleanConfiguration & c)
@@ -250,3 +263,5 @@ namespace cleantype
     }
 
 } // namespace cleantype
+
+#endif // #ifndef CLEANTYPE_USE_NLOHMANN_JSON
