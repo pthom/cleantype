@@ -43,7 +43,7 @@
 
 
 
-<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-DDDDDD.svg" align="right"></a>
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # cleantype : readable C++ type introspection - Compiler Decipherer
 
 
@@ -73,7 +73,7 @@ Note: this library is heavily [tested](https://github.com/pthom/cleantype/tree/m
 
 
 
-<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-DDDDDD.svg" align="right"></a>
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Installation and usage
 
 
@@ -86,7 +86,7 @@ or via `$(CXX) -Isrc/include -Ithird_party/FunctionalPlus/include --std=c++14 sr
 
 
 
-<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-DDDDDD.svg" align="right"></a>
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # About this manual
 
 
@@ -127,7 +127,7 @@ The "#pragma cling add_include_path" is specific to cling. Beside this, everythi
 
 
 
-<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-DDDDDD.svg" align="right"></a>
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Readable type names and full type names
 
 
@@ -276,7 +276,7 @@ You can customize the suppressions and replacements inside [cleantype/cleantype_
 
 
 
-<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-DDDDDD.svg" align="right"></a>
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 ## Full type names
 
 * `cleantype::full<T...>()` is a function that will return a string containing
@@ -355,7 +355,7 @@ run_show(     cleantype::show_details(my_set)                    )
 
 
 
-<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-DDDDDD.svg" align="right"></a>
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 ## Display the content of complex containers
 
 
@@ -383,7 +383,7 @@ run_show(     CT_show_details_full_cont(my_map)               )
 
 
 
-<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-DDDDDD.svg" align="right"></a>
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Decipher compiler output and identify types in the compiler output
 
 
@@ -394,7 +394,7 @@ run_show(     CT_show_details_full_cont(my_map)               )
 
 
 
-<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-DDDDDD.svg" align="right"></a>
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 ## Decipher the compiler output
 
 
@@ -470,7 +470,7 @@ compile_code_decipher__extract(code);
 
 
 
-<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-DDDDDD.svg" align="right"></a>
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 ## Identify types names at compile time, with clean names
 
 
@@ -511,7 +511,7 @@ compile_code_decipher__extract(code2);
 
 
 
-<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-DDDDDD.svg" align="right"></a>
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Compile time constexpr type names
 
 
@@ -534,14 +534,14 @@ Based on the work done during the development of this librayr, a [Pull Request](
 
 
 
-<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-DDDDDD.svg" align="right"></a>
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Identify the signature of lambdas
 
 
 
 
 
-<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-DDDDDD.svg" align="right"></a>
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 ## Non generic lambdas
 
 * `cleantype::lambda<typename... Args, typename Lambda>(Lambda fn, bool flag_clean)` is a function that will return
@@ -599,7 +599,7 @@ This is because "mystery_lambda" is actually a instance of a hidden class. We ar
 
 
 
-<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-DDDDDD.svg" align="right"></a>
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 ## Generic lambdas
 
 
@@ -657,7 +657,7 @@ This second version is useful when you are lost in a forest of "auto" variables 
 
 
 
-<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-DDDDDD.svg" align="right"></a>
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Identify the auto return type of functions and functors
 
 
@@ -672,7 +672,7 @@ __Notes:__
 
 
 
-<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-DDDDDD.svg" align="right"></a>
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 ## Examples
 
 
@@ -733,7 +733,7 @@ __Limitations of invoke_result with MSVC 2017 and templated auto functions__:
 
 
 
-<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-DDDDDD.svg" align="right"></a>
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Configure cleantype replacements and indentation
 
 
@@ -777,7 +777,7 @@ The content of the pref file is self explanatory:
 
 
 
-<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-DDDDDD.svg" align="right"></a>
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Decipher range-v3 auto types
 
 
@@ -945,7 +945,7 @@ Thus, it is advised to prefer "auto return functions" to lambdas when using rang
 
 
 
-<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-DDDDDD.svg" align="right"></a>
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # The zoo of type qualifiers
 
 `cleantype`handles quite well `const`, `volatile`, references (`&`), rvalue references (`&&`), and pointers (`*`). See below a demonstration 
