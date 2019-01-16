@@ -1,21 +1,8 @@
 * [ ] Cleanup
     * [X] Configuration via pref file ?
-    * [ ] third parties cleanup:
-        * [ ] Separate unit test & doc third parties from required third parties
-            * [ ] required third parties : add subfolder third_party/required_thirdparty
-                * [X] nlohlann/json: official : provide default and way to override
-                * [ ] fplus: official : provide default and way to override
-                    * [ ] Use Fplus instead of polyfills ? (measure compil times !)
-                        * [X] Compat bare fplus
-
-                * [ ] doctest: official / tests only
-            * [ ] non required third parties
-                * rename third_party/tests to third_party/tests_thirdparty
-                * [ ] Move hana to third_party/tests_thirdparty
-                * [ ]
+    * [X] third parties cleanup:
     * [ ] Continuous Integration : C++14 & C++17
     * [ ] Doc
-        * [ ] Range-v3 : will be part of C++20 (not probably) (verif sur blog e niebler)
         * [X] Layout doc : Table of Content?
         * [X] Add example with range v3 (no submodule : checkout via notebook)
         * [X] Better doc / config
@@ -28,13 +15,6 @@
 * [ ] Other
     * [ ] doc / anonmymous namespace for several functions (code ballads)
     * [ ] hana notebooks based on examples?
-
-* [ ] FPlus :
-    * [ ] Officialy use it as a submodule
-    * [ ] Document this and advertise
-    * [ ] string_tree : delete, only lhr_rhs
-    * [ ] remove bakports
-    * [ ] propose extensions
 
 
 * [X] Range-v3 & indent:
