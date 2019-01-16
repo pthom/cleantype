@@ -44,6 +44,7 @@
 
 <p style="text-align: right; font-size: 70%; text-decoration: underline overline blue;"><a href="#Table-of-content">TOC</a></p>
 
+
 `cleantype`is a small header only library which offer *readable* type names, with a *consistent naming scheme accross compilers*, at *run-time* and *compile-time*. It can also output the *signature of lambda* functions, and the result type of any auto function.
 
 The included tool `ct_compiler_decipher` simplifies the template noise in your compiler output : just ` "|" (pipe)` your build tool to it.
@@ -71,6 +72,7 @@ Note: this library is heavily [tested](https://github.com/pthom/cleantype/tree/m
 
 <p style="text-align: right; font-size: 70%; text-decoration: underline overline blue;"><a href="#Table-of-content">TOC</a></p>
 
+
 * `cleantype`is a small header only library, so you just need to clone it and add it to your path.
 
 Then, include [cleantype/cleantype.hpp](src/include/cleantype/cleantype.hpp) (this file includes a comprehensive API doc)
@@ -81,6 +83,7 @@ or via `$(CXX) -Isrc/include -Ithird_party/FunctionalPlus/include --std=c++14 sr
 # About this manual
 
 <p style="text-align: right; font-size: 70%; text-decoration: underline overline blue;"><a href="#Table-of-content">TOC</a></p>
+
 
 This manual is written using [cling](https://root.cern.ch/cling), [xeus cling](https://xeus-cling.readthedocs.io/en/latest/) and [jupyter notebook](https://jupyter.org/). Cling enables a Read-Eval-Print-Loop (REPL) development mode with C++. This approach benefits a lot from having a good type introspection, which is the aim of this library. 
 
@@ -117,6 +120,7 @@ The "#pragma cling add_include_path" is specific to cling. Beside this, everythi
 ```
 
 # Readable type names and full type names
+
 <p style="text-align: right; font-size: 70%; text-decoration: underline overline blue;"><a href="#Table-of-content">TOC</a></p>
 
 
@@ -265,6 +269,7 @@ You can customize the suppressions and replacements inside [cleantype/cleantype_
 ## Full type names
 
 <p style="text-align: right; font-size: 70%; text-decoration: underline overline blue;"><a href="#Table-of-content">TOC</a></p>
+
 * `cleantype::full<T...>()` is a function that will return a string containing
    the full type. It also works with packs of types. Use it with "cleantype::full<decltype(var)>()"<br/>
    It will add a reference by default so that "int v = 5; cleantype::full(v)" will return "int&". 
@@ -342,6 +347,7 @@ run_show(     cleantype::show_details(my_set)                    )
 
 <p style="text-align: right; font-size: 70%; text-decoration: underline overline blue;"><a href="#Table-of-content">TOC</a></p>
 
+
 * `CT_show_details_cont` (macro) is a version of CT_show_details for complex containers
    like "std::map". "cont" stands for "container".
 * `CT_show_details_full_cont` enables to display the full type and content
@@ -367,6 +373,7 @@ run_show(     CT_show_details_full_cont(my_map)               )
 
 <p style="text-align: right; font-size: 70%; text-decoration: underline overline blue;"><a href="#Table-of-content">TOC</a></p>
 
+
 * `ct_compiler_decipher` is a tool that deciphers the compiler output and makes it more readable, especially when there are lots of templates
 * `CT_compiler_log_type(T)` is a macro that will create an intentional compiler error whose intent is to display the type name of T. You can use it in conjunction with "ct_compiler_decipher".
 * `CT_compiler_log_var_type` is a macro that will create an intentional compiler error whose intent is to display the type name of the variable var. You can use it in conjunction with "ct_compiler_decipher".
@@ -374,6 +381,7 @@ run_show(     CT_show_details_full_cont(my_map)               )
 ## Decipher the compiler output
 
 <p style="text-align: right; font-size: 70%; text-decoration: underline overline blue;"><a href="#Table-of-content">TOC</a></p>
+
 
 #### Build `ct_compiler_decipher`
 First let's build ct_compiler_decipher : it is composed of unique cpp file, so that it's compilation is extremely easy
@@ -448,6 +456,7 @@ compile_code_decipher__extract(code);
 
 <p style="text-align: right; font-size: 70%; text-decoration: underline overline blue;"><a href="#Table-of-content">TOC</a></p>
 
+
 Sometimes it is easier to be able to identify a type at compile time. This is especially true, if the code in question is run long after the application start.
 
 In this case, the macros `CT_compiler_log_type(T)` and `CT_compiler_log_var_type` come handy. They  will create an intentional compiler error whose intent is to display the type name of the variable var. You can use them in conjunction with "ct_compiler_decipher".
@@ -486,6 +495,7 @@ compile_code_decipher__extract(code2);
 
 <p style="text-align: right; font-size: 70%; text-decoration: underline overline blue;"><a href="#Table-of-content">TOC</a></p>
 
+
 ### Get the typename as a Boost.Hana string
 
 * `cleantype::full_compiletime<T>()` will give you the full name of a type in the form of a Boost.Hana string.
@@ -503,12 +513,14 @@ Based on the work done during the development of this librayr, a [Pull Request](
 
 
 # Identify the signature of lambdas
+
 <p style="text-align: right; font-size: 70%; text-decoration: underline overline blue;"><a href="#Table-of-content">TOC</a></p>
 
 
 ## Non generic lambdas
 
 <p style="text-align: right; font-size: 70%; text-decoration: underline overline blue;"><a href="#Table-of-content">TOC</a></p>
+
 * `cleantype::lambda<typename... Args, typename Lambda>(Lambda fn, bool flag_clean)` is a function that will return
     a string containing the signature of a lambda. flag_clean controls wether the signature is cleaned or not.
 
@@ -562,6 +574,7 @@ std::cout << cleantype::full<decltype(mystery_lambda)>();
 This is because "mystery_lambda" is actually a instance of a hidden class. We are actually looking for the signature of the operator() of this class. `type_lambda_clean` is able to extract the type of this operator and to display it in a readable way.
 
 ## Generic lambdas
+
 <p style="text-align: right; font-size: 70%; text-decoration: underline overline blue;"><a href="#Table-of-content">TOC</a></p>
 
 
@@ -617,6 +630,7 @@ std::cout << CT_type_lambda_generic_fromparams_2(add, 1u, -2);
 This second version is useful when you are lost in a forest of "auto" variables deep in the call stack, and you do not know the return type of the lambda, and you do not even know the type of the input parameters: in that case, if you have a working call example, then you can use it.
 
 # Identify the auto return type of functions and functors
+
 <p style="text-align: right; font-size: 70%; text-decoration: underline overline blue;"><a href="#Table-of-content">TOC</a></p>
 
 
@@ -631,6 +645,7 @@ __Notes:__
 ## Examples
 
 <p style="text-align: right; font-size: 70%; text-decoration: underline overline blue;"><a href="#Table-of-content">TOC</a></p>
+
 
 ### Using invoke_result and invoke_result_t
 
@@ -690,6 +705,7 @@ __Limitations of invoke_result with MSVC 2017 and templated auto functions__:
 
 <p style="text-align: right; font-size: 70%; text-decoration: underline overline blue;"><a href="#Table-of-content">TOC</a></p>
 
+
 In order to configure the behavior of cleantype:
 
 * Duplicate the file `.cleantype.json` at the root of the cleantype repository, and place it wherever in the hierarchy of the parent directories of your application. 
@@ -728,6 +744,7 @@ The content of the pref file is self explanatory:
 ````
 
 # Decipher range-v3 auto types
+
 <p style="text-align: right; font-size: 70%; text-decoration: underline overline blue;"><a href="#Table-of-content">TOC</a></p>
 
 
@@ -895,6 +912,7 @@ Thus, it is advised to prefer "auto return functions" to lambdas when using rang
 # The zoo of type qualifiers
 
 <p style="text-align: right; font-size: 70%; text-decoration: underline overline blue;"><a href="#Table-of-content">TOC</a></p>
+
 `cleantype`handles quite well `const`, `volatile`, references (`&`), rvalue references (`&&`), and pointers (`*`). See below a demonstration 
 
 
