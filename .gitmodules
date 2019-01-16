@@ -1,5 +1,5 @@
 [submodule "FunctionalPlus"]
-	path = third_party/FunctionalPlus
+	path = third_party/tests_thirdparty/FunctionalPlus
 	url = https://github.com/Dobiasd/FunctionalPlus.git
 [submodule "third_party/doctest"]
 	path = third_party/doctest
