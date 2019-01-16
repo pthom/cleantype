@@ -2,19 +2,18 @@
 // Copyright Pascal Thomet - 2018
 // Distributed under the Boost Software License, Version 1.0. (see LICENSE.md)
 #pragma once
-#include <string>
-#include <deque>
 #include <cleantype/details/cleantype_fp/fp_base.hpp>
 #include <cleantype/details/stringutils.hpp>
+#include <deque>
+#include <string>
 
 namespace cleantype
 {
-
     namespace internal
     {
-        std::vector<std::string> split_types(std::string const & type_names);
+        std::vector<std::string> split_types(std::string const &type_names);
 
-        inline std::string apply_east_const_one_type(std::string const & type_name)
+        inline std::string apply_east_const_one_type(std::string const &type_name)
         {
             // Note : this implementation is by no means neither complete nor foolproof
             // It expects types that were preprocessed as inputs (spaces before * and &, etc.)
@@ -26,7 +25,8 @@ namespace cleantype
 
             if (type_name.empty())
                 return "";
-            if (stringutils::ends_with(type_name, "const") && (!stringutils::starts_with(type_name, "const ")))
+            if (stringutils::ends_with(type_name, "const") &&
+                (!stringutils::starts_with(type_name, "const ")))
                 return type_name;
 
             // const T * const => T const * const
@@ -44,7 +44,6 @@ namespace cleantype
                 r = r + " const * const &";
                 return r;
             }
-
 
             // const T * & => T const * &
             if (stringutils::starts_ends_with(type_name, "const ", " * &"))
@@ -89,10 +88,9 @@ namespace cleantype
             return type_name;
         }
 
-    } // namespace internal
+    }  // namespace internal
 
-
-    inline std::string apply_east_const_typelist(std::string const & type_names)
+    inline std::string apply_east_const_typelist(std::string const &type_names)
     {
         std::vector<std::string> types = internal::split_types(type_names);
         types = cleantype_fp::transform(internal::apply_east_const_one_type, types);
@@ -100,4 +98,4 @@ namespace cleantype
         return r;
     }
 
-} // namespace cleantype
+}  // namespace cleantype

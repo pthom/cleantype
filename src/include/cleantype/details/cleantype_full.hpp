@@ -6,19 +6,18 @@
 #include <type_traits>
 #include <typeinfo>
 #ifndef _MSC_VER
-#   include <cxxabi.h>
+#include <cxxabi.h>
 #endif
-#include <memory>
-#include <string>
-#include <cstdlib>
-#include <string>
 #include <cleantype/details/cleantype_fp/fp_base.hpp>
 #include <cleantype/details/cleantype_fp/fp_show.hpp>
+#include <cstdlib>
+#include <memory>
+#include <string>
 
-#include <cleantype/details/hana_type_name/type_name_pretty_function.hpp>
-#include <cleantype/details/cleantype_format_whitespace.hpp>
-#include <cleantype/details/cleantype_eastconst.hpp>
 #include <cleantype/cleantype_configuration.hpp>
+#include <cleantype/details/cleantype_eastconst.hpp>
+#include <cleantype/details/cleantype_format_whitespace.hpp>
+#include <cleantype/details/hana_type_name/type_name_pretty_function.hpp>
 #include <cleantype/details/stringutils.hpp>
 
 namespace cleantype
@@ -27,10 +26,12 @@ namespace cleantype
     namespace internal
     {
         // Trick in order to avoid having to deal the tedious syntax of parameter packs
-        template<typename... T> struct TupleTypeHolder{
+        template <typename... T>
+        struct TupleTypeHolder
+        {
         };
 
-        inline std::string add_type_holder_str(const std::string & type_names)
+        inline std::string add_type_holder_str(const std::string &type_names)
         {
 #ifdef _MSC_VER
             const std::string start = "struct cleantype::internal::TupleTypeHolder<";
@@ -41,53 +42,51 @@ namespace cleantype
             return start + type_names + end;
         }
 
-        inline std::string remove_type_holder_str(const std::string & types_inside_holder)
+        inline std::string remove_type_holder_str(const std::string &types_inside_holder)
         {
-          std::string r = types_inside_holder;
-          if (stringutils::starts_with(r, "struct cleantype::internal::TupleTypeHolder<"))
-              r = stringutils::remove_start(r, "struct cleantype::internal::TupleTypeHolder<");
-          if (stringutils::starts_with(r, "cleantype::internal::TupleTypeHolder<"))
-            r = stringutils::remove_start(r, "cleantype::internal::TupleTypeHolder<");
-          if (stringutils::ends_with(r, ">"))
-            r = stringutils::remove_end(r, ">");
-          return r;
+            std::string r = types_inside_holder;
+            if (stringutils::starts_with(r, "struct cleantype::internal::TupleTypeHolder<"))
+                r = stringutils::remove_start(r, "struct cleantype::internal::TupleTypeHolder<");
+            if (stringutils::starts_with(r, "cleantype::internal::TupleTypeHolder<"))
+                r = stringutils::remove_start(r, "cleantype::internal::TupleTypeHolder<");
+            if (stringutils::ends_with(r, ">"))
+                r = stringutils::remove_end(r, ">");
+            return r;
         }
 
-
-        template<typename T>
+        template <typename T>
         constexpr stringliteral _impl_typeid_hana_literal()
         {
             return boost::hana::experimental::type_name_details::type_name_impl_stringliteral<T>();
         }
 
-        template<typename T>
+        template <typename T>
         std::string _impl_typeid_hana()
         {
             return boost::hana::experimental::type_name_details::stringliteral_to_string(
-                _impl_typeid_hana_literal<T>()
-            );
+                _impl_typeid_hana_literal<T>());
         }
 
-
-        template<typename... T>
+        template <typename... T>
         constexpr stringliteral _impl_typeid_hana_inside_holder()
         {
-            return boost::hana::experimental::type_name_details::type_name_impl_stringliteral< TupleTypeHolder<T...> >();
+            return boost::hana::experimental::type_name_details::type_name_impl_stringliteral<
+                TupleTypeHolder<T...>>();
         }
 
-
-        template<typename... T>
+        template <typename... T>
         stringliteral impl_typeid()
         {
             return _impl_typeid_hana_inside_holder<T...>();
         }
 
-
-        template <typename... T> std::string impl_full()
+        template <typename... T>
+        std::string impl_full()
         {
-            stringliteral type_sl_in_tupletypeholder  = impl_typeid<T...>();
+            stringliteral type_sl_in_tupletypeholder = impl_typeid<T...>();
             std::string type_in_tupletypeholder =
-                boost::hana::experimental::type_name_details::stringliteral_to_string(type_sl_in_tupletypeholder);
+                boost::hana::experimental::type_name_details::stringliteral_to_string(
+                    type_sl_in_tupletypeholder);
 
             std::string type_definition = remove_type_holder_str(type_in_tupletypeholder);
 
@@ -98,39 +97,41 @@ namespace cleantype
 
             return formatted;
         }
-    } // namespace internal
-
+    }  // namespace internal
 
     template <typename... T>
-    std::string full () {
+    std::string full()
+    {
         return internal::impl_full<T...>();
     }
 
-
-    template <typename... T> std::string full(T&&... v) {
+    template <typename... T>
+    std::string full(T &&... v)
+    {
         return full<T...>();
     }
 
-
-    template <typename T> std::string show_details_full(T && v) {
+    template <typename T>
+    std::string show_details_full(T &&v)
+    {
         return std::string("[") + full<T>() + "]" + " = " + cleantype_fp::show(v);
     }
 
-} // namespace cleantype
-
+}  // namespace cleantype
 
 #define CT_cleantype_full(var) cleantype::full<decltype(var)>()
 
 #define CT_show_details_full(var) \
-        std::string("[") + CT_cleantype_full(var) + "] " + #var \
-        + " = " \
-        + cleantype_fp::show(var)
+    std::string("[") + CT_cleantype_full(var) + "] " + #var + " = " + cleantype_fp::show(var)
 
 #define CT_show_details_full_cont(var) \
-        std::string("[") + CT_cleantype_full(var) + "] " + #var \
-        + " = " \
-        + cleantype_fp::show_cont(var)
+    std::string("[") + CT_cleantype_full(var) + "] " + #var + " = " + cleantype_fp::show_cont(var)
 
-
-#define CT_compiler_log_var_type(var) { var.IntentionalError = 42; }
-#define CT_compiler_log_type(T) { T::IntentionalError = 42; }
+#define CT_compiler_log_var_type(var) \
+    {                                 \
+        var.IntentionalError = 42;    \
+    }
+#define CT_compiler_log_type(T)   \
+    {                             \
+        T::IntentionalError = 42; \
+    }

@@ -5,11 +5,9 @@
 #include "doctest.h"
 #include <cleantype/cleantype_configuration.hpp>
 
-
-struct ForceEastConst {
-    ForceEastConst() {
-        cleantype::CleanConfiguration::GlobalConfig().force_east_const_ = true;
-    }
+struct ForceEastConst
+{
+    ForceEastConst() { cleantype::CleanConfiguration::GlobalConfig().force_east_const_ = true; }
 };
 
 ForceEastConst forceEastConst;

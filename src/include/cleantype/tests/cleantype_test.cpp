@@ -6,4 +6,3 @@
 #include <fplus/fplus.hpp>
 #include <functional>
 #include <map>
-

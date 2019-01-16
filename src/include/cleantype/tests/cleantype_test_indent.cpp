@@ -4,7 +4,10 @@
 #define LOG(...) std::cout << __VA_ARGS__ << "\n";
 #define LOG_VAR(...) std::cout << #__VA_ARGS__ << "\n" << __VA_ARGS__ << "\n";
 
-template<typename... T> struct Foo {};
+template <typename... T>
+struct Foo
+{
+};
 
 TEST_CASE("indent")
 {

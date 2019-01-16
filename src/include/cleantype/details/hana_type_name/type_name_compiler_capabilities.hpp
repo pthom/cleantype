@@ -27,17 +27,17 @@ which originates from the author of this project (Pascal Thomet).
 
 // only clang and MSVC support constexpr __PRETTY_FUNCTION__, gcc does not
 #if defined(__clang__) || defined(_MSC_VER)
-    #define _HANA_TN_CAN_CONSTEXPR
+#define _HANA_TN_CAN_CONSTEXPR
 #endif
 
 // in constexpr mode, strlen is equivalent to sizeof() - 1
 #ifdef _HANA_TN_CAN_CONSTEXPR
-    #define _HANA_TN_CONSTEXPR_IF_POSSIBLE constexpr
-    #define _HANA_SIZEOF_OR_STRLEN(var) sizeof(var) - 1
+#define _HANA_TN_CONSTEXPR_IF_POSSIBLE constexpr
+#define _HANA_SIZEOF_OR_STRLEN(var) sizeof(var) - 1
 #else
-    #include <cstring> // this include is not needed in constexpr mode, save compilation time
-    #define _HANA_TN_CONSTEXPR_IF_POSSIBLE
-    #define _HANA_SIZEOF_OR_STRLEN(var) strlen(var)
+#include <cstring>  // this include is not needed in constexpr mode, save compilation time
+#define _HANA_TN_CONSTEXPR_IF_POSSIBLE
+#define _HANA_SIZEOF_OR_STRLEN(var) strlen(var)
 #endif
 
-#endif // !BOOST_HANA_EXPERIMENTAL_DETAIL_TYPE_NAME_COMPILER_CAPABILITIES_HPP
+#endif  // !BOOST_HANA_EXPERIMENTAL_DETAIL_TYPE_NAME_COMPILER_CAPABILITIES_HPP

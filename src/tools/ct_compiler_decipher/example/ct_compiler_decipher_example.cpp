@@ -1,6 +1,6 @@
 #include <fplus/fplus.hpp>
-#include <string>
 #include <map>
+#include <string>
 #include <vector>
 
 // Intentionally bad code, in order to get the compiler to spit
@@ -16,6 +16,4 @@ auto my_spurious_lambda = [](int a, int b) {
     return r3;
 };
 
-int main() {
-    auto v = my_spurious_lambda(1, 3);
-}
+int main() { auto v = my_spurious_lambda(1, 3); }

@@ -17,9 +17,8 @@ TEST_CASE("CleanConfiguration_string_serialize")
 
     REQUIRE_EQ(json_data_current, json_data_example);
 
-    cleantype::CleanConfiguration config_example = json_data_example.get<cleantype::CleanConfiguration>();
-    REQUIRE_EQ(
-        config_current.suppress_extra_namespaces_,
-        config_example.suppress_extra_namespaces_
-    );
+    cleantype::CleanConfiguration config_example =
+        json_data_example.get<cleantype::CleanConfiguration>();
+    REQUIRE_EQ(config_current.suppress_extra_namespaces_,
+               config_example.suppress_extra_namespaces_);
 }

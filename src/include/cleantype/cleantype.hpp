@@ -3,12 +3,11 @@
 // Distributed under the Boost Software License, Version 1.0. (see LICENSE.md)
 #pragma once
 #include <cleantype/cleantype_configuration.hpp>
-#include <cleantype/details/cleantype_full.hpp>
-#include <cleantype/details/cleantype_eastconst.hpp>
 #include <cleantype/details/cleantype_clean.hpp>
-#include <cleantype/details/cleantype_lambda.hpp>
+#include <cleantype/details/cleantype_eastconst.hpp>
+#include <cleantype/details/cleantype_full.hpp>
 #include <cleantype/details/cleantype_invoke_result.hpp>
-
+#include <cleantype/details/cleantype_lambda.hpp>
 
 namespace cleantype
 {
@@ -44,7 +43,6 @@ namespace cleantype
 
     // * `CT_show_details_full_cont` is a version of CT_show_details_full for complex containers
     //    like "std::map". "cont" stands for "container".
-
 
     /////////////////////////
     // readable types
@@ -83,7 +81,8 @@ namespace cleantype
     // lambdas
     /////////////////////////
 
-    // * `cleantype::lambda_clean<typename... Args, typename Lambda>(Lambda fn)` is a function that will return a string containing
+    // * `cleantype::lambda_clean<typename... Args, typename Lambda>(Lambda fn)` is a function that
+    // will return a string containing
     //    the readable signature of a lambda
     //
     // In the case of a generic lambda, you will need to specify the type of the auto parameters:
@@ -91,13 +90,17 @@ namespace cleantype
     //    auto f = [](auto x, auto y) { return x + y; };
     //    std::cout << cleantype::lambda_clean<int, char>(f) << std::endl;
     //     ==>   lambda: (int, char) -> int
-    template <typename... Args, typename Lambda> std::string lambda_clean(Lambda fn);
+    template <typename... Args, typename Lambda>
+    std::string lambda_clean(Lambda fn);
 
-    // * `cleantype::lambda_clean<typename... Args, typename Lambda>(Lambda fn)` is a function that will return a string containing
+    // * `cleantype::lambda_clean<typename... Args, typename Lambda>(Lambda fn)` is a function that
+    // will return a string containing
     //    the full signature of a lambda
-    template <typename... Args, typename Lambda> std::string lambda_full(Lambda fn);
+    template <typename... Args, typename Lambda>
+    std::string lambda_full(Lambda fn);
 
-    // * `cleantype::lambda<typename... Args, typename Lambda>(Lambda fn, bool flag_clean)` is a function that will return
+    // * `cleantype::lambda<typename... Args, typename Lambda>(Lambda fn, bool flag_clean)` is a
+    // function that will return
     //    a string containing the signature of a lambda.
     //    flag_clean controls wether the signature is cleaned or not.
     //
@@ -106,7 +109,8 @@ namespace cleantype
     //    auto f = [](auto x, auto y) { return x + y; };
     //    std::cout << cleantype::lambda<int, char>(f, true) << std::endl;
     //     ==>   lambda: (int, char) -> int
-    template <typename... Args, typename Lambda> std::string lambda(Lambda fn, bool flag_clean);
+    template <typename... Args, typename Lambda>
+    std::string lambda(Lambda fn, bool flag_clean);
 
     // *  `CT_show_details_lambda(var)` is a macro that will return a string containing the
     //    readable signature of a lambda and its name
@@ -114,11 +118,12 @@ namespace cleantype
     // *  `CT_show_details_lambda_full(var)` is a macro that will return a string containing the
     //    full signature of a lambda and its name
 
-    // *  `CT_type_lambda_generic_fromparams_XXX(lambda, arg1, arg2, ...)` is a macro that will return a string containing the
-    //     signature of a generic lambda where you do not specify the args type, instead you give example of these types.
-    //     (XXX is the number of params of the lambda, and can vary from 1 to 5).
+    // *  `CT_type_lambda_generic_fromparams_XXX(lambda, arg1, arg2, ...)` is a macro that will
+    // return a string containing the
+    //     signature of a generic lambda where you do not specify the args type, instead you give
+    //     example of these types. (XXX is the number of params of the lambda, and can vary from 1
+    //     to 5).
 
-}
-
+}  // namespace cleantype
 
 // FIXME /  TODO : Add doc here !!! (And link)

@@ -47,42 +47,41 @@ void test_cpp17()
 ///////////////////////////////////////
 // C++ 14 version, using overloads
 ///////////////////////////////////////
-template<typename... Args>
+template <typename... Args>
 constexpr auto one_cpp14()
 {
     return NONEMPTY_ARGS;
 }
 
-template<>
+template <>
 constexpr auto one_cpp14()
 {
     return EMPTY_ARGS;
 }
 
-//template<typename T, typename... Args>
-//template <typename T, typename First, typename... Rest>
-template <typename First,typename Second, typename... Rest, typename T>
+// template<typename T, typename... Args>
+// template <typename T, typename First, typename... Rest>
+template <typename First, typename Second, typename... Rest, typename T>
 constexpr auto two_cpp14(T t)
 {
     return NONEMPTY_ARGS;
 }
 
-template<typename T>
+template <typename T>
 constexpr auto two_cpp14(T t)
 {
     return EMPTY_ARGS;
 }
-
 
 void test_cpp14()
 {
-    static_assert( one_cpp14<int>() == NONEMPTY_ARGS, "" );
-    static_assert( one_cpp14<>() == EMPTY_ARGS, "" );
-    static_assert( one_cpp14() == EMPTY_ARGS, "" );
+    static_assert(one_cpp14<int>() == NONEMPTY_ARGS, "");
+    static_assert(one_cpp14<>() == EMPTY_ARGS, "");
+    static_assert(one_cpp14() == EMPTY_ARGS, "");
 
-    static_assert( two_cpp14(42) == EMPTY_ARGS, "" );
-    static_assert( two_cpp14<>(42) == EMPTY_ARGS, "" );
-    static_assert( two_cpp14<int>(42) == EMPTY_ARGS, "" );
-    static_assert( two_cpp14<int, int>(42) == NONEMPTY_ARGS, "" );
-    static_assert( two_cpp14<int, int, int>(42) == NONEMPTY_ARGS, "" );
+    static_assert(two_cpp14(42) == EMPTY_ARGS, "");
+    static_assert(two_cpp14<>(42) == EMPTY_ARGS, "");
+    static_assert(two_cpp14<int>(42) == EMPTY_ARGS, "");
+    static_assert(two_cpp14<int, int>(42) == NONEMPTY_ARGS, "");
+    static_assert(two_cpp14<int, int, int>(42) == NONEMPTY_ARGS, "");
 }
