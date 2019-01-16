@@ -5,8 +5,8 @@
 	path = third_party/doctest
 	url = https://github.com/onqtam/doctest.git
 [submodule "third_party/hana"]
-	path = third_party/hana
+	path = third_party/tests_thirdparty/hana
 	url = https://github.com/pthom/hana.git
 [submodule "third_party/tests/range-v3"]
-	path = third_party/tests/range-v3
+	path = third_party/tests_thirdparty/range-v3
 	url = https://github.com/ericniebler/range-v3.git
