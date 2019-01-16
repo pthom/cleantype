@@ -9,11 +9,15 @@
             * [X] Compat bare fplus
     * [ ] Continuous Integration : C++14 & C++17
     * [ ] Doc
+        * [ ] Range-v3 : will be part of C++20 (not probably) (verif sur blog e niebler)
         * [X] Layout doc : Table of Content?
         * [X] Add example with range v3 (no submodule : checkout via notebook)
-        * [ ] Better doc / config
+        * [X] Better doc / config
         * [ ] Mention look for help?
         * [ ] Article ?
+    * [ ] Contacts & RFC :
+        * [ ] DH
+        * [ ] EN
 
 * [ ] Other
     * [ ] doc / anonmymous namespace for several functions (code ballads)
