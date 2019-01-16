@@ -40,9 +40,11 @@
     </tr>
 </table> 
 
-# cleantype : readable C++ type introspection - Compiler Decipherer
 
-<p style="text-align: right;"><a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a></p>
+
+
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a>
+# cleantype : readable C++ type introspection - Compiler Decipherer
 
 
 `cleantype`is a small header only library which offer *readable* type names, with a *consistent naming scheme accross compilers*, at *run-time* and *compile-time*. It can also output the *signature of lambda* functions, and the result type of any auto function.
@@ -68,9 +70,11 @@ The returned types names should be similar accross compilers.
 
 Note: this library is heavily [tested](https://github.com/pthom/cleantype/tree/master/src/include/cleantype/tests), with clang, gcc and msvc. However, it should be considered *alpha* state.
 
-# Installation and usage
 
-<p style="text-align: right;"><a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a></p>
+
+
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a>
+# Installation and usage
 
 
 * `cleantype`is a small header only library, so you just need to clone it and add it to your path.
@@ -80,9 +84,10 @@ Then, include [cleantype/cleantype.hpp](src/include/cleantype/cleantype.hpp) (th
 * `ct_compiler_decipher` is comprised of a single c++ file. It's compilation can be done via `make`
 or via `$(CXX) -Isrc/include -Ithird_party/FunctionalPlus/include --std=c++14 src/tools/ct_compiler_decipher/ct_compiler_decipher.cpp -o ct_compiler_decipher`
 
-# About this manual
 
-<p style="text-align: right;"><a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a></p>
+
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a>
+# About this manual
 
 
 This manual is written using [cling](https://root.cern.ch/cling), [xeus cling](https://xeus-cling.readthedocs.io/en/latest/) and [jupyter notebook](https://jupyter.org/). Cling enables a Read-Eval-Print-Loop (REPL) development mode with C++. This approach benefits a lot from having a good type introspection, which is the aim of this library. 
@@ -119,9 +124,11 @@ The "#pragma cling add_include_path" is specific to cling. Beside this, everythi
 }
 ```
 
-# Readable type names and full type names
 
-<p style="text-align: right;"><a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a></p>
+
+
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a>
+# Readable type names and full type names
 
 
  ## Readable type names 
@@ -266,9 +273,11 @@ std::cout << cleantype::clean<std::string, int, int &&, char &&>() << std::endl;
 
 You can customize the suppressions and replacements inside [cleantype/cleantype_configuration.hpp](src/include/cleantype/cleantype_configuration.hpp)
 
-## Full type names
 
-<p style="text-align: right;"><a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a></p>
+
+
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a>
+## Full type names
 
 * `cleantype::full<T...>()` is a function that will return a string containing
    the full type. It also works with packs of types. Use it with "cleantype::full<decltype(var)>()"<br/>
@@ -343,9 +352,11 @@ run_show(     cleantype::show_details(my_set)                    )
     
 
 
-## Display the content of complex containers
 
-<p style="text-align: right;"><a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a></p>
+
+
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a>
+## Display the content of complex containers
 
 
 * `CT_show_details_cont` (macro) is a version of CT_show_details for complex containers
@@ -369,18 +380,22 @@ run_show(     CT_show_details_full_cont(my_map)               )
     
 
 
-# Decipher compiler output and identify types in the compiler output
 
-<p style="text-align: right;"><a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a></p>
+
+
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a>
+# Decipher compiler output and identify types in the compiler output
 
 
 * `ct_compiler_decipher` is a tool that deciphers the compiler output and makes it more readable, especially when there are lots of templates
 * `CT_compiler_log_type(T)` is a macro that will create an intentional compiler error whose intent is to display the type name of T. You can use it in conjunction with "ct_compiler_decipher".
 * `CT_compiler_log_var_type` is a macro that will create an intentional compiler error whose intent is to display the type name of the variable var. You can use it in conjunction with "ct_compiler_decipher".
 
-## Decipher the compiler output
 
-<p style="text-align: right;"><a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a></p>
+
+
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a>
+## Decipher the compiler output
 
 
 #### Build `ct_compiler_decipher`
@@ -452,9 +467,11 @@ compile_code_decipher__extract(code);
                                            ~ ^ ~
 
 
-## Identify types names at compile time, with clean names
 
-<p style="text-align: right;"><a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a></p>
+
+
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a>
+## Identify types names at compile time, with clean names
 
 
 Sometimes it is easier to be able to identify a type at compile time. This is especially true, if the code in question is run long after the application start.
@@ -491,9 +508,11 @@ compile_code_decipher__extract(code2);
         ^                        ~
 
 
-# Compile time constexpr type names
 
-<p style="text-align: right;"><a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a></p>
+
+
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a>
+# Compile time constexpr type names
 
 
 ### Get the typename as a Boost.Hana string
@@ -512,14 +531,18 @@ This project goes beyond what was done in these projects, by adding a support fo
 Based on the work done during the development of this librayr, a [Pull Request](https://github.com/boostorg/hana/pull/432) was posted to Boost.Hana. It proposes to include the support of MSVC and GCC for boost/hana/experimental/type_name.hpp.
 
 
+
+
+
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a>
 # Identify the signature of lambdas
 
-<p style="text-align: right;"><a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a></p>
 
 
+
+
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a>
 ## Non generic lambdas
-
-<p style="text-align: right;"><a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a></p>
 
 * `cleantype::lambda<typename... Args, typename Lambda>(Lambda fn, bool flag_clean)` is a function that will return
     a string containing the signature of a lambda. flag_clean controls wether the signature is cleaned or not.
@@ -573,9 +596,11 @@ std::cout << cleantype::full<decltype(mystery_lambda)>();
 
 This is because "mystery_lambda" is actually a instance of a hidden class. We are actually looking for the signature of the operator() of this class. `type_lambda_clean` is able to extract the type of this operator and to display it in a readable way.
 
-## Generic lambdas
 
-<p style="text-align: right;"><a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a></p>
+
+
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a>
+## Generic lambdas
 
 
 * `cleantype::lambda`, `cleantype::lambda_clean` and `cleantype::lambda_full` are compatible with generic lambdas, provided that you specify the type of the "auto" params during the call.
@@ -629,9 +654,11 @@ std::cout << CT_type_lambda_generic_fromparams_2(add, 1u, -2);
 
 This second version is useful when you are lost in a forest of "auto" variables deep in the call stack, and you do not know the return type of the lambda, and you do not even know the type of the input parameters: in that case, if you have a working call example, then you can use it.
 
-# Identify the auto return type of functions and functors
 
-<p style="text-align: right;"><a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a></p>
+
+
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a>
+# Identify the auto return type of functions and functors
 
 
 * `cleantype::invoke_result<F, Args...>::type` and `cleantype::invoke_result_t<F, Args...>` will contain the type of any function / lambda / functor. This is a __type__, _not a string_. 
@@ -642,9 +669,11 @@ __Notes:__
 * "cleantype::invoke_result_t" is a C++14 polyfill for [`std::invoke_result`](https://en.cppreference.com/w/cpp/types/result_of) (C++14 only provides "std::result_of", which is to be deprecated soon). When using C++17, it uses std::invoke_result in the background.
 * Yes, "CT_invoke_result_fn" is indeed a variadic macro!
 
-## Examples
 
-<p style="text-align: right;"><a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a></p>
+
+
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a>
+## Examples
 
 
 ### Using invoke_result and invoke_result_t
@@ -701,9 +730,11 @@ __Limitations of invoke_result with MSVC 2017 and templated auto functions__:
 
 `invoke_result` does not work under MSVC with template functions whose return type is auto (see https://stackoverflow.com/questions/54111146/invoke-result-for-template-function-with-auto-return-type-and-msvc-2017)
 
-# Configure cleantype replacements and indentation
 
-<p style="text-align: right;"><a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a></p>
+
+
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a>
+# Configure cleantype replacements and indentation
 
 
 In order to configure the behavior of cleantype:
@@ -743,9 +774,11 @@ The content of the pref file is self explanatory:
 
 ````
 
-# Decipher range-v3 auto types
 
-<p style="text-align: right;"><a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a></p>
+
+
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a>
+# Decipher range-v3 auto types
 
 
 [range-v3](https://github.com/ericniebler/range-v3) is a range library which will (most probably) be included in the next C++ standard. 
@@ -909,9 +942,11 @@ ranges::v3::join_view
 
 Thus, it is advised to prefer "auto return functions" to lambdas when using range-v3 with cleantype.
 
-# The zoo of type qualifiers
 
-<p style="text-align: right;"><a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a></p>
+
+
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-grey.svg" align="right"></a>
+# The zoo of type qualifiers
 
 `cleantype`handles quite well `const`, `volatile`, references (`&`), rvalue references (`&&`), and pointers (`*`). See below a demonstration 
 
