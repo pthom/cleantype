@@ -13,6 +13,7 @@
    <a href="#Settings---configure-replacements-and-indentation">Settings - configure replacements and indentation</a><br/>
    <a href="#Compile-time-constexpr-type-names">Compile time constexpr type names</a><br/>
    <a href="#Decipher-range-v3-auto-types">Decipher range-v3 auto types</a><br/>
+   <a href="#Cheat-sheet">Cheat sheet</a><br/>
    <a href="#The-zoo-of-type-qualifiers">The zoo of type qualifiers</a><br/>
 
 </p>
@@ -62,7 +63,7 @@ However it has several limitations: `const`, `volatile`, `&&`qualifiers are igno
 
 This library tries to overcomes some of these limitations. It is composed mainly of C++11 / C++14 functions. It also contains some macros in order to be able to display rvalue reference type, as well as variables names. Macros are prepended with a suffix 'm_'.
 
-The returned types names should be similar accross compilers.
+The returned types names should be equal (or at least similar) accross compilers.
 
 #### Status
 
@@ -81,16 +82,19 @@ Then, include [cleantype/cleantype.hpp](src/include/cleantype/cleantype.hpp) (th
 or via `$(CXX) -Isrc/include -Ithird_party/FunctionalPlus/include --std=c++14 src/tools/ct_compiler_decipher/ct_compiler_decipher.cpp -o ct_compiler_decipher`
 
 
+_Note:_ cleantype can be used as a standalone library. However, in order to use be able to read settings from a preference file, you will need [nlohmann/json](https://github.com/nlohmann/json). If you want to use this feature, define `CLEANTYPE_USE_NLOHMANN_JSON` before including cleantype.hpp and make sure that nlohmann/json.hpp is in your include path.
+
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # About this manual
 
 
-This manual is written using [cling](https://root.cern.ch/cling), [xeus cling](https://xeus-cling.readthedocs.io/en/latest/) and [jupyter notebook](https://jupyter.org/). Cling enables a Read-Eval-Print-Loop (REPL) development mode with C++. This approach benefits a lot from having a good type introspection, which is the aim of this library. 
+This manual is fully interactive! It was written using [cling](https://root.cern.ch/cling), [xeus cling](https://xeus-cling.readthedocs.io/en/latest/) and [jupyter notebook](https://jupyter.org/). Cling enables a Read-Eval-Print-Loop (REPL) development mode with C++. This approach benefits a lot from having a good type introspection, which is the aim of this library. 
 
 The code that you read in this manual is real live code that can be executed inside jupyter notebook. 
 You can try it directly inside [binder](https://mybinder.org/) : click on the "launch binder" at the top of this page.<br/>
 Notes:
-* Beware, it require about 2 minutes to load; but then you will be able to run the code live from your browser!
+* Beware, it require about 1 minutes to load; but then you will be able to run the code live from your browser!
 * Inside the notebook, click on the "Run" button in order to execute each cell (in order)
 * You can modify and run the code as you desire inside binder!
 * Note that there is a limitation in cling that *requires that you add two ";" after each lambda function definition*
@@ -983,6 +987,12 @@ ranges::v3::join_view
 ````
 
 Thus, it is advised to prefer "auto return functions" to lambdas when using range-v3 with cleantype.
+
+
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
+# Cheat sheet
+
+[cleantype.hpp](https://github.com/pthom/cleantype/blob/master/src/include/cleantype/cleantype.hpp) offers a quick cheat sheet to all the functions and macros available.
 
 
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
