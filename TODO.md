@@ -1,5 +1,6 @@
 * [ ] Cleanup
     * [ ] Doc inside cleantype.hpp (missing invoke, etc)
+    * [ ] Doc : example hana static string + example type
     * [X] debug.hpp / json.hpp
     * [X] Configuration via pref file ?
     * [X] third parties cleanup
