@@ -5,8 +5,12 @@ project(cleantype)
 option(CLEANTYPE_BUILD_TESTS "Build tests." ON)
 option(CLEANTYPE_USE_CONAN "Find deps (Boost) using conan." OFF)
 option(CLEANTYPE_BUILD_TOOLS "Build tools (ct_compiler_decipher)." ON)
-
+set(CLEANTYPE_CXX_STANDARD 14 CACHE STRING "Select CXX standard (14 or 17)")
 option(CLEANTYPE_ALL_OPTIONS "Use conan / build tests / build compile time" OFF)
+
+set(CMAKE_CXX_STANDARD ${CLEANTYPE_CXX_STANDARD})
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 if (CLEANTYPE_ALL_OPTIONS)
   set(CLEANTYPE_BUILD_TESTS ON)
@@ -31,7 +35,6 @@ if(CCACHE_FOUND)
   set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache)
 endif(CCACHE_FOUND)
 
-add_definitions("-std=c++14")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR} ${CMAKE_MODULE_PATH})
 
