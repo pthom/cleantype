@@ -8,10 +8,10 @@
    <a href="#About-this-manual">About this manual</a><br/>
    <a href="#Readable-type-names-and-full-type-names">Readable type names and full type names</a><br/>
    <a href="#Decipher-compiler-output-and-identify-types-in-the-compiler-output">Decipher compiler output and identify types in the compiler output</a><br/>
-   <a href="#Compile-time-constexpr-type-names">Compile time constexpr type names</a><br/>
-   <a href="#Identify-the-signature-of-lambdas">Identify the signature of lambdas</a><br/>
    <a href="#Identify-the-auto-return-type-of-functions-and-functors">Identify the auto return type of functions and functors</a><br/>
+   <a href="#Identify-the-signature-of-lambdas">Identify the signature of lambdas</a><br/>
    <a href="#Settings---configure-replacements-and-indentation">Settings - configure replacements and indentation</a><br/>
+   <a href="#Compile-time-constexpr-type-names">Compile time constexpr type names</a><br/>
    <a href="#Decipher-range-v3-auto-types">Decipher range-v3 auto types</a><br/>
    <a href="#The-zoo-of-type-qualifiers">The zoo of type qualifiers</a><br/>
 
@@ -45,6 +45,7 @@
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # cleantype : readable C++ type introspection - Compiler Decipherer
 
@@ -70,7 +71,8 @@ The returned types names should be similar accross compilers.
 
 #### Status
 
-Note: this library is heavily [tested](https://github.com/pthom/cleantype/tree/master/src/include/cleantype/tests), with clang, gcc and msvc. However, it should be considered *alpha* state.
+Note: this library is heavily [tested](https://github.com/pthom/cleantype/tree/master/src/tests), with clang, gcc and msvc. However, it is subject to quick evolution, and should be considered between alpha and beta state.
+
 
 
 
@@ -87,6 +89,7 @@ Then, include [cleantype/cleantype.hpp](src/include/cleantype/cleantype.hpp) (th
 
 * `ct_compiler_decipher` is comprised of a single c++ file. It's compilation can be done via `make`
 or via `$(CXX) -Isrc/include -Ithird_party/FunctionalPlus/include --std=c++14 src/tools/ct_compiler_decipher/ct_compiler_decipher.cpp -o ct_compiler_decipher`
+
 
 
 
@@ -129,6 +132,7 @@ The "#pragma cling add_include_path" is specific to cling. Beside this, everythi
     std::cout << __VA_ARGS__ << "\n\n"; \
 }
 ```
+
 
 
 
@@ -286,6 +290,7 @@ You can customize the suppressions and replacements inside [cleantype/cleantype_
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 ## Full type names
 
@@ -367,6 +372,7 @@ run_show(     cleantype::show_details(my_set)                    )
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 ## Display the content of complex containers
 
@@ -397,6 +403,7 @@ run_show(     CT_show_details_full_cont(my_map)               )
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Decipher compiler output and identify types in the compiler output
 
@@ -404,6 +411,7 @@ run_show(     CT_show_details_full_cont(my_map)               )
 * `ct_compiler_decipher` is a tool that deciphers the compiler output and makes it more readable, especially when there are lots of templates
 * `CT_compiler_log_type(T)` is a macro that will create an intentional compiler error whose intent is to display the type name of T. You can use it in conjunction with "ct_compiler_decipher".
 * `CT_compiler_log_var_type` is a macro that will create an intentional compiler error whose intent is to display the type name of the variable var. You can use it in conjunction with "ct_compiler_decipher".
+
 
 
 
@@ -492,6 +500,7 @@ compile_code_decipher__extract(code);
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 ## Identify types names at compile time, with clean names
 
@@ -528,163 +537,10 @@ compile_code_decipher__extract(code2);
     code.cpp:10:5: error: no member named 'IntentionalError' in 'std::vector<std::pair<int, int>> '
         CT_compiler_log_var_type(v); // Here we ask the compiler to give us the type of v
         ^                        ~
-    include/cleantype/details/cleantype_full.hpp:132:13: note: expanded from macro 'CT_compiler_log_var_type'
+    include/cleantype/details/cleantype_full.hpp:131:13: note: expanded from macro 'CT_compiler_log_var_type'
             var.IntentionalError = 42;    \
 
 
-
-
-
-
-
-<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
-# Compile time constexpr type names
-
-
-### Get the typename as a Boost.Hana string
-
-* `cleantype::full_compiletime<T>()` will give you the full name of a type in the form of a Boost.Hana string.
-
-**Note:** For this, you need to manually include "cleantype/cleantype_compiler_typename.hpp", and to have boost in your include path. The rest of the library (including ct_compiler_decipherer) can be compiled in a standalone way.
-
-
-### Note about constexpr type names:
-
-The basic idea of having compile time type name is to use `__PRETTY_FUNCTION__` as a way to get the type name in a constexpr way. The original idea comes from the [ctti library](https://github.com/Manu343726/ctti), and is also used inside Boost.Hana's [experimental/type_name.hpp](https://github.com/boostorg/hana/blob/master/include/boost/hana/experimental/type_name.hpp). 
-
-This project goes beyond what was done in these projects, by adding a support for gcc and msvc (only clang was supported originaly).
-
-Based on the work done during the development of this librayr, a [Pull Request](https://github.com/boostorg/hana/pull/432) was posted to Boost.Hana. It proposes to include the support of MSVC and GCC for boost/hana/experimental/type_name.hpp.
-
-
-
-
-
-
-
-<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
-# Identify the signature of lambdas
-
-
-
-
-
-
-
-<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
-## Non generic lambdas
-
-* `cleantype::lambda<typename... Args, typename Lambda>(Lambda fn, bool flag_clean)` is a function that will return
-    a string containing the signature of a lambda. flag_clean controls wether the signature is cleaned or not.
-
-* `cleantype::lambda_clean<typename... Args, typename Lambda>(Lambda fn)` is a function that will return a string containing the readable signature of a lambda.
-
-* `cleantype::lambda_full<typename... Args, typename Lambda>(Lambda fn)` is a function that will return a string containing the full signature of a lambda
-
-*  `CT_show_details_lambda(var)` is a macro that will return a string containing the
-   readable signature of a lambda and its name
-
-*  `CT_show_details_lambda_full(var)` is a macro that will return a string containing the
-   full signature of a lambda and its name
-
-It is not alway easy to guess the return type of lambda. See the lambda below for example : it's return type is not easy to guess:
-
-
-```c++
-int start = 5;
-// what is the return type of this lambda ?
-auto mystery_lambda = [&start](int end) {    
-    return fplus::overlapping_pairs_cyclic( fplus::numbers(start, end) );
-};;
-```
-
-
-```c++
-// Let's see
-run_show(            cleantype::lambda_clean(mystery_lambda)          );
-run_show(            CT_show_details_lambda(mystery_lambda)           );
-```
-
-    cleantype::lambda_clean(mystery_lambda)
-    lambda: (int) -> std::vector<std::pair<int, int>>
-    
-    CT_show_details_lambda(mystery_lambda)
-    [lambda: (int) -> std::vector<std::pair<int, int>>] mystery_lambda
-    
-
-
-
-#### Note
-If we try to get the type of this lambda via `cleantype::full`, we do not get much information...
-
-
-```c++
-std::cout << cleantype::full<decltype(mystery_lambda)>();
-```
-
-    (lambda at input_line_27:4:23)
-
-This is because "mystery_lambda" is actually a instance of a hidden class. We are actually looking for the signature of the operator() of this class. `type_lambda_clean` is able to extract the type of this operator and to display it in a readable way.
-
-
-
-
-
-
-<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
-## Generic lambdas
-
-
-* `cleantype::lambda`, `cleantype::lambda_clean` and `cleantype::lambda_full` are compatible with generic lambdas, provided that you specify the type of the "auto" params during the call.
-*  `CT_type_lambda_generic_fromparams_XXX(lambda, arg1, arg2, ...)` is a macro that will return a string containing the signature of a generic lambda where you do not specify the args type, instead you give example of these types.
-    (XXX is the number of params of the lambda, and can vary from 1 to 5).
-
-Note: getting the signature of generic lambdas is an advanced feature, and it might fail on certain compilers, such as gcc (in which case, you will get no output).
-
-### Example
-
-
-```c++
-auto add = [](auto a, auto b) {
-    return a + b; 
-};;
-```
-
-This lambda ("add") is a generic lambda (which means that at least one of its argument is specified with an "auto" type). It's behaviour is comparable to a template function.
-
-So, if we try to get its signature via a direct call to `cleantype::lambda_clean` like below:
-
-```cpp
-std::cout << cleantype::lambda_clean(add) << std::endl;
-```
-The compiler will complain:
-```
-cleantype/details/cleantype_lambda.hpp:29:18: error: variable 'as_ptr' with type 'auto' has incompatible initializer of type '<overloaded function type>'
-   auto as_ptr = &Lambda::operator(); // if you have an error here, your lambda is generic! Add template params for its input types!
-```
-
-The solution is to provide the types of the input parameters, like below:
-
-
-```c++
-// extract the lambda type using actual types
-std::cout << cleantype::lambda_clean<int, double>(add) << std::endl;
-```
-
-    lambda: (int, double) -> double
-
-
-It can also be done by providing some example parameters : use `CT_type_lambda_generic_fromparams_XXX`, where X is the number of parameters of the lambda.
-
-
-```c++
-// extract the lambda type using example params
-std::cout << CT_type_lambda_generic_fromparams_2(add, 1u, -2);
-```
-
-    lambda: (unsigned int, int) -> unsigned int
-
-This second version is useful when you are lost in a forest of "auto" variables deep in the call stack, and you do not know the return type of the lambda, and you do not even know the type of the input parameters: in that case, if you have a working call example, then you can use it.
 
 
 
@@ -702,6 +558,7 @@ This second version is useful when you are lost in a forest of "auto" variables 
 __Notes:__
 * "cleantype::invoke_result_t" is a C++14 polyfill for [`std::invoke_result`](https://en.cppreference.com/w/cpp/types/result_of) (C++14 only provides "std::result_of", which is to be deprecated soon). When using C++17, it uses std::invoke_result in the background.
 * Yes, "CT_invoke_result_fn" is indeed a variadic macro!
+
 
 
 
@@ -771,6 +628,139 @@ __Limitations of invoke_result with MSVC 2017 and templated auto functions__:
 
 
 
+
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
+# Identify the signature of lambdas
+
+
+
+
+
+
+
+
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
+## Non generic lambdas
+
+* `cleantype::lambda<typename... Args, typename Lambda>(Lambda fn, bool flag_clean)` is a function that will return
+    a string containing the signature of a lambda. flag_clean controls wether the signature is cleaned or not.
+
+* `cleantype::lambda_clean<typename... Args, typename Lambda>(Lambda fn)` is a function that will return a string containing the readable signature of a lambda.
+
+* `cleantype::lambda_full<typename... Args, typename Lambda>(Lambda fn)` is a function that will return a string containing the full signature of a lambda
+
+*  `CT_show_details_lambda(var)` is a macro that will return a string containing the
+   readable signature of a lambda and its name
+
+*  `CT_show_details_lambda_full(var)` is a macro that will return a string containing the
+   full signature of a lambda and its name
+
+It is not alway easy to guess the return type of lambda. See the lambda below for example : it's return type is not easy to guess:
+
+
+```c++
+int start = 5;
+// what is the return type of this lambda ?
+auto mystery_lambda = [&start](int end) {    
+    return fplus::overlapping_pairs_cyclic( fplus::numbers(start, end) );
+};;
+```
+
+
+```c++
+// Let's see
+run_show(            cleantype::lambda_clean(mystery_lambda)          );
+run_show(            CT_show_details_lambda(mystery_lambda)           );
+```
+
+    cleantype::lambda_clean(mystery_lambda)
+    lambda: (int) -> std::vector<std::pair<int, int>>
+    
+    CT_show_details_lambda(mystery_lambda)
+    [lambda: (int) -> std::vector<std::pair<int, int>>] mystery_lambda
+    
+
+
+
+#### Note
+If we try to get the type of this lambda via `cleantype::full`, we do not get much information...
+
+
+```c++
+std::cout << cleantype::full<decltype(mystery_lambda)>();
+```
+
+    (lambda at input_line_29:4:23)
+
+This is because "mystery_lambda" is actually a instance of a hidden class. We are actually looking for the signature of the operator() of this class. `type_lambda_clean` is able to extract the type of this operator and to display it in a readable way.
+
+
+
+
+
+
+
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
+## Generic lambdas
+
+
+* `cleantype::lambda`, `cleantype::lambda_clean` and `cleantype::lambda_full` are compatible with generic lambdas, provided that you specify the type of the "auto" params during the call.
+*  `CT_type_lambda_generic_fromparams_XXX(lambda, arg1, arg2, ...)` is a macro that will return a string containing the signature of a generic lambda where you do not specify the args type, instead you give example of these types.
+    (XXX is the number of params of the lambda, and can vary from 1 to 5).
+
+Note: getting the signature of generic lambdas is an advanced feature, and it might fail on certain compilers, such as gcc (in which case, you will get no output).
+
+### Example
+
+
+```c++
+auto add = [](auto a, auto b) {
+    return a + b; 
+};;
+```
+
+This lambda ("add") is a generic lambda (which means that at least one of its argument is specified with an "auto" type). It's behaviour is comparable to a template function.
+
+So, if we try to get its signature via a direct call to `cleantype::lambda_clean` like below:
+
+```cpp
+std::cout << cleantype::lambda_clean(add) << std::endl;
+```
+The compiler will complain:
+```
+cleantype/details/cleantype_lambda.hpp:29:18: error: variable 'as_ptr' with type 'auto' has incompatible initializer of type '<overloaded function type>'
+   auto as_ptr = &Lambda::operator(); // if you have an error here, your lambda is generic! Add template params for its input types!
+```
+
+The solution is to provide the types of the input parameters, like below:
+
+
+```c++
+// extract the lambda type using actual types
+std::cout << cleantype::lambda_clean<int, double>(add) << std::endl;
+```
+
+    lambda: (int, double) -> double
+
+
+It can also be done by providing some example parameters : use `CT_type_lambda_generic_fromparams_XXX`, where X is the number of parameters of the lambda.
+
+
+```c++
+// extract the lambda type using example params
+std::cout << CT_type_lambda_generic_fromparams_2(add, 1u, -2);
+```
+
+    lambda: (unsigned int, int) -> unsigned int
+
+This second version is useful when you are lost in a forest of "auto" variables deep in the call stack, and you do not know the return type of the lambda, and you do not even know the type of the input parameters: in that case, if you have a working call example, then you can use it.
+
+
+
+
+
+
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Settings - configure replacements and indentation
 
@@ -815,6 +805,33 @@ The content of the pref file is self explanatory:
 _Note:_ 
 * the library [nlohmann/json](https://github.com/nlohmann/json) is required in order to read/save the prefs from a json file. 
 * in order to use the settings feature, define `CLEANTYPE_USE_NLOHMANN_JSON` before including cleantype.hpp and make sure that `nlohmann/json.hpp` is in your include path (you can find a version of it at `third_party/nlohmann_json/nlohmann/json.hpp`)
+
+
+
+
+
+
+
+
+<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
+# Compile time constexpr type names
+
+
+### Get the typename as a Boost.Hana string
+
+* `cleantype::full_compiletime<T>()` will give you the full name of a type in the form of a Boost.Hana string.
+
+**Note:** For this, you need to manually include "cleantype/cleantype_compiler_typename.hpp", and to have boost in your include path. The rest of the library (including ct_compiler_decipherer) can be compiled in a standalone way.
+
+
+### Note about constexpr type names:
+
+The basic idea of having compile time type name is to use `__PRETTY_FUNCTION__` as a way to get the type name in a constexpr way. The original idea comes from the [ctti library](https://github.com/Manu343726/ctti), and is also used inside Boost.Hana's [experimental/type_name.hpp](https://github.com/boostorg/hana/blob/master/include/boost/hana/experimental/type_name.hpp). 
+
+This project goes beyond what was done in these projects, by adding a support for gcc and msvc (only clang was supported originaly).
+
+Based on the work done during the development of this librayr, a [Pull Request](https://github.com/boostorg/hana/pull/432) was posted to Boost.Hana. It proposes to include the support of MSVC and GCC for boost/hana/experimental/type_name.hpp.
+
 
 
 
@@ -986,6 +1003,7 @@ ranges::v3::join_view
 ````
 
 Thus, it is advised to prefer "auto return functions" to lambdas when using range-v3 with cleantype.
+
 
 
 
