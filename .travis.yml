@@ -110,16 +110,6 @@ matrix:
         apt:
           sources: ['llvm-toolchain-trusty', 'llvm-toolchain-trusty-7', 'ubuntu-toolchain-r-test']
           packages: ['clang-7', 'libc++-7-dev', 'libc++abi-7-dev']
-    - os: linux
-      compiler: clang
-      env: CLANG_VERSION=6.0
-        - CC=clang-6.0
-        - CXX=clang++-6.0
-        - CXX_STANDARD=17
-      addons:
-        apt:
-          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-6.0']
-          packages: ['clang-6.0', 'g++-6']
 
     ##############
     # OSX / APPLECLANG
