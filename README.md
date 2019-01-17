@@ -41,11 +41,6 @@
 </table> 
 
 
-
-
-
-
-
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # cleantype : readable C++ type introspection - Compiler Decipherer
 
@@ -86,10 +81,6 @@ Then, include [cleantype/cleantype.hpp](src/include/cleantype/cleantype.hpp) (th
 or via `$(CXX) -Isrc/include -Ithird_party/FunctionalPlus/include --std=c++14 src/tools/ct_compiler_decipher/ct_compiler_decipher.cpp -o ct_compiler_decipher`
 
 
-
-
-
-
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # About this manual
 
@@ -127,11 +118,6 @@ The "#pragma cling add_include_path" is specific to cling. Beside this, everythi
     std::cout << __VA_ARGS__ << "\n\n"; \
 }
 ```
-
-
-
-
-
 
 
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
@@ -286,6 +272,7 @@ You can customize the suppressions and replacements inside [cleantype/cleantype_
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 ## Full type names
 
@@ -319,12 +306,14 @@ You can customize the suppressions and replacements inside [cleantype/cleantype_
 
 
 ```c++
-auto w = my_range(10);
-run_show(     cleantype::full(w)                         )
-run_show(     cleantype::full<decltype(w)>()             )
-run_show(     cleantype::show_details_full(w)            )
-run_show(     CT_cleantype_full(w)                       )
-run_show(     CT_show_details_full(w)                    )
+{
+    auto w = my_range(10);
+    run_show(     cleantype::full(w)                         )
+    run_show(     cleantype::full<decltype(w)>()             )
+    run_show(     cleantype::show_details_full(w)            )
+    run_show(     CT_cleantype_full(w)                       )
+    run_show(     CT_show_details_full(w)                    )
+}
 ```
 
     cleantype::full(w)
@@ -349,9 +338,11 @@ Full types can quickly become unreadable, especially with templated types, such 
 
 
 ```c++
-std::set<std::string> my_set { "Hello", "There"};
-run_show(     cleantype::show_details_full(my_set)               )
-run_show(     cleantype::show_details(my_set)                    )
+{
+    std::set<std::string> my_set { "Hello", "There"};
+    run_show(     cleantype::show_details_full(my_set)               )
+    run_show(     cleantype::show_details(my_set)                    )
+}
 ```
 
     cleantype::show_details_full(my_set)
@@ -360,6 +351,7 @@ run_show(     cleantype::show_details(my_set)                    )
     cleantype::show_details(my_set)
     std::set<std::string> & = [Hello, There]
     
+
 
 
 
@@ -380,9 +372,11 @@ These version are required for certains more complex containers, like "std::map"
 
 
 ```c++
-std::map<std::string, int> my_map {{{"a", 1}, {"b", 2}, {"c", 3} }};
-run_show(     CT_show_details_cont(my_map)                    )
-run_show(     CT_show_details_full_cont(my_map)               )
+{
+    std::map<std::string, int> my_map {{{"a", 1}, {"b", 2}, {"c", 3} }};
+    run_show(     CT_show_details_cont(my_map)                    )
+    run_show(     CT_show_details_full_cont(my_map)               )
+}
 ```
 
     CT_show_details_cont(my_map)
@@ -394,11 +388,6 @@ run_show(     CT_show_details_full_cont(my_map)               )
 
 
 
-
-
-
-
-
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Decipher compiler output and identify types in the compiler output
 
@@ -406,6 +395,7 @@ run_show(     CT_show_details_full_cont(my_map)               )
 * `ct_compiler_decipher` is a tool that deciphers the compiler output and makes it more readable, especially when there are lots of templates
 * `CT_compiler_log_type(T)` is a macro that will create an intentional compiler error whose intent is to display the type name of T. You can use it in conjunction with "ct_compiler_decipher".
 * `CT_compiler_log_var_type` is a macro that will create an intentional compiler error whose intent is to display the type name of the variable var. You can use it in conjunction with "ct_compiler_decipher".
+
 
 
 
@@ -496,6 +486,7 @@ compile_code_decipher__extract(code);
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 ## Identify types names at compile time, with clean names
 
@@ -537,11 +528,6 @@ compile_code_decipher__extract(code2);
 
 
 
-
-
-
-
-
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Identify the auto return type of functions and functors
 
@@ -553,6 +539,7 @@ compile_code_decipher__extract(code2);
 __Notes:__
 * "cleantype::invoke_result_t" is a C++14 polyfill for [`std::invoke_result`](https://en.cppreference.com/w/cpp/types/result_of) (C++14 only provides "std::result_of", which is to be deprecated soon). When using C++17, it uses std::invoke_result in the background.
 * Yes, "CT_invoke_result_fn" is indeed a variadic macro!
+
 
 
 
@@ -619,13 +606,9 @@ __Limitations of invoke_result with MSVC 2017 and templated auto functions__:
 `invoke_result` does not work under MSVC with template functions whose return type is auto (see https://stackoverflow.com/questions/54111146/invoke-result-for-template-function-with-auto-return-type-and-msvc-2017)
 
 
-
-
-
-
-
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Identify the signature of lambdas
+
 
 
 
@@ -695,6 +678,7 @@ This is because "mystery_lambda" is actually a instance of a hidden class. We ar
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 ## Generic lambdas
 
@@ -751,11 +735,6 @@ std::cout << CT_type_lambda_generic_fromparams_2(add, 1u, -2);
 This second version is useful when you are lost in a forest of "auto" variables deep in the call stack, and you do not know the return type of the lambda, and you do not even know the type of the input parameters: in that case, if you have a working call example, then you can use it.
 
 
-
-
-
-
-
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Settings - configure replacements and indentation
 
@@ -803,11 +782,6 @@ _Note:_
 
 
 
-
-
-
-
-
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Compile time constexpr type names
 
@@ -828,9 +802,20 @@ This project goes beyond what was done in these projects, by adding a support fo
 Based on the work done during the development of this librayr, a [Pull Request](https://github.com/boostorg/hana/pull/432) was posted to Boost.Hana. It proposes to include the support of MSVC and GCC for boost/hana/experimental/type_name.hpp.
 
 
+### Example
 
 
+```c++
+#include <cleantype/cleantype_compiler_typename.hpp>
+{
+    auto hana_type_string = cleantype::full_compiletime<std::pair<int, char>>();
+    run_show(      cleantype::full(hana_type_string)      );
+}
+```
 
+    cleantype::full(hana_type_string)
+    boost::hana::string<'s', 't', 'd', ':', ':', 'p', 'a', 'i', 'r', '<', 'i', 'n', 't', ', ', ' ', 'c', 'h', 'a', 'r', '>'> &
+    
 
 
 
@@ -972,7 +957,7 @@ Since lambda are actually anonymous structs, cleantype cannot disclose the signa
                 int,
                 void
             >,
-            (lambda at input_line_42:5:32)
+            (lambda at input_line_44:5:32)
         >,
         void
     > &
@@ -998,11 +983,6 @@ ranges::v3::join_view
 ````
 
 Thus, it is advised to prefer "auto return functions" to lambdas when using range-v3 with cleantype.
-
-
-
-
-
 
 
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
