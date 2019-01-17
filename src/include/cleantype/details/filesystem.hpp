@@ -3,6 +3,7 @@
 #include <cleantype/details/cleantype_fp/fp_base.hpp>
 #include <cleantype/details/stringutils.hpp>
 #include <cstdlib>
+#include <fstream>
 #include <sys/stat.h>
 #if defined(__unix__) || defined(__APPLE__)
 #include <sys/types.h>
@@ -60,10 +61,28 @@ namespace cleantype
             return parent_dirs;
         }
 
-        inline bool file_exists(const std::string & name)
+        inline bool file_exists(const std::string & filename)
         {
             struct stat buffer;
-            return (stat(name.c_str(), &buffer) == 0);
+            return (stat(filename.c_str(), &buffer) == 0);
+        }
+
+        inline std::string read_istream(std::istream & is)
+        {
+            std::stringstream ss;
+            std::string line;
+            while (!is.eof())
+            {
+                std::getline(is, line);
+                ss << line << "\n";
+            }
+            return ss.str();
+        }
+
+        inline std::string read_file(const std::string & filename)
+        {
+            std::ifstream is(filename);
+            return read_istream(is);
         }
     }  // namespace filesystem
 }

@@ -4,7 +4,7 @@ project(cleantype)
 
 option(CLEANTYPE_BUILD_TESTS "Build tests." ON)
 option(CLEANTYPE_USE_CONAN "Find deps (Boost) using conan." OFF)
-option(CLEANTYPE_BUILD_TOOLS "Build tools (ct_compiler_decipher)." OFF)
+option(CLEANTYPE_BUILD_TOOLS "Build tools (ct_compiler_decipher)." ON)
 
 option(CLEANTYPE_ALL_OPTIONS "Use conan / build tests / build compile time" OFF)
 
