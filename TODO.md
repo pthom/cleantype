@@ -4,7 +4,6 @@
     * [X] Configuration via pref file ?
     * [X] third parties cleanup
     * [ ] Continuous Integration : C++14 & C++17
-    * [ ] # Version
     * [ ] Doc
         * [X] Doc reorder
         * [ ] Doc : example hana static string + example type

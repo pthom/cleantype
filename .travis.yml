@@ -21,6 +21,17 @@ matrix:
       env: GCC_VERSION=8
         - CC=gcc-8
         - CXX=g++-8
+        - CXX_STANDARD=14
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-8']
+    - os: linux
+      compiler: gcc
+      env: GCC_VERSION=8
+        - CC=gcc-8
+        - CXX=g++-8
+        - CXX_STANDARD=17
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test']
@@ -30,6 +41,17 @@ matrix:
       env: GCC_VERSION=7
         - CC=gcc-7
         - CXX=g++-7
+        - CXX_STANDARD=14
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-7']
+    - os: linux
+      compiler: gcc
+      env: GCC_VERSION=7
+        - CC=gcc-7
+        - CXX=g++-7
+        - CXX_STANDARD=17
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test']
@@ -39,6 +61,7 @@ matrix:
       env: GCC_VERSION=6
         - CC=gcc-6
         - CXX=g++-6
+        - CXX_STANDARD=14
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test']
@@ -48,6 +71,7 @@ matrix:
       env: GCC_VERSION=5
         - CC=gcc-5
         - CXX=g++-5
+        - CXX_STANDARD=14
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test']
@@ -61,6 +85,7 @@ matrix:
       env: CLANG_VERSION=7
         - CC=clang-7
         - CXX=clang++-7
+        - CXX_STANDARD=14
       addons:
         apt:
           sources: ['llvm-toolchain-trusty', 'llvm-toolchain-trusty-7', 'ubuntu-toolchain-r-test']
@@ -70,6 +95,27 @@ matrix:
       env: CLANG_VERSION=6.0
         - CC=clang-6.0
         - CXX=clang++-6.0
+        - CXX_STANDARD=14
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-6.0']
+          packages: ['clang-6.0', 'g++-6']
+    - os: linux
+      compiler: clang
+      env: CLANG_VERSION=7
+        - CC=clang-7
+        - CXX=clang++-7
+        - CXX_STANDARD=17
+      addons:
+        apt:
+          sources: ['llvm-toolchain-trusty', 'llvm-toolchain-trusty-7', 'ubuntu-toolchain-r-test']
+          packages: ['clang-7', 'libc++-7-dev', 'libc++abi-7-dev']
+    - os: linux
+      compiler: clang
+      env: CLANG_VERSION=6.0
+        - CC=clang-6.0
+        - CXX=clang++-6.0
+        - CXX_STANDARD=17
       addons:
         apt:
           sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-6.0']
@@ -83,12 +129,19 @@ matrix:
       env:
         - CXX=clang
         - OSX=1
-
+        - CXX_STANDARD=17
+    - os: osx
+      osx_image: xcode10
+      env:
+        - CXX=clang
+        - OSX=1
+        - CXX_STANDARD=14
     - os: osx
       osx_image: xcode9.4
       env:
         - CXX=clang
         - OSX=1
+        - CXX_STANDARD=14
 
 
 before_install:
@@ -118,7 +171,7 @@ script:
   - which $CXX
   - $CXX --version
   - cmake --version
-  - cmake .. -DCLEANTYPE_ALL_OPTIONS=ON -DCMAKE_INSTALL_PREFIX=$(pwd)/install
+  - cmake .. -DCLEANTYPE_ALL_OPTIONS=ON -DCLEANTYPE_CXX_STANDARD=${CXX_STANDARD} -DCMAKE_INSTALL_PREFIX=$(pwd)/install
   - cmake --build . --config Release -- -j4
   - ctest -C Release --output-on-failure
   - cmake --build . --target install
