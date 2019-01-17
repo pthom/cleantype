@@ -43,6 +43,9 @@ namespace cleantype
     // * `CT_show_details_cont` (macro) is a version of CT_show_details for complex containers
     //    like "std::map". "cont" stands for "container".
 
+    // * `cleantype::clean_typestring(type_names)` will clean a given (list of) type(s) given as a string
+    // * `cleantype::indent_type_tree(type_names)` will present an indented view of a given (list of) type(s).
+
     /////////////////////////
     // full types
     /////////////////////////
@@ -85,7 +88,7 @@ namespace cleantype
     // $CC -Isrc/include --std=c++14 src/tools/ct_compiler_decipher/ct_compiler_decipher.cpp -o ct_compiler_decipher
 
     /////////////////////////////////////////
-    // identify types in the cutmpiler output
+    // identify types in the compiler output
     /////////////////////////////////////////
     // * `CT_compiler_log_var_type(var)` is a macro that will create
     //   an intentional compile error, in which you will be able to read
@@ -104,9 +107,9 @@ namespace cleantype
     // Note: For this, you need to manually include "cleantype/cleantype_compiler_typename.hpp",
     // and to have boost in your include path.
 
-    /////////////////////////////////////////
+    ///////////////////////////////////////////////////////////
     // Identify the auto return type of functions and functors
-    /////////////////////////////////////////
+    ///////////////////////////////////////////////////////////
     // * cleantype::invoke_result<F, Args...>::type and cleantype::invoke_result_t<F, Args...>
     //   will contain the type of any function / lambda / functor. This is a type, not a string.
     // * CT_invoke_result_fn(F, Args...) and CT_invoke_result_fn_template(F, Args...)
@@ -128,14 +131,10 @@ namespace cleantype
     //    auto f = [](auto x, auto y) { return x + y; };
     //    std::cout << cleantype::lambda_clean<int, char>(f) << std::endl;
     //     ==>   lambda: (int, char) -> int
-    template <typename... Args, typename Lambda>
-    std::string lambda_clean(Lambda fn);
 
     // * `cleantype::lambda_clean<typename... Args, typename Lambda>(Lambda fn)` is a function that
     // will return a string containing
     //    the full signature of a lambda
-    template <typename... Args, typename Lambda>
-    std::string lambda_full(Lambda fn);
 
     // * `cleantype::lambda<typename... Args, typename Lambda>(Lambda fn, bool flag_clean)` is a
     // function that will return
@@ -147,8 +146,6 @@ namespace cleantype
     //    auto f = [](auto x, auto y) { return x + y; };
     //    std::cout << cleantype::lambda<int, char>(f, true) << std::endl;
     //     ==>   lambda: (int, char) -> int
-    template <typename... Args, typename Lambda>
-    std::string lambda(Lambda fn, bool flag_clean);
 
     // *  `CT_show_details_lambda(var)` is a macro that will return a string containing the
     //    readable signature of a lambda and its name

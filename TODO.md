@@ -21,7 +21,6 @@
     * [ ] doc / anonmymous namespace for several functions (code ballads)
     * [ ] hana notebooks based on examples?
 
-
 * [X] Range-v3 & indent:
     * [X] auto-indent clean
     * [X] pref / start auto indent
@@ -41,9 +40,7 @@
         * [X] pas de format
         * [X] test / regex
         * [X] recup test dans full_s
-        * [-] tenter PR dans branche hana_pr_typename
-        * [X] le code principal doit fonctionner sans hana, donc sans namespace hana
-                -> faire dupl...
+        * [-] PR hana_pr_typename
     * [X] Types multiples par wrap dans Template Holder ?
     * [X] full_s : compile time tests
     * [X] west_const -> east_const
@@ -65,7 +62,6 @@
         * [X] decipherer
         * [X] check status / references & update accordingly
         * [X] doc / build and usage decipherer
-
 
     * [X] Compiler log decipherer
         * [X] clang
