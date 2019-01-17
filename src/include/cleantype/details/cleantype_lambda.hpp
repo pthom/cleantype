@@ -27,8 +27,7 @@ namespace cleantype
         template <typename Lambda>
         std::string lambda_memfn_type(Lambda fn)
         {
-            auto as_ptr = &Lambda::operator();  // if you have an error here, your lambda is
-                                                // generic! Add template params for its input types!
+            auto as_ptr = &Lambda::operator();  // if you have an error here, your lambda is generic! Add template params for its input types!
             auto as_mem_fn = std::mem_fn(as_ptr);
             std::string mem_fn_type = cleantype::internal::_impl_typeid_hana<decltype(as_mem_fn)>();
             return mem_fn_type;

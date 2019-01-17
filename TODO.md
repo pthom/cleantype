@@ -5,7 +5,10 @@
     * [X] Configuration via pref file ?
     * [X] third parties cleanup
     * [ ] Continuous Integration : C++14 & C++17
+    * [ ] # Version
     * [ ] Doc
+        * [ ] State alpha -> apha / beta
+        * [ ] Change link "Note: this library is heavily tested"
         * [X] Layout doc : Table of Content?
         * [X] Add example with range v3 (no submodule : checkout via notebook)
         * [X] Better doc / config
