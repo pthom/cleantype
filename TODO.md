@@ -1,18 +1,19 @@
 * [ ] Cleanup
-    * [ ] Doc inside cleantype.hpp (missing invoke, etc)
-    * [ ] Doc : example hana static string + example type
+    * [X] Doc inside cleantype.hpp (missing invoke, etc)
     * [X] debug.hpp / json.hpp
     * [X] Configuration via pref file ?
     * [X] third parties cleanup
     * [ ] Continuous Integration : C++14 & C++17
     * [ ] # Version
     * [ ] Doc
-        * [ ] State alpha -> apha / beta
-        * [ ] Change link "Note: this library is heavily tested"
+        * [X] Doc reorder
+        * [ ] Doc : example hana static string + example type
+        * [X] State alpha -> apha / beta
+        * [X] Change link "Note: this library is heavily tested"
         * [X] Layout doc : Table of Content?
         * [X] Add example with range v3 (no submodule : checkout via notebook)
         * [X] Better doc / config
-        * [ ] Article ?
+    * [ ] Article ?
     * [ ] Contacts & RFC :
         * [ ] DH
         * [ ] EN
