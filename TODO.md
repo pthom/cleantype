@@ -3,10 +3,10 @@
     * [X] debug.hpp / json.hpp
     * [X] Configuration via pref file ?
     * [X] third parties cleanup
-    * [ ] Continuous Integration : C++14 & C++17
-    * [ ] Doc
+    * [X] Continuous Integration : C++14 & C++17
+    * [X] Doc
         * [X] Doc reorder
-        * [ ] Doc : example hana static string + example type
+        * [X] Doc : example hana static string + example type
         * [X] State alpha -> apha / beta
         * [X] Change link "Note: this library is heavily tested"
         * [X] Layout doc : Table of Content?
