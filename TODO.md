@@ -5,11 +5,10 @@
     * [X] third parties cleanup
     * [ ] Continuous Integration : C++14 & C++17
     * [ ] Doc
-        * [ ] Range-v3 : will be part of C++20 (not probably) (verif sur blog e niebler)
+        * [X] Range-v3
         * [X] Layout doc : Table of Content?
         * [X] Add example with range v3 (no submodule : checkout via notebook)
         * [X] Better doc / config
-        * [ ] Mention look for help?
         * [ ] Article ?
     * [ ] Contacts & RFC :
         * [ ] DH
@@ -18,13 +17,6 @@
 * [ ] Other
     * [ ] doc / anonmymous namespace for several functions (code ballads)
     * [ ] hana notebooks based on examples?
-
-* [ ] FPlus :
-    * [ ] Officialy use it as a submodule
-    * [ ] Document this and advertise
-    * [ ] string_tree : delete, only lhr_rhs
-    * [ ] remove bakports
-    * [ ] propose extensions
 
 
 * [X] Range-v3 & indent:
