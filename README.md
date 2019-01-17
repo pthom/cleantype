@@ -71,19 +71,14 @@ The returned types names should be similar accross compilers.
 
 #### Status
 
-Note: this library is heavily [tested](https://github.com/pthom/cleantype/tree/master/src/tests), with clang, gcc and msvc. However, it is subject to quick evolution, and should be considered between alpha and beta state.
-
-
-
-
-
+Note: this library is heavily [tested](https://github.com/pthom/cleantype/tree/master/src/tests), with clang, gcc and msvc. However, it is subject to quick evolution, and should be considered as a beta version.
 
 
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Installation and usage
 
 
-* `cleantype`is a small header only library, so you just need to clone it and add it to your path.
+* `cleantype`is a small header only library, so you just need to clone it and add it to your path. It works with C++ 14 and C++17; and is tested succesfully with gcc (>=5), clang (>=6), appleclang, and msvc (>= MSVC 2017).
 
 Then, include [cleantype/cleantype.hpp](src/include/cleantype/cleantype.hpp) (this file includes a comprehensive API doc)
 
