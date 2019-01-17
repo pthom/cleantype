@@ -7,8 +7,6 @@
 #include <functional>
 #include <map>
 
-#define LOG(str) std::cout << str << std::endl
-
 TEST_CASE("lambda_generic_clean")
 {
     {

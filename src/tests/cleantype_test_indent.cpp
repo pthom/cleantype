@@ -1,9 +1,6 @@
 #include "doctest.h"
 #include <cleantype/cleantype.hpp>
 
-#define LOG(...) std::cout << __VA_ARGS__ << "\n";
-#define LOG_VAR(...) std::cout << #__VA_ARGS__ << "\n" << __VA_ARGS__ << "\n";
-
 template <typename... T>
 struct Foo
 {

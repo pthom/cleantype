@@ -3,7 +3,7 @@
 // Distributed under the Boost Software License, Version 1.0. (see LICENSE.md)
 #include "doctest.h"
 #include <cleantype/cleantype.hpp>
-#include <cleantype/details/debug_break.hpp>
+#include <cleantype/details/debug_utilities.hpp>
 #include <cmath>
 #include <fplus/fplus.hpp>
 #include <functional>
@@ -12,9 +12,6 @@
 #ifdef _WIN32
 #include <Windows.h>
 #endif // _WIN32
-
-#define LOG(str) std::cout << str << std::endl
-#define LOG_VALUE(v) std::cout << #v << "==>" << v << "<==" << std::endl
 
 template <typename Lambda>
 void test_one_lambda(Lambda f, std::string const & expected_type)

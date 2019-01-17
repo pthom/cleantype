@@ -17,10 +17,6 @@
 #include <cleantype/details/cleantype_fp/fp_base.hpp>
 #include <cleantype/details/cleantype_fp/fp_show.hpp>
 
-namespace fp_incompat
-{
-}  // namespace fp_incompat
-
 namespace cleantype_fp_tree
 {
     template <typename T>

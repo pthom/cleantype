@@ -6,9 +6,6 @@
 #include <cleantype/details/cleantype_invoke_result.hpp>
 #include <vector>
 
-// #define LOG(v) std::cout << v << "\n";
-// #define LOGVAR(v) std::cout << #v << " ==>" << v << "<==\n";
-
 auto add_auto_fn(int a, int b) { return a + b; }
 
 template <typename U, typename V>
@@ -42,7 +39,7 @@ TEST_CASE("test_invoke_result")
     }
     {
         // For templated auto functions: use < decltype(&f)<Args...>, Args... >
-        // this does *not* work under MSVC, because of a probable compiler bug
+        // this does *not* work under MSVC, because of a compiler bug (solved in MSVC 2019)
         // See
         // https://stackoverflow.com/questions/54111146/invoke-result-for-template-function-with-auto-return-type-and-msvc-2017
 #ifndef _MSC_VER

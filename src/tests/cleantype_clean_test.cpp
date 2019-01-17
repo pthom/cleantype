@@ -4,11 +4,9 @@
 #include "doctest.h"
 #include <cleantype/cleantype.hpp>
 #include <fplus/fplus.hpp>
-#include <cleantype/details/debug_break.hpp>
+#include <cleantype/details/debug_utilities.hpp>
 #include <functional>
 #include <map>
-
-#define LOG(str) std::cout << str << std::endl
 
 TEST_CASE("CT_show_details")
 {

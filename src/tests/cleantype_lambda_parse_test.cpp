@@ -3,13 +3,10 @@
 // Distributed under the Boost Software License, Version 1.0. (see LICENSE.md)
 #include "doctest.h"
 #include <cleantype/cleantype.hpp>
-#include <cleantype/details/debug_break.hpp>
+#include <cleantype/details/debug_utilities.hpp>
 #include <fplus/fplus.hpp>
 #include <functional>
 #include <map>
-
-// #define LOG(str) std::cout << str << std::endl
-// #define LOG_VALUE(v) std::cout << #v << "==>" << v << "<==" << std::endl
 
 TEST_CASE("split_types")
 {

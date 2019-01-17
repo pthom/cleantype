@@ -10,15 +10,14 @@
 #endif
 #include <cleantype/details/cleantype_fp/fp_base.hpp>
 #include <cleantype/details/cleantype_fp/fp_show.hpp>
-#include <cstdlib>
-#include <memory>
-#include <string>
-
 #include <cleantype/cleantype_configuration.hpp>
 #include <cleantype/details/cleantype_eastconst.hpp>
 #include <cleantype/details/cleantype_format_whitespace.hpp>
 #include <cleantype/details/hana_type_name/type_name_pretty_function.hpp>
 #include <cleantype/details/stringutils.hpp>
+#include <cstdlib>
+#include <memory>
+#include <string>
 
 namespace cleantype
 {

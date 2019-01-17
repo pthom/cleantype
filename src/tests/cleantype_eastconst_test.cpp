@@ -3,9 +3,11 @@
 // Distributed under the Boost Software License, Version 1.0. (see LICENSE.md)
 #include "doctest.h"
 #include <cleantype/cleantype.hpp>
-#include <cleantype/details/debug_break.hpp>
+#include <cleantype/details/debug_utilities.hpp>
 
-#define LOG(str) std::cout << str << std::endl
+#ifdef _WIN32
+#include <Windows.h>
+#endif
 
 template <typename Transform>
 auto make_test_string_transform(Transform f)
@@ -13,7 +15,7 @@ auto make_test_string_transform(Transform f)
     return [f](std::string const & input, std::string const & expected_output) {
         std::string computed_output = f(input);
         if (computed_output != expected_output)
-            std::cout << "Mince";
+            DEBUGBREAK;
         REQUIRE_EQ(computed_output, expected_output);
     };
 }

@@ -4,7 +4,6 @@
 #include <nlohmann/json.hpp>
 #include <utility>
 
-#define LOG_VAR(var) std::cout << #var << "\n" << var << "\n";
 
 TEST_CASE("CleanConfiguration_string_serialize")
 {
@@ -12,7 +11,7 @@ TEST_CASE("CleanConfiguration_string_serialize")
     cleantype::CleanConfiguration config_current = cleantype::CleanConfiguration::GlobalConfig();
     json json_data_current = config_current;
 
-    std::string str_example = cleantype::CleanConfigurationExample;
+    std::string str_example = cleantype::internal::CleanConfigurationExample;
     json json_data_example = json::parse(str_example);
 
     REQUIRE_EQ(json_data_current, json_data_example);
