@@ -1,4 +1,4 @@
-* [ ] Cleanup
+* [X] Cleanup
     * [X] Doc inside cleantype.hpp (missing invoke, etc)
     * [X] debug.hpp / json.hpp
     * [X] Configuration via pref file ?
@@ -12,7 +12,7 @@
         * [X] Layout doc : Table of Content?
         * [X] Add example with range v3 (no submodule : checkout via notebook)
         * [X] Better doc / config
-    * [ ] Article ?
+* [ ] Article ?
     * [ ] Contacts & RFC :
         * [ ] DH
         * [ ] EN

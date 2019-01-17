@@ -6,6 +6,8 @@
 #include <cleantype/cleantype_compiler_typename.hpp>
 #include <cleantype/details/debug_utilities.hpp>
 
+#ifdef _HANA_TN_CAN_CONSTEXPR
+
 TEST_CASE("cleantype_compiler_typename_test")
 {
     auto int_type = cleantype::full_compiletime<int>();
@@ -14,3 +16,5 @@ TEST_CASE("cleantype_compiler_typename_test")
     // Note : there are lots of other tests inside
     // src/include/cleantype/details/hana_type_name/tests/type_name_stringliteral_test.cpp
 }
+
+#endif // #ifdef _HANA_TN_CAN_CONSTEXPR
