@@ -61,7 +61,7 @@ However it has several limitations: `const`, `volatile`, `&&`qualifiers are igno
  std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >
  ````
 
-This library tries to overcomes some of these limitations. It is composed mainly of C++11 / C++14 functions. It also contains some macros in order to be able to display rvalue reference type, as well as variables names. Macros are prepended with a suffix 'm_'.
+This library tries to overcomes some of these limitations. It is composed mainly of C++11 / C++14 functions. It also contains some macros in order to be able to display rvalue reference type, as well as variables names. Macros are prepended with a prefix 'CT_'.
 
 The returned types names should be equal (or at least similar) accross compilers.
 
@@ -436,7 +436,7 @@ R"CODE(
  #include <map>
  #include <vector>
 
-auto my_spurious_lambda = [](int a, int b) {
+auto buggy_lambda = [](int a, int b) {
     std::map<std::string, int> r1;
     std::vector<decltype(r1)> r2;
     for (std::size_t i = 0; i < b; i++) r2.push_back(r1);
@@ -445,7 +445,7 @@ auto my_spurious_lambda = [](int a, int b) {
     return r3;
 };
 
-int main() { auto v = my_spurious_lambda(1, 3); }
+int main() { auto v = buggy_lambda(1, 3); }
 
 )CODE";
 ```
@@ -555,7 +555,7 @@ __Notes:__
 ## Examples
 
 
-### Using invoke_result and invoke_result_t
+### Using invoke_result and invoke_result_t: get the return type as a type
 
 
 ```c++
@@ -586,7 +586,7 @@ void static_test_invoke_result()
 
 ```
 
-### Shorter / more readable code with `CT_type_fn`
+### Get the return type as a string with `CT_type_fn`
 
 
 ```c++
