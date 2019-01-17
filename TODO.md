@@ -5,7 +5,6 @@
     * [X] third parties cleanup
     * [ ] Continuous Integration : C++14 & C++17
     * [ ] Doc
-        * [X] Range-v3
         * [X] Layout doc : Table of Content?
         * [X] Add example with range v3 (no submodule : checkout via notebook)
         * [X] Better doc / config
