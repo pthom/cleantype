@@ -78,10 +78,18 @@ namespace cleantype
     };
 
     inline bool force_east_const() { return CleanConfiguration::GlobalConfig().force_east_const_; }
-
     inline void set_force_east_const(bool v)
     {
         CleanConfiguration::GlobalConfig().force_east_const_ = v;
+    }
+
+    inline std::size_t indent_depth_limit()
+    {
+        return CleanConfiguration::GlobalConfig().indent_depth_limit;
+    }
+    inline void set_indent_depth_limit(std::size_t v)
+    {
+        CleanConfiguration::GlobalConfig().indent_depth_limit = v;
     }
 
 }  // namespace cleantype
