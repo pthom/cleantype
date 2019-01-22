@@ -12,12 +12,12 @@
 
 // In order to configure the behavior of clean types :
 //
-// * Duplicate the file .cleantype.json at the root of the cleantype repository, 
-//   and save this file in anywhere in the hierarchy of the parent directories 
+// * Duplicate the file .cleantype.json at the root of the cleantype repository,
+//   and save this file in anywhere in the hierarchy of the parent directories
 //   of the execution directory.
 // * Edit this file as a normal json file (you can use also use an online editor like
 //   https://jsoneditoronline.org/)
-// * #define CLEANTYPE_USE_NLOHMANN_JSON before including this file and 
+// * #define CLEANTYPE_USE_NLOHMANN_JSON before including this file and
 //   add the include path to nlohmann/json.hpp)
 
 namespace cleantype
@@ -76,6 +76,14 @@ namespace cleantype
             return r;
         }
     };
+
+    inline bool force_east_const() { return CleanConfiguration::GlobalConfig().force_east_const_; }
+
+    inline void set_force_east_const(bool v)
+    {
+        CleanConfiguration::GlobalConfig().force_east_const_ = v;
+    }
+
 }  // namespace cleantype
 
 #include <cleantype/details/cleantype_configuration_json.hpp>
