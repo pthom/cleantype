@@ -22,7 +22,7 @@
 
 
 
-<img src="https://raw.githubusercontent.com/pthom/cleantype/master/resources/cleantype_logo.png" style="width:10%" align="left">
+<img src="https://raw.githubusercontent.com/pthom/cleantype/master/resources/cleantype_logo_small.jpg" align="left">
 <table>
     <tr>        
       <td>
