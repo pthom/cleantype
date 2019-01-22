@@ -2,11 +2,12 @@
 // Copyright Pascal Thomet - 2018
 // Distributed under the Boost Software License, Version 1.0. (see LICENSE.md)
 
-// These functions are inspired by (FunctionalPlus)[https://github.com/Dobiasd/FunctionalPlus],
-// a Functional Programming Library for C++, which I highly recommend.
+// These functions are inspired by
+// (FunctionalPlus)[https://github.com/Dobiasd/FunctionalPlus], a Functional
+// Programming Library for C++, which I highly recommend.
 //
-// See its api search site (a la Haskell): http://www.editgym.com/fplus-api-search/
-// and see demo at
+// See its api search site (a la Haskell):
+// http://www.editgym.com/fplus-api-search/ and see demo at
 // https://code-ballads.net/generated-notebooks/cpp/repl_cling/markdown/#A-REPL-session-of-C++-functional-programming,-using-fplus
 
 #pragma once
@@ -30,21 +31,9 @@ namespace cleantype_fp
     }
     inline std::string show(const bool & v) { return v ? "true" : "false"; }
     inline std::string show(const char * xs) { return std::string(xs); }
-    template <typename T, typename U>
-    std::string show(const std::pair<T, U> & xs)
-    {
-        return std::string("(") + show(xs.first) + ", " + show(xs.second) + ")";
-    }
 
     template <typename T>
-    std::string show_cont(T & xs)
-    {
-        std::vector<std::string> strs;
-        for (const auto & x : xs)
-            strs.push_back(cleantype_fp::show(x));
-
-        return std::string("[") + cleantype_fp::join(", ", strs) + "]";
-    }
+    std::string show_cont(T & xs);
 
 }  // namespace cleantype_fp
 
@@ -149,6 +138,22 @@ namespace cleantype_fp
     std::string show(const std::unordered_multimap<T, U> & v)
     {
         return cleantype_fp::show_cont(v);
+    }
+
+    template <typename T, typename U>
+    std::string show(const std::pair<T, U> & xs)
+    {
+        return std::string("(") + show(xs.first) + ", " + show(xs.second) + ")";
+    }
+
+    template <typename T>
+    std::string show_cont(T & xs)
+    {
+        std::vector<std::string> strs;
+        for (const auto & x : xs)
+            strs.push_back(cleantype_fp::show(x));
+
+        return std::string("[") + cleantype_fp::join(", ", strs) + "]";
     }
 
 }  // namespace cleantype_fp
