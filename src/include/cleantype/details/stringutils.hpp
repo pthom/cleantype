@@ -12,25 +12,6 @@ namespace cleantype
 {
     namespace stringutils
     {
-        inline std::string trim(char const & trim_what, std::string const & xs)
-        {
-            bool stop = false;
-            std::string out;
-            for (const auto & v : xs)
-            {
-                if (stop)
-                    out.push_back(v);
-                else if (v != trim_what)
-                {
-                    out.push_back(v);
-                    stop = true;
-                }
-            }
-            while ((!out.empty()) && (out.back() == trim_what))
-                out.pop_back();
-            return out;
-        }
-
         inline std::string remove_spaces_before(const char token, std::string const & str)
         {
             std::string result;

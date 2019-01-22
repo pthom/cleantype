@@ -2,6 +2,8 @@
 // Copyright Pascal Thomet - 2018
 // Distributed under the Boost Software License, Version 1.0. (see LICENSE.md)
 #pragma once
+#include <cleantype/details/cleantype_fp/fp_base.hpp>
+#include <cleantype/details/stringutils.hpp>
 #include <string>
 
 namespace cleantype
@@ -38,7 +40,7 @@ namespace cleantype
             r = stringutils::replace_tokens("[ ]", "[]", r);
             r = stringutils::replace_tokens(" ,", ",", r);
             r = stringutils::replace_tokens("* *", "**", r);
-            r = stringutils::trim(' ', r);
+            r = cleantype_fp::trim(' ', r);
             return r;
         }
 
