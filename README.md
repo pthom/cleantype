@@ -72,6 +72,9 @@ The returned types names should be equal (or at least similar) accross compilers
 
 Note: this library is heavily [tested](https://github.com/pthom/cleantype/tree/master/src/tests), with clang, gcc and msvc. However, it is subject to quick evolution, and should be considered as a beta version.
 
+#### More infos
+See the [introdutory blog post](http://code-ballads.net/cleantype/)
+
 
 
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
