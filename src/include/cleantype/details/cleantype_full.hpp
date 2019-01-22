@@ -89,7 +89,7 @@ namespace cleantype
 
             std::string type_definition = remove_type_holder_str(type_in_tupletypeholder);
 
-            std::string formatted = cleantype::format_whitespace(type_definition);
+            std::string formatted = cleantype::internal::format_whitespace(type_definition);
 
             if (CleanConfiguration::GlobalConfig().force_east_const_)
                 formatted = cleantype::apply_east_const_typelist(formatted);
