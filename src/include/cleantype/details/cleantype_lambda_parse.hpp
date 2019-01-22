@@ -146,7 +146,7 @@ namespace cleantype
             const std::string params_cleaned = [&]() {
                 auto params_list = split_types(params_str);
                 if (clean_params)
-                    params_list = cleantype_fp::transform(impl_clean_one_type, params_list);
+                    params_list = cleantype_fp::transform(impl_clean, params_list);
                 std::string params_joined = cleantype_fp::join(std::string(", "), params_list);
                 if (params_joined == "void")
                     params_joined = "";
@@ -166,9 +166,10 @@ namespace cleantype
                 return_str = garbage_r.remaining_at_start;
             }
 
-            std::string return_type = clean_params ? impl_clean_one_type(return_str) : return_str;
+            std::string return_type = clean_params ? impl_clean(return_str) : return_str;
             if (cleantype::CleanConfiguration::GlobalConfig().force_east_const_)
                 return_type = cleantype::apply_east_const_typelist(return_type);
+
             // std::cout << "params= " << params << '\n';
             // std::cout << "return_type= " << return_type << '\n';
             return std::string("lambda: ") + "(" + params_cleaned + ")" + " -> " + return_type;
