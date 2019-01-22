@@ -4,7 +4,6 @@
 #include <nlohmann/json.hpp>
 #include <utility>
 
-
 TEST_CASE("CleanConfiguration_string_serialize")
 {
     using namespace nlohmann;
