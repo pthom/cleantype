@@ -6,4 +6,4 @@
 #endif
 
 #define LOG(...) std::cout << __VA_ARGS__ << "\n";
-#define LOG_VAR(...) std::cout << #__VA_ARGS__ << "\n" << __VA_ARGS__ << "\n";
+#define LOG_EXPRESSION(...) std::cout << #__VA_ARGS__ << "\n" << __VA_ARGS__ << "\n";
