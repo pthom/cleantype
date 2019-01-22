@@ -3,7 +3,7 @@
 <table>
 <tr><td>
 <p style="text-align: left;">
-   <a href="#cleantype--readable-C++-type-introspection---Compiler-Decipherer">cleantype : readable C++ type introspection - Compiler Decipherer</a><br/>
+   <a href="#CleanType--Readable-C++-type-introspection---Compiler-Decipherer">CleanType : Readable C++ type introspection - Compiler Decipherer</a><br/>
    <a href="#Installation-and-usage">Installation and usage</a><br/>
    <a href="#About-this-manual">About this manual</a><br/>
    <a href="#Readable-type-names-and-full-type-names">Readable type names and full type names</a><br/>
@@ -46,10 +46,10 @@
 
 
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
-# cleantype : readable C++ type introspection - Compiler Decipherer
+# CleanType : Readable C++ type introspection - Compiler Decipherer
 
 
-`cleantype`is a small header only library which offer *readable* type names, with a *consistent naming scheme accross compilers*, at *run-time* and *compile-time*. It can also output the *signature of lambda* functions, and the result type of any auto function.
+`cleantype`is a small C++14 header only library which offer *readable* type names, with a *consistent naming scheme accross compilers*, at *run-time* and *compile-time*. It can also output the *signature of lambda* functions, and the result type of any auto function.
 
 The included tool `ct_compiler_decipher` simplifies the template noise in your compiler output : just ` "|" (pipe)` your build tool to it.
 
