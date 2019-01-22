@@ -59,8 +59,8 @@ void rumtime_regex_tests()
     check_matches<int(&)[]>(R"(int\s*\(\s*&\s*\)\s*\[\s*\])");
     check_matches<int(&)[10]>(R"(int\s*\(\s*&\s*\)\s*\[\s*10\s*\])");
     check_matches<Template<void, char const *>>(
-        R"(Template<\s*void\s*,\s*(char const|const char)\s*\*\s*>)");
-    check_matches<void (*)(int)>(R"(void\s*\(\s*\*\s*\)\s*\(\s*int\s*\))");
+      R"((struct )?Template<\s*void\s*,\s*(char const|const char)\s*\*\s*>)");
+    check_matches<void(*)(int)>(R"(void\s*\((__cdecl)?\s*\*\s*\)\s*\(\s*int\s*\))");
 }
 
 int main()
