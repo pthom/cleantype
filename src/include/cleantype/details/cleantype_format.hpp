@@ -8,9 +8,19 @@ namespace cleantype
 {
     namespace internal
     {
+        // r = stringutils::replace_tokens("__cdecl ", "", r);
+        // r = stringutils::replace_tokens("struct ", "", r);
+        // r = stringutils::replace_tokens("class ", "", r);
+
         inline std::string format_whitespace(const std::string & str_type)
         {
             std::string r = str_type;
+            r = stringutils::replace_tokens("\t", " ", r);
+            r = stringutils::replace_tokens("\r\n", " ", r);
+            r = stringutils::replace_tokens("\n", " ", r);
+            r = stringutils::replace_tokens("  ", " ", r);
+            r = stringutils::replace_tokens("  ", " ", r);
+            r = stringutils::replace_tokens("  ", " ", r);
             r = stringutils::insert_spaces_after(',', r);
             r = stringutils::insert_spaces_before_after('&', r);
             r = stringutils::insert_spaces_before_after('*', r);
@@ -18,16 +28,16 @@ namespace cleantype
             r = stringutils::remove_spaces_before_after('(', r);
             r = stringutils::remove_spaces_before('>', r);
             r = stringutils::remove_spaces_after('<', r);
+            r = stringutils::remove_spaces_after('[', r);
+            r = stringutils::remove_spaces_before(']', r);
+            r = stringutils::insert_spaces_before('[', r);
+            r = stringutils::insert_spaces_after(']', r);
             r = stringutils::replace_tokens("*&", "* &", r);
             r = stringutils::replace_tokens("&*", "& *", r);
             r = stringutils::replace_tokens("& &", "&&", r);
             r = stringutils::replace_tokens("[ ]", "[]", r);
             r = stringutils::replace_tokens(" ,", ",", r);
-            r = stringutils::replace_tokens("  ", " ", r);
             r = stringutils::replace_tokens("* *", "**", r);
-            r = stringutils::replace_tokens("__cdecl ", "", r);
-            r = stringutils::replace_tokens("struct ", "", r);
-            r = stringutils::replace_tokens("class ", "", r);
             r = stringutils::trim(' ', r);
             return r;
         }
