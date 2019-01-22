@@ -8,7 +8,7 @@ namespace cleantype
 {
     namespace internal
     {
-        inline std::string format_whitespace(std::string const & str_type)
+        inline std::string format_whitespace(const std::string & str_type)
         {
             std::string r = str_type;
             r = stringutils::insert_spaces_after(',', r);
@@ -33,6 +33,5 @@ namespace cleantype
         }
 
     }  // namespace internal
-
 
 }  // namespace cleantype

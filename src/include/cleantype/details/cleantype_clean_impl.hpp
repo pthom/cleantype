@@ -6,6 +6,7 @@
 #include <cleantype/details/cleantype_fp/fp_base.hpp>
 #include <cleantype/details/cleantype_fp/fp_tree.hpp>
 #include <cleantype/details/cleantype_full.hpp>
+#include <cleantype/details/cleantype_holder.hpp>
 #include <cleantype/details/stringutils.hpp>
 #include <deque>
 #include <string>
@@ -14,35 +15,6 @@ namespace cleantype
 {
     namespace internal
     {
-        std::string add_type_holder_str(std::string const & type_names);
-        std::string remove_type_holder_str(std::string const & type_name);
-
-        inline std::vector<std::string> split_types(std::string const & type_names)
-        {
-            std::vector<std::string> result;
-            // counts < and > occurrences
-            int count = 0;
-            std::string current;
-            for (const auto c : type_names)
-            {
-                if (c == '<')
-                    ++count;
-                if (c == '>')
-                    --count;
-                if ((c == ',') && (count == 0))
-                {
-                    result.push_back(cleantype_fp::trim(' ', current));
-                    current = "";
-                }
-                else
-                {
-                    current += c;
-                }
-            }
-            result.push_back(cleantype_fp::trim(' ', current));
-            return result;
-        }
-
         // lhs / rhs explanation :
         // for example in "std::vector<int> const &",
         // - lhs = "std::vector"
