@@ -39,6 +39,10 @@ namespace cleantype
             return r;
         }
 
+        // splits a string containings a list of comma separated types into
+        // a vector of types
+        // example :
+        // split_types("int, map<char, int>") => ["int", "map<char, int>"]
         inline std::vector<std::string> split_types(std::string const & type_names)
         {
             std::vector<std::string> result;
@@ -65,6 +69,5 @@ namespace cleantype
             return result;
         }
 
-
-    }
-}
+    }  // namespace internal
+}  // namespace cleantype

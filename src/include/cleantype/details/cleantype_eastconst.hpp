@@ -17,7 +17,7 @@ namespace cleantype
         {
             // Note : this implementation is by no means neither complete nor foolproof
             // It expects types that were preprocessed as inputs (spaces before * and &, etc.)
-            // For a more complete implementation, maybe BNF grammar parsing would be required
+            // For a more complete implementation, maybe a BNF grammar parsing would be required
             //
             // By default, this transformation is not applied : it is only for the unit tests
             // consistency accross platforms. I am not an east-const zealot.

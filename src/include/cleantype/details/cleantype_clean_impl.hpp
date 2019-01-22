@@ -16,7 +16,7 @@ namespace cleantype
 {
     namespace internal
     {
-        inline code_pair_tree filter_undesirable_template_leafs(code_pair_tree const & xs)
+        inline code_pair_tree filter_undesirable_type_nodes(code_pair_tree const & xs)
         {
             std::function<bool(const code_pair &)> is_node_desirable =
                 [](const code_pair & code_pair) {
@@ -83,39 +83,20 @@ namespace cleantype
             xs_io.rhs = cleantype_fp::trim(' ', xs_io.rhs);
         }
 
-        inline std::string add_space_before_ref(std::string const & typ_name)
-        {
-            std::string result = "";
-            bool space_or_ref_before = false;
-            for (auto c : typ_name)
-            {
-                if (c == '&')
-                    if (!space_or_ref_before)
-                        result = result + " ";
-                space_or_ref_before = ((c == ' ') || (c == '&'));
-                result = result + c;
-            }
-            return result;
-        }
-
         inline std::string impl_clean_one_type(std::string const & typ_name)
         {
-            std::string typ_name_trimmed = cleantype_fp::trim(' ', typ_name);
-
-            std::string typ_namecleaned =
-                remove_struct_class(remove_extra_namespaces(typ_name_trimmed));
+            std::string typ_namecleaned = remove_struct_class(remove_extra_namespaces(typ_name));
             typ_namecleaned = remove_custom(typ_namecleaned);
 
             code_pair_tree template_tree = parse_template_tree(typ_namecleaned);
             cleantype_fp_tree::tree_transform_leafs_depth_first_inplace(trim_spaces_inplace,
                                                                         template_tree);
-            code_pair_tree template_tree_filtered =
-                filter_undesirable_template_leafs(template_tree);
+            code_pair_tree template_tree_filtered = filter_undesirable_type_nodes(template_tree);
             std::string template_tree_filtered_str =
                 code_pair_tree_to_string(template_tree_filtered);
 
             std::string final_type = perform_std_replacements(template_tree_filtered_str);
-            final_type = add_space_before_ref(final_type);
+            final_type = format_whitespace(final_type);
             return final_type;
         }
 
@@ -160,7 +141,6 @@ namespace cleantype
             std::string types_with_holder = add_type_holder_str(type_names);
             std::string types_clean_with_holder = impl_clean_one_type(types_with_holder);
             return remove_type_holder_str(types_clean_with_holder);
-            // if cleantype_fp::tree_depth > 3 ...
         }
 
         inline std::string impl_indent_if_neeeded(std::string const & type_names)

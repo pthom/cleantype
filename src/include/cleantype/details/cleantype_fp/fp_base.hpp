@@ -4,9 +4,11 @@
 
 // These functions are inspired by (FunctionalPlus)[https://github.com/Dobiasd/FunctionalPlus],
 // a Functional Programming Library for C++, which I highly recommend.
-// See its api search site (a la Haskell): http://www.editgym.com/fplus-api-search/
+// See fplus its api search site (a la Haskell): http://www.editgym.com/fplus-api-search/
 // and see demo at
 // https://code-ballads.net/generated-notebooks/cpp/repl_cling/markdown/#A-REPL-session-of-C++-functional-programming,-using-fplus
+
+// Note: These versions are intentionally simplified and not completely generic.
 
 #pragma once
 
