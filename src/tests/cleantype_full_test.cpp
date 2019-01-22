@@ -2,14 +2,14 @@
 // Copyright Pascal Thomet - 2018
 // Distributed under the Boost Software License, Version 1.0. (see LICENSE.md)
 
+#include "debug_utilities.hpp"
 #include "doctest.h"
 #include <cleantype/details/cleantype_full.hpp>
-#include <cleantype/details/debug_utilities.hpp>
 #include <regex>
 
 #ifdef _WIN32
 #include <Windows.h>
-#endif // _WIN32
+#endif  // _WIN32
 
 void my_require_eq_string(std::string const & computed, std::string const & expected)
 {

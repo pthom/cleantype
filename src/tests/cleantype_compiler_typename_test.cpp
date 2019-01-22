@@ -1,10 +1,10 @@
 // This file is part of cleantype: Clean Types for C++
 // Copyright Pascal Thomet - 2018
 // Distributed under the Boost Software License, Version 1.0. (see LICENSE.md)
+#include "debug_utilities.hpp"
 #include "doctest.h"
 #include <cleantype/cleantype.hpp>
 #include <cleantype/cleantype_compiler_typename.hpp>
-#include <cleantype/details/debug_utilities.hpp>
 
 #ifdef _HANA_TN_CAN_CONSTEXPR
 
@@ -17,4 +17,4 @@ TEST_CASE("cleantype_compiler_typename_test")
     // src/include/cleantype/details/hana_type_name/tests/type_name_stringliteral_test.cpp
 }
 
-#endif // #ifdef _HANA_TN_CAN_CONSTEXPR
+#endif  // #ifdef _HANA_TN_CAN_CONSTEXPR

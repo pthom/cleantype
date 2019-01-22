@@ -1,9 +1,9 @@
 // This file is part of cleantype: Clean Types for C++
 // Copyright Pascal Thomet - 2018
 // Distributed under the Boost Software License, Version 1.0. (see LICENSE.md)
+#include "debug_utilities.hpp"
 #include "doctest.h"
 #include <cleantype/cleantype.hpp>
-#include <cleantype/details/debug_utilities.hpp>
 #include <cmath>
 #include <fplus/fplus.hpp>
 #include <functional>
@@ -11,7 +11,7 @@
 
 #ifdef _WIN32
 #include <Windows.h>
-#endif // _WIN32
+#endif  // _WIN32
 
 template <typename Lambda>
 void test_one_lambda(Lambda f, std::string const & expected_type)
