@@ -1,4 +1,5 @@
 * [X] Cleanup
+    * [ ] Proof read & classify code
     * [X] Doc inside cleantype.hpp (missing invoke, etc)
     * [X] debug.hpp / json.hpp
     * [X] Configuration via pref file ?
