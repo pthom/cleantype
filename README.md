@@ -3,7 +3,7 @@
 <table>
 <tr><td>
 <p style="text-align: left;">
-   <a href="#CleanType--Readable-C++-type-introspection---Compiler-Decipherer">CleanType : Readable C++ type introspection - Compiler Decipherer</a><br/>
+   <a href="#CleanType-Readable-C++-type-introspection---Compiler-Decipherer">CleanType: Readable C++ type introspection - Compiler Decipherer</a><br/>
    <a href="#Installation-and-usage">Installation and usage</a><br/>
    <a href="#About-this-manual">About this manual</a><br/>
    <a href="#Readable-type-names-and-full-type-names">Readable type names and full type names</a><br/>
@@ -45,21 +45,21 @@
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
-# CleanType : Readable C++ type introspection - Compiler Decipherer
+# CleanType: Readable C++ type introspection - Compiler Decipherer
 
 
-`cleantype`is a small C++14 header only library which offer *readable* type names, with a *consistent naming scheme accross compilers*, at *run-time* and *compile-time*. It can also output the *signature of lambda* functions, and the result type of any auto function.
+CleanType is a small C++14 header only library which offer *readable* type names, with a *consistent naming scheme across compilers*, at *run-time* and *compile-time*. It can also output the *signature of lambda* functions, and the result type of any auto function.
 
-The included tool `ct_compiler_decipher` simplifies the template noise in your compiler output : just ` "|" (pipe)` your build tool to it.
+The included tool `ct_compiler_decipher` simplifies the template noise in your compiler output: just ` "|" (pipe)` your build tool to it.
 
 It can be seeen as a developper friendly `typeid` alternative, and as a tool for those who are tired by the template noise in the compiler output.
-   
 
 #### Motivation
 
 In C++, [typeid.name()](https://en.cppreference.com/w/cpp/language/typeid) is able to display the type of variables.
-However it has several limitations: `const`, `volatile`, `&&`qualifiers are ignored; it cannot identify the signature of lambdas function, and last but not least, the returned name if often unreadable : for example `std::set<std::string>` becomes
+However it has several limitations: `const`, `volatile`, `&&`qualifiers are ignored; it cannot identify the signature of lambdas function, and last but not least, the returned name if often unreadable: for example `std::set<std::string>` becomes
  ````
  std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >
  ````
@@ -74,6 +74,7 @@ Note: this library is heavily [tested](https://github.com/pthom/cleantype/tree/m
 
 #### More infos
 See the [introdutory blog post](http://code-ballads.net/cleantype/)
+
 
 
 
@@ -93,6 +94,7 @@ _Note:_ cleantype can be used as a standalone library. However, in order to use 
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # About this manual
 
@@ -100,7 +102,7 @@ _Note:_ cleantype can be used as a standalone library. However, in order to use 
 This manual is fully interactive! It was written using [cling](https://root.cern.ch/cling), [xeus cling](https://xeus-cling.readthedocs.io/en/latest/) and [jupyter notebook](https://jupyter.org/). Cling enables a Read-Eval-Print-Loop (REPL) development mode with C++. This approach benefits a lot from having a good type introspection, which is the aim of this library. 
 
 The code that you read in this manual is real live code that can be executed inside jupyter notebook. 
-You can try it directly inside [binder](https://mybinder.org/) : click on the "launch binder" at the top of this page.<br/>
+You can try it directly inside [binder](https://mybinder.org/): click on the "launch binder" at the top of this page.<br/>
 Notes:
 * Beware, it require about 1 minutes to load; but then you will be able to run the code live from your browser!
 * Inside the notebook, click on the "Run" button in order to execute each cell (in order)
@@ -130,6 +132,7 @@ The "#pragma cling add_include_path" is specific to cling. Beside this, everythi
     std::cout << __VA_ARGS__ << "\n\n"; \
 }
 ```
+
 
 
 
@@ -177,7 +180,7 @@ _Note_: by default, types will be presented with an indentation as soon as the t
 
 
 ```c++
-// Lets define a function with an auto return type : what is its return type?
+// Lets define a function with an auto return type: what is its return type?
 auto my_range(int nb)
 {
     std::list<int> l(nb);
@@ -239,7 +242,7 @@ std::cout << cleantype::clean(1, "Hello") << std::endl;
 std::cout << cleantype::clean<std::string, int, int &&, char &&>() << std::endl;
 ```
 
-    int, char const( &)[6]
+    int, char const(&) [6] 
     std::string, int, int &&, char &&
 
 
@@ -278,6 +281,7 @@ std::cout << cleantype::clean<std::string, int, int &&, char &&>() << std::endl;
 ### Configuration of the clean types
 
 You can customize the suppressions and replacements inside [cleantype/cleantype_configuration.hpp](src/include/cleantype/cleantype_configuration.hpp)
+
 
 
 
@@ -347,7 +351,7 @@ You can customize the suppressions and replacements inside [cleantype/cleantype_
     
 
 
-### Full type versus readable type :
+### Full type versus readable type:
 Full types can quickly become unreadable, especially with templated types, such as in the STL.
 
 
@@ -365,6 +369,7 @@ Full types can quickly become unreadable, especially with templated types, such 
     cleantype::show_details(my_set)
     std::set<std::string> & = [Hello, There]
     
+
 
 
 
@@ -404,6 +409,7 @@ These version are required for certains more complex containers, like "std::map"
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Decipher compiler output and identify types in the compiler output
 
@@ -420,12 +426,13 @@ These version are required for certains more complex containers, like "std::map"
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 ## Decipher the compiler output
 
 
 #### Build `ct_compiler_decipher`
-First let's build ct_compiler_decipher : it is composed of unique cpp file, so that it's compilation is extremely easy
+First let's build ct_compiler_decipher: it is composed of unique cpp file, so that it's compilation is extremely easy
 
 
 ```c++
@@ -490,11 +497,12 @@ compile_code_decipher__extract(code);
 ```
 
     clang++ --std=c++14 -c code.cpp -Iinclude -o a.out 2>&1 | ct_compiler_decipher | head -5 2>&1
-    code.cpp:10:42: error: invalid operands to binary expression ('std::map<std::string, int> ' and 'int')
+    code.cpp:10:42: error: invalid operands to binary expression('std::map<std::string, int> ' and 'int')
         auto add_one = [](auto x) { return x + 1; };
                                            ~ ^ ~
     include/fplus/internal/invoke.hpp:211:26: note: in instantiation of function template specialization '(anonymous class)::operator()(int, int)::(anonymous class)::operator()<std::map<std::string, int>> ' requested here
-    FPLUS_INVOKE_RETURN((std::forward<F, Args> (f)(std::forward(args)...)))
+    FPLUS_INVOKE_RETURN((std::forward<F, Args>(f)(std::forward(args)...)))
+
 
 
 
@@ -541,8 +549,9 @@ compile_code_decipher__extract(code2);
     code.cpp:10:5: error: no member named 'IntentionalError' in 'std::vector<std::pair<int, int>> '
         CT_compiler_log_var_type(v); // Here we ask the compiler to give us the type of v
         ^                        ~
-    include/cleantype/details/cleantype_full.hpp:131:13: note: expanded from macro 'CT_compiler_log_var_type'
+    include/cleantype/details/cleantype_full.hpp:103:13: note: expanded from macro 'CT_compiler_log_var_type'
             var.IntentionalError = 42;    \
+
 
 
 
@@ -558,6 +567,7 @@ compile_code_decipher__extract(code2);
 __Notes:__
 * "cleantype::invoke_result_t" is a C++14 polyfill for [`std::invoke_result`](https://en.cppreference.com/w/cpp/types/result_of) (C++14 only provides "std::result_of", which is to be deprecated soon). When using C++17, it uses std::invoke_result in the background.
 * Yes, "CT_invoke_result_fn" is indeed a variadic macro!
+
 
 
 
@@ -627,8 +637,10 @@ __Limitations of invoke_result with MSVC 2017 and templated auto functions__:
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Identify the signature of lambdas
+
 
 
 
@@ -655,12 +667,13 @@ __Limitations of invoke_result with MSVC 2017 and templated auto functions__:
 *  `CT_show_details_lambda_full(var)` is a macro that will return a string containing the
    full signature of a lambda and its name
 
-It is not alway easy to guess the return type of lambda. See the lambda below for example : it's return type is not easy to guess:
+It is not alway easy to guess the return type of lambda. See the lambda below for example. 
+<br/>Its return type is not easy to guess:
 
 
 ```c++
 int start = 5;
-// what is the return type of this lambda ?
+// what is the return type of this lambda?
 auto mystery_lambda = [&start](int end) {    
     return fplus::overlapping_pairs_cyclic( fplus::numbers(start, end) );
 };;
@@ -693,6 +706,7 @@ std::cout << cleantype::full<decltype(mystery_lambda)>();
     (lambda at input_line_29:4:23)
 
 This is because "mystery_lambda" is actually a instance of a hidden class. We are actually looking for the signature of the operator() of this class. `type_lambda_clean` is able to extract the type of this operator and to display it in a readable way.
+
 
 
 
@@ -745,7 +759,7 @@ std::cout << cleantype::lambda_clean<int, double>(add) << std::endl;
     lambda: (int, double) -> double
 
 
-It can also be done by providing some example parameters : use `CT_type_lambda_generic_fromparams_XXX`, where X is the number of parameters of the lambda.
+It can also be done by providing some example parameters: use `CT_type_lambda_generic_fromparams_XXX`, where X is the number of parameters of the lambda.
 
 
 ```c++
@@ -759,6 +773,7 @@ This second version is useful when you are lost in a forest of "auto" variables 
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Settings - configure replacements and indentation
 
@@ -766,7 +781,7 @@ This second version is useful when you are lost in a forest of "auto" variables 
 In order to configure the behavior of cleantype:
 
 * Duplicate the file `.cleantype.json` at the root of the cleantype repository, and place it wherever in the hierarchy of the parent directories of your application. 
-_Note_ : you can also edit the example json file via [an interactive online editor](https://jsoneditoronline.org/?id=df38aa61554e4aad92883eaede62edc2)
+<br/>_Note_: you can also edit the example json file via [an interactive online editor](https://jsoneditoronline.org/?id=df38aa61554e4aad92883eaede62edc2)
 * Edit this file as a normal json file
 * Save this file in anywhere in the hierarchy of the parent directories of the execution directory.
 
@@ -807,6 +822,7 @@ _Note:_
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Compile time constexpr type names
 
@@ -841,6 +857,7 @@ Based on the work done during the development of this librayr, a [Pull Request](
     cleantype::full(hana_type_string)
     boost::hana::string<'s', 't', 'd', ':', ':', 'p', 'a', 'i', 'r', '<', 'i', 'n', 't', ', ', ' ', 'c', 'h', 'a', 'r', '>'> &
     
+
 
 
 
@@ -1012,10 +1029,12 @@ Thus, it is advised to prefer "auto return functions" to lambdas when using rang
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Cheat sheet
 
 [cleantype.hpp](https://github.com/pthom/cleantype/blob/master/src/include/cleantype/cleantype.hpp) offers a quick cheat sheet to all the functions and macros available.
+
 
 
 
