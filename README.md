@@ -47,6 +47,7 @@
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # CleanType: Readable C++ type introspection - Compiler Decipherer
 
@@ -77,6 +78,7 @@ Note: this library is heavily [tested](https://github.com/pthom/cleantype/tree/m
 See the [introductory blog post](http://code-ballads.net/cleantype/)
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Installation and usage
 
@@ -90,6 +92,7 @@ or via `$(CXX) -Isrc/include -Ithird_party/FunctionalPlus/include --std=c++14 sr
 
 
 _Note:_ cleantype can be used as a standalone library. However, in order to use be able to read settings from a preference file, you will need [nlohmann/json](https://github.com/nlohmann/json). If you want to use this feature, define `CLEANTYPE_USE_NLOHMANN_JSON` before including cleantype.hpp and make sure that nlohmann/json.hpp is in your include path.
+
 
 
 
@@ -132,6 +135,7 @@ The "#pragma cling add_include_path" is specific to cling. Beside this, everythi
     std::cout << __VA_ARGS__ << "\n\n"; \
 }
 ```
+
 
 
 
@@ -293,6 +297,7 @@ You can customize the suppressions and replacements inside [cleantype/cleantype_
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 ## Full type names
 
@@ -383,6 +388,7 @@ Full types can quickly become unreadable, especially with templated types, such 
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 ## Display the content of complex containers
 
@@ -414,6 +420,7 @@ These version are required for certains more complex containers, like "std::map"
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Decipher compiler output and identify types in the compiler output
 
@@ -421,6 +428,7 @@ These version are required for certains more complex containers, like "std::map"
 * `ct_compiler_decipher` is a tool that deciphers the compiler output and makes it more readable, especially when there are lots of templates
 * `CT_compiler_log_type(T)` is a macro that will create an intentional compiler error whose intent is to display the type name of T. You can use it in conjunction with "ct_compiler_decipher".
 * `CT_compiler_log_var_type` is a macro that will create an intentional compiler error whose intent is to display the type name of the variable var. You can use it in conjunction with "ct_compiler_decipher".
+
 
 
 
@@ -519,6 +527,7 @@ compile_code_decipher__extract(code);
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 ## Identify types names at compile time, with clean names
 
@@ -563,6 +572,7 @@ compile_code_decipher__extract(code2);
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Identify the auto return type of functions and functors
 
@@ -574,6 +584,7 @@ compile_code_decipher__extract(code2);
 __Notes:__
 * "cleantype::invoke_result_t" is a C++14 polyfill for [`std::invoke_result`](https://en.cppreference.com/w/cpp/types/result_of) (C++14 only provides "std::result_of", which is to be deprecated soon). When using C++17, it uses std::invoke_result in the background.
 * Yes, "CT_invoke_result_fn" is indeed a variadic macro!
+
 
 
 
@@ -647,8 +658,10 @@ __Limitations of invoke_result with MSVC 2017 and templated auto functions__:
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Identify the signature of lambdas
+
 
 
 
@@ -727,6 +740,7 @@ This is because "mystery_lambda" is actually a instance of a hidden class. We ar
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 ## Generic lambdas
 
@@ -786,6 +800,7 @@ This second version is useful when you are lost in a forest of "auto" variables 
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Settings - configure replacements and indentation
 
@@ -836,6 +851,7 @@ _Note:_
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Compile time constexpr type names
 
@@ -876,6 +892,7 @@ Based on the work done during the development of this librayr, a [Pull Request](
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Decipher range-v3 auto types
 
@@ -886,6 +903,8 @@ It allows very expressive code. However, the design of the library is based on a
 `cleantype` can help in deciphering what's going on with the types with range-v3: 
 
 First, we include cleantype and the range-v3 library
+
+_Note: the examples with ranges-v3 do not work currently in the interactive version on binder (due to a default in the compiler input path. Please install cleantype locally in order to tests them._
 
 
 ```c++
@@ -1045,10 +1064,12 @@ Thus, it is advised to prefer "auto return functions" to lambdas when using rang
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Cheat sheet
 
 [cleantype.hpp](https://github.com/pthom/cleantype/blob/master/src/include/cleantype/cleantype.hpp) offers a quick cheat sheet to all the functions and macros available.
+
 
 
 
