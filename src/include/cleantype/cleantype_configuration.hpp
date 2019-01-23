@@ -4,7 +4,6 @@
 
 #pragma once
 #include <array>
-#include <cleantype/details/filesystem.hpp>
 #include <fstream>
 #include <map>
 #include <string>
