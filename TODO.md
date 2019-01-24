@@ -18,15 +18,6 @@
         * [X] Layout doc : Table of Content?
         * [X] Add example with range v3 (no submodule : checkout via notebook)
         * [X] Better doc / config
-* [ ] Article ?
-    * [ ] Contacts & RFC :
-        * [ ] DH
-        * [ ] EN
-
-* [ ] Other
-    * [ ] doc / anonmymous namespace for several functions (code ballads)
-    * [ ] hana notebooks based on examples?
-    * [ ] WS cppdecipher?
 
 * [X] Range-v3 & indent:
     * [X] auto-indent clean
@@ -62,7 +53,6 @@
         * [X] interact / clean
             * [X] prog version inline
             * [X] command line options / clean
-            * [X] On peut extraire le nom de la variable recherche en regardant quelques lignes plus bas,
 
     * [X] Notebook Doc
         * [X] decipherer build tool
