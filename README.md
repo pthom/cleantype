@@ -14,7 +14,6 @@
    <a href="#Compile-time-constexpr-type-names">Compile time constexpr type names</a><br/>
    <a href="#Decipher-range-v3-auto-types">Decipher range-v3 auto types</a><br/>
    <a href="#Cheat-sheet">Cheat sheet</a><br/>
-   <a href="#The-zoo-of-type-qualifiers">The zoo of type qualifiers</a><br/>
 
 </p>
 </tr></td>
@@ -41,6 +40,7 @@
         </a>
     </tr>
 </table> 
+
 
 
 
@@ -81,6 +81,7 @@ See the [introductory blog post](http://code-ballads.net/cleantype/)
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Installation and usage
 
@@ -101,16 +102,17 @@ _Note:_ cleantype can be used as a standalone library. However, in order to use 
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # About this manual
 
 
-This manual is fully interactive! It was written using [cling](https://root.cern.ch/cling), [xeus cling](https://xeus-cling.readthedocs.io/en/latest/) and [jupyter notebook](https://jupyter.org/). Cling enables a Read-Eval-Print-Loop (REPL) development mode with C++. This approach benefits a lot from having a good type introspection, which is the aim of this library. 
+This manual is fully interactive! It was written using [cling](https://root.cern.ch/cling), [xeus cling](https://xeus-cling.readthedocs.io/en/latest/) and [jupyter notebook](https://jupyter.org/). Cling enables a Read-Eval-Print-Loop (REPL) development mode with C++. This approach benefits a lot from having a good type introspection, which is the aim of this library. I wrote an article which is a ["hands-on session"](http://code-ballads.net/read-eval-print-loop-repl-in-c/) about this for those who are interested.
 
 The code that you read in this manual is real live code that can be executed inside jupyter notebook. 
 You can try it directly inside [binder](https://mybinder.org/): click on the "launch binder" at the top of this page.<br/>
 Notes:
-* Beware, it require about 1 minutes to load; but then you will be able to run the code live from your browser!
+* Beware, it may require about 1 minute to load; but then you will be able to run the code live from your browser!
 * Inside the notebook, click on the "Run" button in order to execute each cell (in order)
 * You can modify and run the code as you desire inside binder!
 * Note that there is a limitation in cling that *requires that you add two ";" after each lambda function definition*
@@ -138,6 +140,7 @@ The "#pragma cling add_include_path" is specific to cling. Beside this, everythi
     std::cout << __VA_ARGS__ << "\n\n"; \
 }
 ```
+
 
 
 
@@ -272,13 +275,10 @@ std::cout << cleantype::clean<std::string, int, int &&, char &&>() << std::endl;
     std::list<int>
     
     cleantype::indent_type_tree("std::deque<std::pair<std::string, std::map<int, int>>>")
-    std::deque
-    <
-        std::pair
-        <
+    std::deque<
+        std::pair<
             std::string,
-            std::map
-            <
+            std::map<
                 int,
                 int
             >
@@ -290,6 +290,7 @@ std::cout << cleantype::clean<std::string, int, int &&, char &&>() << std::endl;
 ### Configuration of the clean types
 
 You can customize the suppressions and replacements inside [cleantype/cleantype_configuration.hpp](src/include/cleantype/cleantype_configuration.hpp)
+
 
 
 
@@ -395,6 +396,7 @@ Full types can quickly become unreadable, especially with templated types, such 
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 ## Display the content of complex containers
 
@@ -428,6 +430,7 @@ These version are required for certains more complex containers, like "std::map"
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Decipher compiler output and identify types in the compiler output
 
@@ -435,6 +438,7 @@ These version are required for certains more complex containers, like "std::map"
 * `ct_compiler_decipher` is a tool that deciphers the compiler output and makes it more readable, especially when there are lots of templates
 * `CT_compiler_log_type(T)` is a macro that will create an intentional compiler error whose intent is to display the type name of T. You can use it in conjunction with "ct_compiler_decipher".
 * `CT_compiler_log_var_type` is a macro that will create an intentional compiler error whose intent is to display the type name of the variable var. You can use it in conjunction with "ct_compiler_decipher".
+
 
 
 
@@ -537,6 +541,7 @@ compile_code_decipher__extract(code);
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 ## Identify types names at compile time, with clean names
 
@@ -583,6 +588,7 @@ compile_code_decipher__extract(code2);
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Identify the auto return type of functions and functors
 
@@ -594,6 +600,7 @@ compile_code_decipher__extract(code2);
 __Notes:__
 * "cleantype::invoke_result_t" is a C++14 polyfill for [`std::invoke_result`](https://en.cppreference.com/w/cpp/types/result_of) (C++14 only provides "std::result_of", which is to be deprecated soon). When using C++17, it uses std::invoke_result in the background.
 * Yes, "CT_invoke_result_fn" is indeed a variadic macro!
+
 
 
 
@@ -671,8 +678,10 @@ __Limitations of invoke_result with MSVC 2017 and templated auto functions__:
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Identify the signature of lambdas
+
 
 
 
@@ -755,6 +764,7 @@ This is because "mystery_lambda" is actually a instance of a hidden class. We ar
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 ## Generic lambdas
 
@@ -816,6 +826,7 @@ This second version is useful when you are lost in a forest of "auto" variables 
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Settings - configure replacements and indentation
 
@@ -868,6 +879,7 @@ _Note:_
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Compile time constexpr type names
 
@@ -902,6 +914,7 @@ Based on the work done during the development of this librayr, a [Pull Request](
     cleantype::full(hana_type_string)
     boost::hana::string<'s', 't', 'd', ':', ':', 'p', 'a', 'i', 'r', '<', 'i', 'n', 't', ', ', ' ', 'c', 'h', 'a', 'r', '>'> &
     
+
 
 
 
@@ -970,17 +983,13 @@ run__show(  cleantype::clean(squares_view_fn)  );
 ```
 
     cleantype::clean(squares_view_fn)
-    ranges::v3::join_view
-    <
-        ranges::v3::transform_view
-        <
-            ranges::v3::iota_view
-            <
+    ranges::v3::join_view<
+        ranges::v3::transform_view<
+            ranges::v3::iota_view<
                 int,
                 void
             >,
-            ranges::v3::single_view
-            <
+            ranges::v3::single_view<
                 int
             > (*)(int)
         >,
@@ -996,19 +1005,14 @@ run__show(  cleantype::clean(squares_fn_take_10)  );
 ```
 
     cleantype::clean(squares_fn_take_10)
-    ranges::v3::detail::take_exactly_view_
-    <
-        ranges::v3::join_view
-        <
-            ranges::v3::transform_view
-            <
-                ranges::v3::iota_view
-                <
+    ranges::v3::detail::take_exactly_view_<
+        ranges::v3::join_view<
+            ranges::v3::transform_view<
+                ranges::v3::iota_view<
                     int,
                     void
                 >,
-                ranges::v3::single_view
-                <
+                ranges::v3::single_view<
                     int
                 > (*)(int)
             >,
@@ -1041,12 +1045,9 @@ Since lambda are actually anonymous structs, cleantype cannot disclose the signa
     lambda: (int) -> ranges::v3::single_view<int>
     
     cleantype::clean(squares_view_lambda)
-    ranges::v3::join_view
-    <
-        ranges::v3::transform_view
-        <
-            ranges::v3::iota_view
-            <
+    ranges::v3::join_view<
+        ranges::v3::transform_view<
+            ranges::v3::iota_view<
                 int,
                 void
             >,
@@ -1060,12 +1061,9 @@ Since lambda are actually anonymous structs, cleantype cannot disclose the signa
 In an ideal world, I would be interesting to be able to display the view type as below (but I'm afraid that the code in order to get to this might be intractable).
 
 ````
-ranges::v3::join_view
-<
-    ranges::v3::transform_view
-    <
-        ranges::v3::iota_view
-        <
+ranges::v3::join_view<
+    ranges::v3::transform_view<
+        ranges::v3::iota_view<
             int,
             void
         >,
@@ -1083,167 +1081,8 @@ Thus, it is advised to prefer "auto return functions" to lambdas when using rang
 
 
 
+
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Cheat sheet
 
 [cleantype.hpp](https://github.com/pthom/cleantype/blob/master/src/include/cleantype/cleantype.hpp) offers a quick cheat sheet to all the functions and macros available.
-
-
-
-
-
-
-
-<a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
-# The zoo of type qualifiers
-
-`cleantype`handles quite well `const`, `volatile`, references (`&`), rvalue references (`&&`), and pointers (`*`). See below a demonstration 
-
-
-```c++
-auto foo = [](auto && x) {
-    run_show(     CT_cleantype_clean(x)                                );
-    run_show(     cleantype::clean<decltype(x)>()                      );
-};;
-
-#define test_call_foo(var, title)                                        \
-    std::cout << " *********** " << title << " ***********\n";           \
-    std::cout << "Bare variable (before the call)\n";                    \
-    run_show(     cleantype::clean<decltype(var)>()                    );\
-    run_show(     CT_cleantype_clean(var)                              );\
-    std::cout << "Now inside foo (pass by universal reference)\n";       \
-    foo(var);
-```
-
-
-```c++
-{
-    int a = 5;  
-    test_call_foo(a, "Calling with an int lvalue (transformed to a ref by the call)");
-    
-    int const &  b = a; 
-    test_call_foo(b, "Calling with a const lvalue reference");
-    
-    test_call_foo(42, "Calling with an rvalue reference");
-    
-    int * const c = &a;
-    test_call_foo(c, "Calling with a const pointer");
-
-    int const * d = &a;
-    test_call_foo(d, "Calling with a pointer to const");
-
-    int volatile vol = 42;
-    test_call_foo(vol, "Calling with a volatile int");
-    
-    int const e = 5;  
-    test_call_foo(e, "Calling with a const");
-
-}
-```
-
-     *********** Calling with an int lvalue (transformed to a ref by the call) ***********
-    Bare variable (before the call)
-    cleantype::clean<decltype(a)>()
-    int
-    
-    CT_cleantype_clean(a)
-    int
-    
-    Now inside foo (pass by universal reference)
-    CT_cleantype_clean(x)
-    int &
-    
-    cleantype::clean<decltype(x)>()
-    int &
-    
-     *********** Calling with a const lvalue reference ***********
-    Bare variable (before the call)
-    cleantype::clean<decltype(b)>()
-    const int &
-    
-    CT_cleantype_clean(b)
-    const int &
-    
-    Now inside foo (pass by universal reference)
-    CT_cleantype_clean(x)
-    const int &
-    
-    cleantype::clean<decltype(x)>()
-    const int &
-    
-     *********** Calling with an rvalue reference ***********
-    Bare variable (before the call)
-    cleantype::clean<decltype(42)>()
-    int
-    
-    CT_cleantype_clean(42)
-    int
-    
-    Now inside foo (pass by universal reference)
-    CT_cleantype_clean(x)
-    int &&
-    
-    cleantype::clean<decltype(x)>()
-    int &&
-    
-     *********** Calling with a const pointer ***********
-    Bare variable (before the call)
-    cleantype::clean<decltype(c)>()
-    int * const
-    
-    CT_cleantype_clean(c)
-    int * const
-    
-    Now inside foo (pass by universal reference)
-    CT_cleantype_clean(x)
-    int * const &
-    
-    cleantype::clean<decltype(x)>()
-    int * const &
-    
-     *********** Calling with a pointer to const ***********
-    Bare variable (before the call)
-    cleantype::clean<decltype(d)>()
-    const int *
-    
-    CT_cleantype_clean(d)
-    const int *
-    
-    Now inside foo (pass by universal reference)
-    CT_cleantype_clean(x)
-    const int * &
-    
-    cleantype::clean<decltype(x)>()
-    const int * &
-    
-     *********** Calling with a volatile int ***********
-    Bare variable (before the call)
-    cleantype::clean<decltype(vol)>()
-    volatile int
-    
-    CT_cleantype_clean(vol)
-    volatile int
-    
-    Now inside foo (pass by universal reference)
-    CT_cleantype_clean(x)
-    volatile int &
-    
-    cleantype::clean<decltype(x)>()
-    volatile int &
-    
-     *********** Calling with a const ***********
-    Bare variable (before the call)
-    cleantype::clean<decltype(e)>()
-    const int
-    
-    CT_cleantype_clean(e)
-    const int
-    
-    Now inside foo (pass by universal reference)
-    CT_cleantype_clean(x)
-    const int &
-    
-    cleantype::clean<decltype(x)>()
-    const int &
-    
-
