@@ -18,8 +18,7 @@ TEST_CASE("indent")
     {
         std::string s("Foo<int>");
         auto indented = cleantype::indent_type_tree(s);
-        std::string expected = R"(Foo
-<
+        std::string expected = R"(Foo<
     int
 >)";
         REQUIRE_EQ(indented, expected);
@@ -28,8 +27,7 @@ TEST_CASE("indent")
     {
         std::string s("Foo<int, char>");
         auto indented = cleantype::indent_type_tree(s);
-        std::string expected = R"(Foo
-<
+        std::string expected = R"(Foo<
     int,
     char
 >)";
@@ -39,14 +37,11 @@ TEST_CASE("indent")
     {
         std::string s("Foo< int, Foo<int, Foo<std::string, int>>>");
         auto indented = cleantype::indent_type_tree(s);
-        std::string expected = R"(Foo
-<
+        std::string expected = R"(Foo<
     int,
-    Foo
-    <
+    Foo<
         int,
-        Foo
-        <
+        Foo<
             std::string,
             int
         >
@@ -66,13 +61,10 @@ TEST_CASE("indent")
         std::string s("std::deque<std::pair<std::string, std::map<int, int>>>");
         std::size_t old_limit = cleantype::CleanConfiguration::GlobalConfig().indent_depth_limit;
         cleantype::CleanConfiguration::GlobalConfig().indent_depth_limit = 2;
-        std::string expected = R"(std::deque
-<
-    std::pair
-    <
+        std::string expected = R"(std::deque<
+    std::pair<
         std::string,
-        std::map
-        <
+        std::map<
             int,
             int
         >

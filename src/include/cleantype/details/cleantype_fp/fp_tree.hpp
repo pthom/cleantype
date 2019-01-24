@@ -52,16 +52,16 @@ namespace cleantype_fp_tree
         new_line
     };
 
-    struct show_tree_options
+    enum class children_indent_t
     {
-        bool add_new_lines_before_children = true;
-        siblings_spacing_t siblings_spacing = siblings_spacing_t::no_spacing;
-        std::string indent = "  ";
+        no_indent,
+        newline_before_open_child,
+        newline_before_child
     };
 
     struct show_tree_lhs_rhs_options
     {
-        bool add_new_lines_before_children = true;
+        children_indent_t children_indent;
         bool add_space_after_lhs = false;
         bool add_space_before_rhs = false;
         siblings_spacing_t siblings_spacing = siblings_spacing_t::no_spacing;
@@ -198,23 +198,23 @@ namespace cleantype_fp_tree
     template <typename T>
     std::string show_tree_children(const std::vector<tree<T>> & children,
                                    const tree_separators & separators,
-                                   const show_tree_lhs_rhs_options & show_tree_lhs_rhs_options_,
+                                   const show_tree_lhs_rhs_options & options,
                                    int level = 0)
     {
         std::vector<std::string> children_strs = transform_vector<std::string>(
             [=](const tree<T> & vv) -> std::string {
-                return show_tree_lhs_rhs(vv, separators, show_tree_lhs_rhs_options_, level + 1);
+                return show_tree_lhs_rhs(vv, separators, options, level + 1);
             },
             children);
 
         const std::string siblings_separator = [&] {
             std::string separator_string(1, separators.siblings_separator);
-            if (show_tree_lhs_rhs_options_.siblings_spacing == siblings_spacing_t::no_spacing)
+            if (options.siblings_spacing == siblings_spacing_t::no_spacing)
                 return separator_string;
-            else if (show_tree_lhs_rhs_options_.siblings_spacing == siblings_spacing_t::space)
+            else if (options.siblings_spacing == siblings_spacing_t::space)
                 return separator_string + " ";
             else
-            {  // if (show_tree_lhs_rhs_options_.siblings_spacing == siblings_spacing_t::new_line)
+            {  // if (options.siblings_spacing == siblings_spacing_t::new_line)
                 return separator_string + std::string("\n");
             }
         }();
@@ -226,38 +226,37 @@ namespace cleantype_fp_tree
     template <typename T>
     std::string show_tree_lhs_rhs(const tree<T> & v,
                                   const tree_separators & separators,
-                                  const show_tree_lhs_rhs_options & show_tree_lhs_rhs_options_,
+                                  const show_tree_lhs_rhs_options & options,
                                   int level = 0)
     {
-        auto line_start = cleantype_fp::repeat(level, show_tree_lhs_rhs_options_.indent);
+        auto line_start = cleantype_fp::repeat(level, options.indent);
 
         std::string result;
-        if (show_tree_lhs_rhs_options_.add_new_lines_before_children)
+        if (options.children_indent != cleantype_fp_tree::children_indent_t::no_indent)
             result = line_start;
 
         result += cleantype_fp::show(v.value_.lhs);
-        if (!v.value_.lhs.empty() && show_tree_lhs_rhs_options_.add_space_after_lhs)
+        if (!v.value_.lhs.empty() && options.add_space_after_lhs)
             result += " ";
 
         if (!v.children_.empty())
         {
-            if (show_tree_lhs_rhs_options_.add_new_lines_before_children)
+            if (options.children_indent == children_indent_t::newline_before_open_child)
                 result += "\n" + line_start;
             result += separators.open_child;
-            if (show_tree_lhs_rhs_options_.add_new_lines_before_children)
+            if (options.children_indent != children_indent_t::no_indent)
                 result += "\n";
 
-            std::string children_str =
-                show_tree_children(v.children_, separators, show_tree_lhs_rhs_options_, level);
+            std::string children_str = show_tree_children(v.children_, separators, options, level);
 
             result += children_str;
 
-            if (show_tree_lhs_rhs_options_.add_new_lines_before_children)
+            if (options.children_indent != children_indent_t::no_indent)
                 result += "\n" + line_start;
             result += separators.close_child;
         }
 
-        if (!v.value_.rhs.empty() && show_tree_lhs_rhs_options_.add_space_before_rhs)
+        if (!v.value_.rhs.empty() && options.add_space_before_rhs)
             result += " ";
         result += cleantype_fp::show(v.value_.rhs);
 

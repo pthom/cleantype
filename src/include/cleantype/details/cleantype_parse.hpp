@@ -33,13 +33,13 @@ namespace cleantype
             cleantype_fp_tree::show_tree_lhs_rhs_options result;
             if (indent)
             {
-                result.add_new_lines_before_children = true;
+                result.children_indent = cleantype_fp_tree::children_indent_t::newline_before_child;
                 result.siblings_spacing = cleantype_fp_tree::siblings_spacing_t::new_line;
                 result.indent = "    ";
             }
             else
             {
-                result.add_new_lines_before_children = false;
+                result.children_indent = cleantype_fp_tree::children_indent_t::no_indent;
                 result.siblings_spacing = cleantype_fp_tree::siblings_spacing_t::space;
                 result.indent = "";
             }

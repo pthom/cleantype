@@ -111,28 +111,25 @@ namespace cleantype
 
             // now, types_with_holder_indented is like this:
             //
-            // cleantype::internal::TupleTypeHolder
-            // <
-            //     Foo
-            //     <
+            // cleantype::internal::TupleTypeHolder<
+            //     Foo<
             //         int,
             //         char
             //     >
             // >
             //
-            // --> we remove the lines [0, 1, last], then we remove the first indentation level
-
+            // --> we remove the lines [0, last]
+            //     then we remove the first indentation level
             auto remove_indented_tuple_holder = [](const std::string & type_str) {
                 std::vector<std::string> lines = stringutils::split_string(type_str, '\n');
                 assert(lines.size() >= 3);
-                std::vector<std::string> filtered_lines(lines.begin() + 2, lines.end() - 1);
+                std::vector<std::string> filtered_lines(lines.begin() + 1, lines.end() - 1);
                 std::vector<std::string> unindented_lines = cleantype_fp::transform(
                     [](const std::string & s) { return stringutils::remove_start(s, "    "); },
                     filtered_lines);
                 std::string joined_lines = cleantype_fp::join(std::string("\n"), unindented_lines);
                 return joined_lines;
             };
-
             return remove_indented_tuple_holder(types_with_holder_indented);
         }
 
