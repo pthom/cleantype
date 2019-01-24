@@ -1,10 +1,9 @@
 * [X] Cleanup
     * [X] Indent : no \n before <
-    * [ ] Link article / REPL C++
-    * [ ] Patience for interactive demo
-    * [ ] Shorten article so that manual is reached
-    * [ ] Demo indent / no indent
-    * [ ] Rep Jason Rice
+    * [X] Link article / REPL C++
+    * [X] Patience for interactive demo
+    * [X] Shorten article so that manual is reached
+    * [X] Demo indent / no indent
     * [X] Proof read & classify code
     * [X] Doc inside cleantype.hpp (missing invoke, etc)
     * [X] debug.hpp / json.hpp
@@ -27,6 +26,7 @@
 * [ ] Other
     * [ ] doc / anonmymous namespace for several functions (code ballads)
     * [ ] hana notebooks based on examples?
+    * [ ] WS cppdecipher?
 
 * [X] Range-v3 & indent:
     * [X] auto-indent clean
