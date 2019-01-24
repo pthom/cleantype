@@ -1,4 +1,10 @@
 * [X] Cleanup
+    * [X] Indent : no \n before <
+    * [ ] Link article / REPL C++
+    * [ ] Patience for interactive demo
+    * [ ] Shorten article so that manual is reached
+    * [ ] Demo indent / no indent
+    * [ ] Rep Jason Rice
     * [X] Proof read & classify code
     * [X] Doc inside cleantype.hpp (missing invoke, etc)
     * [X] debug.hpp / json.hpp
