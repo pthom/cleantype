@@ -54,8 +54,11 @@ namespace types_variations
         auto r = fplus::fold_left(fold_fn, init, fplus::tail(elems));
         return distinct_types(r);
     };
-
-    auto combine_transform1_then2 = [](auto && fn1, auto && fn2) {
+    // combine_transforms variations are manually unrolled,
+    // because of runtime issues
+    template <typename Fn1, typename Fn2>
+    auto combine_transforms(Fn1 && fn1, Fn2 && fn2)
+    {
         auto r = [&](const TypeString & typ) -> TypeStringList {
             TypeStringList l_1 = fn1(typ);
             std::vector<TypeStringList> ll_1_2 = fplus::transform(fn2, l_1);
@@ -63,19 +66,36 @@ namespace types_variations
             return l_flattened;
         };
         return r;
-    };
-    auto combine_transform1_then2_then3 = [](auto && fn1, auto && fn2, auto && fn3) {
-        auto f12 = combine_transform1_then2(fn1, fn2);
-        auto f = combine_transform1_then2(f12, fn3);
+    }
+    template <typename Fn1, typename Fn2, typename Fn3>
+    auto combine_transforms(Fn1 && fn1, Fn2 && fn2, Fn3 && fn3)
+    {
+        auto f12 = combine_transforms(fn1, fn2);
+        auto f = combine_transforms(f12, fn3);
         return f;
-    };
-    auto combine_transform1_then2_then3_then4 =
-        [](auto && fn1, auto && fn2, auto && fn3, auto && fn4) {
-            auto f12 = combine_transform1_then2(fn1, fn2);
-            auto f34 = combine_transform1_then2(fn3, fn4);
-            auto f = combine_transform1_then2(f12, f34);
-            return f;
-        };
+    }
+    template <typename Fn1, typename Fn2, typename Fn3, typename Fn4>
+    auto combine_transforms(Fn1 && fn1, Fn2 && fn2, Fn3 && fn3, Fn4 && fn4)
+    {
+        auto f12 = combine_transforms(fn1, fn2);
+        auto f34 = combine_transforms(fn3, fn4);
+        auto f = combine_transforms(f12, f34);
+        return f;
+    }
+    template <typename Fn1, typename Fn2, typename Fn3, typename Fn4, typename Fn5>
+    auto combine_transforms(Fn1 && fn1, Fn2 && fn2, Fn3 && fn3, Fn4 && fn4, Fn5 && fn5)
+    {
+        auto f1234 = combine_transforms(fn1, fn2, fn3, fn4);
+        auto f = combine_transforms(f1234, fn5);
+        return f;
+    }
+    template <typename Fn1, typename Fn2, typename Fn3, typename Fn4, typename Fn5, typename Fn6>
+    auto combine_transforms(Fn1 && fn1, Fn2 && fn2, Fn3 && fn3, Fn4 && fn4, Fn5 && fn5, Fn6 && fn6)
+    {
+        auto f12345 = combine_transforms(fn1, fn2, fn3, fn4, fn5);
+        auto f = combine_transforms(f12345, fn6);
+        return f;
+    }
 
     TypeString remove_uneeded_spaces(const TypeString & xs)
     {
@@ -118,8 +138,8 @@ namespace types_variations
         auto closet_variations = [](const TypeString & xs) {
             return space_variations_around_token('>', xs);
         };
-        auto all_spaces_fn = combine_transform1_then2_then3_then4(
-            ptr_variations, ref_variations, opent_variations, closet_variations);
+        auto all_spaces_fn =
+            combine_transforms(ptr_variations, ref_variations, opent_variations, closet_variations);
         return distinct_types(all_spaces_fn(remove_uneeded_spaces(xs)));
     }
 
