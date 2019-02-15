@@ -4,6 +4,7 @@
 
 #pragma once
 #include <cleantype/cleantype_configuration.hpp>
+#include <cleantype/details/filesystem.hpp>
 
 #ifndef CLEANTYPE_USE_NLOHMANN_JSON
 namespace cleantype {
@@ -14,7 +15,6 @@ namespace cleantype {
 #else
 
 #include <array>
-#include <cleantype/details/filesystem.hpp>
 #include <fstream>
 #include <map>
 #include <string>

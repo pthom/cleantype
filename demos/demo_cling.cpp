@@ -3,9 +3,7 @@
 // > asciinema rec demo_cling.cast
 // > python im_not_a_touch_typist.py demo_cling.cpp | tee /dev/tty | cling --std=c++14
 // > Ctrl-D
-#pragma cling add_include_path("./src/include")
-#pragma cling add_include_path("third_party/tests_thirdparty/FunctionalPlus/include")
-#pragma cling add_include_path("third_party/tests_thirdparty/range-v3/include")
+#pragma cling add_include_path("./include")
 #include <numeric>
 
 

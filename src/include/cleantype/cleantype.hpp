@@ -169,5 +169,3 @@ namespace cleantype
     // Edit this file as a normal json file
 
 }  // namespace cleantype
-
-// FIXME /  TODO : Add doc here !!! (And link)
