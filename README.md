@@ -38,6 +38,13 @@
         <a href="https://mybinder.org/v2/gh/pthom/cleantype/master?filepath=notebooks%2Fcleantype%2Fcleantype.ipynb"> 
             <img src="https://mybinder.org/badge_logo.svg" /> 
         </a>
+    </td>
+    <td>
+        Demo on gitpod
+        <a href="https://gitpod.io/#https://github.com/pthom/cleantype/blob/master/demos/demo_simple.cpp"> 
+            <img src="resources/gitpod.png" width="50" /> 
+        </a>
+    </td>
     </tr>
 </table> 
 
@@ -103,7 +110,6 @@ cleantype can be used as a standalone library. However, in order to use be able 
 
 * `ct_compiler_decipher` is comprised of a single c++ file. It's compilation can be done via `make`
 or via `$(CXX) -Isrc/include -Ithird_party/FunctionalPlus/include --std=c++14 src/tools/ct_compiler_decipher/ct_compiler_decipher.cpp -o ct_compiler_decipher`
-
 
 
 
