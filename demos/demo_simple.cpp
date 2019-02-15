@@ -1,5 +1,10 @@
 // Compile with
+// cd demos/
 // g++ -std=c++14 -Iinclude demo_simple.cpp -o demo_simple
+//
+// Edit and compile this file without installing anything at
+// https://gitpod.io/#https://github.com/pthom/cleantype/blob/master/demos/demo_simple.cpp
+//
 #include <cleantype/cleantype.hpp>
 
 #include <map>
