@@ -42,7 +42,7 @@
     <td>
         Demo on gitpod
         <a href="https://gitpod.io/#https://github.com/pthom/cleantype/blob/master/demos/demo_simple.cpp"> 
-            <img src="resources/gitpod.png" width="50" /> 
+            <img src="resources/gitpod.jpg" width="50" /> 
         </a>
     </td>
     </tr>
