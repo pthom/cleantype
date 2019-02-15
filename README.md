@@ -460,7 +460,7 @@ These version are required for certains more complex containers, like "std::map"
 <a href="#Table-of-content"><img src="https://img.shields.io/badge/%3C%20top-E7E7E7.svg" align="right"></a>
 # Decipher compiler output and identify types in the compiler output
 
-<a href="https://asciinema.org/a/227653" target="_blank"><img src="https://asciinema.org/a/227653.svg" width="200" align="right" style="padding-left: 20px"/></a>
+<a href="https://asciinema.org/a/227653?speed=8" target="_blank"><img src="https://asciinema.org/a/227653.svg" width="200" align="right" style="padding-left: 20px"/></a>
 * `ct_compiler_decipher` is a tool that deciphers the compiler output and makes it more readable, especially when there are lots of templates
 * `CT_compiler_log_type(T)` is a macro that will create an intentional compiler error whose intent is to display the type name of T. You can use it in conjunction with "ct_compiler_decipher".
 * `CT_compiler_log_var_type` is a macro that will create an intentional compiler error whose intent is to display the type name of the variable var. You can use it in conjunction with "ct_compiler_decipher".
