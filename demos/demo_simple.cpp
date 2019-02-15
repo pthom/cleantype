@@ -1,3 +1,5 @@
+// Compile with
+// g++ -std=c++14 -Iinclude demo_simple.cpp -o demo_simple
 #include <cleantype/cleantype.hpp>
 
 #include <map>
