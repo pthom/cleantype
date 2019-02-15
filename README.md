@@ -60,7 +60,7 @@ The included tool `ct_compiler_decipher` simplifies the template noise in your c
 
 It can be seeen as a developper friendly `typeid` alternative, and as a tool for those who are tired by the template noise in the compiler output.
 
-The video to the right gives a quick overview of the library. This demo uses [cling](https://root.cern.ch/cling), a fully compliant C++14 REPL, and [asciinema](https://asciinema.org/), a terminal session recorder. You can pause at any time, and copy-paste samples from it.
+The video to the right gives a quick overview of the library. This demo uses [cling](https://root.cern.ch/cling), a fully compliant C++14 REPL, and [asciinema](https://asciinema.org/), a terminal session recorder. You can pause at any time, and copy-paste samples from it. Its source code is [here](demos/demo_cling.cpp).
 
 
 #### Motivation
